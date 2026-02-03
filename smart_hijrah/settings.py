@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["127.0.0.1","10.0.2.2","localhost",]
+ALLOWED_HOSTS = ["127.0.0.1","10.0.2.2","localhost","192.168.1.6"]
 
 
 # Application definition
@@ -136,3 +136,5 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+
+FIREBASE_CREDENTIAL_PATH = "smart-hijrah-firebase-adminsdk-fbsvc-e3882f65a5.json"
