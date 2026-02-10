@@ -37,7 +37,16 @@ class Command(BaseCommand):
                 "type": "prayer",
                 "prayer": prayer_name,
                 "time": prayer_time.isoformat(),
-            }
+            },
+            android=messaging.AndroidConfig(
+                priority="high",
+                ttl=timezone.timedelta(minutes=5),  # optional but recommended
+                notification=messaging.AndroidNotification(
+                    channel_id="high_importance_channel",
+                    sound="default",
+                    visibility="public",
+                ),
+            ),
         )
         response = messaging.send(message)
         self.stdout.write(f"FCM sent: {response}")
