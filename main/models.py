@@ -8,6 +8,7 @@ class User(AbstractUser):
     alamat = models.CharField(max_length=200, null=True, blank=True)
     telepon = models.CharField(max_length=20, null=True, blank=True)
     fcm_token = models.TextField(null=True, blank=True)
+    foto_profil = models.ImageField(upload_to='foto_profil', null=True, blank=True)
 
     def __str__(self):
         return self.username
