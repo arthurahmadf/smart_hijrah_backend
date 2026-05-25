@@ -131,7 +131,8 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
-
+# settings.py
+GEOAPIFY_API_KEY = os.getenv('GEOAPIFY_API_KEY', 'aa2df8b098024c918bd822561e489092')
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
