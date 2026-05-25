@@ -121,17 +121,32 @@ def nearby_masjids(request):
             })
         
         results.sort(key=lambda x: x['distance_km'] if x['distance_km'] else 999)
+        page = int(request.GET.get('page', 1))
+        page_size = int(request.GET.get('page_size', 10))
+        
+        total_items = len(results)
+        total_page = (total_items + page_size - 1) // page_size
+        
+        start = (page - 1) * page_size
+        end = start + page_size
+        paginated_results = results[start:end]
+        
+        paginated_data = {
+            'current_page': page,
+            'total_page': total_page,
+            'total_items': total_items,
+            'masjids': paginated_results
+        }
         
         return JsonResponse({
             "success": True,
-            "data": results,
-            "total": len(results),
-            "user_location": {"lat": float(lat), "lng": float(lng)}
+            "message": "Masjids fetched successfully",
+            "data": paginated_data
         }, status=200)
         
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
-        
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def masjid_detail(request, place_id):
