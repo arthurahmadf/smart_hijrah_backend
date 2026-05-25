@@ -10,10 +10,12 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import uuid
 
+from main.pagination_utils import paginate_queryset
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_feed(request):
-    """Get feeds for user (from people they follow + sponsored)"""
+    """Get feeds for user with pagination"""
     try:
         user = request.user
         
@@ -26,20 +28,16 @@ def get_user_feed(request):
         ).select_related('user').prefetch_related('pictures')
         
         # Pagination
-        page = request.GET.get('page', 1)
-        paginator = Paginator(feeds, 10)  # 10 feeds per page
-        feeds_page = paginator.get_page(page)
+        paginated_data = paginate_queryset(request, feeds, page_size=10, items_key='feeds')
         
-        serializer = FeedSerializer(feeds_page, many=True, context={'request': request})
+        # Serialize the feeds
+        serializer = FeedSerializer(paginated_data['feeds'], many=True, context={'request': request})
+        paginated_data['feeds'] = serializer.data
         
         return JsonResponse({
             "success": True,
-            "data": serializer.data,
-            "pagination": {
-                "current_page": feeds_page.number,
-                "total_pages": paginator.num_pages,
-                "total_items": paginator.count
-            }
+            "message": "Feed fetched successfully",
+            "data": paginated_data
         }, status=200)
         
     except Exception as e:
@@ -148,30 +146,40 @@ def like_feed(request, feed_id):
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def search_feed(request):
-    """Search feeds by caption or location"""
+    """Search feeds by caption or location with pagination"""
     try:
         query = request.GET.get('q', '')
         
         if not query:
             return JsonResponse({
                 "success": True,
-                "data": [],
-                "message": "No search query provided"
+                "message": "No search query provided",
+                "data": {
+                    "current_page": 1,
+                    "total_page": 0,
+                    "total_items": 0,
+                    "feeds": []
+                }
             }, status=200)
         
         feeds = Feed.objects.filter(
             Q(caption__icontains=query) | Q(location__icontains=query)
-        ).select_related('user').prefetch_related('pictures')[:20]
+        ).select_related('user').prefetch_related('pictures')
         
-        serializer = FeedSerializer(feeds, many=True, context={'request': request})
+        # Pagination
+        paginated_data = paginate_queryset(request, feeds, page_size=10, items_key='feeds')
+        
+        serializer = FeedSerializer(paginated_data['feeds'], many=True, context={'request': request})
+        paginated_data['feeds'] = serializer.data
         
         return JsonResponse({
             "success": True,
-            "data": serializer.data,
-            "query": query
+            "message": f"Search results for '{query}'",
+            "data": paginated_data
         }, status=200)
         
     except Exception as e:

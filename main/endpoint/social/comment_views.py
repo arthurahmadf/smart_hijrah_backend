@@ -6,6 +6,8 @@ import json
 from main.models_feed import Feed, FeedComment
 from main.serializers.feed_serializers import FeedCommentSerializer
 
+from main.pagination_utils import paginate_queryset
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_comment(request, feed_id):
@@ -71,18 +73,24 @@ def delete_comment(request, comment_id):
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_comments(request, feed_id):
-    """Get all comments for a feed"""
+    """Get all comments for a feed with pagination"""
     try:
         feed = get_object_or_404(Feed, id=feed_id)
         comments = FeedComment.objects.filter(feed=feed).select_related('user')
-        serializer = FeedCommentSerializer(comments, many=True, context={'request': request})
+        
+        paginated_data = paginate_queryset(request, comments, page_size=20, items_key='comments')
+        
+        serializer = FeedCommentSerializer(paginated_data['comments'], many=True, context={'request': request})
+        paginated_data['comments'] = serializer.data
         
         return JsonResponse({
             "success": True,
-            "data": serializer.data
+            "message": "Comments fetched successfully",
+            "data": paginated_data
         }, status=200)
         
     except Exception as e:

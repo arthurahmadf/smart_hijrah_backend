@@ -6,6 +6,9 @@ from main.models_feed import Follow
 from main.models import User
 from main.serializers.feed_serializers import UserBasicSerializer
 
+from main.pagination_utils import paginate_queryset
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def follow_user(request, user_id):
@@ -58,23 +61,28 @@ def unfollow_user(request, user_id):
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_followers(request, user_id):
-    """Get list of followers"""
+    """Get list of followers with pagination"""
     try:
         user = get_object_or_404(User, id=user_id)
         followers = Follow.objects.filter(following=user).select_related('follower')
         
+        paginated_data = paginate_queryset(request, followers, page_size=20, items_key='followers')
+        
         data = []
-        for follow in followers:
+        for follow in paginated_data['followers']:
             serializer = UserBasicSerializer(follow.follower, context={'request': request})
             data.append(serializer.data)
         
+        paginated_data['followers'] = data
+        
         return JsonResponse({
             "success": True,
-            "data": data,
-            "count": len(data)
+            "message": "Followers fetched successfully",
+            "data": paginated_data
         }, status=200)
         
     except Exception as e:
@@ -83,20 +91,24 @@ def get_followers(request, user_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_following(request, user_id):
-    """Get list of users that this user follows"""
+    """Get list of users that this user follows with pagination"""
     try:
         user = get_object_or_404(User, id=user_id)
         following = Follow.objects.filter(follower=user).select_related('following')
         
+        paginated_data = paginate_queryset(request, following, page_size=20, items_key='following')
+        
         data = []
-        for follow in following:
+        for follow in paginated_data['following']:
             serializer = UserBasicSerializer(follow.following, context={'request': request})
             data.append(serializer.data)
         
+        paginated_data['following'] = data
+        
         return JsonResponse({
             "success": True,
-            "data": data,
-            "count": len(data)
+            "message": "Following fetched successfully",
+            "data": paginated_data
         }, status=200)
         
     except Exception as e:
@@ -121,3 +133,4 @@ def check_follow_status(request, user_id):
         
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
+
