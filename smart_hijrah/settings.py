@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["127.0.0.1","10.0.2.2","localhost","192.168.1.5","192.168.1.7"]
+ALLOWED_HOSTS = ["127.0.0.1","10.0.2.2","localhost","192.168.1.5","192.168.1.7","103.150.190.227"]
 
 
 # Application definition
