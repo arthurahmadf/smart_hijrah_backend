@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# Import models from new modules
 from .models_feed import *
-# Di bagian bawah
 from .models_fest import *
-# Create your models here.
+from .models_klinik import *
+from .models_ngaji import *
+
+
 class User(AbstractUser):
     nama = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
