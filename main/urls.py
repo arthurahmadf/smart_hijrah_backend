@@ -7,6 +7,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .endpoint.lifestyle import fest_views
 from .endpoint import masjid_views
+from .endpoint import klinik_views
+from .endpoint.ngaji import kelas_views, pelajaran_views
 
 urlpatterns = [
     # NOTIFICATION
@@ -63,6 +65,25 @@ urlpatterns = [
     path('masjids/<str:place_id>/reviews/', masjid_views.get_masjid_reviews, name='get_masjid_reviews'),
     path('masjids/review/check/<str:place_id>/', masjid_views.check_user_review, name='check_user_review'),
     path('masjids/review/delete/<int:review_id>/', masjid_views.delete_masjid_review, name='delete_masjid_review'),
+
+    path('kliniks/nearby/', klinik_views.nearby_kliniks, name='nearby_kliniks'),
+    path('kliniks/<str:place_id>/', klinik_views.klinik_detail, name='klinik_detail'),
+    path('kliniks/<str:place_id>/review/', klinik_views.create_klinik_review, name='create_klinik_review'),
+    path('kliniks/<str:place_id>/reviews/', klinik_views.get_klinik_reviews, name='get_klinik_reviews'),
+    path('kliniks/review/check/<str:place_id>/', klinik_views.check_user_klinik_review, name='check_user_klinik_review'),
+    path('kliniks/review/delete/<int:review_id>/', klinik_views.delete_klinik_review, name='delete_klinik_review'),
+
+    # BELAJAR NGAJI - KELAS TAHFIDZ
+    path('ngaji/kelas/', kelas_views.get_all_kelas, name='get_all_kelas'),
+    path('ngaji/kelas/cari/', kelas_views.cari_kelas, name='cari_kelas'),
+    path('ngaji/kelas/<int:kelas_id>/', kelas_views.get_kelas_detail, name='get_kelas_detail'),
+    path('ngaji/kelas/<int:kelas_id>/daftar/', kelas_views.daftar_kelas, name='daftar_kelas'),
+    
+    # BELAJAR NGAJI - PELAJARAN
+    path('ngaji/pelajaran/', pelajaran_views.get_all_pelajaran, name='get_all_pelajaran'),
+    path('ngaji/pelajaran/<int:pelajaran_id>/', pelajaran_views.get_detail_pelajaran, name='get_detail_pelajaran'),
+    path('ngaji/pelajaran/materi/<int:detail_pelajaran_id>/', pelajaran_views.get_materi_pelajaran, name='get_materi_pelajaran'),
+    path('ngaji/pelajaran/progress/<int:detail_pelajaran_id>/', pelajaran_views.update_progress, name='update_progress'),
 ]
 
 if settings.DEBUG:
