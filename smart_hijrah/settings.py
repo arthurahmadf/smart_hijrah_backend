@@ -169,3 +169,18 @@ LOGGING = {
         },
     },
 }
+
+# Email Configuration - Brevo (Sendinblue)
+
+EMAIL_BACKEND = 'main.email_backend.NoSSLVerifyEmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'leoarmandalbi@gmail.com'  # Ganti dengan email Anda
+EMAIL_HOST_PASSWORD = '3ICnX5NTWFtvrZsR'  # Ganti dengan SMTP key dari Brevo
+DEFAULT_FROM_EMAIL = 'mail@smarthijrah.id'
+DEFAULT_FROM_NAME = 'Smart Hijrah'
+
+
+# Verification email settings
+VERIFICATION_TOKEN_EXPIRY_HOURS = 24

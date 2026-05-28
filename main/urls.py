@@ -17,7 +17,8 @@ urlpatterns = [
     # AUTH --------------------------------------------------------------------------------------------------------------------------
     path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+    path('auth/verify/<str:token>/', views.verify_email, name='verify_email'),
+    path('auth/resend-verification/', views.resend_verification_email, name='resend_verification'),
     # JADWAL SHALAT
     path('jadwal_shalat/sync/', views.sync_prayer_month, name='sinkronisasi_jadwal_shalkat'),
     path('jadwal_shalat/notification_preference/', views.sync_prayer_preferences, name='sinkronisasi_preferensi_notifikasi'),
@@ -27,7 +28,7 @@ urlpatterns = [
     path('user/create/', views.create_user, name='create_user'),
     path('user/change_password/', views.change_password, name='change_password'),
     path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
-    
+      
     # SOCIAL FEEDS (TODAY) 
     path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
     path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
