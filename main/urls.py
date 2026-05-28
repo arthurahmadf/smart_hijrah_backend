@@ -29,13 +29,18 @@ urlpatterns = [
     path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
     
     # SOCIAL FEEDS (TODAY) 
-    path('feed/', feed_views.get_user_feed, name='get_user_feed'),
+    path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
+    path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
+    path('feed/following/', feed_views.get_following_feed, name='get_following_feed'),
+
     path('feed/create/', feed_views.create_feed, name='create_feed'),
     path('feed/like/<int:feed_id>/', feed_views.like_feed, name='like_feed'),
     path('feed/search/', feed_views.search_feed, name='search_feed'),
     
     # STORIES 
-    path('stories/', story_views.get_stories, name='get_stories'),
+    path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
+    path('stories/local/', story_views.get_local_stories, name='get_local_stories'),
+    path('stories/following/', story_views.get_following_stories, name='get_following_stories'),
     path('stories/create/', story_views.create_story, name='create_story'),  # Tambah ini
 
     path('stories/seen/<int:story_id>/', story_views.mark_story_seen, name='mark_story_seen'),
