@@ -13,6 +13,9 @@ class User(AbstractUser):
     telepon = models.CharField(max_length=20, null=True, blank=True)
     fcm_token = models.TextField(null=True, blank=True)
     foto_profil = models.ImageField(upload_to='foto_profil', null=True, blank=True)
+    email_verified = models.BooleanField(default=False)
+    email_verification_token = models.CharField(max_length=255, blank=True, null=True)
+    token_created_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.username
