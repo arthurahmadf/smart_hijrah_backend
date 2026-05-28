@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from main.models_feed import Feed, FeedPicture, FeedLike, FeedComment, Follow, Story, StorySeen
+from main.models_feed import Feed, FeedComment, FeedLike, Follow, Story, StorySeen
 from main.models import User
+from main.my_utils import generate_url
+
 
 class UserBasicSerializer(serializers.ModelSerializer):
-    """Serializer untuk user (basic info)"""
     profile_picture = serializers.SerializerMethodField()
     
     class Meta:
@@ -11,52 +12,39 @@ class UserBasicSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'nama', 'profile_picture']
     
     def get_profile_picture(self, obj):
-        from main.my_utils import generate_url
         return generate_url(obj.foto_profil, self.context.get('request'))
 
-class FeedPictureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FeedPicture
-        fields = ['id', 'image', 'order']
 
 class FeedSerializer(serializers.ModelSerializer):
-    user = UserBasicSerializer(read_only=True)
-    pictures = FeedPictureSerializer(many=True, read_only=True)
-    is_liked = serializers.SerializerMethodField()
-    is_followed = serializers.SerializerMethodField()
+    user_id = serializers.IntegerField(source='user.id', read_only=True)
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_country = serializers.CharField(source='user.country', read_only=True)
+    user_picture = serializers.SerializerMethodField()
+    isLiked = serializers.SerializerMethodField()
+    isFollowed = serializers.SerializerMethodField()
     
     class Meta:
         model = Feed
         fields = [
-            'id', 'user', 'caption', 'location', 'pictures',
-            'created_at', 'like_count', 'comment_count',
-            'is_sponsored', 'permalink', 'is_liked', 'is_followed'
+            'id', 'user_id', 'user_name', 'user_country', 'user_picture',
+            'feed_location', 'feed_caption', 'feed_pictures', 'created_at',
+            'isLiked', 'isFollowed', 'like_count', 'comment_count',
+            'isSponsored', 'permalink'
         ]
     
-    def get_is_liked(self, obj):
+    def get_user_picture(self, obj):
+        return generate_url(obj.user.foto_profil, self.context.get('request'))
+    
+    def get_isLiked(self, obj):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
             return FeedLike.objects.filter(feed=obj, user=request.user).exists()
         return False
     
-    def get_is_followed(self, obj):
+    def get_isFollowed(self, obj):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
             return Follow.objects.filter(follower=request.user, following=obj.user).exists()
-        return False
-
-class StorySerializer(serializers.ModelSerializer):
-    user = UserBasicSerializer(read_only=True)
-    is_seen = serializers.SerializerMethodField()
-    
-    class Meta:
-        model = Story
-        fields = ['id', 'user', 'media_url', 'media_type', 'created_at', 'is_seen']
-    
-    def get_is_seen(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return StorySeen.objects.filter(story=obj, user=request.user).exists()
         return False
 
 
@@ -67,8 +55,25 @@ class FeedCommentSerializer(serializers.ModelSerializer):
         model = FeedComment
         fields = ['id', 'user', 'text', 'created_at']
 
-class FeedDetailSerializer(FeedSerializer):
-    comments = FeedCommentSerializer(many=True, read_only=True)
+
+class StorySerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(source='user.id', read_only=True)
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_picture = serializers.SerializerMethodField()
+    isSeen = serializers.SerializerMethodField()
     
-    class Meta(FeedSerializer.Meta):
-        fields = FeedSerializer.Meta.fields + ['comments']
+    class Meta:
+        model = Story
+        fields = [
+            'id', 'user_id', 'user_name', 'user_country', 'story_link',
+            'user_picture', 'isOnline', 'created_at', 'isSeen'
+        ]
+    
+    def get_user_picture(self, obj):
+        return generate_url(obj.user.foto_profil, self.context.get('request'))
+    
+    def get_isSeen(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return StorySeen.objects.filter(story=obj, user=request.user).exists()
+        return False

@@ -27,7 +27,8 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+# DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = "True"
 
 ALLOWED_HOSTS = ["127.0.0.1","10.0.2.2","localhost","192.168.1.5","192.168.1.7","103.150.190.227"]
 
@@ -141,3 +142,30 @@ SIMPLE_JWT = {
 }
 
 FIREBASE_CREDENTIAL_PATH = "smart-hijrah-firebase-adminsdk-fbsvc-e3882f65a5.json"
+
+# settings.py - tambahkan di akhir file
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'main': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

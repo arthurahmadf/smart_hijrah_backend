@@ -2,40 +2,31 @@ from django.db import models
 from django.conf import settings
 
 class Feed(models.Model):
-    """Model untuk postingan feed"""
+    """Model for feed posts"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='feeds')
-    caption = models.TextField(blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
+    feed_caption = models.TextField(blank=True, null=True)
+    feed_location = models.CharField(max_length=255, blank=True, null=True)
+    feed_pictures = models.JSONField(default=list)  # List of image URLs
+    user_country = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    # Stats
     like_count = models.IntegerField(default=0)
     comment_count = models.IntegerField(default=0)
-    
-    # Metadata
-    is_sponsored = models.BooleanField(default=False)
+    isSponsored = models.BooleanField(default=False)
     permalink = models.CharField(max_length=500, blank=True, null=True)
     
     class Meta:
         db_table = 'social_feed'
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['user_country']),
+            models.Index(fields=['isSponsored']),
+        ]
     
     def __str__(self):
         return f"Feed by {self.user.username} at {self.created_at}"
 
-class FeedPicture(models.Model):
-    """Gambar untuk feed (bisa multiple)"""
-    feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name='pictures')
-    image = models.ImageField(upload_to='feed_pictures/')
-    order = models.IntegerField(default=0)
-    
-    class Meta:
-        db_table = 'social_feed_picture'
-        ordering = ['order']
-    
-    def __str__(self):
-        return f"Picture for feed {self.feed.id}"
 
 class FeedLike(models.Model):
     """Like pada feed"""
@@ -49,6 +40,7 @@ class FeedLike(models.Model):
     
     def __str__(self):
         return f"{self.user.username} likes feed {self.feed.id}"
+
 
 class FeedComment(models.Model):
     """Comment pada feed"""
@@ -64,6 +56,7 @@ class FeedComment(models.Model):
     def __str__(self):
         return f"Comment by {self.user.username} on feed {self.feed.id}"
 
+
 class Follow(models.Model):
     """User following relationship"""
     follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
@@ -77,20 +70,28 @@ class Follow(models.Model):
     def __str__(self):
         return f"{self.follower.username} follows {self.following.username}"
 
+
 class Story(models.Model):
-    """Model untuk stories (Instagram-like)"""
+    """Model untuk stories"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='stories')
-    media_url = models.URLField(max_length=500)  # Link ke video/gambar
-    media_type = models.CharField(max_length=10, choices=[('image', 'Image'), ('video', 'Video')], default='image')
+    story_link = models.URLField(max_length=500)
+    user_country = models.CharField(max_length=100, blank=True, null=True)
+    isOnline = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField()  # Story expired after 24 hours
+    expires_at = models.DateTimeField()
     
     class Meta:
         db_table = 'social_story'
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['user_country']),
+            models.Index(fields=['expires_at']),
+        ]
     
     def __str__(self):
         return f"Story by {self.user.username} at {self.created_at}"
+
 
 class StorySeen(models.Model):
     """Track siapa saja yang sudah melihat story"""
@@ -104,13 +105,3 @@ class StorySeen(models.Model):
     
     def __str__(self):
         return f"{self.user.username} seen story {self.story.id}"
-
-class FeedComment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name='comments')
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        db_table = 'social_feed_comment'
-        ordering = ['created_at']
