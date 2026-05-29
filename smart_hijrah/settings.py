@@ -184,3 +184,7 @@ DEFAULT_FROM_NAME = 'Smart Hijrah'
 
 # Verification email settings
 VERIFICATION_TOKEN_EXPIRY_HOURS = 24
+
+
+
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')

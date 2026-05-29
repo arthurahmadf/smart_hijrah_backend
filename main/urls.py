@@ -11,6 +11,7 @@ from .endpoint import klinik_views
 from .endpoint.ngaji import kelas_views, pelajaran_views
 from .endpoint.kisah_nabi import views as kisah_nabi_views
 from .endpoint import spiritual_views
+from .endpoint.ai import chat_views
 urlpatterns = [
     # NOTIFICATION
     path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
@@ -103,6 +104,12 @@ urlpatterns = [
     path('prayer/history/', spiritual_views.get_prayer_history, name='get_prayer_history'),
     path('prayer/statistics/', spiritual_views.get_prayer_statistics, name='get_prayer_statistics'),
     path('prayer/preferences/', spiritual_views.update_notification_preferences, name='update_notification_preferences'),
+
+     # SMART AI
+    path('ai/chat/send/', chat_views.send_message, name='ai_send_message'),
+    path('ai/chat/conversations/', chat_views.get_conversations, name='ai_get_conversations'),
+    path('ai/chat/conversation/<int:conversation_id>/', chat_views.get_conversation_detail, name='ai_conversation_detail'),
+    path('ai/chat/conversation/<int:conversation_id>/delete/', chat_views.delete_conversation, name='ai_delete_conversation'),
 ]
 
 if settings.DEBUG:
