@@ -9,7 +9,8 @@ from .endpoint.lifestyle import fest_views
 from .endpoint import masjid_views
 from .endpoint import klinik_views
 from .endpoint.ngaji import kelas_views, pelajaran_views
-
+from .endpoint.kisah_nabi import views as kisah_nabi_views
+from .endpoint import spiritual_views
 urlpatterns = [
     # NOTIFICATION
     path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
@@ -90,6 +91,18 @@ urlpatterns = [
     path('ngaji/pelajaran/<int:pelajaran_id>/', pelajaran_views.get_detail_pelajaran, name='get_detail_pelajaran'),
     path('ngaji/pelajaran/materi/<int:detail_pelajaran_id>/', pelajaran_views.get_materi_pelajaran, name='get_materi_pelajaran'),
     path('ngaji/pelajaran/progress/<int:detail_pelajaran_id>/', pelajaran_views.update_progress, name='update_progress'),
+
+    path('kisah-nabi/', kisah_nabi_views.get_all_kisah_nabi, name='get_all_kisah_nabi'),
+    path('kisah-nabi/popular/', kisah_nabi_views.get_popular_kisah_nabi, name='get_popular_kisah_nabi'),
+    path('kisah-nabi/<int:kisah_id>/', kisah_nabi_views.get_kisah_nabi_detail, name='get_kisah_nabi_detail'),
+    path('kisah-nabi/<int:kisah_id>/read/', kisah_nabi_views.increment_read_count, name='increment_read_count'),
+    path('kisah-nabi/episode/<int:episode_id>/read/', kisah_nabi_views.increment_episode_read_count, name='increment_episode_read_count'),
+
+    path('prayer/monitor/', spiritual_views.get_prayer_monitor, name='get_prayer_monitor'),
+    path('prayer/complete/', spiritual_views.mark_prayer_completed, name='mark_prayer_completed'),
+    path('prayer/history/', spiritual_views.get_prayer_history, name='get_prayer_history'),
+    path('prayer/statistics/', spiritual_views.get_prayer_statistics, name='get_prayer_statistics'),
+    path('prayer/preferences/', spiritual_views.update_notification_preferences, name='update_notification_preferences'),
 ]
 
 if settings.DEBUG:
