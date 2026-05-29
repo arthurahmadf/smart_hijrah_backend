@@ -1,7 +1,91 @@
 # main/admin.py
 from django.contrib import admin
+from .models import User, PrayerMonthDocument, UserPrayerPreference, PrayerNotificationLog
 from .models_fest import Fest
+from .models_masjid import MasjidReview, MasjidReviewPhoto
+from .models_klinik import KlinikReview, KlinikReviewPhoto
+from .models_ngaji import (
+    KelasTahfidz, KelasSchedule, KelasEnrollment,
+    Pelajaran, DetailPelajaran, MateriPelajaran
+)
+from .models_kisah_nabi import KisahNabi, KisahNabiEpisode, KisahNabiReadLog
 
+# User
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'username', 'nama', 'email', 'telepon']
+    search_fields = ['username', 'nama', 'email']
+
+# Masjid Review
+@admin.register(MasjidReview)
+class MasjidReviewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'place_id', 'rating', 'created_at']
+    list_filter = ['rating']
+
+@admin.register(MasjidReviewPhoto)
+class MasjidReviewPhotoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'review', 'created_at']
+
+# Klinik Review
+@admin.register(KlinikReview)
+class KlinikReviewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'place_id', 'rating', 'created_at']
+    list_filter = ['rating']
+
+@admin.register(KlinikReviewPhoto)
+class KlinikReviewPhotoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'review', 'created_at']
+
+# Ngaji - Kelas Tahfidz
+@admin.register(KelasTahfidz)
+class KelasTahfidzAdmin(admin.ModelAdmin):
+    list_display = ['title', 'lecturer_name', 'price', 'is_dewasa', 'enroll_count']
+    list_filter = ['is_dewasa']
+    search_fields = ['title', 'lecturer_name']
+
+@admin.register(KelasSchedule)
+class KelasScheduleAdmin(admin.ModelAdmin):
+    list_display = ['id', 'kelas', 'start_time', 'end_time', 'enrolled_students']
+
+@admin.register(KelasEnrollment)
+class KelasEnrollmentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'kelas', 'enrolled_at', 'is_active']
+    list_filter = ['is_active']
+
+# Ngaji - Pelajaran
+@admin.register(Pelajaran)
+class PelajaranAdmin(admin.ModelAdmin):
+    list_display = ['name', 'step', 'course_total', 'course_finished']
+
+@admin.register(DetailPelajaran)
+class DetailPelajaranAdmin(admin.ModelAdmin):
+    list_display = ['pelajaran', 'name', 'step', 'is_finished']
+    list_filter = ['is_finished']
+
+@admin.register(MateriPelajaran)
+class MateriPelajaranAdmin(admin.ModelAdmin):
+    list_display = ['detail_pelajaran', 'title', 'arabic', 'latin', 'order']
+
+# Kisah Nabi
+@admin.register(KisahNabi)
+class KisahNabiAdmin(admin.ModelAdmin):
+    list_display = ['id', 'prophet_name', 'total_read_count', 'created_at']
+    list_filter = ['prophet_name']
+    search_fields = ['prophet_name', 'description']
+    readonly_fields = ['total_read_count']
+
+@admin.register(KisahNabiEpisode)
+class KisahNabiEpisodeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'kisah_nabi', 'title', 'order', 'created_at']
+    list_filter = ['kisah_nabi']
+    search_fields = ['title', 'description']
+
+@admin.register(KisahNabiReadLog)
+class KisahNabiReadLogAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'kisah_nabi', 'episode', 'read_at']
+    list_filter = ['kisah_nabi', 'read_at']
+    search_fields = ['user__username', 'kisah_nabi__prophet_name']
+    readonly_fields = ['user', 'kisah_nabi', 'episode', 'read_at']
 @admin.register(Fest)
 class FestAdmin(admin.ModelAdmin):
     list_display = ['title', 'category', 'date', 'is_headline', 'is_recommendation']
