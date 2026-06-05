@@ -25,31 +25,29 @@ class Fest(models.Model):
         ordering = ['date']
     
     def save(self, *args, **kwargs):
-        # Crop image to 300x130 aspect ratio (30:13)
+        # Crop image to 120:59 aspect ratio (without resizing)
         if self.banner:
             img = Image.open(self.banner)
             
-            # Target aspect ratio 300:130 = 30:13 = 2.307
-            target_ratio = 300 / 130  # ≈ 2.307
+            # Target aspect ratio 120:59 ≈ 2.0339
+            target_ratio = 120 / 59
             current_ratio = img.width / img.height
             
-            if current_ratio > target_ratio:
-                # Image too wide, crop width
-                new_width = int(img.height * target_ratio)
-                offset = (img.width - new_width) // 2
-                img = img.crop((offset, 0, offset + new_width, img.height))
-            elif current_ratio < target_ratio:
-                # Image too tall, crop height
-                new_height = int(img.width / target_ratio)
-                offset = (img.height - new_height) // 2
-                img = img.crop((0, offset, img.width, offset + new_height))
+            if abs(current_ratio - target_ratio) > 0.01:
+                if current_ratio > target_ratio:
+                    # Image too wide, crop width
+                    new_width = int(img.height * target_ratio)
+                    offset = (img.width - new_width) // 2
+                    img = img.crop((offset, 0, offset + new_width, img.height))
+                elif current_ratio < target_ratio:
+                    # Image too tall, crop height
+                    new_height = int(img.width / target_ratio)
+                    offset = (img.height - new_height) // 2
+                    img = img.crop((0, offset, img.width, offset + new_height))
             
-            # Resize to exact 300x130
-            img = img.resize((300, 130), Image.Resampling.LANCZOS)
-            
-            # Save to BytesIO
+            # Save to BytesIO (without resizing to small dimensions)
             buffer = BytesIO()
-            img_format = 'PNG' if self.banner.name.endswith('.png') else 'JPEG'
+            img_format = 'PNG' if self.banner.name.lower().endswith('.png') else 'JPEG'
             img.save(buffer, format=img_format)
             
             # Replace file

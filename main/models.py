@@ -6,6 +6,7 @@ from .models_klinik import *
 from .models_ngaji import *
 from .models_kisah_nabi import *
 from .models_ai import *
+from .models_tilawah import *
 
 class User(AbstractUser):
     nama = models.CharField(max_length=100, null=True, blank=True)
