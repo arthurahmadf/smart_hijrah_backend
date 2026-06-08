@@ -12,7 +12,11 @@ from .endpoint.ngaji import kelas_views, pelajaran_views
 from .endpoint.kisah_nabi import views as kisah_nabi_views
 from .endpoint import spiritual_views
 from .endpoint.ai import chat_views
+
+from .endpoint.tilawah import tilawah_views
+
 urlpatterns = [
+
     # NOTIFICATION
     path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
     
@@ -110,6 +114,11 @@ urlpatterns = [
     path('ai/chat/conversations/', chat_views.get_conversations, name='ai_get_conversations'),
     path('ai/chat/conversation/<int:conversation_id>/', chat_views.get_conversation_detail, name='ai_conversation_detail'),
     path('ai/chat/conversation/<int:conversation_id>/delete/', chat_views.delete_conversation, name='ai_delete_conversation'),
+
+    path('tilawah/ayah/random/', tilawah_views.get_random_ayah, name='tilawah_random_ayah'),
+    path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
+    path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
+    path('tilawah/session/<int:session_id>/', tilawah_views.get_session_detail, name='tilawah_session_detail'),
 ]
 
 if settings.DEBUG:

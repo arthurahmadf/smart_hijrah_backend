@@ -1,0 +1,192 @@
+log test_tajwid_more_comprehensive.py
+engine nyala
+================================================================================
+TEST TAJWID ENGINE - MAKSIMAL (3 LEVEL)
+================================================================================
+Level 1: Hukum Dasar (Nun Mati, Mim Mati, Qalqalah, dll)
+Level 2: Hukum Mad (Belum diimplementasikan - untuk referensi)
+Level 3: Sifat Huruf & Waqaf (Belum diimplementasikan - untuk referensi)
+================================================================================
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'أَحَدٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'هُوَ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'عِلْمٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'حَكِيمٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'غَفُورٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'خَالِقٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['سَمِيعٌ', 'أَحَدٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['قَوْمٌ', 'هَادٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['سَمِيعٌ', 'عَلِيمٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'يَقُولُ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'نِعْمَةٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'مَالٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'وَلِيٍّ']
+[DEBUG analyze_tajwid] Processing 2 words: ['هُدًى', 'يَهْتَدِي']
+[DEBUG analyze_tajwid] Processing 2 words: ['غَفُورٌ', 'نَادَى']
+[DEBUG analyze_tajwid] Processing 2 words: ['عَلِيمٌ', 'مُبِينٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['غَنِيٌّ', 'وَلِيٌّ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'لَّدُنْهُ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنْ', 'رَّبِّهِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['خَيْرٌ', 'لَّكُمْ']
+[DEBUG analyze_tajwid] Processing 2 words: ['غَفُورٞ', 'رَّحِيمٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِنۢ', 'بَعْدِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['سَمِيعٌۢ', 'بَصِيرٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['فَمِنۢ', 'بَعْدِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['كُنتُمْ']
+
+❌ FAIL | ikhfa | ت
+       Text: كُنتُمْ
+       Expected: ikhfa_haqiqi
+       Detected: []
+[DEBUG analyze_tajwid] Processing 2 words: ['فَمَن', 'ثَقُلَتْ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'جَرَّ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'دُونِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'ذَلِكَ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'زَيْتٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'سَمَاءٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'شَيْءٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'صَالِحٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'ضَرَّ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'طَعَامٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'ظَالِمٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'فَضْلٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'قَبْلِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['مِن', 'كِتَابٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['يَوْمَئِذٍ', 'تَلْقَى']
+[DEBUG analyze_tajwid] Processing 2 words: ['عَلِيمٌ', 'دَاعٍ']
+[DEBUG analyze_tajwid] Processing 2 words: ['يَوْمَئِذٍ', 'فَوَيْلٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['غَفُورٌ', 'قَادِرٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['هُمۡ', 'بِٱلْأٓخِرَةِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['لَهُم', 'مَّغْفِرَةٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['هُمۡ', 'وَٱللَّهُ']
+[DEBUG analyze_tajwid] Processing 2 words: ['هُمۡ', 'يَعْلَمُونَ']
+[DEBUG analyze_tajwid] Processing 2 words: ['هُمۡ', 'فِي']
+[DEBUG analyze_tajwid] Processing 2 words: ['هُمۡ', 'لَهُمْ']
+[DEBUG analyze_tajwid] Processing 1 words: ['يَقْدِرُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['الْفَلَقْ']
+[DEBUG analyze_tajwid] Processing 1 words: ['يَطْلُبُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['الْمَوْتْ']
+
+❌ FAIL | qalqalah | tha kubra
+       Text: الْمَوْتْ
+       Expected: qalqalah_kubra
+       Detected: ['alif_lam_qamariah']
+[DEBUG analyze_tajwid] Processing 1 words: ['يَبْصُرُونَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['تَرْبَحْ']
+
+❌ FAIL | qalqalah | ba kubra
+       Text: تَرْبَحْ
+       Expected: qalqalah_kubra
+       Detected: []
+[DEBUG analyze_tajwid] Processing 1 words: ['أَجْرٌ']
+[DEBUG analyze_tajwid] Processing 1 words: ['الْمَعَرَجْ']
+[DEBUG analyze_tajwid] Processing 1 words: ['يَحْصُدُ']
+
+❌ FAIL | qalqalah | dal sugra
+       Text: يَحْصُدُ
+       Expected: qalqalah_sugra
+       Detected: []
+[DEBUG analyze_tajwid] Processing 1 words: ['وَقَدْ']
+[DEBUG analyze_tajwid] Processing 1 words: ['إِنَّ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ثُمَّ']
+[DEBUG analyze_tajwid] Processing 1 words: ['مِنَّا']
+[DEBUG analyze_tajwid] Processing 1 words: ['أَمَّا']
+[DEBUG analyze_tajwid] Processing 1 words: ['إِنَّمَا']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلتَّوَّابُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلثَّلَاثَةُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلدَّارُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلَّذِينَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلرَّحْمَٰنِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلزَّيْتُونِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلسَّمَاءِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلشَّيْطَانُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلصَّالِحَاتُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلضَّالِّينَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلطَّيِّبَاتُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلظَّالِمُونَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱللَّذِينَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلنُّورُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْأَرْضُ']
+
+❌ FAIL | alif_lam | lam + hamzah
+       Text: ٱلْأَرْضُ
+       Expected: alif_lam_qamariah
+       Detected: []
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْبَيْتُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْجَنَّةُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْحَمْدُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْخَيْرُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْعِلْمُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْغَيْبُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْفَلَقُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْقُرْآنُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْكِتَابُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْمُؤْمِنُونَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْوَرَقُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْيَوْمُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['ٱلْهَوَى']
+[DEBUG analyze_tajwid] Processing 1 words: ['وَٱللَّهُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['لِلَّهِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['بِٱللَّهِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['وَٱللَّهِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['فَٱللَّهُ']
+[DEBUG analyze_tajwid] Processing 4 words: ['إِنَّ', 'ٱللَّهَ', 'عَلِيمٌ', 'حَكِيمٌ']
+[DEBUG analyze_tajwid] Processing 6 words: ['وَمَنْ', 'يَتَّقِ', 'ٱللَّهَ', 'يَجْعَلْ', 'لَهُ', 'مَخْرَجًا']
+[DEBUG analyze_tajwid] Processing 4 words: ['قُلْ', 'هُوَ', 'ٱللَّهُ', 'أَحَدٌ']
+[DEBUG analyze_tajwid] Processing 4 words: ['بِسْمِ', 'ٱللَّهِ', 'ٱلرَّحْمَٰنِ', 'ٱلرَّحِيمِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['بِسْمِ', 'ٱللَّهِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['قَالَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['يَقُولُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['فِي']
+[DEBUG analyze_tajwid] Processing 1 words: ['جَاءَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['سُوءَ']
+[DEBUG analyze_tajwid] Processing 2 words: ['بِمَا', 'أُنْزِلَ']
+[DEBUG analyze_tajwid] Processing 2 words: ['يَا', 'أَيُّهَا']
+[DEBUG analyze_tajwid] Processing 1 words: ['الْعَالَمِين']
+[DEBUG analyze_tajwid] Processing 1 words: ['نَسْتَعِين']
+[DEBUG analyze_tajwid] Processing 1 words: ['آلْآن']
+[DEBUG analyze_tajwid] Processing 1 words: ['الضَّالِّينَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['الم']
+[DEBUG analyze_tajwid] Processing 1 words: ['الٓمٓ']
+[DEBUG analyze_tajwid] Processing 1 words: ['عَلِيمًا']
+[DEBUG analyze_tajwid] Processing 1 words: ['خَوْفٌ']
+[DEBUG analyze_tajwid] Processing 1 words: ['بَيْتٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['إِنَّهُ', 'هُوَ']
+[DEBUG analyze_tajwid] Processing 2 words: ['عِلْمُهُ', 'عِنْدَهُ']
+[DEBUG analyze_tajwid] Processing 1 words: ['رَبُّ']
+[DEBUG analyze_tajwid] Processing 1 words: ['رُسُلٌ']
+[DEBUG analyze_tajwid] Processing 1 words: ['فِرْعَوْنَ']
+[DEBUG analyze_tajwid] Processing 1 words: ['قُرْبٌ']
+[DEBUG analyze_tajwid] Processing 1 words: ['رِزْقٌ']
+[DEBUG analyze_tajwid] Processing 1 words: ['شِرْعَةٌ']
+[DEBUG analyze_tajwid] Processing 2 words: ['عَبْدُ', 'اللَّهِ']
+[DEBUG analyze_tajwid] Processing 1 words: ['لِلَّهِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['بِسْمِ', 'اللَّهِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['ذَٰلِكَ', 'الْكِتَابُ']
+[DEBUG analyze_tajwid] Processing 2 words: ['الْحَمْدُ', 'لِلَّهِ']
+[DEBUG analyze_tajwid] Processing 2 words: ['عِوَجًا', 'قَيِّمًا']
+
+================================================================================
+HASIL AKHIR
+================================================================================
+
+✅ PASS (Level 1): 97
+❌ FAIL (Level 1): 5
+📊 Akurasi Level 1: 97/102 (95%)
+
+⏭️ SKIP (Level 2 - Mad): 18 test (belum diimplementasikan)
+⏭️ SKIP (Level 3 - Sifat & Waqaf): 12 test (belum diimplementasikan)
+
+================================================================================
+RINGKASAN
+================================================================================
+Total Level 1 (Dasar): 102 test
+Total Level 2 (Mad): 18 test
+Total Level 3 (Sifat & Waqaf): 12 test
+Total Keseluruhan: 132 test
+
+================================================================================
+REKOMENDASI
+================================================================================
+1. Level 1 (Hukum Dasar): ✅ READY FOR PRODUCTION
+2. Level 2 (Hukum Mad): ⚠️ Perlu pengembangan lebih lanjut
+3. Level 3 (Sifat Huruf & Waqaf): ⚠️ Perlu pengembangan lebih lanjut

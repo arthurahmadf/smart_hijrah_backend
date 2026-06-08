@@ -3,22 +3,23 @@ import unicodedata
 
 # ===== NORMALISASI =====
 
+
 def normalize_arabic(text):
-    """
-    Normalisasi teks Arab untuk perbandingan:
-    - Hapus harakat (tanda baca)
-    - Hapus karakter non-Arab
-    - Normalize alef variants
-    """
     if not text:
         return ""
 
-    # Hapus harakat (unicode range harakat Arab)
-    harakat = re.compile(r'[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]')
+    # Hapus harakat (termasuk Uthmani variants)
+    harakat = re.compile(
+        r'[\u0610-\u061A\u064B-\u065F'
+        r'\u0670\u06D6-\u06DC\u06DF-\u06E4'
+        r'\u06E7\u06E8\u06EA-\u06ED'
+        r'\u06e1\u0657\u0656\u065e\u065f'
+        r'\u0653\u0654\u0655]'
+    )
     text = harakat.sub('', text)
 
-    # Normalize berbagai bentuk alef → ا
-    text = re.sub(r'[أإآٱ]', 'ا', text)
+    # Normalize semua alef variants → ا
+    text = re.sub(r'[أإآٱٲٳ\u0622\u0623\u0625\u0671]', 'ا', text)
 
     # Normalize alef maqsura → ya
     text = re.sub(r'ى', 'ي', text)
@@ -26,14 +27,18 @@ def normalize_arabic(text):
     # Normalize ta marbuta → ha
     text = re.sub(r'ة', 'ه', text)
 
-    # Hapus tatweel (karakter pemanjang)
+    # Hapus tatweel
     text = re.sub(r'\u0640', '', text)
+
+    # ===== KUNCI: Hapus alef yang berfungsi sebagai mad =====
+    # Alef setelah huruf (bukan di awal kata) sering ditulis di standar
+    # tapi tidak di Uthmani — hapus dari keduanya
+    text = re.sub(r'(?<=[^\s])ا', '', text)
 
     # Hapus spasi berlebih
     text = ' '.join(text.split())
 
     return text.strip()
-
 
 def split_to_words(text):
     """Split teks Arab menjadi list kata, hapus kata kosong"""
