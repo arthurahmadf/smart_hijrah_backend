@@ -23,3 +23,5 @@ media/
 .vscode/
 .idea/
 *.swp
+
+models/
