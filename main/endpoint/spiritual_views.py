@@ -3,18 +3,24 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import datetime, date
-from main.models import UserPrayerPreference, PrayerNotificationLog
+from main.models import UserPrayerPreference, PrayerNotificationLog, PrayerMonthDocument
 
+import zoneinfo
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_prayer_monitor(request):
     """
     Get user's prayer tracking status for today
+    Status logic:
+    - null: waktu sholat belum tiba
+    - false: waktu sholat sudah terlewat tapi user belum check-in
+    - true: user sudah check-in (sholat sudah dikerjakan)
     """
     try:
         user = request.user
         today = date.today()
+        now = timezone.now()
         
         # Get user's prayer preferences
         prefs, created = UserPrayerPreference.objects.get_or_create(user=user)
@@ -27,15 +33,48 @@ def get_prayer_monitor(request):
         
         logs_list = list(logs)
         
-        # Build response
+        # Define prayer times (in local time)
+        prayer_schedule = {
+            'subuh': {'time': '04:30', 'is_passed': False},
+            'dzuhur': {'time': '12:00', 'is_passed': False},
+            'ashar': {'time': '15:30', 'is_passed': False},
+            'maghrib': {'time': '18:00', 'is_passed': False},
+            'isya': {'time': '19:30', 'is_passed': False},
+        }
+        
+        # Get actual prayer times from database if available
+        prayer_doc = PrayerMonthDocument.objects.filter(
+            user=user,
+            year=today.year,
+            month=today.month
+        ).first()
+        
+        if prayer_doc and prayer_doc.payload:
+            payload = prayer_doc.payload
+            for prayer in prayer_schedule.keys():
+                if prayer in payload:
+                    prayer_schedule[prayer]['time'] = payload[prayer]
+        
+        # Helper function to check if a prayer time has passed
+        def is_prayer_time_passed(prayer_time_str, now_time):
+            try:
+                prayer_dt = datetime.strptime(prayer_time_str, '%H:%M').time()
+                prayer_datetime = datetime.combine(today, prayer_dt)
+                # Make timezone aware using Django's current timezone
+                prayer_datetime = timezone.make_aware(prayer_datetime, timezone.get_current_timezone())
+                return now_time > prayer_datetime
+            except:
+                return False
+        
+        # Evaluate each prayer
         prayer_status = {
             "user": user.id,
             "date": today.isoformat(),
-            "subuh": "subuh" in logs_list,
-            "dzuhur": "dzuhur" in logs_list,
-            "ashar": "ashar" in logs_list,
-            "maghrib": "maghrib" in logs_list,
-            "isya": "isya" in logs_list,
+            "subuh": None,
+            "dzuhur": None,
+            "ashar": None,
+            "maghrib": None,
+            "isya": None,
             "notification_preferences": {
                 "subuh": prefs.subuh,
                 "dzuhur": prefs.dzuhur,
@@ -45,6 +84,16 @@ def get_prayer_monitor(request):
             }
         }
         
+        for prayer in ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya']:
+            if prayer in logs_list:
+                prayer_status[prayer] = True
+            else:
+                prayer_time = prayer_schedule[prayer]['time']
+                if is_prayer_time_passed(prayer_time, now):
+                    prayer_status[prayer] = False
+                else:
+                    prayer_status[prayer] = None
+        
         return JsonResponse({
             "success": True,
             "message": "Prayer monitor fetched successfully",
@@ -53,7 +102,6 @@ def get_prayer_monitor(request):
         
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
