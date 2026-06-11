@@ -47,11 +47,33 @@ class KelasTahfidzAdmin(admin.ModelAdmin):
 class KelasScheduleAdmin(admin.ModelAdmin):
     list_display = ['id', 'kelas', 'start_time', 'end_time', 'enrolled_students']
 
+
 @admin.register(KelasEnrollment)
 class KelasEnrollmentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'kelas', 'enrolled_at', 'is_active']
-    list_filter = ['is_active']
-
+    list_display = ['id', 'user', 'kelas', 'nama_lengkap', 'enrollment_status', 'is_dewasa', 'enrolled_at']
+    list_filter = ['enrollment_status', 'is_dewasa', 'is_private', 'ngaji_level']
+    search_fields = ['user__username', 'user__email', 'nama_lengkap', 'parent_name', 'parent_phone']
+    readonly_fields = ['user', 'kelas', 'enrolled_at', 'updated_at']
+    
+    fieldsets = (
+        ('Informasi Pendaftaran', {
+            'fields': ('user', 'kelas', 'selected_schedule', 'enrollment_status')
+        }),
+        ('Data Peserta', {
+            'fields': ('nama_lengkap', 'jenis_kelamin', 'usia_in_tahun', 'address', 'ngaji_level')
+        }),
+        ('Status', {
+            'fields': ('is_dewasa', 'is_private')
+        }),
+        ('Data Orang Tua (jika peserta anak-anak)', {
+            'fields': ('parent_name', 'parent_phone'),
+            'classes': ('collapse',)
+        }),
+        ('Waktu', {
+            'fields': ('enrolled_at', 'updated_at'),
+            'classes': ('collapse',)
+        })
+    )
 # Ngaji - Pelajaran
 @admin.register(Pelajaran)
 class PelajaranAdmin(admin.ModelAdmin):

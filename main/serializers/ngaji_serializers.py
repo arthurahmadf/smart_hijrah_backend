@@ -36,3 +36,53 @@ class MateriPelajaranSerializer(serializers.ModelSerializer):
     class Meta:
         model = MateriPelajaran
         fields = ['id', 'title', 'description', 'arabic', 'latin', 'audio_url', 'order']
+
+class KelasEnrollmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KelasEnrollment
+        fields = [
+            'id', 'kelas', 'selected_schedule', 'nama_lengkap', 'jenis_kelamin',
+            'usia_in_tahun', 'parent_name', 'parent_phone', 'address', 
+            'ngaji_level', 'is_dewasa', 'is_private', 'enrollment_status',
+            'enrolled_at'
+        ]
+        read_only_fields = ['user', 'enrollment_status', 'enrolled_at']
+
+
+class KelasEnrollmentRequestSerializer(serializers.Serializer):
+    """Serializer untuk request daftar kelas"""
+    kelas_id = serializers.IntegerField()
+    is_dewasa = serializers.BooleanField()
+    is_private = serializers.BooleanField(default=False)
+    selected_schedule_id = serializers.IntegerField(allow_null=True, required=False)
+    
+    nama_lengkap = serializers.CharField(max_length=255)
+    jenis_kelamin = serializers.ChoiceField(choices=['laki-laki', 'perempuan'])
+    usia_in_tahun = serializers.IntegerField(min_value=0, max_value=120)
+    
+    parent_name = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    parent_phone = serializers.CharField(max_length=20, required=False, allow_blank=True, allow_null=True)
+    
+    address = serializers.CharField()
+    
+    ngaji_level = serializers.IntegerField(min_value=1, max_value=4)
+    
+    def validate(self, data):
+        # Validasi: jika is_dewasa = false, parent_name dan parent_phone wajib
+        if not data.get('is_dewasa', True):
+            if not data.get('parent_name'):
+                raise serializers.ValidationError({
+                    'parent_name': 'Parent name is required when is_dewasa is false'
+                })
+            if not data.get('parent_phone'):
+                raise serializers.ValidationError({
+                    'parent_phone': 'Parent phone is required when is_dewasa is false'
+                })
+        
+        # Validasi: jika is_private = true, selected_schedule_id wajib
+        if data.get('is_private', False) and not data.get('selected_schedule_id'):
+            raise serializers.ValidationError({
+                'selected_schedule_id': 'Schedule ID is required for private class'
+            })
+        
+        return data

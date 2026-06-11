@@ -43,8 +43,40 @@ class KelasEnrollment(models.Model):
     """Pendaftaran user ke kelas tahfidz"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='kelas_enrollments')
     kelas = models.ForeignKey(KelasTahfidz, on_delete=models.CASCADE, related_name='enrollments')
+    selected_schedule = models.ForeignKey(KelasSchedule, on_delete=models.SET_NULL, null=True, blank=True, related_name='enrollments')
+    
+    # Data pendaftar
+    nama_lengkap = models.CharField(max_length=255)
+    jenis_kelamin = models.CharField(max_length=10, choices=[('laki-laki', 'Laki-laki'), ('perempuan', 'Perempuan')])
+    usia_in_tahun = models.IntegerField()
+    
+    # Data orang tua (jika peserta adalah anak-anak)
+    parent_name = models.CharField(max_length=255, blank=True, null=True)
+    parent_phone = models.CharField(max_length=20, blank=True, null=True)
+    
+    # Alamat
+    address = models.TextField()
+    
+    # Tingkat kemampuan ngaji
+    ngaji_level = models.IntegerField(help_text="1=Beginner, 2=Basic, 3=Intermediate, 4=Advanced")
+    
+    # Status
+    is_dewasa = models.BooleanField(default=True)
+    is_private = models.BooleanField(default=False)
+    
+    enrollment_status = models.CharField(
+        max_length=20, 
+        choices=[
+            ('pending', 'Pending'),
+            ('approved', 'Approved'),
+            ('rejected', 'Rejected'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='pending'
+    )
+    
     enrolled_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         db_table = 'ngaji_kelas_enrollment'
@@ -52,6 +84,7 @@ class KelasEnrollment(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.kelas.title}"
+
 
 class Pelajaran(models.Model):
     """Learning path / program pembelajaran"""

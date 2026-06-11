@@ -53,22 +53,21 @@ def get_detail_pelajaran(request, pelajaran_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_materi_pelajaran(request, detail_pelajaran_id):
-    """Get all learning materials for a specific lesson step"""
     try:
         detail = get_object_or_404(DetailPelajaran, id=detail_pelajaran_id)
         materi = MateriPelajaran.objects.filter(detail_pelajaran=detail)
-        
         serializer = MateriPelajaranSerializer(materi, many=True)
         
         return JsonResponse({
             "success": True,
-            "message": "Materi pelajaran fetched successfully",
-            "data": {
-                "id": detail.id,
-                "title": detail.name,
-                "description": detail.pelajaran.description,
-                "lesson_material": serializer.data
-            }
+            "data": [
+                {
+                    "id": detail.id,
+                    "title": detail.name,
+                    "description": detail.pelajaran.description,
+                    "lesson_material": serializer.data
+                }
+            ]
         }, status=200)
         
     except Exception as e:

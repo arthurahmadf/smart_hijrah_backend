@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from main.models_ngaji import KelasTahfidz, KelasSchedule, KelasEnrollment
-from main.serializers.ngaji_serializers import KelasTahfidzSerializer
+from main.serializers.ngaji_serializers import KelasTahfidzSerializer, KelasEnrollmentSerializer, KelasEnrollmentRequestSerializer
 import json
 from django.db import models
 
@@ -142,6 +142,138 @@ def get_kelas_detail(request, kelas_id):
                 "is_enrolled": is_enrolled
             }
         }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def daftar_kelas(request, kelas_id):
+    """
+    Enroll user to a class with complete registration data
+    
+    Request body:
+    {
+        "kelas_id": 1,
+        "is_dewasa": true,
+        "is_private": false,
+        "selected_schedule_id": 1,
+        "nama_lengkap": "string",
+        "jenis_kelamin": "laki-laki | perempuan",
+        "usia_in_tahun": 12,
+        "parent_name": "string (required if is_dewasa=false)",
+        "parent_phone": "string (required if is_dewasa=false)",
+        "address": "string",
+        "ngaji_level": 1
+    }
+    """
+    try:
+        # Validasi request body
+        serializer = KelasEnrollmentRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return JsonResponse({
+                "success": False,
+                "message": "Data pendaftaran tidak valid",
+                "errors": serializer.errors
+            }, status=400)
+        
+        data = serializer.validated_data
+        
+        # Validasi kelas_id dari URL dan request body harus sama
+        if data['kelas_id'] != kelas_id:
+            return JsonResponse({
+                "success": False,
+                "message": "Kelas ID mismatch"
+            }, status=400)
+        
+        # Cek apakah kelas ada
+        try:
+            kelas = KelasTahfidz.objects.get(id=kelas_id)
+        except KelasTahfidz.DoesNotExist:
+            return JsonResponse({
+                "success": False,
+                "message": "Kelas tidak ditemukan"
+            }, status=404)
+        
+        # Validasi schedule jika dipilih
+        selected_schedule = None
+        if data.get('selected_schedule_id'):
+            try:
+                selected_schedule = KelasSchedule.objects.get(
+                    id=data['selected_schedule_id'],
+                    kelas=kelas
+                )
+            except KelasSchedule.DoesNotExist:
+                return JsonResponse({
+                    "success": False,
+                    "message": "Schedule tidak ditemukan untuk kelas ini"
+                }, status=400)
+        
+        # Cek apakah user sudah terdaftar di kelas ini
+        existing = KelasEnrollment.objects.filter(
+            user=request.user,
+            kelas=kelas
+        ).first()
+        
+        if existing:
+            return JsonResponse({
+                "success": False,
+                "message": f"Anda sudah terdaftar di kelas {kelas.title}",
+                "data": {
+                    "enrollment_id": existing.id,
+                    "status": existing.enrollment_status
+                }
+            }, status=400)
+        
+        # Buat enrollment baru
+        enrollment = KelasEnrollment.objects.create(
+            user=request.user,
+            kelas=kelas,
+            selected_schedule=selected_schedule,
+            nama_lengkap=data['nama_lengkap'],
+            jenis_kelamin=data['jenis_kelamin'],
+            usia_in_tahun=data['usia_in_tahun'],
+            parent_name=data.get('parent_name'),
+            parent_phone=data.get('parent_phone'),
+            address=data['address'],
+            ngaji_level=data['ngaji_level'],
+            is_dewasa=data['is_dewasa'],
+            is_private=data.get('is_private', False),
+            enrollment_status='pending'
+        )
+        
+        # Update enroll_count di kelas
+        kelas.enroll_count = KelasEnrollment.objects.filter(kelas=kelas, enrollment_status='approved').count()
+        kelas.save()
+        
+        # Response data
+        response_data = {
+            "id": enrollment.id,
+            "kelas_id": kelas.id,
+            "kelas_title": kelas.title,
+            "selected_schedule_id": selected_schedule.id if selected_schedule else None,
+            "is_dewasa": enrollment.is_dewasa,
+            "is_private": enrollment.is_private,
+            "enrollment_status": enrollment.enrollment_status,
+            "nama_lengkap": enrollment.nama_lengkap,
+            "jenis_kelamin": enrollment.jenis_kelamin,
+            "usia_in_tahun": enrollment.usia_in_tahun,
+            "address": enrollment.address,
+            "ngaji_level": enrollment.ngaji_level,
+            "enrolled_at": enrollment.enrolled_at,
+        }
+        
+        # Tambahkan field orang tua jika is_dewasa = false
+        if not enrollment.is_dewasa:
+            response_data["parent_name"] = enrollment.parent_name
+            response_data["parent_phone"] = enrollment.parent_phone
+        
+        return JsonResponse({
+            "success": True,
+            "message": f"Pendaftaran berhasil! Silakan tunggu konfirmasi dari admin.",
+            "data": response_data
+        }, status=201)
         
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
