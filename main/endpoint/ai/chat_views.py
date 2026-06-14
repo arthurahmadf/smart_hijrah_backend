@@ -8,6 +8,13 @@ from main.gemini_client import get_islamic_response
 import json
 import time
 
+# Optional: untuk membersihkan cache saat delete conversation
+try:
+    from main.gemini_client import _chat_sessions as chat_sessions
+except ImportError:
+    chat_sessions = {}
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def send_message(request):
@@ -58,27 +65,16 @@ def send_message(request):
         save_time = time.time() - save_start
         print(f"[VIEW] Save user message time: {save_time:.3f}s")
         
-        # Get chat history for context (last 5 messages only for efficiency)
-        history_start = time.time()
-        history = []
-        for msg in conversation.messages.all().order_by('created_at')[:10]:
-            history.append({
-                "role": msg.role,
-                "parts": [msg.text]
-            })
-        history_time = time.time() - history_start
-        print(f"[VIEW] History fetch time: {history_time:.3f}s, history length: {len(history)}")
-        
-        # Get AI response
+        # Get AI response (history akan dimuat otomatis di gemini_client.py)
         ai_start = time.time()
         print(f"[VIEW] Calling Gemini API...")
         ai_response = get_islamic_response(
             message, 
-            conversation_id=conversation.id,
+            conversation_id=conversation.id,  # ← Kunci: kirim conversation_id
             is_first_message=is_first
         )
         ai_time = time.time() - ai_start
-        print(f"[VIEW] Gemini API total time (including session): {ai_time:.3f}s")
+        print(f"[VIEW] Gemini API total time: {ai_time:.3f}s")
         
         # Save AI response
         save_ai_start = time.time()
@@ -165,7 +161,6 @@ def delete_conversation(request, conversation_id):
         conversation = get_object_or_404(ChatConversation, id=conversation_id, user=request.user)
         
         # Hapus chat session dari cache jika ada
-        from main.gemini_client import chat_sessions
         if conversation.id in chat_sessions:
             del chat_sessions[conversation.id]
         
