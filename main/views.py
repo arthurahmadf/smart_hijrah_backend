@@ -22,6 +22,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+from main.serializers.auth_serializers import CustomTokenObtainPairSerializer
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    
 @api_view(['GET'])
 def verify_email(request, token):
     """Verify user email using token and show HTML page"""

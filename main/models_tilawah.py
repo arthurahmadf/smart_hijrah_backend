@@ -30,16 +30,27 @@ class TilawahSession(models.Model):
         return f"{self.user} - {self.surah_name}:{self.ayah_number}"
 
 
+
 class TilawahAyahPool(models.Model):
     surah_number = models.IntegerField()
     surah_name = models.CharField(max_length=100)
+    surah_name_id = models.CharField(max_length=100, blank=True, null=True)  # Nama surah dalam Bahasa Indonesia
     ayah_number = models.IntegerField()
     ayah_text = models.TextField()
-    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
-    audio_url = models.URLField(max_length=500, blank=True, null=True)
-
+    ayah_transliteration = models.TextField(blank=True, null=True)
+    ayah_translation = models.TextField(blank=True, null=True)
+    juz = models.IntegerField(blank=True, null=True)  # Nomor juz (1-30)
+    level = models.CharField(max_length=20, choices=[
+        ('basic', 'Basic'),
+        ('intermediate', 'Intermediate'),
+        ('expert', 'Expert')
+    ], default='basic')
+    audio_url = models.URLField(blank=True, null=True)
+    
     class Meta:
-        unique_together = ['surah_number', 'ayah_number']
+        db_table = 'tilawah_ayah_pool'
+        ordering = ['surah_number', 'ayah_number']
+        unique_together = ('surah_number', 'ayah_number')
 
     def __str__(self):
         return f"{self.surah_name}:{self.ayah_number} ({self.level})"

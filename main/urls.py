@@ -15,13 +15,15 @@ from .endpoint.ai import chat_views
 
 from .endpoint.tilawah import tilawah_views
 
+# from .views.auth_views import CustomTokenObtainPairView 
+
 urlpatterns = [
 
     # NOTIFICATION
     path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
     
     # AUTH --------------------------------------------------------------------------------------------------------------------------
-    path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/login/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/verify/<str:token>/', views.verify_email, name='verify_email'),
     path('auth/resend-verification/', views.resend_verification_email, name='resend_verification'),
