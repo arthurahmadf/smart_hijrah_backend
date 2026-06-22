@@ -7,6 +7,7 @@ from .models_ngaji import *
 from .models_kisah_nabi import *
 from .models_ai import *
 from .models_tilawah import *
+from .models_gamification import *
 
 class User(AbstractUser):
     nama = models.CharField(max_length=100, null=True, blank=True)

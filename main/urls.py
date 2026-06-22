@@ -1,5 +1,5 @@
 # main/urls.py
-from django.urls import path
+from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 from .endpoint.social import feed_views, story_views, comment_views, follow_views
@@ -14,7 +14,10 @@ from .endpoint import spiritual_views
 from .endpoint.ai import chat_views
 
 from .endpoint.tilawah import tilawah_views
+from .google_auth_views import GoogleLoginView
 
+
+from .endpoint import gamification_views
 # from .views.auth_views import CustomTokenObtainPairView 
 
 urlpatterns = [
@@ -121,6 +124,15 @@ urlpatterns = [
     path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
     path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
     path('tilawah/session/<int:session_id>/', tilawah_views.get_session_detail, name='tilawah_session_detail'),
+
+
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
+    path('auth/social/', include('social_django.urls', namespace='social')),
+
+
+    path('leaderboard/info/', gamification_views.leaderboard_info, name='leaderboard_info'),
+    path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
+    path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
 ]
 
 if settings.DEBUG:

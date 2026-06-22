@@ -5,6 +5,8 @@ from django.utils import timezone
 from datetime import datetime, date
 from main.models import UserPrayerPreference, PrayerNotificationLog, PrayerMonthDocument
 
+from main.utils_gamification.gamification_helpers import update_user_points
+from main.utils_gamification.gamification_constants import PRAYER_POINTS
 import zoneinfo
 
 @api_view(['GET'])
@@ -145,6 +147,8 @@ def mark_prayer_completed(request):
             prayer_name=prayer_name
         )
         
+        update_user_points(user, PRAYER_POINTS)
+
         # Get updated status
         logs = PrayerNotificationLog.objects.filter(
             user=user,
