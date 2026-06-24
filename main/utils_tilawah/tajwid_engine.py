@@ -47,6 +47,7 @@ MUTAJANISAIN_PAIRS = [
 MUTAQARIBAIN_PAIRS = [
     ('ق', 'ك'), ('ك', 'ق'),
     ('ن', 'ل'), ('ن', 'ر'),
+    ('ل', 'ر'), ('ر', 'ل'),
 ]
 
 ALEF = '\u0627'
@@ -258,11 +259,29 @@ def check_mim_mati(words, word_index):
 
     return rules
 
-
 def check_qalqalah(word, is_last_word=False):
     rules = []
     chars = list(word)
     word_length = len(chars)
+    
+    if is_last_word:
+        # Cari huruf terakhir yang bermakna
+        last_meaningful_idx = -1
+        for i in range(word_length - 1, -1, -1):
+            if get_base_letter(chars[i]).strip():
+                last_meaningful_idx = i
+                break
+        
+        if last_meaningful_idx != -1:
+            last_base = get_base_letter(chars[last_meaningful_idx])
+            if last_base in QALQALAH_LETTERS:
+                rules.append(make_rule(
+                    'qalqalah_kubra', 'Qalqalah Kubra',
+                    f'Huruf {last_base} di akhir ayat dibaca memantul kuat (Qalqalah Kubra).',
+                    'info', 1, ['basic', 'intermediate', 'expert']
+                ))
+                return rules
+
 
     for i, char in enumerate(chars):
         base_char = get_base_letter(char)
@@ -272,7 +291,7 @@ def check_qalqalah(word, is_last_word=False):
         is_sukun = False
         is_kubra = False
 
-        # Kasus 1: Sukun eksplisit setelah huruf qalqalah
+        # Kasus 1: Sukun eksplisit
         if i + 1 < word_length and chars[i + 1] in ALL_SUKUN:
             is_sukun = True
             remaining = chars[i+2:]
@@ -280,17 +299,14 @@ def check_qalqalah(word, is_last_word=False):
             if not remaining_meaningful:
                 is_kubra = True
 
-        # Kasus 2: Huruf qalqalah di akhir kata
-        elif i == word_length - 1:
+        # Kasus 2: Huruf di akhir kata (tanpa sukun eksplisit)
+        # Jika is_last_word=True → waqaf → qalqalah kubra
+        if i == word_length - 1:
             is_sukun = True
-            is_kubra = True
+            if is_last_word:
+                is_kubra = True
 
-        # Kasus 3: Huruf qalqalah di akhir ayat (waqaf)
-        elif is_last_word and i == word_length - 1:
-            is_sukun = True
-            is_kubra = True
-
-        # Kasus 4: Huruf qalqalah yang diikuti huruf konsonan
+        # Kasus 3: Huruf yang diikuti huruf konsonan (bukan harakat)
         elif i + 1 < word_length and chars[i+1] not in [FATHAH, KASRAH, DAMMAH, SHADDA] + ALL_SUKUN:
             is_sukun = True
             remaining = chars[i+1:]
@@ -677,7 +693,6 @@ def check_idgham_mutajanisain(words, word_index):
     return rules
 
 
-
 def check_idgham_mutaqaribain(words, word_index):
     rules = []
     word = words[word_index]
@@ -685,83 +700,86 @@ def check_idgham_mutaqaribain(words, word_index):
     chars = list(word)
     word_length = len(chars)
 
-    def check_pair(base, following):
-        if (base, following) in MUTAQARIBAIN_PAIRS:
-            return make_rule(
-                'idgham_mutaqaribain', 'Idgham Mutaqaribain',
-                f'Huruf {base} mati bertemu huruf {following} (makhraj berdekatan), dibaca lebur.',
-                'info', 2, ['intermediate', 'expert']
-            )
-        return None
+    # Cari huruf di akhir kata yang bermakna
+    last_letter_idx = -1
+    for i in range(word_length - 1, -1, -1):
+        base = get_base_letter(chars[i])
+        if base.strip():
+            last_letter_idx = i
+            break
 
-    for i, char in enumerate(chars):
-        base_char = get_base_letter(char)
-        if not base_char.strip():
-            continue
+    if last_letter_idx == -1:
+        return []
 
-        next_char = chars[i + 1] if i + 1 < word_length else None
+    base_char = get_base_letter(chars[last_letter_idx])
 
-        # Kasus A: sukun eksplisit + huruf berikutnya
-        if next_char in ALL_SUKUN:
-            following_idx = i + 2
-            while following_idx < word_length and not get_base_letter(chars[following_idx]).strip():
-                following_idx += 1
-            following = get_base_letter(chars[following_idx]) if following_idx < word_length else None
+    # Cek apakah huruf ini mati (sukun)
+    is_sukun = False
 
-            if following:
-                rule = check_pair(base_char, following)
-                if rule:
-                    rules.append(rule)
-            elif next_word:
-                next_first = None
-                for c in list(next_word):
-                    b = get_base_letter(c)
-                    if b.strip():
-                        next_first = b
-                        break
-                if next_first:
-                    rule = check_pair(base_char, next_first)
-                    if rule:
-                        rules.append(rule)
+    # Kasus 1: Ada sukun eksplisit
+    if last_letter_idx + 1 < word_length and chars[last_letter_idx + 1] in ALL_SUKUN:
+        is_sukun = True
 
-        # Kasus B: huruf berharakat + huruf berikutnya + shadda (dengan skip harakat)
-        elif next_char and get_base_letter(next_char).strip():
-            following = get_base_letter(next_char)
-            if not following:
-                continue
+    # Kasus 2: Huruf di akhir kata → sukun implisit (tidak ada harakat vokal)
+    elif last_letter_idx == word_length - 1:
+        # Cek apakah huruf ini memiliki harakat sendiri
+        # Harakat bisa berupa harakat vokal di posisi setelah atau sebelum
+        # Contoh: قُل → lam di akhir tidak memiliki harakat sendiri (harakat sebelumnya milik qaf)
+        has_own_harakat = False
+        
+        # Cek harakat setelah huruf (biasanya)
+        if last_letter_idx + 1 < word_length and chars[last_letter_idx + 1] in [FATHAH, KASRAH, DAMMAH]:
+            has_own_harakat = True
+        
+        # Cek harakat sebelum huruf (jika tidak ada setelahnya)
+        if not has_own_harakat and last_letter_idx > 0:
+            prev_char = chars[last_letter_idx - 1]
+            # Jika harakat sebelumnya adalah milik huruf ini (bukan huruf sebelumnya)
+            # Dalam kasus قُل: posisi sebelumnya adalah ُ (dammah) milik ق, bukan ل
+            # Kita perlu cek apakah ada huruf di antara
+            if prev_char in [FATHAH, KASRAH, DAMMAH]:
+                # Cek apakah huruf sebelum harakat adalah huruf yang sama
+                if last_letter_idx > 1:
+                    prev_prev = chars[last_letter_idx - 2]
+                    if get_base_letter(prev_prev).strip():
+                        # Harakat milik huruf sebelumnya
+                        has_own_harakat = False
+                    else:
+                        has_own_harakat = True
+                else:
+                    # Harakat di posisi pertama, milik huruf ini
+                    has_own_harakat = True
+        
+        # Jika tidak ada harakat sendiri, maka sukun
+        if not has_own_harakat:
+            is_sukun = True
 
-            # Cari shadda setelah huruf berikutnya (skip harakat vokal)
-            shadda_search_idx = i + 2
-            while shadda_search_idx < word_length and chars[shadda_search_idx] in [FATHAH, KASRAH, DAMMAH]:
-                shadda_search_idx += 1
-            following_has_shadda = (
-                shadda_search_idx < word_length and 
-                chars[shadda_search_idx] == SHADDA
-            )
+    if not is_sukun:
+        return []
 
-            if following_has_shadda:
-                rule = check_pair(base_char, following)
-                if rule:
-                    rules.append(rule)
+    if not next_word:
+        return []
 
-        # Kasus C: huruf terakhir kata (mati implisit) + kata berikutnya
-        else:
-            remaining = chars[i + 1:]
-            remaining_letters = [c for c in remaining if get_base_letter(c).strip()]
-            if not remaining_letters and next_word:
-                next_first = None
-                for c in list(next_word):
-                    b = get_base_letter(c)
-                    if b.strip():
-                        next_first = b
-                        break
-                if next_first:
-                    rule = check_pair(base_char, next_first)
-                    if rule:
-                        rules.append(rule)
+    # Cari huruf pertama dari next_word (lewati harakat di awal)
+    next_first = None
+    for c in list(next_word):
+        base = get_base_letter(c)
+        if base.strip():
+            next_first = base
+            break
+
+    if not next_first:
+        return []
+
+    # Cek pasangan mutaqaribain
+    if (base_char, next_first) in MUTAQARIBAIN_PAIRS:
+        rules.append(make_rule(
+            'idgham_mutaqaribain', 'Idgham Mutaqaribain',
+            f'Huruf {base_char} mati bertemu huruf {next_first} (makhraj berdekatan), dibaca lebur.',
+            'info', 2, ['intermediate', 'expert']
+        ))
 
     return rules
-
 
 
 def check_mad_aridh_lissukun(word, is_last_word):

@@ -3,7 +3,6 @@ from .word_matcher import match_words
 from .tajwid_engine import analyze_tajwid
 
 
-
 def build_feedback(ayah_text, transcript, user_level=None):
     # Step 1 — Word matching
     match_result = match_words(ayah_text, transcript)
@@ -29,11 +28,12 @@ def build_feedback(ayah_text, transcript, user_level=None):
         feedback_items.append(item)
         feedback_id += 1
 
-    tajwid_score = _calculate_tajwid_score(match_result, tajwid_result)
+    # Step 4 — Hitung skor
+    scores = _calculate_scores(match_result, tajwid_result)
 
     return {
-        'tajwid_score': tajwid_score,
-        'word_accuracy': match_result['word_accuracy'],
+        'tajwid_score': scores['tajwid_score'],
+        'word_accuracy': scores['word_accuracy'],
         'ai_feedback': feedback_items
     }
 
@@ -63,27 +63,65 @@ def _build_caption(word_result, tajwid_rules, status):
     return ' '.join(captions) if captions else None
 
 
-def _calculate_tajwid_score(match_result, tajwid_result):
+def _calculate_scores(match_result, tajwid_result):
     """
-    Hitung tajwid score berdasarkan:
-    - Word accuracy (bobot 60%)
-    - Kelengkapan baca (tidak ada missing/wrong) (bobot 40%)
+    Hitung 2 skor terpisah:
+    1. word_accuracy = (kata benar / total kata referensi) × 100
+       - Total kata referensi = correct + wrong + missing
+       - Kata extra tidak dihitung (tidak mengurangi)
+    
+    2. tajwid_score = kualitas tajwid × word_accuracy
+       - Kualitas tajwid = (hukum terdeteksi / total hukum yang seharusnya) × 100
+       - Dikalikan word_accuracy sebagai penalti jika ada kesalahan kata
     """
-    word_accuracy = match_result['word_accuracy']
-    total_words = (
+    
+    # 1. Word Accuracy (dengan completeness)
+    total_ref_words = (
         match_result['correct_count'] +
         match_result['wrong_count'] +
         match_result['missing_count']
     )
-    error_count = match_result['wrong_count'] + match_result['missing_count']
+    
+    if total_ref_words == 0:
+        word_accuracy = 0.0
+    else:
+        word_accuracy = (match_result['correct_count'] / total_ref_words) * 100
+    
+    # 2. Tajwid Quality (raw)
+    total_expected_rules = _count_expected_tajwid_rules(tajwid_result)
+    detected_rules = _count_detected_tajwid_rules(tajwid_result)
+    
+    if total_expected_rules == 0:
+        tajwid_quality = 0.0
+    else:
+        tajwid_quality = (detected_rules / total_expected_rules) * 100
+    
+    # 3. Tajwid Score = quality × accuracy (penalti jika ada kesalahan kata)
+    tajwid_score = (word_accuracy / 100) * tajwid_quality
+    
+    return {
+        'word_accuracy': round(word_accuracy, 2),
+        'tajwid_score': round(tajwid_score, 2)
+    }
 
-    if total_words == 0:
-        return 0
 
-    completeness = ((total_words - error_count) / total_words) * 100
+def _count_expected_tajwid_rules(tajwid_result):
+    """Total hukum tajwid yang seharusnya ada dalam ayat"""
+    total = 0
+    for word in tajwid_result:
+        total += len(word.get('rules', []))
+    return total
 
-    tajwid_score = (word_accuracy * 0.6) + (completeness * 0.4)
-    return round(tajwid_score, 2)
+
+def _count_detected_tajwid_rules(tajwid_result):
+    """Total hukum tajwid yang terdeteksi (hanya yang valid, exclude mad_asli)"""
+    total = 0
+    for word in tajwid_result:
+        for rule in word.get('rules', []):
+            if rule.get('rule') != 'mad_asli':
+                total += 1
+    return total
+
 
 def _build_segments(word_results, tajwid_result):
     """
