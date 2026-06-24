@@ -250,7 +250,7 @@ def verify_email(request, token):
                         // Fallback: try to redirect to App Store or Google Play after 1 second
                         setTimeout(function() {{
                             if (redirectMessage) {{
-                                redirectMessage.innerHTML = 'Tidak dapat membuka aplikasi? <a href="https://play.google.com/store/apps/details?id=com.smarthijrah">Klik di sini</a> untuk download.';
+                                redirectMessage.innerHTML = 'Tidak dapat membuka aplikasi? <a href="https://play.google.com/store/apps/details?id=id.smarthijrah.smarthijrah">Klik di sini</a> untuk download.';
                             }}
                         }}, 1000);
                     }}
@@ -273,20 +273,11 @@ def verify_email(request, token):
                         </svg>
                     </div>
                     <h2>Email Berhasil Diverifikasi!</h2>
-                    <p>Selamat datang di <strong>Smart Hijrah</strong></p>
-                    <div class="message-box">
-                        <p>✨ Akun Anda telah aktif dan siap digunakan ✨</p>
-                    </div>
-                    <div class="redirect-info">
-                        <p>Anda akan dialihkan ke aplikasi <strong>Smart Hijrah</strong> dalam</p>
-                        <p class="countdown" id="countdown">3</p>
-                        <p>detik</p>
-                    </div>
-                    <button class="btn" onclick="window.location.href='smarthijrah://verified'">Buka Aplikasi Sekarang</button>
+                    <h3>Silakan Login di aplikasi Smart Hijrah</h3>
                 </div>
                 <div class="footer">
                     <p id="redirect-message"></p>
-                    <p>&copy; 2026 Smart Hijrah | Membantu Umat Muslim Mempelajari Islam</p>
+                    <p>&copy; 2026 Smart Hijrah </p>
                 </div>
             </div>
         </body>
@@ -446,14 +437,10 @@ def verify_email(request, token):
                         </svg>
                     </div>
                     <h2>Verifikasi Gagal</h2>
-                    <p>Maaf, terjadi kesalahan saat memverifikasi email Anda.</p>
-                    <div class="message-box">
-                        <p>{message}</p>
-                    </div>
-                    <button class="btn" onclick="window.location.href='smarthijrah://resend-verification'">Kirim Ulang Verifikasi</button>
+                    <p>Maaf, terjadi kesalahan saat memverifikasi email Anda. Silakan Tekan tombol Resend Verification di aplikasi Smart Hijrah</p>
                 </div>
                 <div class="footer">
-                    <p>&copy; 2026 Smart Hijrah | Membantu Umat Muslim Mempelajari Islam</p>
+                    <p>&copy; 2026 Smart Hijrah</p>
                 </div>
             </div>
         </body>
