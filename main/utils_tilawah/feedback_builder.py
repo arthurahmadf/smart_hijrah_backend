@@ -67,15 +67,12 @@ def _calculate_scores(match_result, tajwid_result):
     """
     Hitung 2 skor terpisah:
     1. word_accuracy = (kata benar / total kata referensi) × 100
-       - Total kata referensi = correct + wrong + missing
-       - Kata extra tidak dihitung (tidak mengurangi)
-    
-    2. tajwid_score = kualitas tajwid × word_accuracy
-       - Kualitas tajwid = (hukum terdeteksi / total hukum yang seharusnya) × 100
-       - Dikalikan word_accuracy sebagai penalti jika ada kesalahan kata
+    2. tajwid_score = 
+       - Jika ada expected rules: (detected / expected) × 100 × (word_accuracy / 100)
+       - Jika tidak ada expected rules: word_accuracy
     """
     
-    # 1. Word Accuracy (dengan completeness)
+    # 1. Word Accuracy
     total_ref_words = (
         match_result['correct_count'] +
         match_result['wrong_count'] +
@@ -87,17 +84,16 @@ def _calculate_scores(match_result, tajwid_result):
     else:
         word_accuracy = (match_result['correct_count'] / total_ref_words) * 100
     
-    # 2. Tajwid Quality (raw)
-    total_expected_rules = _count_expected_tajwid_rules(tajwid_result)
-    detected_rules = _count_detected_tajwid_rules(tajwid_result)
+    # 2. Tajwid Quality (hanya rules yang signifikan, exclude mad_asli)
+    total_expected = _count_expected_tajwid_rules(tajwid_result)
+    detected = _count_detected_tajwid_rules(tajwid_result)
     
-    if total_expected_rules == 0:
-        tajwid_quality = 0.0
+    # Jika tidak ada expected rules, nilai tajwid sempurna (tidak ada yang perlu dinilai)
+    if total_expected == 0:
+        tajwid_score = word_accuracy
     else:
-        tajwid_quality = (detected_rules / total_expected_rules) * 100
-    
-    # 3. Tajwid Score = quality × accuracy (penalti jika ada kesalahan kata)
-    tajwid_score = (word_accuracy / 100) * tajwid_quality
+        tajwid_quality = (detected / total_expected) * 100
+        tajwid_score = (word_accuracy / 100) * tajwid_quality
     
     return {
         'word_accuracy': round(word_accuracy, 2),
@@ -106,15 +102,22 @@ def _calculate_scores(match_result, tajwid_result):
 
 
 def _count_expected_tajwid_rules(tajwid_result):
-    """Total hukum tajwid yang seharusnya ada dalam ayat"""
+    """
+    Total hukum tajwid yang seharusnya ada dalam ayat
+    Exclude mad_asli (karena default, bukan penilaian tajwid)
+    """
     total = 0
     for word in tajwid_result:
-        total += len(word.get('rules', []))
+        for rule in word.get('rules', []):
+            if rule.get('rule') != 'mad_asli':
+                total += 1
     return total
 
 
 def _count_detected_tajwid_rules(tajwid_result):
-    """Total hukum tajwid yang terdeteksi (hanya yang valid, exclude mad_asli)"""
+    """
+    Total hukum tajwid yang terdeteksi (exclude mad_asli)
+    """
     total = 0
     for word in tajwid_result:
         for rule in word.get('rules', []):
