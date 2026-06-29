@@ -4,15 +4,17 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from main.models_ai import ChatConversation, ChatMessage
 from main.serializers.ai_serializers import ChatConversationSerializer
-from main.gemini_client import get_islamic_response
+# from main_client import get_islamic_response
+
+from main.fallback_ai_client import get_islamic_response
 import json
 import time
 
 # Optional: untuk membersihkan cache saat delete conversation
-try:
-    from main.gemini_client import _chat_sessions as chat_sessions
-except ImportError:
-    chat_sessions = {}
+# try:
+#     from main_client import _chat_sessions as chat_sessions
+# except ImportError:
+#     chat_sessions = {}
 
 
 @api_view(['POST'])
@@ -65,16 +67,16 @@ def send_message(request):
         save_time = time.time() - save_start
         print(f"[VIEW] Save user message time: {save_time:.3f}s")
         
-        # Get AI response (history akan dimuat otomatis di gemini_client.py)
+        # Get AI response (history akan dimuat otomatis di_client.py)
         ai_start = time.time()
-        print(f"[VIEW] Calling Gemini API...")
+        print(f"[VIEW] Calling API...")
         ai_response = get_islamic_response(
             message, 
             conversation_id=conversation.id,  # ← Kunci: kirim conversation_id
             is_first_message=is_first
         )
         ai_time = time.time() - ai_start
-        print(f"[VIEW] Gemini API total time: {ai_time:.3f}s")
+        print(f"[VIEW] API total time: {ai_time:.3f}s")
         
         # Save AI response
         save_ai_start = time.time()

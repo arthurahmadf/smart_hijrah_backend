@@ -216,3 +216,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
+# settings.py
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
