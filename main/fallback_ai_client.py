@@ -1,11 +1,13 @@
 # main/fallback_ai_client.py
 import time
+import re
 from groq import Groq
 from django.conf import settings
 from main.models_ai import ChatMessage
 
 groq_client = Groq(api_key=settings.GROQ_API_KEY)
 
+# ===== MODEL CHAIN (PRIORITAS) =====
 MODEL_CHAIN = [
     "llama-3.1-8b-instant",
     "openai/gpt-oss-20b",
@@ -14,6 +16,33 @@ MODEL_CHAIN = [
     "meta-llama/llama-4-scout-17b-16e-instruct",
 ]
 
+# ===== KEYWORD DETEKSI WARIS =====
+WARIS_KEYWORDS = [
+    "waris",
+    "warisan",
+    "faraid",
+    "ahli waris",
+    "pusaka",
+    "harta peninggalan",
+    "tirkah",
+    "mirats",
+    "bagian warisan",
+    "pembagian harta warisan",
+    "hitung waris",
+    "perhitungan waris",
+    "hukum waris",
+    "cara waris",
+    "pembagian harta"
+]
+
+# ===== KALIMAT STATIS UNTUK KALKULATOR WARIS =====
+KALKULATOR_WARIS_MESSAGE = (
+    "\n\n💡 *Tips:* Untuk perhitungan waris yang lebih akurat dan sesuai dengan kasus spesifik Anda, "
+    "saya sarankan menggunakan fitur **Kalkulator Waris** yang tersedia di aplikasi Smart Hijrah. "
+    "Fitur ini akan membantu Anda menghitung pembagian waris secara otomatis dan presisi."
+)
+
+# ===== BASE INSTRUCTION (SAMA SEPERTI GEMINI) =====
 BASE_INSTRUCTION = (
     "Anda adalah 'Smart Hijrah Assistant', seorang pakar dan agamawan Islam yang berwawasan luas, "
     "santun, bijaksana, dan objektif. Jawablah setiap pertanyaan pengguna dalam Bahasa Indonesia "
@@ -23,12 +52,17 @@ BASE_INSTRUCTION = (
     "atau perawi hadis seperti HR. Bukhari, Muslim, dll. jika mengutip hadis).\n"
     "2. Jika terdapat perbedaan pandangan fiqih yang debatable di antara para ulama, Anda HARUS "
     "bersikap netral. Sebutkan secara jelas pandangan dari masing-masing madzhab utama.\n"
-    "3. Hindari menghakimi pengguna atau mengeluarkan fatwa mutlak tanpa dasar dalil yang jelas."
+    "3. Hindari menghakimi pengguna atau mengeluarkan fatwa mutlak tanpa dasar dalil yang jelas.\n"
+    "4. Jika pertanyaan tidak terkait dengan Islam, ibadah, akhlak, atau kehidupan Muslim, "
+    "jawab dengan: 'Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. "
+    "Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.'"
 )
 
 
 def chat_with_fallback(messages, max_retries=2):
-    """Kirim chat dengan fallback otomatis ke model Groq lain."""
+    """Kirim chat dengan fallback otomatis ke model Groq lain.
+    Returns: (response_text, model_name)
+    """
     last_error = None
 
     for model_name in MODEL_CHAIN:
@@ -45,7 +79,7 @@ def chat_with_fallback(messages, max_retries=2):
                 
                 result = response.choices[0].message.content
                 print(f"[FALLBACK] ✅ Success: {model_name}")
-                return result
+                return result, model_name
                 
             except Exception as e:
                 error_msg = str(e)
@@ -64,11 +98,25 @@ def chat_with_fallback(messages, max_retries=2):
         
         print(f"[FALLBACK] ⚠️ Model {model_name} failed, trying next...")
 
-    return f"Maaf, Smart AI melayani banyak diskusi sekaligus. silakan cobalagi nanti"
+    return f"Maaf, semua layanan AI sedang sibuk. Terakhir error: {str(last_error)[:150]}", "none"
+
+
+def is_waris_question(text):
+    """Cek apakah pertanyaan terkait waris/faraid."""
+    text_lower = text.lower()
+    for keyword in WARIS_KEYWORDS:
+        if keyword in text_lower:
+            return True
+    return False
 
 
 def get_islamic_response(user_message, conversation_id=None, is_first_message=True):
-    """Wrapper utama untuk Smart AI dengan prompt ala Gemini + fallback Groq."""
+    """
+    Wrapper utama untuk Smart AI.
+    - Kirim 3 pertanyaan terakhir + jawaban (dipotong) agar konteks tetap terjaga.
+    - Bedakan pesan pertama vs lanjutan (salam, perkenalan, dll)
+    - Deteksi keyword waris → sisipkan kalimat statis di akhir jawaban.
+    """
     print(f"\n[FALLBACK] ========== PERMINTAAN BARU ==========")
     print(f"[FALLBACK] Conversation ID: {conversation_id}")
     print(f"[FALLBACK] Status percakapan: {'Pertama' if is_first_message else 'Lanjutan'}")
@@ -77,75 +125,94 @@ def get_islamic_response(user_message, conversation_id=None, is_first_message=Tr
     total_start_time = time.time()
 
     try:
-        # Build prompt
+        # ===== BANGUN PROMPT DENGAN 3 PERTANYAAN + JAWABAN TERAKHIR =====
+        prompt_parts = []
+
+        # 1. Base instruction (dengan aturan nomor 4)
+        prompt_parts.append(BASE_INSTRUCTION)
+
+        # 2. Instruksi khusus untuk pesan pertama atau lanjutan
         if is_first_message:
-            final_prompt = (
-                f"{BASE_INSTRUCTION}\n\n"
-                "Khusus untuk pesan pertama ini, awali jawaban Anda dengan salam 'Assalamu'alaikum' "
-                "dan perkenalkan diri Anda singkat sebagai Smart Hijrah Assistant.\n\n"
-                f"Pertanyaan: {user_message}"
+            prompt_parts.append(
+                "\n\nKhusus untuk pesan pertama ini, awali jawaban Anda dengan salam 'Assalamu'alaikum' "
+                "dan perkenalkan diri Anda singkat sebagai Smart Hijrah Assistant."
             )
         else:
-            final_prompt = (
-                f"{BASE_INSTRUCTION}\n\n"
-                "Ini adalah kelanjutan percakapan. Jangan ulangi salam atau perkenalan diri. "
-                "Langsung jawab pertanyaan.\n\n"
-                f"Pertanyaan: {user_message}"
+            prompt_parts.append(
+                "\n\nIni adalah kelanjutan percakapan. Jangan ulangi salam atau perkenalan diri. "
+                "Langsung jawab pertanyaan."
             )
 
-        messages = []
-
-        # System prompt
-        messages.append({
-            "role": "system",
-            "content": "Anda adalah 'Smart Hijrah Assistant', pakar Islam yang santun dan berwawasan luas."
-        })
-
-        # ===== AMBIL 10 PERTANYAAN USER TERAKHIR (BUKAN SEMUA PESAN) =====
-        if conversation_id:
-            # Ambil 10 pesan terakhir dari USER
-            user_messages = ChatMessage.objects.filter(
+        # 3. Riwayat 3 pertanyaan terakhir + jawaban (jika ada)
+        if not is_first_message and conversation_id:
+            # Ambil 3 pertanyaan terakhir dari USER
+            last_questions = ChatMessage.objects.filter(
                 conversation_id=conversation_id,
                 role='user'
-            ).order_by('-created_at')[:5]
+            ).order_by('-created_at')[:3]
             
-            # Balik urutan jadi ascending (chronological)
-            user_messages = list(reversed(user_messages))
+            last_questions = list(reversed(last_questions))
 
-            print(f"[FALLBACK] Loading {len(user_messages)} recent user messages")
+            if last_questions:
+                prompt_parts.append("\n\nBerikut adalah riwayat percakapan sebelumnya (3 pertanyaan terakhir):")
 
-            # Ambil juga response AI untuk setiap pertanyaan user
-            for user_msg in user_messages:
-                # Cari response AI untuk user_msg ini
-                ai_response = ChatMessage.objects.filter(
-                    conversation_id=conversation_id,
-                    role='assistant',
-                    created_at__gt=user_msg.created_at
-                ).first()
-                
-                # Tambahkan user message
-                messages.append({
-                    "role": "user",
-                    "content": user_msg.text
-                })
-                
-                # Tambahkan AI response (jika ada)
-                if ai_response:
-                    messages.append({
-                        "role": "assistant",
-                        "content": ai_response.text
-                    })
+                for idx, q in enumerate(last_questions, 1):
+                    # Cari jawaban AI untuk pertanyaan ini
+                    ai_answer = ChatMessage.objects.filter(
+                        conversation_id=conversation_id,
+                        role='assistant',
+                        created_at__gt=q.created_at
+                    ).first()
 
-        # Tambahkan pesan user saat ini
-        messages.append({
-            "role": "user",
-            "content": final_prompt
-        })
+                    prompt_parts.append(f"\n{idx}. Pertanyaan user: {q.text}")
+
+                    if ai_answer:
+                        # Potong jawaban AI maksimal 1000 karakter
+                        answer_preview = ai_answer.text[:1000]
+                        if len(ai_answer.text) > 1000:
+                            answer_preview += "... (dipotong)"
+                        prompt_parts.append(f"   Jawaban AI: {answer_preview}")
+                    else:
+                        prompt_parts.append("   Jawaban AI: (belum ada jawaban)")
+
+                prompt_parts.append(
+                    "\n\nINSTRUKSI: "
+                    "Jika pertanyaan saat ini masih bertopik sama dengan salah satu pertanyaan di atas, "
+                    "gunakan informasi dari percakapan sebelumnya sebagai referensi. "
+                    "Jika pertanyaan saat ini berbeda topik, ABAIKAN semua percakapan sebelumnya dan "
+                    "fokus hanya pada pertanyaan saat ini."
+                )
+
+        # 4. Pertanyaan user saat ini
+        prompt_parts.append(f"\nPertanyaan user saat ini: {user_message}")
+
+        final_prompt = " ".join(prompt_parts)
+
+        # ===== BANGUN MESSAGES UNTUK API =====
+        messages = [
+            {
+                "role": "system",
+                "content": "Anda adalah 'Smart Hijrah Assistant', pakar Islam yang santun dan berwawasan luas."
+            },
+            {
+                "role": "user",
+                "content": final_prompt
+            }
+        ]
 
         print(f"[FALLBACK] Memanggil API dengan {len(messages)} pesan...")
+        print(f"[FALLBACK] Total prompt length: {len(final_prompt)} karakter")
+
         api_call_start_time = time.time()
 
-        response_text = chat_with_fallback(messages)
+        response_text, used_model = chat_with_fallback(messages)
+
+        print(f"[FALLBACK] ✅ Model yang digunakan: {used_model}")
+
+        # ===== DETEKSI WARIS & SISIPKAN KALIMAT STATIS =====
+        if is_waris_question(user_message):
+            print(f"[FALLBACK] 🔍 Detected waris-related question, adding calculator suggestion...")
+            response_text = response_text + KALKULATOR_WARIS_MESSAGE
 
         api_duration = time.time() - api_call_start_time
         print(f"[FALLBACK] Panggilan API selesai. Waktu: {api_duration:.4f}s")
@@ -156,4 +223,4 @@ def get_islamic_response(user_message, conversation_id=None, is_first_message=Tr
 
     except Exception as e:
         print(f"[FALLBACK] ERROR: {e}")
-        return f"Maaf, saya mengalami masalah teknis. Error: {str(e)}"
+        return f"Maaf, saya mengalami masalah teknis. Error: {str(e)}", "none"

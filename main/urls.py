@@ -45,6 +45,7 @@ urlpatterns = [
     path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
     path('feed/following/', feed_views.get_following_feed, name='get_following_feed'),
 
+    path('feed/user/<int:user_id>/', feed_views.get_user_feeds, name='get_user_feeds'),
     path('feed/create/', feed_views.create_feed, name='create_feed'),
     path('feed/like/<int:feed_id>/', feed_views.like_feed, name='like_feed'),
     path('feed/search/', feed_views.search_feed, name='search_feed'),
@@ -133,6 +134,8 @@ urlpatterns = [
     path('leaderboard/info/', gamification_views.leaderboard_info, name='leaderboard_info'),
     path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
     path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
+
+    
 ]
 
 if settings.DEBUG:

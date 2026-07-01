@@ -5,6 +5,8 @@ from django.core.paginator import Paginator
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.db.models import Q
+from django.shortcuts import get_object_or_404 
+from main.models import User  
 import uuid
 import json
 from main.models_feed import Feed, FeedLike, Follow
@@ -280,5 +282,50 @@ def search_feed(request):
             "data": serializer.data
         }, status=200)
         
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_feeds(request, user_id):
+    """
+    Get all feeds from a specific user by user_id
+    Response format sama persis dengan feed lainnya
+    """
+    try:
+        page = int(request.GET.get('page', 1))
+        page_size = int(request.GET.get('page_size', 10))
+        
+        # Cek apakah user yang diminta ada
+        target_user = get_object_or_404(User, id=user_id)
+        
+        # Ambil feed dari user tersebut
+        feeds = Feed.objects.filter(
+            user=target_user
+        ).select_related('user').order_by('-created_at')
+        
+        # Sponsored feeds (hanya yang dibuat oleh user tersebut)
+        sponsored_feeds = feeds.filter(isSponsored=True)
+        
+        paginator = Paginator(feeds, page_size)
+        feeds_page = paginator.get_page(page)
+        
+        feeds_serializer = FeedSerializer(list(feeds_page), many=True, context={'request': request})
+        sponsored_serializer = FeedSerializer(list(sponsored_feeds), many=True, context={'request': request})
+        
+        mixed_feeds = insert_sponsored_feeds(feeds_serializer.data, sponsored_serializer.data, page_size)
+        
+        return JsonResponse({
+            "success": True,
+            "message": f"Feeds from {target_user.username} fetched successfully",
+            "data": {
+                "current_page": page,
+                "feeds": mixed_feeds
+            }
+        }, status=200)
+        
+    except User.DoesNotExist:
+        return JsonResponse({"success": False, "message": "User not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)

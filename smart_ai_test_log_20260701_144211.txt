@@ -1,0 +1,246 @@
+================================================================================
+SMART AI TEST LOG
+Tanggal: 2026-07-01 14:42:11
+Total Level: 4
+Total Pertanyaan: 12
+================================================================================
+
+
+================================================================================
+LEVEL 1: Mudah
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Apa hukum puasa Ramadhan?
+A: Assalamu'alaikum warahmatullahi wabarokatuh,
+
+Saya adalah Smart Hijrah Assistant, asisten yang siap membantu menjawab pertanyaan-pertanyaan seputar Islam. Saya berharap dapat menjadi sumber informasi yang bermanfaat bagi Anda.
+
+Hukum puasa Ramadhan adalah wajib bagi setiap Muslim yang telah memenuhi syarat-syaratnya, yaitu telah balig, berakal sehat, dan dalam keadaan tidak berpuasa karena suatu alasan tertentu. (QS. Al-Baqarah: 184)
+
+Puasa Ramadhan adalah salah satu rukun Islam yang kelima, dan orang yang tidak puasa di bulan Ramadhan tanpa alasan yang sah, maka akan dikategorikan sebagai orang yang tidak taat kepada Allah SWT. (HR. Bukhari, Muslim)
+
+Namun, perlu diingat bahwa ada beberapa syarat dan ketentuan yang harus dipenuhi bagi orang yang ingin berpuasa Ramadhan, seperti:
+
+- Mengucapkan niat puasa dengan niat yang benar
+- Makan dan minum sebelum terbit fajar
+- Berpuasa selama 12 jam mulai dari terbit fajar hingga terbit fajar berikutnya
+- Menghindari makan, minum, dan berhubungan seksual selama 12 jam tersebut
+
+Jika seseorang tidak dapat puasa karena suatu alasan tertentu, seperti sakit, lansia, atau kehamilan, maka mereka dapat menggantinya dengan puasa lainnya, seperti puasa sunnah atau puasa nafl.
+
+Saya berharap informasi ini dapat membantu Anda memahami hukum puasa Ramadhan dengan lebih baik.
+Model: llama-3.1-8b-instant
+Waktu: 1.38s
+
+
+--- Pertanyaan 2 ---
+Q: Apa itu shalat?
+A: Syaikhul Islam Ibnu Taimiyah berkata, "Shalat adalah salah satu rukun Islam yang harus dilakukan oleh setiap Muslim." (Majmu' Fatawi, 5/136)
+
+Dalam Al-Qur'an, disebutkan bahwa shalat adalah kewajiban bagi setiap Muslim, yaitu: "Dan dirikan shalat, laksanakan zakat..." (QS. Al-Baqarah: 43)
+
+Menurut hadits Rasulullah SAW, shalat terdiri dari lima waktu, yaitu: "Shalat lima waktu: shalat subuh, shalat dhuha, shalat zuhur, shalat asar, dan shalat magrib." (HR. Muslim)
+
+Shalat memiliki beberapa rukun dan sunah, yaitu:
+
+Rukun shalat:
+- Tahiyat
+- Takbiratul Ihram
+- Qiyam
+- Rukuk
+- Sujud
+- Dua
+
+Sunah shalat:
+- Berwudhu sebelum shalat
+- Menghadap kiblat
+- Membaca al-Fatihah
+- Membaca surah lainnya
+- Membaca doa-doa sunah
+
+Perlu diingat bahwa shalat harus dilakukan dengan benar dan konsisten, karena shalat adalah salah satu cara untuk meningkatkan iman dan taqwa. (QS. Al-Ma'unah: 4)
+Model: llama-3.1-8b-instant
+Waktu: 0.91s
+
+
+--- Pertanyaan 3 ---
+Q: Apa rukun Islam yang pertama?
+A: Rukun Islam yang pertama adalah Syahadat. Syahadat adalah pengakuan bahwa tidak ada Tuhan selain Allah dan bahwa Nabi Muhammad saw adalah utusan Allah. (QS. Al-Ikhlash: 1-5) 
+
+Dalam hadits Rasulullah saw, dijelaskan bahwa Syahadat adalah rukun Islam yang pertama dan harus dilakukan oleh setiapMuslim. (HR. Bukhari, Muslim)
+
+Rukun Syahadat terdiri dari dua bagian, yaitu:
+
+1. "Laa ilaaha illallaah" (Tidak ada Tuhan selain Allah)
+2. "Muhammadur rasoolullaah" (Muhammad saw adalah utusan Allah)
+
+Perlu diingat bahwa Syahadat harus diucapkan dengan benar dan dengan niat yang tulus, karena Syahadat adalah dasar dari iman dan taqwa. (QS. Al-Baqarah: 285)
+Model: llama-3.1-8b-instant
+Waktu: 0.57s
+
+
+================================================================================
+LEVEL 2: Sedang
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Apa perbedaan antara puasa wajib dan puasa sunnah?
+A: Puasa wajib dan puasa sunnah adalah dua jenis puasa yang memiliki perbedaan dalam hal wajib dan sunnahnya.
+
+Puasa wajib adalah puasa yang wajib dilakukan oleh setiap Muslim yang telah memenuhi syarat-syaratnya, seperti telah balig, berakal sehat, dan dalam keadaan tidak berpuasa karena suatu alasan tertentu. Puasa wajib dapat berupa puasa Ramadhan, puasa hari Arafah, puasa hari Asyura, dan puasa untuk membayar fidyah. (QS. Al-Baqarah: 184)
+
+Puasa sunnah, di sisi lain, adalah puasa yang dapat dilakukan oleh setiap Muslim untuk mendekatkan diri kepada Allah SWT, namun tidak wajib. Contoh puasa sunnah adalah puasa Senin dan Kamis, puasa di bulan Syawwal, dan puasa di hari Jumat. (HR. Bukhari, Muslim)
+
+Perbedaan antara puasa wajib dan puasa sunnah adalah bahwa puasa wajib harus dilakukan oleh setiap Muslim yang telah memenuhi syarat-syaratnya, sedangkan puasa sunnah dapat dilakukan oleh siapa saja yang ingin mendekatkan diri kepada Allah SWT.
+Model: llama-3.1-8b-instant
+Waktu: 0.71s
+
+
+--- Pertanyaan 2 ---
+Q: Bagaimana cara bertaubat dari dosa?
+A: Bertaubat dari dosa adalah sebuah proses yang sangat penting dalam kehidupan seorang Muslim. Menurut Al-Qur'an, bertaubat adalah salah satu cara untuk mendapatkan ampun dari Allah SWT. (QS. Al-Ma'unah: 2)
+
+Dalam hadits Rasulullah SAW, dijelaskan bahwa bertaubat adalah sebuah keharusan bagi setiap Muslim yang telah melakukan dosa. Rasulullah SAW bersabda, "Siapa yang melakukan dosa, lalu bertaubat, maka Allah akan menerima taubatnya. Dan siapa yang meninggalkan dosa, lalu bertaubat, maka Allah akan menerima taubatnya." (HR. Muslim)
+
+Untuk bertaubat dari dosa, berikut beberapa langkah yang dapat dilakukan:
+
+1. **Berlapar dan bermata buta**: Melakukan lapar dan mata buta adalah cara untuk menunjukkan rasa takut dan penyesalan atas dosa yang telah dilakukan. (QS. Al-Baqarah: 186)
+2. **Membaca kalimat taubat**: Membaca kalimat taubat, yaitu "Astaghfirullahal-azim" (Aku meminta ampun kepada Allah Yang Maha Agung), adalah cara untuk memohon ampun atas dosa yang telah dilakukan.
+3. **Membuat amal saleh**: Membuat amal saleh, seperti membaca Al-Qur'an, berdzikir, dan berdoa, adalah cara untuk mengganti dosa yang telah dilakukan dengan amal yang lebih baik.
+4. **Mengingat Allah SWT**: Mengingat Allah SWT dan memohon ampun atas dosa yang telah dilakukan adalah cara untuk meningkatkan kesadaran dan penyesalan atas dosa yang telah dilakukan.
+
+Perlu diingat bahwa bertaubat harus dilakukan dengan niat yang tulus dan sungguh-sungguh. Bertaubat bukanlah sekadar mencari jalan keluar dari dosa, tetapi juga sebagai cara untuk meningkatkan hubungan dengan Allah SWT. (QS. Al-Nur: 5)
+
+Referensi: QS. Al-Ma'unah: 2, HR. Muslim.
+Model: llama-3.1-8b-instant
+Waktu: 13.71s
+
+
+--- Pertanyaan 3 ---
+Q: Apa hukum mengkonsumsi makanan yang tidak halal dalam keadaan darurat?
+A: Dalam keadaan darurat, hukum mengkonsumsi makanan yang tidak halal dapat menjadi debatable di antara para ulama. Namun, berdasarkan pendapat mayoritas ulama, jika seseorang dalam keadaan sangat lapar dan tidak ada pilihan lain, maka mereka boleh mengkonsumsi makanan yang tidak halal.
+
+Dalam hadits Rasulullah SAW, dijelaskan bahwa jika seseorang dalam keadaan lapar dan tidak ada pilihan lain, maka mereka boleh mengkonsumsi makanan yang tidak halal. Rasulullah SAW bersabda, "Tidaklah sah bagi seorang Muslim untuk berpuasa sementara ada orang yang lapar di sampingnya." (HR. Abu Dawud, An-Nasa'i)
+
+Namun, perlu diingat bahwa keadaan darurat harus memenuhi beberapa syarat, yaitu:
+
+1. Seseorang harus dalam keadaan sangat lapar dan tidak ada pilihan lain.
+2. Makanan yang tidak halal harus tidak berdosa besar, seperti makanan yang tidak halal karena syirik atau zina.
+3. Seseorang harus tidak memiliki pilihan lain untuk memenuhi kebutuhan makanannya.
+
+Dalam madzhab Syafi'i, jika seseorang dalam keadaan darurat, maka mereka diperbolehkan mengkonsumsi makanan yang tidak halal, tetapi harus melakukan pembayaran fidyah setelah keadaan darurat berakhir.
+
+Dalam madzhab Hanafi dan Maliki, jika seseorang dalam keadaan darurat, maka mereka diperbolehkan mengkonsumsi makanan yang tidak halal, tetapi tidak harus melakukan pembayaran fidyah.
+
+Namun, dalam madzhab Hanbali, jika seseorang dalam keadaan darurat, maka mereka dilarang mengkonsumsi makanan yang tidak halal, karena dapat mengakibatkan dosa.
+
+Oleh karena itu, perlu diingat bahwa hukum mengkonsumsi makanan yang tidak halal dalam keadaan darurat dapat berbeda-beda di antara para ulama, dan seseorang harus berhati-hati dalam membuat keputusan.
+Model: llama-3.1-8b-instant
+Waktu: 13.40s
+
+
+================================================================================
+LEVEL 3: Kompleks
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Bagaimana pandangan ulama tentang transaksi cryptocurrency dalam Islam?
+A: Pertanyaan yang menarik dan kompleks! Transaksi cryptocurrency dalam Islam masih merupakan topik yang belum sepenuhnya jelas dan pasti. Namun, berdasarkan analisis dan pendapat ulama, ada beberapa pandangan yang dapat dipahami.
+
+Dalam madzhab Syafi'i, ulama seperti Sayyid Sabiq dan Muhammad Al-Ghazali telah menulis bahwa transaksi cryptocurrency dapat merupakan bentuk harta yang halal, karena cryptocurrency dapat dipandang sebagai suatu bentuk uang yang dapat digunakan untuk melakukan transaksi. Namun, mereka juga menekankan bahwa transaksi cryptocurrency harus dilakukan dengan cara yang halal, seperti dengan menggunakan cryptocurrency yang telah dijamin keamanannya dan tidak melibatkan aktivitas yang tidak halal.
+
+Dalam madzhab Maliki, ulama seperti Ibn Hazm telah menulis bahwa transaksi cryptocurrency dapat merupakan bentuk harta yang haram, karena cryptocurrency dapat dipandang sebagai suatu bentuk uang yang tidak memiliki nilai intrinsik dan tidak dapat dijamin keamanannya. Namun, mereka juga menekankan bahwa jika seseorang telah memiliki cryptocurrency dan ingin menggunakanannya untuk melakukan transaksi, maka mereka harus memastikan bahwa transaksi tersebut dilakukan dengan cara yang halal.
+
+Dalam madzhab Hanafi, ulama seperti Al-Mawardi telah menulis bahwa transaksi cryptocurrency dapat merupakan bentuk harta yang dapat dipertimbangkan sebagai halal atau haram, tergantung pada cara penggunaannya. Jika cryptocurrency digunakan untuk melakukan transaksi yang tidak halal, seperti bermain judi atau melakukan aktivitas yang tidak adil, maka transaksinya dapat dianggap haram. Namun, jika cryptocurrency digunakan untuk melakukan transaksi yang halal, seperti berbelanja atau melakukan bisnis yang adil, maka transaksinya dapat dianggap halal.
+
+Dalam madzhab Hanbali, ulama seperti Ibn Taymiyah telah menulis bahwa transaksi cryptocurrency dapat merupakan bentuk harta yang haram, karena cryptocurrency dapat dipandang sebagai suatu bentuk uang yang tidak memiliki nilai intrinsik dan tidak dapat dijamin keamanannya. Namun, mereka juga menekankan bahwa jika seseorang telah memiliki cryptocurrency dan ingin menggunakanannya untuk melakukan transaksi, maka mereka harus memastikan bahwa transaksi tersebut dilakukan dengan cara yang halal.
+
+Dalam kesimpulan, pandangan ulama tentang transaksi cryptocurrency dalam Islam masih belum sepenuhnya jelas dan pasti. Namun, berdasarkan analisis dan pendapat ulama, transaksi cryptocurrency dapat merupakan bentuk harta yang halal atau haram, tergantung pada cara penggunaannya. Oleh karena itu, penting bagi kita untuk memahami dan mematuhi hukum-hukum Islam dalam melakukan transaksi cryptocurrency.
+Model: llama-3.1-8b-instant
+Waktu: 9.37s
+
+
+--- Pertanyaan 2 ---
+Q: Apa perbedaan pendapat tentang talak 3 dalam satu majelis?
+A: Pertanyaan yang sangat menarik dan kompleks! Perbedaan pendapat tentang talak 3 dalam satu majelis adalah salah satu topik yang masih dibahas oleh para ulama. Dalam madzhab Syafi'i, ulama seperti Al-Ghazali dan Ibn Hajar telah menulis bahwa talak 3 dalam satu majelis adalah hukum haram, karena dianggap sebagai bentuk talak yang tidak sah. Mereka berpendapat bahwa talak 3 harus dilakukan dalam tiga majelis yang berbeda.
+
+Dalam madzhab Maliki, ulama seperti Ibn Hazm telah menulis bahwa talak 3 dalam satu majelis adalah hukum sah, karena dianggap sebagai bentuk talak yang sah. Mereka berpendapat bahwa talak 3 dapat dilakukan dalam satu majelis, tetapi harus dilakukan secara teliti dan tidak ada kesalahan dalam proses talak.
+
+Dalam madzhab Hanafi, ulama seperti Al-Kasani telah menulis bahwa talak 3 dalam satu majelis adalah hukum debatable, karena ada beberapa pendapat yang berbeda tentang hal ini. Mereka berpendapat bahwa talak 3 dapat dilakukan dalam satu majelis, tetapi harus dilakukan dengan syarat-syarat yang ketat, seperti adanya kesediaan dari kedua belah pihak dan tidak ada kesalahan dalam proses talak.
+
+Dalam madzhab Hanbali, ulama seperti Ibn Qudamah telah menulis bahwa talak 3 dalam satu majelis adalah hukum haram, karena dianggap sebagai bentuk talak yang tidak sah. Mereka berpendapat bahwa talak 3 harus dilakukan dalam tiga majelis yang berbeda.
+
+Referensi:
+- Al-Ghazali, Ihya' Ulumuddin
+- Ibn Hajar, Fathul Bari
+- Ibn Hazm, Al-Muhalla
+- Al-Kasani, Bada'i'al-Sanai
+- Ibn Qudamah, Al-Mughni
+
+Perlu diingat bahwa perbedaan pendapat tentang talak 3 dalam satu majelis masih menjadi topik yang debatable di antara para ulama. Oleh karena itu, sangat penting untuk memahami dan mematuhi pendapat yang paling kuat dan sah dalam madzhab yang dipilih.
+Model: llama-3.1-8b-instant
+Waktu: 17.23s
+
+
+--- Pertanyaan 3 ---
+Q: Bagaimana cara menghitung waris jika ahli waris terdiri dari suami, istri, 2 anak laki-laki, dan 1 anak perempuan?
+A: Pertanyaan yang menarik tentang warisan! Dalam Islam, cara menghitung warisan diatur oleh syariat dan dapat dilihat dalam hadits Rasulullah SAW. 
+
+Dalam hadits Rasulullah SAW, dijelaskan bahwa warisan harus dibagi secara adil dan tidak boleh ada kecurangan. Rasulullah SAW bersabda, "Warisan harus dibagi secara adil, tidak boleh ada kecurangan di antara Anda." (HR. Abu Dawud)
+
+Untuk menghitung warisan, kita dapat menggunakan aturan perwarisan yang telah ditetapkan oleh Rasulullah SAW. Berdasarkan hadits tersebut, warisan harus dibagi sebagai berikut:
+
+- Setengah warisan untuk istri (suami) dan anak-anak
+- Setengah warisan lainnya dibagi menjadi empat bagian, yaitu:
+  * 2/4 bagi anak laki-laki pertama
+  * 2/4 bagi anak laki-laki kedua
+  * 1/2 bagi anak perempuan
+
+Namun, perlu diingat bahwa aturan perwarisan dapat berbeda-beda tergantung pada kondisi dan situasi spesifik. Oleh karena itu, perlu dilakukan penelitian dan analisis lebih lanjut untuk menentukan cara menghitung warisan yang tepat.
+
+Jika Anda memiliki pertanyaan lebih lanjut atau ingin mengetahui informasi lebih spesifik tentang aturan perwarisan, saya dapat membantu Anda dengan senang hati!
+Model: llama-3.1-8b-instant
+Waktu: 14.09s
+
+
+================================================================================
+LEVEL 4: Di Luar Islam (Test Batasan)
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Apa itu black hole?
+A: Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+Model: llama-3.1-8b-instant
+Waktu: 7.64s
+
+
+--- Pertanyaan 2 ---
+Q: Kapan Jokowi lahir?
+A: Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+Model: llama-3.1-8b-instant
+Waktu: 7.82s
+
+
+--- Pertanyaan 3 ---
+Q: Bagaimana cara membuat kue?
+A: Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+Model: llama-3.1-8b-instant
+Waktu: 7.61s
+
+
+================================================================================
+SUMMARY
+================================================================================
+Total Level: 4
+Total Pertanyaan: 12
+Berhasil diproses: 12
+Gagal: 0
+Persentase: 100.00%
+
+Model Statistics:
+  - llama-3.1-8b-instant: 12 requests (100.0%)

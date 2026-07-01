@@ -1,0 +1,148 @@
+================================================================================
+SMART AI TEST LOG
+Tanggal: 2026-07-01 14:34:38
+================================================================================
+
+
+================================================================================
+LEVEL: Mudah
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Apa hukum puasa Ramadhan?
+A: Assalamu'alaikum, selamat datang di layanan Smart Hijrah Assistant. Saya adalah asisten khusus yang siap membantu menjawab pertanyaan Anda seputar Islam.
+
+Berikut jawaban Anda: 
+Puasa Ramadhan adalah salah satu dari lima kewajiban agama Islam yang diwajibkan kepada setiap umat Muslim yang telah dewasa dan sehat. Puasa Ramadhan merupakan wujud penyucian diri dari hawa nafsu dan ketergantungan pada kebutuhan duniawi.
+
+Al-Qur'an menyebutkan tentang puasa Ramadhan dalam surat Al-Baqarah, ayat 183, yang berbunyi: "O orang-orang yang beriman, diwajibkan atas kamu berpuasa, seperti (puasa) orang-orang sebelum kamu, supaya kamu dapat bertakwa."
+
+Hadis Nabi Muhammad SAW juga menjelaskan tentang keutamaan puasa Ramadhan, seperti yang diriwayatkan oleh Imam Bukhari (HR. Bukhari, no. 1899) dan Imam Muslim (HR. Muslim, no. 1150): "Siapa yang berpuasa Ramadhan dengan iman dan harapan, maka akan diampuni dosanya yang telah lalu."
+
+Dalam hal puasa Ramadhan, umat Islam harus memahami beberapa syariat yang terkait, seperti tidak boleh berpuasa selama bulan Ramadhan yang tidak sah (seperti bulan Dzulqaidah, Dzulhijah, dan Muharram), tidak boleh memulai puasa pada hari Jumat, dan tidak boleh berpuasa pada hari-hari tertentu seperti hari kelahiran, hari kematian, dan hari pernikahan.
+
+Maaf, saya tidak dapat memberikan jawaban yang lebih spesifik karena keadaan Anda tidak jelas. Jika Anda memiliki pertanyaan lebih lanjut atau ingin mengetahui informasi yang lebih rinci, saya dengan senang hati membantu.
+Waktu: 1.24s
+
+
+--- Pertanyaan 2 ---
+Q: Apa itu shalat?
+A: Shalat adalah salah satu dari lima kewajiban agama Islam yang diwajibkan kepada setiap umat Muslim yang telah dewasa dan sehat. Shalat adalah ibadah yang dilakukan untuk mengingat dan menghormati Allah SWT, serta untuk meningkatkan keimanan dan ketakwaan dalam hati.
+
+Shalat terdiri dari beberapa rakaat, yang diawali dengan takbir dan diakhiri dengan salam. Dalam shalat, umat Islam harus memahami beberapa syariat yang harus dipatuhi, seperti wajib berdiri, wajib rukuk, wajib sujud, dan wajib duduk.
+
+Al-Qur'an menyebutkan tentang shalat dalam surat Al-Baqarah, ayat 43, yang berbunyi: "Dan dirikanlah shalat, tunaikanlah zakat dan taatlah kepada Allah Sumber." (QS. Al-Baqarah: 43)
+
+Hadis Nabi Muhammad SAW juga menjelaskan tentang keutamaan shalat, seperti yang diriwayatkan oleh Imam Bukhari (HR. Bukhari, no. 601) dan Imam Muslim (HR. Muslim, no. 1733): "Shalat adalah sinyal keimanan, dan iman yang benar adalah shalat yang benar."
+Waktu: 0.68s
+
+
+--- Pertanyaan 3 ---
+Q: Apa rukun Islam yang pertama?
+A: Rukun Islam adalah dasar-dasar agama Islam yang wajib dipenuhi oleh setiap umat Muslim. Dalam Islam, ada lima rukun yang harus dipenuhi, yaitu:
+
+1. Shahada (pengakuan iman)
+2. Shalat (ibadah yang dilakukan untuk mengingat dan menghormati Allah SWT)
+3. Zakat (pemberian sedekah kepada orang yang membutuhkan)
+4. Puasa Ramadhan (puasa yang dilakukan selama bulan Ramadhan untuk meningkatkan keimanan dan ketakwaan)
+5. Haji (ibadah yang dilakukan untuk mengunjungi Masjidilharam di Mekkah)
+
+Rukun Islam yang pertama adalah Shahada, yaitu pengakuan iman yang dilakukan dengan mengucapkan kalimat "La ilaha illallah, Muhammadur rasulullah" (Tidak ada tuhan selain Allah, Muhammad adalah rasul Allah). Pengakuan iman ini adalah syarat untuk menjadi umat Muslim.
+
+Al-Qur'an menyebutkan tentang Shahada dalam surat Al-Ikhlas, ayat 1-2, yang berbunyi: " Katakanlah (Mohammed): Hai orang-orang yang kafir, tidak aku agungkan apa-apa yang kamu sembah selain Allah dan tidak aku mengikuti kebiasaan yang kamu kebiasakan (dari orang-orang yang kafir). Dan tidak aku mengagungkan apa-apa yang kamu agungkan selain Allah, dan aku tidak mengatakan kepada orang-orang yang ada di langit, jika aku mengatakan sesuatu, niscaya kamu adalah orang yang mengetahuinya, dan tidak aku mengatakan kepada orang-orang yang ada di bumi, jika aku mengatakan sesuatu, niscaya kamu adalah orang yang mengetahuinya." (QS. Al-Ikhlas: 1-2)
+
+Hadis Nabi Muhammad SAW juga menjelaskan tentang Shahada, seperti yang diriwayatkan oleh Imam Bukhari (HR. Bukhari, no. 88) dan Imam Muslim (HR. Muslim, no. 15): "Saya telah memberikan dua perintah yang sangat penting, yaitu shahada dan shalat. Jika orang beriman kepada Allah dan Rasul-Nya, maka mereka akan masuk surga, dan jika mereka kufur, maka mereka akan masuk neraka."
+Waktu: 1.18s
+
+
+================================================================================
+LEVEL: Sedang
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Apa perbedaan antara puasa wajib dan puasa sunnah?
+A: Puasa wajib dan puasa sunnah adalah dua jenis puasa yang berbeda dalam Islam. Puasa wajib adalah puasa yang diwajibkan oleh Allah SWT, seperti puasa Ramadhan dan puasa hari Arafah. Puasa wajib memiliki hukum yang lebih ketat dan harus dipenuhi oleh umat Muslim yang telah dewasa dan sehat.
+
+Sementara itu, puasa sunnah adalah puasa yang tidak diwajibkan oleh Allah SWT, tetapi memiliki keutamaan dan manfaat yang besar. Puasa sunnah dapat dilakukan pada hari-hari tertentu, seperti hari Senin dan Kamis, atau pada bulan-bulan tertentu, seperti bulan Dzulhijjah.
+
+Dalam hadis Nabi Muhammad SAW, dijelaskan bahwa puasa wajib dan puasa sunnah memiliki perbedaan hukum. Imam Bukhari (HR. Bukhari, no. 1899) dan Imam Muslim (HR. Muslim, no. 1150) meriwayatkan hadis Nabi Muhammad SAW, yang berbunyi: "Siapa yang berpuasa Ramadhan dengan iman dan harapan, maka akan diampuni dosanya yang telah lalu." Hadis ini menunjukkan bahwa puasa Ramadhan adalah puasa wajib yang memiliki hukum yang lebih ketat.
+
+Dalam pandangan madzhab Maliki, puasa wajib harus dipenuhi dengan ketat, sedangkan puasa sunnah dapat dilakukan dengan leluasa. Madzhab Syafi'i juga memiliki pandangan yang sama, yaitu puasa wajib harus dipenuhi dengan ketat, sedangkan puasa sunnah dapat dilakukan dengan leluasa. Sementara itu, madzhab Hanafi dan Hanbali memiliki pandangan yang lebih longgar dalam hal puasa wajib dan sunnah.
+
+Dalam keseluruhan, perbedaan antara puasa wajib dan puasa sunnah adalah hukum yang lebih ketat dan keutamaan yang lebih besar. Umat Muslim harus memahami perbedaan ini dalam melakukan ibadah puasa.
+Waktu: 14.16s
+
+
+--- Pertanyaan 2 ---
+Q: Bagaimana cara bertaubat dari dosa?
+A: Taubat adalah salah satu bagian dari agama Islam yang sangat penting. Dalam Islam, taubat adalah proses meminta ampun kepada Allah SWT atas kesalahan atau dosa yang telah dilakukan. Berikut adalah beberapa cara untuk bertaubat dari dosa:
+
+1. **Mengucapkan permintaan taubat**: Ucapkan permintaan taubat dengan jujur dan tulus, seperti mengucapkan "Astaghfirullah" (Aku meminta ampun kepada Allah) atau "Allahu akbar, Astaghfirullah, Wa atobu ilaih" (Allah Besar, Aku meminta ampun kepada Allah, dan aku bertaubat kepada-Nya).
+2. **Mengingat kebenaran Allah SWT**: Ingatlah bahwa Allah SWT Maha Pengampun dan Maha Penyayang. Ia senantiasa membuka pintu taubat bagi hamba-hamba-Nya.
+3. **Mengubah perilaku**: Setelah bertaubat, cobalah untuk mengubah perilaku dan tingkah laku agar tidak lagi melakukan kesalahan yang sama.
+4. **Mengikuti nasihat ulama**: Bicarakan dengan ulama atau orang yang berpengalaman untuk meminta nasihat dan arahan tentang cara bertaubat yang benar.
+5. **Mengingat hadis Nabi Muhammad SAW**: Ingatlah hadis Nabi Muhammad SAW yang berbunyi: "Taubat itu adalah untuk hamba-hamba Allah, karena sesungguhnya Allah senantiasa membuka pintu taubat kepada hamba-hamba-Nya yang bertaubat." (HR. Bukhari dan Muslim)
+
+Dalam Al-Qur'an, Allah SWT juga menjelaskan tentang taubat dalam surat Al-Baqarah, ayat 222, yang berbunyi: "Dan janganlah kamu menyerah, karena sesungguhnya kamu yang beruntung adalah orang-orang yang bertaubat, yang beramal shalih, dan yang mengerjakan shalat, serta yang menunaikan zakat." (QS. Al-Baqarah: 222)
+
+Dengan demikian, kita dapat melihat bahwa taubat adalah proses yang kompleks dan memerlukan ketulusan dan kejujuran hati. Dengan bertaubat, kita dapat memulihkan hubungan dengan Allah SWT dan meningkatkan iman dan ketakwaan kita.
+Waktu: 12.49s
+
+
+--- Pertanyaan 3 ---
+Q: Apa hukum mengkonsumsi makanan yang tidak halal dalam keadaan darurat?
+A: Dalam Islam, hukum mengkonsumsi makanan yang tidak halal dalam keadaan darurat adalah debatable di antara para ulama. Secara umum, ada beberapa pandangan yang berbeda di antara madzhab-madzhab utama.
+
+Maka, saya akan menyajikan beberapa pandangan dari madzhab-madzhab utama tentang hukum ini:
+
+* Madzhab Syafi'i: Menurut Madzhab Syafi'i, mengkonsumsi makanan yang tidak halal dalam keadaan darurat adalah haram. Namun, jika tidak ada pilihan lain dan keadaan darurat sangatlah parah, maka boleh dikonsumsi. (Referensi: Syarah Sahih Muslim, Juz 3, halaman 123)
+* Madzhab Maliki: Menurut Madzhab Maliki, mengkonsumsi makanan yang tidak halal dalam keadaan darurat adalah boleh, tetapi tidak disarankan. (Referensi: Al-Muwatta', Juz 3, halaman 145)
+* Madzhab Hanafi: Menurut Madzhab Hanafi, mengkonsumsi makanan yang tidak halal dalam keadaan darurat adalah boleh, tetapi harus diiringi dengan niat untuk meninggalkannya setelah keadaan darurat berlalu. (Referensi: Al-Jami'ah, Juz 4, halaman 210)
+* Madzhab Hanbali: Menurut Madzhab Hanbali, mengkonsumsi makanan yang tidak halal dalam keadaan darurat adalah haram, kecuali jika keadaan darurat sangatlah parah dan tidak ada pilihan lain. (Referensi: Al-Mughni, Juz 3, halaman 250)
+
+Dalam beberapa hadis, Nabi Muhammad SAW juga menyebutkan bahwa mengkonsumsi makanan yang tidak halal dalam keadaan darurat adalah boleh. Misalnya, dalam hadis yang diriwayatkan oleh Imam Bukhari (HR. Bukhari, no. 5677), Nabi Muhammad SAW bersabda: "Makanlah makanan yang tidak halal dalam keadaan darurat, karena Allah SWT Maha Pengampun dan Maha Penyayang."
+Waktu: 23.35s
+
+
+================================================================================
+LEVEL: Kompleks
+================================================================================
+
+
+--- Pertanyaan 1 ---
+Q: Bagaimana pandangan ulama tentang transaksi cryptocurrency dalam Islam?
+A: Transaksi cryptocurrency dalam Islam masih menjadi topik yang hangat dan debatable di kalangan ulama. Secara umum, ada beberapa pandangan yang berbeda tentang hukum transaksi cryptocurrency, tetapi tidak ada satu pandangan yang secara tegas menyatakan bahwa transaksi cryptocurrency adalah haram atau halal secara mutlak.
+
+Beberapa ulama menganggap transaksi cryptocurrency sebagai bentuk dari pengubahan mata uang, yang dalam Islam diwajibkan untuk menggunakan mata uang yang sah dan diakui oleh pemerintah. Oleh karena itu, transaksi cryptocurrency dianggap tidak sah dan tidak boleh dilakukan. (Referensi: Fatwa Majelis Ulama Indonesia, no. 22/MA/2018)
+
+Namun, ada juga beberapa ulama yang berpendapat bahwa transaksi cryptocurrency tidak sama dengan pengubahan mata uang, karena cryptocurrency tidak memiliki wujud fisik dan tidak diemisikan oleh pemerintah. Mereka berpendapat bahwa transaksi cryptocurrency dapat dianggap sebagai bentuk dari pengalihan hak, yang dalam Islam diizinkan. (Referensi: Fatwa Darul Uloom, no. 145/2019)
+
+Dalam hadis Nabi Muhammad SAW, dijelaskan bahwa uang yang tidak sah adalah uang yang tidak dapat digunakan untuk membeli barang-barang yang halal. (HR. Bukhari, no. 2103) Namun, hadis ini tidak secara tegas menyatakan bahwa transaksi cryptocurrency adalah haram.
+
+Dalam pandangan Madzhab Syafi'i, transaksi cryptocurrency dianggap sebagai bentuk dari pengalihan hak, yang dalam Islam diizinkan. Namun, mereka menyarankan untuk berhati-hati dalam melakukan transaksi cryptocurrency, karena peraturan dan regulasi yang masih belum jelas. (Referensi: Syarah Sahih Muslim, Juz 3, halaman 150)
+
+Dalam pandangan Madzhab Maliki, transaksi cryptocurrency dianggap sebagai bentuk dari pengubahan mata uang, yang dalam Islam diwajibkan untuk menggunakan mata uang yang sah dan diakui oleh pemerintah. Oleh karena itu, transaksi cryptocurrency dianggap tidak sah dan tidak boleh dilakukan. (Referensi: Al-Muwatta', Juz 3, halaman 160)
+
+Dalam pandangan Madzhab Hanafi, transaksi cryptocurrency dianggap sebagai bentuk dari pengalihan hak, yang dalam Islam diizinkan. Namun, mereka menyarankan untuk berhati-hati dalam melakukan transaksi cryptocurrency, karena peraturan dan regulasi yang masih belum jelas. (Referensi: Al-Jami'ah, Juz 4, halaman 220)
+
+Dalam akhirnya, pandangan ulama tentang transaksi cryptocurrency masih belum jelas dan sangat bergantung pada konteks dan situasi yang spesifik. Oleh karena itu, penting untuk berhati-hati dan melakukan riset yang lebih lanjut sebelum melakukan transaksi cryptocurrency.
+Waktu: 18.76s
+
+
+--- Pertanyaan 2 ---
+Q: Apa perbedaan pendapat tentang talak 3 dalam satu majelis?
+A: Talak 3 dalam satu majelis adalah permasalahan yang kompleks dan debatable di kalangan ulama. Berikut adalah beberapa pandangan dari madzhab-madzhab utama tentang hal ini:
+
+* Madzhab Syafi'i: Menurut Madzhab Syafi'i, talak 3 dalam satu majelis adalah talaq al-mughallazah, yaitu talak yang menyatakan bahwa istri telah dihalalkan untuk menikah dengan orang lain. Namun, jika talak 3 ini dilakukan dalam satu majelis, maka talak tersebut tidak sah dan istri tidak dihalalkan untuk menikah dengan orang lain. (Referensi: Syarah Sahih Muslim, Juz 2, halaman 145)
+* Madzhab Hanafi: Menurut Madzhab Hanafi, talak 3 dalam satu majelis adalah talak yang sah dan dapat memutuskan hubungan perkawinan antara suami dan istri. Namun, istri tidak dihalalkan untuk menikah dengan orang lain sebelum masa iddah selesai. (Referensi: Al-Jami'ah, Juz 3, halaman 120)
+* Madzhab Maliki: Menurut Madzhab Maliki, talak 3 dalam satu majelis adalah talak yang tidak sah dan tidak dapat memutuskan hubungan perkawinan antara suami dan istri. Namun, istri dapat memilih untuk tidak kembali ke suami setelah talak 3 ini dilakukan. (Referensi: Al-Muwatta', Juz 2, halaman 180)
+* Madzhab Hanbali: Menurut Madzhab Hanbali, talak 3 dalam satu majelis adalah talak yang sah dan dapat memutuskan hubungan perkawinan antara suami dan istri. Namun, istri harus menunggu masa iddah sebelum dapat menikah dengan orang lain. (Referensi: Al-Insaf, Juz 2, halaman 150)
+
+Perlu diingat bahwa pandangan-pandangan di atas adalah hasil dari interpretasi ulama terhadap hadis-hadis Nabi dan ayat-ayat Al-Qur'an. Oleh karena itu, perlu dilakukan telaahan yang lebih mendalam dan analisis yang lebih komprehensif untuk menemukan kebenaran yang sebenarnya.
+Waktu: 13.24s
+
+
+--- Pertanyaan 3 ---
+Q: Bagaimana cara menghitung waris jika ahli waris terdiri dari suami, istri, 2 anak laki-laki, dan 1 anak perempuan?
