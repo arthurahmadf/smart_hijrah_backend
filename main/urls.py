@@ -41,7 +41,7 @@ urlpatterns = [
     path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
     
     path('user/change_banner/', views.change_user_banner, name='change_user_banner'),
-    
+
     # SOCIAL FEEDS (TODAY) 
     path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
     path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
@@ -58,7 +58,7 @@ urlpatterns = [
     path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
     path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
     path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
-
+    path('feed/comment/reply/<int:comment_id>/', comment_views.reply_comment, name='reply_comment'),  
     # STORIES 
     path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
     path('stories/local/', story_views.get_local_stories, name='get_local_stories'),

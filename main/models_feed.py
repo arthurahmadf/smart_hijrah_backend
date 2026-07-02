@@ -18,7 +18,7 @@ class Feed(models.Model):
         related_name='tagged_in_feeds',
         blank=True
     )
-    
+
     class Meta:
         db_table = 'social_feed'
         ordering = ['-created_at']
@@ -53,6 +53,21 @@ class FeedComment(models.Model):
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    parent = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='replies'
+    )
+    replied_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='replied_comments'
+    )
     
     class Meta:
         db_table = 'social_feed_comment'

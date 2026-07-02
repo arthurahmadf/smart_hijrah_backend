@@ -50,10 +50,17 @@ class FeedSerializer(serializers.ModelSerializer):
 
 class FeedCommentSerializer(serializers.ModelSerializer):
     user = UserBasicSerializer(read_only=True)
+    replied_to = UserBasicSerializer(read_only=True)
+    replies = serializers.SerializerMethodField()
     
     class Meta:
         model = FeedComment
-        fields = ['id', 'user', 'text', 'created_at']
+        fields = ['id', 'user', 'text', 'parent', 'replied_to', 'replies', 'created_at']
+    
+    def get_replies(self, obj):
+        # Hanya ambil reply level 2 (parent = obj)
+        replies = obj.replies.all().order_by('created_at')
+        return FeedCommentSerializer(replies, many=True, context=self.context).data
 
 
 class StorySerializer(serializers.ModelSerializer):
