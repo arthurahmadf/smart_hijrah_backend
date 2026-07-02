@@ -569,7 +569,8 @@ def users_me(request):
             "name":user.nama,
             "email":user.email,
             "alamat":user.alamat,
-            "profile_picture": helper.generate_url(user.foto_profil,request)
+            "profile_picture": helper.generate_url(user.foto_profil,request),
+            "jenis_kelamin": user.jenis_kelamin,
         }
         return JsonResponse({"success":True,"data":user_data}, status=200)
     except Exception as e:
@@ -585,7 +586,8 @@ def create_user(request):
             email=data.get("email"),
             alamat=data.get("alamat"),
             telepon=data.get("telepon"),
-            email_verified=False,  # default false
+            email_verified=False, 
+            jenis_kelamin=data.get("jenis_kelamin"),  
         )
         foto_profil_base64 = data.get("foto_profil")
         if foto_profil_base64:
