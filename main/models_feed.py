@@ -13,6 +13,11 @@ class Feed(models.Model):
     comment_count = models.IntegerField(default=0)
     isSponsored = models.BooleanField(default=False)
     permalink = models.CharField(max_length=500, blank=True, null=True)
+    tagged_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='tagged_in_feeds',
+        blank=True
+    )
     
     class Meta:
         db_table = 'social_feed'

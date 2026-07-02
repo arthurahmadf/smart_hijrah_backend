@@ -17,7 +17,7 @@ class UserBasicSerializer(serializers.ModelSerializer):
 
 class FeedSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='user.id', read_only=True)
-    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_name = serializers.CharField(source='user.nama', read_only=True)
     user_country = serializers.CharField(source='user.country', read_only=True)
     user_picture = serializers.SerializerMethodField()
     isLiked = serializers.SerializerMethodField()

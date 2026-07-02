@@ -39,17 +39,26 @@ urlpatterns = [
     path('user/create/', views.create_user, name='create_user'),
     path('user/change_password/', views.change_password, name='change_password'),
     path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
-      
+    
+    path('user/change_banner/', views.change_user_banner, name='change_user_banner'),
+    
     # SOCIAL FEEDS (TODAY) 
     path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
     path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
     path('feed/following/', feed_views.get_following_feed, name='get_following_feed'),
-
+    path('feed/user_like/<int:user_id>/', feed_views.get_user_liked_feeds, name='get_user_liked_feeds'),
     path('feed/user/<int:user_id>/', feed_views.get_user_feeds, name='get_user_feeds'),
     path('feed/create/', feed_views.create_feed, name='create_feed'),
     path('feed/like/<int:feed_id>/', feed_views.like_feed, name='like_feed'),
     path('feed/search/', feed_views.search_feed, name='search_feed'),
-    
+    path('feed/user_tagged/<int:user_id>/', feed_views.get_user_tagged_feeds, name='get_user_tagged_feeds'),
+    path('feed/search_user/', feed_views.search_users, name='search_users'),
+
+    # COMMENT ENDPOINTS
+    path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
+    path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
+    path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
+
     # STORIES 
     path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
     path('stories/local/', story_views.get_local_stories, name='get_local_stories'),
@@ -58,10 +67,6 @@ urlpatterns = [
 
     path('stories/seen/<int:story_id>/', story_views.mark_story_seen, name='mark_story_seen'),
 
-    # COMMENT ENDPOINTS
-    path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
-    path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
-    path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
 
     # FOLLOW ENDPOINTS
     path('follow/<int:user_id>/', follow_views.follow_user, name='follow_user'),
@@ -134,6 +139,8 @@ urlpatterns = [
     path('leaderboard/info/', gamification_views.leaderboard_info, name='leaderboard_info'),
     path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
     path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
+
+    
 
     
 ]

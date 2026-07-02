@@ -25,7 +25,14 @@ class User(AbstractUser):
         null=True,
         blank=True
     )
-    
+
+    banner = models.ImageField(
+        upload_to='user_banners/',
+        null=True,
+        blank=True,
+        help_text="User profile banner with 12:5 aspect ratio (landscape)"
+    )
+
     def __str__(self):
         return self.username
 

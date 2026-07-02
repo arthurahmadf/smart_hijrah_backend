@@ -12,6 +12,9 @@ from .models import *
 from . import my_utils as helper
 from firebase_admin import messaging, credentials
 from .email_utils import send_verification_email
+from main.serializers.user_serializers import UserBasicSerializer
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 # Create your views here.
@@ -558,23 +561,20 @@ def sync_prayer_preferences(request):
 
 
 # USER --------------------------------------------------------------------------------------------------------------------------------
-@api_view(["GET"])
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def users_me(request):
     try:
         user = request.user
-        user_data = {
-            "id":user.id,
-            "username":user.username,
-            "name":user.nama,
-            "email":user.email,
-            "alamat":user.alamat,
-            "profile_picture": helper.generate_url(user.foto_profil,request),
-            "jenis_kelamin": user.jenis_kelamin,
-        }
-        return JsonResponse({"success":True,"data":user_data}, status=200)
+        serializer = UserBasicSerializer(user, context={'request': request})
+        return JsonResponse({
+            "success": True,
+            "data": serializer.data
+        }, status=200)
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
+        
     
 @api_view(['POST'])
 def create_user(request):
@@ -711,3 +711,100 @@ def change_password(request):
             return JsonResponse({"success": False, "message": str(e)}, status=400)
     return JsonResponse({"success": False, "message": "Invalid method"}, status=405)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_user_banner(request):
+    """
+    Change user profile banner with 12:5 aspect ratio
+    Body: form-data with 'banner' file
+    """
+    try:
+        banner_file = request.FILES.get('banner')
+        
+        if not banner_file:
+            return JsonResponse({
+                "success": False,
+                "message": "Banner file is required"
+            }, status=400)
+        
+        user = request.user
+        
+        # Delete old banner if exists
+        if user.banner:
+            user.banner.delete(save=False)
+        
+        # Save new banner (auto-crop to 12:5 will be handled by model or signal)
+        user.banner = banner_file
+        user.save()
+        
+        return JsonResponse({
+            "success": True,
+            "message": "Banner updated successfully",
+            "data": {
+                "banner": generate_url(user.banner, request)
+            }
+        }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_user_banner(request):
+    """
+    Change user profile banner
+    Minimum image width: 400px
+    Body: form-data with 'banner' file
+    """
+    try:
+        banner_file = request.FILES.get('banner')
+        
+        if not banner_file:
+            return JsonResponse({
+                "success": False,
+                "message": "Banner file is required"
+            }, status=400)
+        
+        # Validasi: cek ukuran gambar
+        try:
+            img = Image.open(banner_file)
+            width, height = img.size
+            
+            # Cek lebar minimal 400px
+            if width < 400:
+                return JsonResponse({
+                    "success": False,
+                    "message": f"Banner image width must be at least 400px. Current width: {width}px"
+                }, status=400)
+                
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "message": f"Invalid image file: {str(e)}"
+            }, status=400)
+        
+        user = request.user
+        
+        # Delete old banner if exists
+        if user.banner:
+            user.banner.delete(save=False)
+        
+        # Save new banner
+        user.banner = banner_file
+        user.save()
+        
+        from main.my_utils import generate_url
+        
+        return JsonResponse({
+            "success": True,
+            "message": "Banner updated successfully",
+            "data": {
+                "banner": generate_url(user.banner, request)
+            }
+        }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)

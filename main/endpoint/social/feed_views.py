@@ -11,7 +11,7 @@ import uuid
 import json
 from main.models_feed import Feed, FeedLike, Follow
 from main.serializers.feed_serializers import FeedSerializer
-
+from main.my_utils import generate_url  
 
 def insert_sponsored_feeds(feeds_list, sponsored_feeds, page_size=10):
     """Insert sponsored feeds at every 5th position"""
@@ -76,6 +76,9 @@ def create_feed(request):
             image_urls.append(image_url)
             logger.debug(f"Image saved to: {saved_path}")
         
+
+        tagged_user_ids = request.POST.getlist('tagged_users', [])
+
         feed = Feed.objects.create(
             user=request.user,
             feed_caption=feed_caption,
@@ -85,6 +88,10 @@ def create_feed(request):
             isSponsored=isSponsored,
             permalink=f"feed_{uuid.uuid4()}"
         )
+
+        if tagged_user_ids:
+            feed.tagged_users.set(tagged_user_ids)
+
         logger.debug(f"Feed created with ID: {feed.id}")
         
         serializer = FeedSerializer(feed, context={'request': request})
@@ -327,5 +334,141 @@ def get_user_feeds(request, user_id):
         
     except User.DoesNotExist:
         return JsonResponse({"success": False, "message": "User not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_liked_feeds(request, user_id):
+    """
+    Get all feeds that a specific user has liked
+    Response format sama persis dengan feed lainnya
+    """
+    try:
+        page = int(request.GET.get('page', 1))
+        page_size = int(request.GET.get('page_size', 10))
+        
+        # Cek apakah user yang diminta ada
+        target_user = get_object_or_404(User, id=user_id)
+        
+        # Ambil feed yang di-like oleh user tersebut
+        liked_feed_ids = FeedLike.objects.filter(
+            user=target_user
+        ).values_list('feed_id', flat=True)
+        
+        feeds = Feed.objects.filter(
+            id__in=liked_feed_ids
+        ).select_related('user').order_by('-created_at')
+        
+        # Sponsored feeds (hanya yang di-like oleh user tersebut)
+        sponsored_feeds = feeds.filter(isSponsored=True)
+        
+        paginator = Paginator(feeds, page_size)
+        feeds_page = paginator.get_page(page)
+        
+        feeds_serializer = FeedSerializer(list(feeds_page), many=True, context={'request': request})
+        sponsored_serializer = FeedSerializer(list(sponsored_feeds), many=True, context={'request': request})
+        
+        mixed_feeds = insert_sponsored_feeds(feeds_serializer.data, sponsored_serializer.data, page_size)
+        
+        return JsonResponse({
+            "success": True,
+            "message": f"Feeds liked by {target_user.username} fetched successfully",
+            "data": {
+                "current_page": page,
+                "feeds": mixed_feeds
+            }
+        }, status=200)
+        
+    except User.DoesNotExist:
+        return JsonResponse({"success": False, "message": "User not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_tagged_feeds(request, user_id):
+    """
+    Get all feeds where a specific user is tagged
+    """
+    try:
+        page = int(request.GET.get('page', 1))
+        page_size = int(request.GET.get('page_size', 10))
+        
+        target_user = get_object_or_404(User, id=user_id)
+        
+        feeds = Feed.objects.filter(
+            tagged_users=target_user
+        ).select_related('user').order_by('-created_at')
+        
+        sponsored_feeds = feeds.filter(isSponsored=True)
+        
+        paginator = Paginator(feeds, page_size)
+        feeds_page = paginator.get_page(page)
+        
+        feeds_serializer = FeedSerializer(list(feeds_page), many=True, context={'request': request})
+        sponsored_serializer = FeedSerializer(list(sponsored_feeds), many=True, context={'request': request})
+        
+        mixed_feeds = insert_sponsored_feeds(feeds_serializer.data, sponsored_serializer.data, page_size)
+        
+        return JsonResponse({
+            "success": True,
+            "message": f"Feeds where {target_user.username} is tagged fetched successfully",
+            "data": {
+                "current_page": page,
+                "feeds": mixed_feeds
+            }
+        }, status=200)
+        
+    except User.DoesNotExist:
+        return JsonResponse({"success": False, "message": "User not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def search_users(request):
+    """
+    Search users by username or nama (full name)
+    Query param: q (search query)
+    Limit: 5 results
+    """
+    try:
+        query = request.GET.get('q', '').strip()
+        
+        if not query:
+            return JsonResponse({
+                "success": True,
+                "message": "No search query provided",
+                "data": []
+            }, status=200)
+        
+        # Search by username or nama (case insensitive)
+        users = User.objects.filter(
+            Q(username__icontains=query) | Q(nama__icontains=query)
+        ).distinct()[:5]
+        
+        # Format response
+        data = []
+        for user in users:
+            data.append({
+                "id": user.id,
+                "username": user.username,
+                "nama": user.nama,
+                "profile_picture": generate_url(user.foto_profil, request),
+                "is_followed": Follow.objects.filter(
+                    follower=request.user,
+                    following=user
+                ).exists()
+            })
+        
+        return JsonResponse({
+            "success": True,
+            "message": f"Found {len(data)} users",
+            "data": data
+        }, status=200)
+        
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
