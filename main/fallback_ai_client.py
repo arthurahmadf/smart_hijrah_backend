@@ -172,8 +172,6 @@ def get_islamic_response(user_message, conversation_id=None, is_first_message=Tr
                         if len(ai_answer.text) > 1000:
                             answer_preview += "... (dipotong)"
                         prompt_parts.append(f"   Jawaban AI: {answer_preview}")
-                    else:
-                        prompt_parts.append("   Jawaban AI: (belum ada jawaban)")
 
                 prompt_parts.append(
                     "\n\nINSTRUKSI: "
