@@ -9,12 +9,14 @@ groq_client = Groq(api_key=settings.GROQ_API_KEY)
 
 # ===== MODEL CHAIN (PRIORITAS) =====
 MODEL_CHAIN = [
-    # "llama-3.1-8b-instant",
-    # "openai/gpt-oss-20b",
+    "openai/gpt-oss-20b",
     "qwen/qwen3-32b",
     "llama-3.3-70b-versatile",
     "meta-llama/llama-4-scout-17b-16e-instruct",
 ]
+
+# Model yang mendukung parameter reasoning_effort / include_reasoning di Groq
+REASONING_MODELS_PREFIXES = ("openai/gpt-oss", "qwen/")
 
 # ===== KEYWORD DETEKSI WARIS =====
 WARIS_KEYWORDS = [
@@ -69,23 +71,47 @@ def chat_with_fallback(messages, max_retries=2):
         for attempt in range(max_retries):
             try:
                 print(f"[FALLBACK] Trying: {model_name} (attempt {attempt+1}/{max_retries})")
-                
+
+                # Parameter khusus untuk model reasoning (gpt-oss, qwen3)
+                extra_kwargs = {}
+                if model_name.startswith(REASONING_MODELS_PREFIXES):
+                    extra_kwargs["reasoning_effort"] = "low"   # kurangi token yg "dipakai mikir"
+                    extra_kwargs["include_reasoning"] = False  # reasoning tidak nyampur ke content
+
                 response = groq_client.chat.completions.create(
                     model=model_name,
                     messages=messages,
                     temperature=0.7,
-                    max_tokens=1024
+                    max_tokens=2048,  # dinaikkan dari 1024 agar reasoning tidak menghabiskan seluruh kuota
+                    **extra_kwargs,
                 )
-                
-                result = response.choices[0].message.content
+
+                choice = response.choices[0]
+                result = choice.message.content
+                finish_reason = getattr(choice, "finish_reason", None)
+
+                print(f"[FALLBACK] finish_reason={finish_reason} | panjang jawaban={len(result) if result else 0}")
+
+                # ===== VALIDASI: jawaban kosong dianggap GAGAL, bukan sukses =====
+                if not result or not result.strip():
+                    print(
+                        f"[FALLBACK] ⚠️ {model_name} mengembalikan jawaban kosong "
+                        f"(finish_reason={finish_reason}), mencoba lagi..."
+                    )
+                    last_error = Exception(
+                        f"Empty content from {model_name} (finish_reason={finish_reason})"
+                    )
+                    time.sleep(1)
+                    continue
+
                 print(f"[FALLBACK] ✅ Success: {model_name}")
                 return result, model_name
-                
+
             except Exception as e:
                 error_msg = str(e)
                 print(f"[FALLBACK] ❌ Error {model_name}: {error_msg[:80]}")
                 last_error = e
-                
+
                 if "429" in error_msg or "rate" in error_msg.lower():
                     time.sleep(5)
                 elif "413" in error_msg:
@@ -93,9 +119,9 @@ def chat_with_fallback(messages, max_retries=2):
                     break
                 else:
                     time.sleep(1)
-                
+
                 continue
-        
+
         print(f"[FALLBACK] ⚠️ Model {model_name} failed, trying next...")
 
     return f"Maaf, semua layanan AI sedang sibuk. Terakhir error: {str(last_error)[:150]}", "none"
@@ -150,7 +176,7 @@ def get_islamic_response(user_message, conversation_id=None, is_first_message=Tr
                 conversation_id=conversation_id,
                 role='user'
             ).order_by('-created_at')[:3]
-            
+
             last_questions = list(reversed(last_questions))
 
             if last_questions:
