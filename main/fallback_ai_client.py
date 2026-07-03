@@ -9,9 +9,9 @@ groq_client = Groq(api_key=settings.GROQ_API_KEY)
 
 # ===== MODEL CHAIN (PRIORITAS) =====
 MODEL_CHAIN = [
-    "openai/gpt-oss-20b",
-    "qwen/qwen3-32b",
-    "llama-3.3-70b-versatile",
+    # "openai/gpt-oss-20b",
+    # "qwen/qwen3-32b",
+    # "llama-3.3-70b-versatile",
     "meta-llama/llama-4-scout-17b-16e-instruct",
 ]
 

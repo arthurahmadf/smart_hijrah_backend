@@ -9,6 +9,7 @@ from django.db.models import Q
 import uuid
 from main.models_feed import Story, StorySeen, Follow
 from main.serializers.feed_serializers import StorySerializer
+from main.my_utils import generate_url
 
 
 @api_view(['POST'])
@@ -68,25 +69,64 @@ def create_story(request):
         return JsonResponse({"success": False, "message": str(e)}, status=400)
 
 
+def _group_stories_by_user(stories, request):
+    """
+    Group stories by user (tanpa isSeen, akan diisi nanti)
+    """
+    grouped = {}
+    
+    for story in stories:
+        user_id = story.user.id
+        
+        if user_id not in grouped:
+            grouped[user_id] = {
+                "userId": user_id,
+                "nama_user": story.user.nama or story.user.username,
+                "userCountry": story.user_country or "",
+                "storyData": [],
+                "live_url": None,
+                "userPicture": generate_url(story.user.foto_profil, request)
+            }
+        
+        grouped[user_id]["storyData"].append({
+            "story_id": story.id,
+            "story_url": story.story_link,
+            "createdAt": story.created_at.isoformat(),
+            # isSeen akan diisi di endpoint
+        })
+    
+    return list(grouped.values())
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_global_stories(request):
-    """Stories from users outside Indonesia"""
+    """All active stories from all users (termasuk Indonesia)"""
     try:
         now = timezone.now()
+        user = request.user
         
+        # Ambil semua story yang masih aktif (tanpa filter country)
         stories = Story.objects.filter(
             expires_at__gt=now
-        ).filter(
-            ~Q(user_country__icontains='indonesia') | Q(user_country__isnull=True)
         ).select_related('user')
         
-        serializer = StorySerializer(stories, many=True, context={'request': request})
+        grouped_data = _group_stories_by_user(stories, request)
+        
+        from main.models_feed import StorySeen
+        seen_story_ids = StorySeen.objects.filter(
+            user=user,
+            story__in=stories
+        ).values_list('story_id', flat=True)
+        
+        for user_group in grouped_data:
+            for story_data in user_group["storyData"]:
+                story_data["isSeen"] = story_data["story_id"] in seen_story_ids
         
         return JsonResponse({
             "success": True,
             "message": "Global stories fetched successfully",
-            "data": serializer.data
+            "data": grouped_data
         }, status=200)
         
     except Exception as e:
@@ -96,9 +136,10 @@ def get_global_stories(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_local_stories(request):
-    """Stories from users in Indonesia"""
+    """Stories from users in Indonesia - grouped by user"""
     try:
         now = timezone.now()
+        user = request.user
         
         stories = Story.objects.filter(
             expires_at__gt=now
@@ -106,12 +147,22 @@ def get_local_stories(request):
             user_country__icontains='indonesia'
         ).select_related('user')
         
-        serializer = StorySerializer(stories, many=True, context={'request': request})
+        grouped_data = _group_stories_by_user(stories, request)
+        
+        from main.models_feed import StorySeen
+        seen_story_ids = StorySeen.objects.filter(
+            user=user,
+            story__in=stories
+        ).values_list('story_id', flat=True)
+        
+        for user_group in grouped_data:
+            for story_data in user_group["storyData"]:
+                story_data["isSeen"] = story_data["story_id"] in seen_story_ids
         
         return JsonResponse({
             "success": True,
             "message": "Local stories fetched successfully",
-            "data": serializer.data
+            "data": grouped_data
         }, status=200)
         
     except Exception as e:
@@ -121,7 +172,7 @@ def get_local_stories(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_following_stories(request):
-    """Stories from users that current user follows only"""
+    """Stories from users that current user follows - grouped by user"""
     try:
         user = request.user
         now = timezone.now()
@@ -135,17 +186,26 @@ def get_following_stories(request):
             user_id__in=following_list
         ).select_related('user')
         
-        serializer = StorySerializer(stories, many=True, context={'request': request})
+        grouped_data = _group_stories_by_user(stories, request)
+        
+        from main.models_feed import StorySeen
+        seen_story_ids = StorySeen.objects.filter(
+            user=user,
+            story__in=stories
+        ).values_list('story_id', flat=True)
+        
+        for user_group in grouped_data:
+            for story_data in user_group["storyData"]:
+                story_data["isSeen"] = story_data["story_id"] in seen_story_ids
         
         return JsonResponse({
             "success": True,
             "message": "Following stories fetched successfully",
-            "data": serializer.data
+            "data": grouped_data
         }, status=200)
         
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=400)
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

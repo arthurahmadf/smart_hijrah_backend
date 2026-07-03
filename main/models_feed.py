@@ -3,6 +3,11 @@ from django.conf import settings
 
 class Feed(models.Model):
     """Model for feed posts"""
+
+    VISIBILITY_CHOICES = [
+        ('public', 'Public'),
+        ('private', 'Private'),
+    ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='feeds')
     feed_caption = models.TextField(blank=True, null=True)
     feed_location = models.CharField(max_length=255, blank=True, null=True)
@@ -18,7 +23,11 @@ class Feed(models.Model):
         related_name='tagged_in_feeds',
         blank=True
     )
-
+    visibility = models.CharField(
+        max_length=10,
+        choices=VISIBILITY_CHOICES,
+        default='public'
+    )
     class Meta:
         db_table = 'social_feed'
         ordering = ['-created_at']
@@ -125,3 +134,18 @@ class StorySeen(models.Model):
     
     def __str__(self):
         return f"{self.user.username} seen story {self.story.id}"
+
+    
+
+class CommentLike(models.Model):
+    """Like pada komentar"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.ForeignKey(FeedComment, on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'social_comment_like'
+        unique_together = ('user', 'comment')
+    
+    def __str__(self):
+        return f"{self.user.username} likes comment {self.comment.id}"

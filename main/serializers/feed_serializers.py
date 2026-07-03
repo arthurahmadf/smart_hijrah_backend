@@ -22,14 +22,14 @@ class FeedSerializer(serializers.ModelSerializer):
     user_picture = serializers.SerializerMethodField()
     isLiked = serializers.SerializerMethodField()
     isFollowed = serializers.SerializerMethodField()
-    
+    visibility = serializers.CharField()
     class Meta:
         model = Feed
         fields = [
             'id', 'user_id', 'user_name', 'user_country', 'user_picture',
             'feed_location', 'feed_caption', 'feed_pictures', 'created_at',
             'isLiked', 'isFollowed', 'like_count', 'comment_count',
-            'isSponsored', 'permalink'
+            'isSponsored', 'permalink','visibility'
         ]
     
     def get_user_picture(self, obj):
@@ -83,4 +83,30 @@ class StorySerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
             return StorySeen.objects.filter(story=obj, user=request.user).exists()
+        return False
+
+
+class FeedCommentSerializer(serializers.ModelSerializer):
+    user = UserBasicSerializer(read_only=True)
+    replied_to = UserBasicSerializer(read_only=True)
+    replies = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField()
+    like_count = serializers.IntegerField(source='likes.count', read_only=True)
+    
+    class Meta:
+        model = FeedComment
+        fields = [
+            'id', 'user', 'text', 'parent', 'replied_to', 'replies',
+            'is_liked', 'like_count', 'created_at'
+        ]
+    
+    def get_replies(self, obj):
+        replies = obj.replies.all().order_by('created_at')
+        return FeedCommentSerializer(replies, many=True, context=self.context).data
+    
+    def get_is_liked(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            from main.models_feed import CommentLike
+            return CommentLike.objects.filter(comment=obj, user=request.user).exists()
         return False

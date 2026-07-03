@@ -78,7 +78,12 @@ def create_feed(request):
         
 
         tagged_user_ids = request.POST.getlist('tagged_users', [])
-
+        visibility = request.POST.get('visibility', 'public')
+        if visibility not in ['public', 'private']:
+            return JsonResponse({
+                "success": False,
+                "message": "Visibility must be 'public' or 'private'"
+            }, status=400)
         feed = Feed.objects.create(
             user=request.user,
             feed_caption=feed_caption,
@@ -86,6 +91,7 @@ def create_feed(request):
             feed_pictures=image_urls,
             user_country=user_country,
             isSponsored=isSponsored,
+            visibility=visibility,
             permalink=f"feed_{uuid.uuid4()}"
         )
 
@@ -123,9 +129,12 @@ def get_global_feed(request):
     try:
         page = int(request.GET.get('page', 1))
         page_size = int(request.GET.get('page_size', 10))
-        
+        user = request.user 
+        followed_user_ids = Follow.objects.filter(follower=user).values_list('following_id', flat=True)
+
         feeds = Feed.objects.filter(
-            ~Q(user_country__icontains='indonesia') | Q(user_country__isnull=True)
+            Q(visibility='public') | 
+            Q(visibility='private', user_id__in=followed_user_ids)
         ).select_related('user').order_by('-created_at')
         
         sponsored_feeds = Feed.objects.filter(isSponsored=True).select_related('user')
@@ -157,10 +166,15 @@ def get_local_feed(request):
     """Feed from users in Indonesia"""
     try:
         page = int(request.GET.get('page', 1))
+
         page_size = int(request.GET.get('page_size', 10))
+        user = request.user 
+        followed_user_ids = Follow.objects.filter(follower=user).values_list('following_id', flat=True)
         
         feeds = Feed.objects.filter(
-            user_country__icontains='indonesia'
+            Q(user_country__icontains='indonesia'),
+            Q(visibility='public') | 
+            Q(visibility='private', user_id__in=followed_user_ids)
         ).select_related('user').order_by('-created_at')
         
         sponsored_feeds = Feed.objects.filter(isSponsored=True).select_related('user')
@@ -198,6 +212,7 @@ def get_following_feed(request):
         following_users = Follow.objects.filter(follower=user).values_list('following_id', flat=True)
         following_list = list(following_users)
         
+        # Feeds from followed users + private feeds dari mereka
         feeds = Feed.objects.filter(
             user_id__in=following_list
         ).select_related('user').order_by('-created_at')
@@ -266,8 +281,8 @@ def like_feed(request, feed_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def search_feed(request):
-    """Search feeds by caption or location"""
     try:
+        user = request.user
         query = request.GET.get('q', '')
         
         if not query:
@@ -277,8 +292,12 @@ def search_feed(request):
                 "data": []
             }, status=200)
         
+        followed_user_ids = Follow.objects.filter(follower=user).values_list('following_id', flat=True)
+        
         feeds = Feed.objects.filter(
-            Q(feed_caption__icontains=query) | Q(feed_location__icontains=query)
+            Q(feed_caption__icontains=query) | Q(feed_location__icontains=query),
+            Q(visibility='public') | 
+            Q(visibility='private', user_id__in=followed_user_ids)
         ).select_related('user').order_by('-created_at')[:20]
         
         serializer = FeedSerializer(feeds, many=True, context={'request': request})
@@ -304,12 +323,18 @@ def get_user_feeds(request, user_id):
         page = int(request.GET.get('page', 1))
         page_size = int(request.GET.get('page_size', 10))
         
-        # Cek apakah user yang diminta ada
+        current_user = request.user
         target_user = get_object_or_404(User, id=user_id)
         
-        # Ambil feed dari user tersebut
+        is_following = Follow.objects.filter(
+            follower=current_user,
+            following=target_user
+        ).exists()
+        
+        # Filter: public OR (private AND current_user follows target_user)
         feeds = Feed.objects.filter(
-            user=target_user
+            user=target_user,
+            visibility='public'
         ).select_related('user').order_by('-created_at')
         
         # Sponsored feeds (hanya yang dibuat oleh user tersebut)
@@ -345,20 +370,37 @@ def get_user_liked_feeds(request, user_id):
     Response format sama persis dengan feed lainnya
     """
     try:
+        current_user = request.user
         page = int(request.GET.get('page', 1))
         page_size = int(request.GET.get('page_size', 10))
         
-        # Cek apakah user yang diminta ada
         target_user = get_object_or_404(User, id=user_id)
         
-        # Ambil feed yang di-like oleh user tersebut
+        
+        # Ambil feed yang di-like oleh target_user
         liked_feed_ids = FeedLike.objects.filter(
             user=target_user
         ).values_list('feed_id', flat=True)
         
+        # Filter visibility: public OR (private AND current_user follows target_user)
+        is_following = Follow.objects.filter(
+            follower=current_user,
+            following=target_user
+        ).exists()
+        
         feeds = Feed.objects.filter(
-            id__in=liked_feed_ids
-        ).select_related('user').order_by('-created_at')
+            id__in=liked_feed_ids,
+            visibility='public'
+        ).select_related('user')
+        
+        if is_following:
+            private_feeds = Feed.objects.filter(
+                id__in=liked_feed_ids,
+                visibility='private'
+            ).select_related('user')
+            feeds = feeds | private_feeds
+        
+        feeds = feeds.order_by('-created_at')
         
         # Sponsored feeds (hanya yang di-like oleh user tersebut)
         sponsored_feeds = feeds.filter(isSponsored=True)
@@ -393,14 +435,30 @@ def get_user_tagged_feeds(request, user_id):
     Get all feeds where a specific user is tagged
     """
     try:
+        current_user = request.user
         page = int(request.GET.get('page', 1))
         page_size = int(request.GET.get('page_size', 10))
         
         target_user = get_object_or_404(User, id=user_id)
         
+        is_following = Follow.objects.filter(
+            follower=current_user,
+            following=target_user
+        ).exists()
+        
         feeds = Feed.objects.filter(
-            tagged_users=target_user
-        ).select_related('user').order_by('-created_at')
+            tagged_users=target_user,
+            visibility='public'
+        ).select_related('user')
+        
+        if is_following:
+            private_feeds = Feed.objects.filter(
+                tagged_users=target_user,
+                visibility='private'
+            ).select_related('user')
+            feeds = feeds | private_feeds
+        
+        feeds = feeds.order_by('-created_at')
         
         sponsored_feeds = feeds.filter(isSponsored=True)
         

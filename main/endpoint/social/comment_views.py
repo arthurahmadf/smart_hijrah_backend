@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import json
-from main.models_feed import Feed, FeedComment
+from main.models_feed import Feed, FeedComment, CommentLike
 from main.serializers.feed_serializers import FeedCommentSerializer
 
 from main.pagination_utils import paginate_queryset
@@ -165,6 +165,47 @@ def get_comments(request, feed_id):
                 "total_page": paginator.num_pages,
                 "total_items": paginator.count,
                 "comments": serializer.data
+            }
+        }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_comment(request, comment_id):
+    """
+    Like or unlike a comment
+    """
+    try:
+        comment = get_object_or_404(FeedComment, id=comment_id)
+        
+        like, created = CommentLike.objects.get_or_create(
+            user=request.user,
+            comment=comment
+        )
+        
+        if not created:
+            # Unlike
+            like.delete()
+            is_liked = False
+            message = "Comment unliked"
+        else:
+            # Like
+            is_liked = True
+            message = "Comment liked"
+        
+        like_count = comment.likes.count()
+        
+        return JsonResponse({
+            "success": True,
+            "message": message,
+            "data": {
+                "comment_id": comment.id,
+                "is_liked": is_liked,
+                "like_count": like_count
             }
         }, status=200)
         

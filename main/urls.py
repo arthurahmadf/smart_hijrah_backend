@@ -53,12 +53,14 @@ urlpatterns = [
     path('feed/search/', feed_views.search_feed, name='search_feed'),
     path('feed/user_tagged/<int:user_id>/', feed_views.get_user_tagged_feeds, name='get_user_tagged_feeds'),
     path('feed/search_user/', feed_views.search_users, name='search_users'),
+    
 
     # COMMENT ENDPOINTS
     path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
     path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
     path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
-    path('feed/comment/reply/<int:comment_id>/', comment_views.reply_comment, name='reply_comment'),  
+    path('feed/comment/reply/<int:comment_id>/', comment_views.reply_comment, name='reply_comment'), 
+    path('feed/comment/like/<int:comment_id>/', comment_views.like_comment, name='like_comment'),   
     # STORIES 
     path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
     path('stories/local/', story_views.get_local_stories, name='get_local_stories'),
