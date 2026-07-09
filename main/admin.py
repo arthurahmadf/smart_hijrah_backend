@@ -20,6 +20,9 @@ from .models_doa import (
     DoaBookmark,
 )
 
+from main.models_healthy_tip import HealthyTip
+
+
 
 # User
 @admin.register(User)
@@ -188,3 +191,69 @@ class DoaBookmarkAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "doa", "created_at")
     list_filter = ("created_at",)
     search_fields = ("user__username", "user__email", "doa__title")
+
+
+@admin.register(HealthyTip)
+class HealthyTipAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "category",
+        "section",
+        "uploader",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "section",
+        "category",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "description_short",
+        "category",
+        "article",
+    )
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+    fieldsets = (
+        ("Konten", {
+            "fields": (
+                "title",
+                "banner",
+                "description_short",
+                "category",
+                "article",
+            )
+        }),
+        ("Pengelompokan", {
+            "fields": (
+                "section",
+                "is_published",
+            )
+        }),
+        ("Uploader", {
+            "fields": (
+                "uploader",
+            )
+        }),
+        ("Tanggal", {
+            "fields": (
+                "created_at",
+                "updated_at",
+            )
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+        super().save_model(request, obj, form, change)

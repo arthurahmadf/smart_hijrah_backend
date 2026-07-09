@@ -18,6 +18,7 @@ from .models_doa import (
     DoaContent,
     DoaBookmark,
 )
+from .models_healthy_tip import HealthyTip
 
 class User(AbstractUser):
     nama = models.CharField(max_length=100, null=True, blank=True)

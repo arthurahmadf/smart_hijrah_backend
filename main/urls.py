@@ -27,6 +27,7 @@ from main.endpoint.doa.views import (
     DoaBookmarkToggleView,
 )
 
+from .endpoint.healthy_tip import views as healthy_tip_views
 from .endpoint import gamification_views
 # from .views.auth_views import CustomTokenObtainPairView 
 
@@ -162,6 +163,18 @@ urlpatterns = [
     path("doa/", DoaListView.as_view()),
     path("doa/<int:id>/", DoaDetailView.as_view()),
     path("doa/<int:id>/bookmark/", DoaBookmarkToggleView.as_view()),
+
+    #healthy_tip
+    path(
+        "tips_hidup_sehat/",
+        healthy_tip_views.get_tips_hidup_sehat,
+        name="get_tips_hidup_sehat",
+    ),
+    path(
+        "tips_hidup_sehat/search/<str:query>/",
+        healthy_tip_views.search_tips_hidup_sehat,
+        name="search_tips_hidup_sehat",
+    ),
     
 ]
 
