@@ -27,7 +27,7 @@ class Command(BaseCommand):
             order=1,
             title="Doa Sebelum & Bangun Tidur",
             page_title="Doa Sebelum & Bangun Tidur",
-            hero_image_url="https://url-to-image.jpg/",
+            # hero_image_url="https://url-to-image.jpg/",
             is_active=True,
         )
 
