@@ -32,6 +32,8 @@ class IslamicBookSerializer(serializers.ModelSerializer):
     uploader_id = serializers.SerializerMethodField()
     created_at = serializers.SerializerMethodField()
     is_owned = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    discount = serializers.SerializerMethodField()
 
     class Meta:
         model = IslamicBook
@@ -52,6 +54,13 @@ class IslamicBookSerializer(serializers.ModelSerializer):
             "book_url",
             "created_at",
         ]
+
+    def get_price(self, obj):
+        return float(obj.price)
+
+
+    def get_discount(self, obj):
+        return float(obj.discount)
 
     def get_cover_image_url(self, obj):
         request = self.context.get("request")
