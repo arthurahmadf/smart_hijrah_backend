@@ -176,9 +176,10 @@ class DoaCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Doa)
 class DoaAdmin(admin.ModelAdmin):
-    list_display = ("id", "order", "title", "category", "is_active")
+    list_display = ("id", "title", "order", "category", "is_active", "hero_image")
+    list_display_links = ("id", "title")
     list_editable = ("order", "is_active")
-    list_filter = ("category",)
+    list_filter = ("category", "is_active")
     search_fields = ("title", "page_title")
     inlines = [DoaContentInline]
 
