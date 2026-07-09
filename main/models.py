@@ -12,7 +12,9 @@ from .models_hadis import *
 from .models_media_category import MediaCategory
 from .models_short_islami import ShortIslami
 from .models_artikel_islami import ArtikelIslami
-
+from .models_book_category import BookCategory
+from .models_book_author import BookAuthor
+from .models_islamic_book import IslamicBook
 from .models_tuntunan_shalat import TuntunanShalat, validate_tuntunan_blocks
 from .models_doa import (
     DoaCategory,

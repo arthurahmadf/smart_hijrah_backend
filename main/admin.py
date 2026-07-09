@@ -19,7 +19,9 @@ from .models_doa import (
     DoaContent,
     DoaBookmark,
 )
-
+from main.models_book_category import BookCategory
+from main.models_book_author import BookAuthor
+from main.models_islamic_book import IslamicBook
 from main.models_healthy_tip import HealthyTip
 
 from main.models_media_category import MediaCategory
@@ -432,6 +434,148 @@ class ArtikelIslamiAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(BookCategory)
+class BookCategoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+    )
+
+    search_fields = (
+        "name",
+    )
+
+    ordering = (
+        "name",
+    )
+
+@admin.register(BookAuthor)
+class BookAuthorAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+    )
+
+    search_fields = (
+        "name",
+    )
+
+    ordering = (
+        "name",
+    )
+
+@admin.register(IslamicBook)
+class IslamicBookAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "title",
+        "author",
+        "category",
+        "price",
+        "discount",
+        "sold_count",
+        "is_recommended",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "category",
+        "author",
+        "is_recommended",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "synopsis",
+        "author__name",
+    )
+
+    autocomplete_fields = (
+        "category",
+        "author",
+        "uploader",
+    )
+
+    readonly_fields = (
+        "sold_count",
+        "created_at",
+        "updated_at",
+    )
+
+    fieldsets = (
+        (
+            "Informasi Buku",
+            {
+                "fields": (
+                    "title",
+                    "cover",
+                    "pdf",
+                    "synopsis",
+                )
+            },
+        ),
+        (
+            "Kategori",
+            {
+                "fields": (
+                    "category",
+                    "author",
+                    "publish_year",
+                )
+            },
+        ),
+        (
+            "Harga",
+            {
+                "fields": (
+                    "price",
+                    "discount",
+                    "sold_count",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_recommended",
+                    "is_published",
+                )
+            },
+        ),
+        (
+            "Uploader",
+            {
+                "fields": (
+                    "uploader",
+                )
+            },
+        ),
+        (
+            "Tanggal",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+
         if not obj.uploader:
             obj.uploader = request.user
 

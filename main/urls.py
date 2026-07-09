@@ -29,6 +29,10 @@ from main.endpoint.doa.views import (
 from .endpoint.media_islami import views as media_islami_views
 from .endpoint.healthy_tip import views as healthy_tip_views
 from .endpoint import gamification_views
+
+from .endpoint.e_pustaka import views as epustaka_views
+
+
 # from .views.auth_views import CustomTokenObtainPairView 
 
 urlpatterns = [
@@ -192,6 +196,19 @@ urlpatterns = [
         "media_islami/short/<int:short_id>/view/",
         media_islami_views.increase_short_view,
         name="increase_short_view",
+    ),
+
+    # E-PUSTAKA
+    path(
+        "e_pustaka/",
+        epustaka_views.get_epustaka,
+        name="get_epustaka",
+    ),
+
+    path(
+        "e_pustaka/all/",
+        epustaka_views.get_all_epustaka,
+        name="get_all_epustaka",
     ),
     
 ]
