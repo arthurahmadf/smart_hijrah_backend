@@ -10,11 +10,8 @@ from .models_ngaji import (
 )
 from .models_kisah_nabi import KisahNabi, KisahNabiEpisode, KisahNabiReadLog
 
-from .models_tuntunan_shalat import (
-    TuntunanShalat,
-    TuntunanShalatPage,
-    TuntunanShalatImage,
-)
+
+from .models_tuntunan_shalat import TuntunanShalat
 
 from .models_doa import (
     DoaCategory,
@@ -136,31 +133,26 @@ class FestAdmin(admin.ModelAdmin):
         return "No image"
     banner_preview.short_description = 'Banner Preview'
 
-class TuntunanShalatPageInline(admin.TabularInline):
-    model = TuntunanShalatPage
-    extra = 1
-
 
 @admin.register(TuntunanShalat)
 class TuntunanShalatAdmin(admin.ModelAdmin):
-    list_display = ("id", "order", "title", "is_active")
+    list_display = ("id", "order", "title", "is_active", "updated_at")
+    list_display_links = ("id", "title")
     list_editable = ("order", "is_active")
-    search_fields = ("title",)
-    inlines = [TuntunanShalatPageInline]
-
-
-@admin.register(TuntunanShalatPage)
-class TuntunanShalatPageAdmin(admin.ModelAdmin):
-    list_display = ("id", "tuntunan", "page_number", "page_title")
-    list_filter = ("tuntunan",)
-    search_fields = ("page_title", "tuntunan__title")
-
-
-@admin.register(TuntunanShalatImage)
-class TuntunanShalatImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "image", "created_at")
-    search_fields = ("title",)
-
+    list_filter = ("is_active",)
+    search_fields = ("title", "excerpt", "content")
+    readonly_fields = ("created_at", "updated_at")
+    fieldsets = (
+        ("Informasi Artikel", {
+            "fields": ("order", "title", "excerpt", "hero_image", "is_active")
+        }),
+        ("Konten", {
+            "fields": ("content",)
+        }),
+        ("Metadata", {
+            "fields": ("created_at", "updated_at")
+        }),
+    )
 
 class DoaContentInline(admin.TabularInline):
     model = DoaContent

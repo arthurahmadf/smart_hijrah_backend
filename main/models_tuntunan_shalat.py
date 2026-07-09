@@ -1,7 +1,5 @@
-from django.core.exceptions import ValidationError
 from django.db import models
-
-
+from django.core.exceptions import ValidationError
 ALLOWED_TUNTUNAN_BLOCK_TYPES = {
     "heading",
     "paragraph",
@@ -15,6 +13,10 @@ ALLOWED_TUNTUNAN_BLOCK_TYPES = {
 
 
 def validate_tuntunan_blocks(blocks):
+    """
+    Legacy validator kept for old migrations.
+    Do not remove unless old migrations are squashed.
+    """
     if not isinstance(blocks, list):
         raise ValidationError("Blocks must be a list.")
 
@@ -28,54 +30,27 @@ def validate_tuntunan_blocks(blocks):
                 f"Invalid block type at index {index}: {block_type}"
             )
 
+from django.db import models
+
 
 class TuntunanShalat(models.Model):
     order = models.PositiveIntegerField(default=0)
     title = models.CharField(max_length=255)
+    excerpt = models.TextField(blank=True, null=True)
+    hero_image = models.ImageField(
+        upload_to="tuntunan_shalat/hero_images/",
+        blank=True,
+        null=True
+    )
+    content = models.TextField()
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["order", "id"]
         verbose_name = "Tuntunan Shalat"
         verbose_name_plural = "Tuntunan Shalat"
-
-    def __str__(self):
-        return self.title
-
-
-class TuntunanShalatPage(models.Model):
-    tuntunan = models.ForeignKey(
-        TuntunanShalat,
-        related_name="pages",
-        on_delete=models.CASCADE
-    )
-    page_number = models.PositiveIntegerField()
-    page_title = models.CharField(max_length=255)
-    blocks = models.JSONField(
-        default=list,
-        validators=[validate_tuntunan_blocks],
-        help_text="Array of content blocks: heading, paragraph, arabic, transliteration, translation, step, surah, image."
-    )
-
-    class Meta:
-        ordering = ["page_number", "id"]
-        unique_together = ("tuntunan", "page_number")
-        verbose_name = "Tuntunan Shalat Page"
-        verbose_name_plural = "Tuntunan Shalat Pages"
-
-    def __str__(self):
-        return f"{self.tuntunan.title} - Page {self.page_number}"
-
-
-class TuntunanShalatImage(models.Model):
-    title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to="tuntunan_shalat/images/")
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-created_at", "id"]
-        verbose_name = "Tuntunan Shalat Image"
-        verbose_name_plural = "Tuntunan Shalat Images"
 
     def __str__(self):
         return self.title

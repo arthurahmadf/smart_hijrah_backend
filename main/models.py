@@ -10,12 +10,8 @@ from .models_tilawah import *
 from .models_gamification import *
 from .models_hadis import *
 
-from .models_tuntunan_shalat import (
-    TuntunanShalat,
-    TuntunanShalatPage,
-    TuntunanShalatImage,
-)
 
+from .models_tuntunan_shalat import TuntunanShalat, validate_tuntunan_blocks
 from .models_doa import (
     DoaCategory,
     Doa,
