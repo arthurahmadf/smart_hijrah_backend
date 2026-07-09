@@ -8,6 +8,20 @@ from .models_kisah_nabi import *
 from .models_ai import *
 from .models_tilawah import *
 from .models_gamification import *
+from .models_hadis import *
+
+from .models_tuntunan_shalat import (
+    TuntunanShalat,
+    TuntunanShalatPage,
+    TuntunanShalatImage,
+)
+
+from .models_doa import (
+    DoaCategory,
+    Doa,
+    DoaContent,
+    DoaBookmark,
+)
 
 class User(AbstractUser):
     nama = models.CharField(max_length=100, null=True, blank=True)

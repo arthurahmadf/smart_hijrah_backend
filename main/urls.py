@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 from .endpoint.lifestyle import fest_views
 from .endpoint import masjid_views
 from .endpoint import klinik_views
+from .endpoint import hadis_views
 from .endpoint.ngaji import kelas_views, pelajaran_views
 from .endpoint.kisah_nabi import views as kisah_nabi_views
 from .endpoint import spiritual_views
@@ -15,7 +16,16 @@ from .endpoint.ai import chat_views
 
 from .endpoint.tilawah import tilawah_views
 from .google_auth_views import GoogleLoginView
+from main.endpoint.tuntunan_shalat.views import (
+    TuntunanShalatListView,
+    TuntunanShalatReaderPageView,
+)
 
+from main.endpoint.doa.views import (
+    DoaListView,
+    DoaDetailView,
+    DoaBookmarkToggleView,
+)
 
 from .endpoint import gamification_views
 # from .views.auth_views import CustomTokenObtainPairView 
@@ -127,7 +137,9 @@ urlpatterns = [
     path('ai/chat/conversations/', chat_views.get_conversations, name='ai_get_conversations'),
     path('ai/chat/conversation/<int:conversation_id>/', chat_views.get_conversation_detail, name='ai_conversation_detail'),
     path('ai/chat/conversation/<int:conversation_id>/delete/', chat_views.delete_conversation, name='ai_delete_conversation'),
+    path('hadis/hybrid-search/', hadis_views.test_hybrid_search, name='hybrid_search'),
 
+    # tilawah
     path('tilawah/ayah/random/', tilawah_views.get_random_ayah, name='tilawah_random_ayah'),
     path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
     path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
@@ -142,8 +154,14 @@ urlpatterns = [
     path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
     path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
 
+    #tuntunan sholat
+    path("tuntunan_shalat/", TuntunanShalatListView.as_view()),
+    path("tuntunan_shalat/<int:id>/pages/<int:page_number>/", TuntunanShalatReaderPageView.as_view()),
     
-
+    #doa
+    path("doa/", DoaListView.as_view()),
+    path("doa/<int:id>/", DoaDetailView.as_view()),
+    path("doa/<int:id>/bookmark/", DoaBookmarkToggleView.as_view()),
     
 ]
 

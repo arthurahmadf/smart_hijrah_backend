@@ -10,6 +10,20 @@ from .models_ngaji import (
 )
 from .models_kisah_nabi import KisahNabi, KisahNabiEpisode, KisahNabiReadLog
 
+from .models_tuntunan_shalat import (
+    TuntunanShalat,
+    TuntunanShalatPage,
+    TuntunanShalatImage,
+)
+
+from .models_doa import (
+    DoaCategory,
+    Doa,
+    DoaContent,
+    DoaBookmark,
+)
+
+
 # User
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -121,3 +135,63 @@ class FestAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{obj.banner.url}" width="300" height="130" style="object-fit:cover;" />')
         return "No image"
     banner_preview.short_description = 'Banner Preview'
+
+class TuntunanShalatPageInline(admin.TabularInline):
+    model = TuntunanShalatPage
+    extra = 1
+
+
+@admin.register(TuntunanShalat)
+class TuntunanShalatAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "title", "is_active")
+    list_editable = ("order", "is_active")
+    search_fields = ("title",)
+    inlines = [TuntunanShalatPageInline]
+
+
+@admin.register(TuntunanShalatPage)
+class TuntunanShalatPageAdmin(admin.ModelAdmin):
+    list_display = ("id", "tuntunan", "page_number", "page_title")
+    list_filter = ("tuntunan",)
+    search_fields = ("page_title", "tuntunan__title")
+
+
+@admin.register(TuntunanShalatImage)
+class TuntunanShalatImageAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "image", "created_at")
+    search_fields = ("title",)
+
+
+class DoaContentInline(admin.TabularInline):
+    model = DoaContent
+    extra = 1
+
+
+@admin.register(DoaCategory)
+class DoaCategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "title", "is_active")
+    list_editable = ("order", "is_active")
+    search_fields = ("title",)
+
+
+@admin.register(Doa)
+class DoaAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "title", "category", "is_active")
+    list_editable = ("order", "is_active")
+    list_filter = ("category",)
+    search_fields = ("title", "page_title")
+    inlines = [DoaContentInline]
+
+
+@admin.register(DoaContent)
+class DoaContentAdmin(admin.ModelAdmin):
+    list_display = ("id", "doa", "order", "sub_title")
+    list_filter = ("doa",)
+    search_fields = ("sub_title", "arabic_text", "translation")
+
+
+@admin.register(DoaBookmark)
+class DoaBookmarkAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "doa", "created_at")
+    list_filter = ("created_at",)
+    search_fields = ("user__username", "user__email", "doa__title")

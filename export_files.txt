@@ -1,0 +1,1188 @@
+=============================================
+FILE: main/endpoint/ai/chat_views.py
+=============================================
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from main.models_ai import ChatConversation, ChatMessage
+from main.serializers.ai_serializers import ChatConversationSerializer
+# from main_client import get_islamic_response
+from main.utils_rag.integration import RAGIntegration
+from main.fallback_ai_client import get_islamic_response
+import json
+import time
+
+# Optional: untuk membersihkan cache saat delete conversation
+# try:
+#     from main_client import _chat_sessions as chat_sessions
+# except ImportError:
+#     chat_sessions = {}
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_message(request):
+    """Send message to AI and get response"""
+    print(f"\n[VIEW] ========== SEND MESSAGE START ==========")
+    view_start = time.time()
+    
+    try:
+        data = json.loads(request.body)
+        message = data.get('message', '')
+        conversation_id = data.get('conversation_id', None)
+        
+        print(f"[VIEW] User: {request.user.username}")
+        print(f"[VIEW] Message: {message[:50]}...")
+        print(f"[VIEW] Conversation ID from request: {conversation_id}")
+        
+        if not message:
+            return JsonResponse({
+                "success": False,
+                "message": "Message is required"
+            }, status=400)
+        
+        # Get or create conversation
+        conv_start = time.time()
+        if conversation_id:
+            print(f"[VIEW] Fetching existing conversation: {conversation_id}")
+            conversation = get_object_or_404(ChatConversation, id=conversation_id, user=request.user)
+            is_first = conversation.messages.count() == 0
+            print(f"[VIEW] Existing conversation, is_first: {is_first}, message count: {conversation.messages.count()}")
+        else:
+            print(f"[VIEW] Creating new conversation")
+            conversation = ChatConversation.objects.create(
+                user=request.user,
+                title=message[:50]
+            )
+            is_first = True
+            print(f"[VIEW] New conversation created with ID: {conversation.id}")
+        conv_time = time.time() - conv_start
+        print(f"[VIEW] Conversation fetch/create time: {conv_time:.3f}s")
+        
+        # Save user message
+        save_start = time.time()
+        user_msg = ChatMessage.objects.create(
+            conversation=conversation,
+            role='user',
+            text=message
+        )
+        save_time = time.time() - save_start
+        print(f"[VIEW] Save user message time: {save_time:.3f}s")
+        
+        # Get AI response via METODE 7 INTEGRATION
+        ai_start = time.time()
+        print(f"[VIEW] Calling API with Metode 7...")
+        
+        # Panggil RAGIntegration
+        rag_result = RAGIntegration.generate_metode7_response(
+            message, 
+            conversation_id=conversation.id,
+            is_first_message=is_first
+        )
+        
+        ai_time = time.time() - ai_start
+        print(f"[VIEW] API total time: {ai_time:.3f}s")
+        
+        # Save AI response (simpan teks bersihnya ke DB)
+        save_ai_start = time.time()
+        assistant_msg = ChatMessage.objects.create(
+            conversation=conversation,
+            role='assistant',
+            text=rag_result["reply"]
+        )
+        save_ai_time = time.time() - save_ai_start
+        print(f"[VIEW] Save AI message time: {save_ai_time:.3f}s")
+        
+        total_time = time.time() - view_start
+        print(f"[VIEW] ========== TOTAL VIEW TIME: {total_time:.3f}s ==========\n")
+        
+        return JsonResponse({
+            "success": True,
+            "conversation_id": conversation.id,
+            "is_first_message": is_first,
+            "verification_status": rag_result["verification_status"], 
+            "verified_sources": rag_result["verified_sources"],       
+            "user_message": {
+                "id": user_msg.id,
+                "text": user_msg.text,
+                "created_at": user_msg.created_at
+            },
+            "assistant_message": {
+                "id": assistant_msg.id,
+                "text": assistant_msg.text,
+                "created_at": assistant_msg.created_at
+            }
+        }, status=200)
+        
+    except Exception as e:
+        total_time = time.time() - view_start
+        print(f"[VIEW] ERROR: {e}")
+        print(f"[VIEW] Total time before error: {total_time:.3f}s")
+        print(f"[VIEW] ========== END ==========\n")
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_conversations(request):
+    """Get all conversations for current user"""
+    try:
+        conv_start = time.time()
+        conversations = ChatConversation.objects.filter(user=request.user)
+        serializer = ChatConversationSerializer(conversations, many=True)
+        elapsed = time.time() - conv_start
+        print(f"[VIEW] Get conversations time: {elapsed:.3f}s")
+        
+        return JsonResponse({
+            "success": True,
+            "data": serializer.data
+        }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_conversation_detail(request, conversation_id):
+    """Get detailed conversation with all messages"""
+    try:
+        conv_start = time.time()
+        conversation = get_object_or_404(ChatConversation, id=conversation_id, user=request.user)
+        serializer = ChatConversationSerializer(conversation)
+        elapsed = time.time() - conv_start
+        print(f"[VIEW] Get conversation detail time: {elapsed:.3f}s")
+        
+        return JsonResponse({
+            "success": True,
+            "data": serializer.data
+        }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_conversation(request, conversation_id):
+    """Delete a conversation"""
+    try:
+        conversation = get_object_or_404(ChatConversation, id=conversation_id, user=request.user)
+        
+        # Hapus chat session dari cache jika ada
+        if conversation.id in chat_sessions:
+            del chat_sessions[conversation.id]
+        
+        conversation.delete()
+        
+        return JsonResponse({
+            "success": True,
+            "message": "Conversation deleted"
+        }, status=200)
+        
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)}, status=400)
+=============================================
+FILE: main/urls.py
+=============================================
+# main/urls.py
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from . import views
+from .endpoint.social import feed_views, story_views, comment_views, follow_views
+from django.conf import settings
+from django.conf.urls.static import static
+from .endpoint.lifestyle import fest_views
+from .endpoint import masjid_views
+from .endpoint import klinik_views
+from .endpoint import hadis_views
+from .endpoint.ngaji import kelas_views, pelajaran_views
+from .endpoint.kisah_nabi import views as kisah_nabi_views
+from .endpoint import spiritual_views
+from .endpoint.ai import chat_views
+
+from .endpoint.tilawah import tilawah_views
+from .google_auth_views import GoogleLoginView
+
+
+from .endpoint import gamification_views
+# from .views.auth_views import CustomTokenObtainPairView 
+
+urlpatterns = [
+
+    # NOTIFICATION
+    path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
+    
+    # AUTH --------------------------------------------------------------------------------------------------------------------------
+    path('auth/login/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/verify/<str:token>/', views.verify_email, name='verify_email'),
+    path('auth/resend-verification/', views.resend_verification_email, name='resend_verification'),
+    # JADWAL SHALAT
+    path('jadwal_shalat/sync/', views.sync_prayer_month, name='sinkronisasi_jadwal_shalkat'),
+    path('jadwal_shalat/notification_preference/', views.sync_prayer_preferences, name='sinkronisasi_preferensi_notifikasi'),
+    
+    # USER--------------------------------------------------------------------------------------------------------------------
+    path('user/me/', views.users_me, name='users_me'),
+    path('user/create/', views.create_user, name='create_user'),
+    path('user/change_password/', views.change_password, name='change_password'),
+    path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
+    
+    path('user/change_banner/', views.change_user_banner, name='change_user_banner'),
+
+    # SOCIAL FEEDS (TODAY) 
+    path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
+    path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
+    path('feed/following/', feed_views.get_following_feed, name='get_following_feed'),
+    path('feed/user_like/<int:user_id>/', feed_views.get_user_liked_feeds, name='get_user_liked_feeds'),
+    path('feed/user/<int:user_id>/', feed_views.get_user_feeds, name='get_user_feeds'),
+    path('feed/create/', feed_views.create_feed, name='create_feed'),
+    path('feed/like/<int:feed_id>/', feed_views.like_feed, name='like_feed'),
+    path('feed/search/', feed_views.search_feed, name='search_feed'),
+    path('feed/user_tagged/<int:user_id>/', feed_views.get_user_tagged_feeds, name='get_user_tagged_feeds'),
+    path('feed/search_user/', feed_views.search_users, name='search_users'),
+    
+
+    # COMMENT ENDPOINTS
+    path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
+    path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
+    path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
+    path('feed/comment/reply/<int:comment_id>/', comment_views.reply_comment, name='reply_comment'), 
+    path('feed/comment/like/<int:comment_id>/', comment_views.like_comment, name='like_comment'),   
+    # STORIES 
+    path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
+    path('stories/local/', story_views.get_local_stories, name='get_local_stories'),
+    path('stories/following/', story_views.get_following_stories, name='get_following_stories'),
+    path('stories/create/', story_views.create_story, name='create_story'),  # Tambah ini
+
+    path('stories/seen/<int:story_id>/', story_views.mark_story_seen, name='mark_story_seen'),
+
+
+    # FOLLOW ENDPOINTS
+    path('follow/<int:user_id>/', follow_views.follow_user, name='follow_user'),
+    path('unfollow/<int:user_id>/', follow_views.unfollow_user, name='unfollow_user'),
+    path('followers/<int:user_id>/', follow_views.get_followers, name='get_followers'),
+    path('following/<int:user_id>/', follow_views.get_following, name='get_following'),
+    path('follow/check/<int:user_id>/', follow_views.check_follow_status, name='check_follow_status'), 
+
+
+    # LIFESTYLE - FEST
+    path('fest/', fest_views.get_fests, name='get_fests'),
+    path('fest/<int:fest_id>/', fest_views.get_fest_detail, name='get_fest_detail'),
+    path('fest/category/<str:category>/', fest_views.get_fests_by_category, name='get_fests_by_category'),
+
+    # NEARBY MASJIDS & REVIEWS
+    path('masjids/nearby/', masjid_views.nearby_masjids, name='nearby_masjids'),
+    path('masjids/<str:place_id>/', masjid_views.masjid_detail, name='masjid_detail'),
+    path('masjids/<str:place_id>/review/', masjid_views.create_masjid_review, name='create_masjid_review'),
+    path('masjids/<str:place_id>/reviews/', masjid_views.get_masjid_reviews, name='get_masjid_reviews'),
+    path('masjids/review/check/<str:place_id>/', masjid_views.check_user_review, name='check_user_review'),
+    path('masjids/review/delete/<int:review_id>/', masjid_views.delete_masjid_review, name='delete_masjid_review'),
+
+    path('kliniks/nearby/', klinik_views.nearby_kliniks, name='nearby_kliniks'),
+    path('kliniks/<str:place_id>/', klinik_views.klinik_detail, name='klinik_detail'),
+    path('kliniks/<str:place_id>/review/', klinik_views.create_klinik_review, name='create_klinik_review'),
+    path('kliniks/<str:place_id>/reviews/', klinik_views.get_klinik_reviews, name='get_klinik_reviews'),
+    path('kliniks/review/check/<str:place_id>/', klinik_views.check_user_klinik_review, name='check_user_klinik_review'),
+    path('kliniks/review/delete/<int:review_id>/', klinik_views.delete_klinik_review, name='delete_klinik_review'),
+
+    # BELAJAR NGAJI - KELAS TAHFIDZ
+    path('ngaji/kelas/', kelas_views.get_all_kelas, name='get_all_kelas'),
+    path('ngaji/kelas/cari/', kelas_views.cari_kelas, name='cari_kelas'),
+    path('ngaji/kelas/<int:kelas_id>/', kelas_views.get_kelas_detail, name='get_kelas_detail'),
+    path('ngaji/kelas/<int:kelas_id>/daftar/', kelas_views.daftar_kelas, name='daftar_kelas'),
+    
+    # BELAJAR NGAJI - PELAJARAN
+    path('ngaji/pelajaran/', pelajaran_views.get_all_pelajaran, name='get_all_pelajaran'),
+    path('ngaji/pelajaran/<int:pelajaran_id>/', pelajaran_views.get_detail_pelajaran, name='get_detail_pelajaran'),
+    path('ngaji/pelajaran/materi/<int:detail_pelajaran_id>/', pelajaran_views.get_materi_pelajaran, name='get_materi_pelajaran'),
+    path('ngaji/pelajaran/progress/<int:detail_pelajaran_id>/', pelajaran_views.update_progress, name='update_progress'),
+
+    path('kisah-nabi/', kisah_nabi_views.get_all_kisah_nabi, name='get_all_kisah_nabi'),
+    path('kisah-nabi/popular/', kisah_nabi_views.get_popular_kisah_nabi, name='get_popular_kisah_nabi'),
+    path('kisah-nabi/<int:kisah_id>/', kisah_nabi_views.get_kisah_nabi_detail, name='get_kisah_nabi_detail'),
+    path('kisah-nabi/<int:kisah_id>/read/', kisah_nabi_views.increment_read_count, name='increment_read_count'),
+    path('kisah-nabi/episode/<int:episode_id>/read/', kisah_nabi_views.increment_episode_read_count, name='increment_episode_read_count'),
+
+    path('prayer/monitor/', spiritual_views.get_prayer_monitor, name='get_prayer_monitor'),
+    path('prayer/complete/', spiritual_views.mark_prayer_completed, name='mark_prayer_completed'),
+    path('prayer/history/', spiritual_views.get_prayer_history, name='get_prayer_history'),
+    path('prayer/statistics/', spiritual_views.get_prayer_statistics, name='get_prayer_statistics'),
+    path('prayer/preferences/', spiritual_views.update_notification_preferences, name='update_notification_preferences'),
+
+     # SMART AI
+    path('ai/chat/send/', chat_views.send_message, name='ai_send_message'),
+    path('ai/chat/conversations/', chat_views.get_conversations, name='ai_get_conversations'),
+    path('ai/chat/conversation/<int:conversation_id>/', chat_views.get_conversation_detail, name='ai_conversation_detail'),
+    path('ai/chat/conversation/<int:conversation_id>/delete/', chat_views.delete_conversation, name='ai_delete_conversation'),
+    path('hadis/hybrid-search/', hadis_views.test_hybrid_search, name='hybrid_search'),
+
+    # tilawah
+    path('tilawah/ayah/random/', tilawah_views.get_random_ayah, name='tilawah_random_ayah'),
+    path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
+    path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
+    path('tilawah/session/<int:session_id>/', tilawah_views.get_session_detail, name='tilawah_session_detail'),
+
+
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
+    path('auth/social/', include('social_django.urls', namespace='social')),
+
+
+    path('leaderboard/info/', gamification_views.leaderboard_info, name='leaderboard_info'),
+    path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
+    path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
+
+    
+
+    
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=============================================
+FILE: main/fallback_ai_client.py
+=============================================
+# main/fallback_ai_client.py
+import time
+import re
+from groq import Groq
+from django.conf import settings
+from main.models_ai import ChatMessage
+from main.utils_rag.prompts import get_metode7_system_prompt
+
+groq_client = Groq(api_key=settings.GROQ_API_KEY)
+
+# ===== MODEL CHAIN (PRIORITAS) =====
+MODEL_CHAIN = [
+    "openai/gpt-oss-20b",
+    "qwen/qwen3-32b",
+    "llama-3.3-70b-versatile",
+    "meta-llama/llama-4-scout-17b-16e-instruct",
+]
+
+# Model yang mendukung parameter reasoning_effort / include_reasoning di Groq
+REASONING_MODELS_PREFIXES = ("openai/gpt-oss", "qwen/")
+
+# ===== KEYWORD DETEKSI WARIS =====
+WARIS_KEYWORDS = [
+    "waris",
+    "warisan",
+    "faraid",
+    "ahli waris",
+    "pusaka",
+    "harta peninggalan",
+    "tirkah",
+    "mirats",
+    "bagian warisan",
+    "pembagian harta warisan",
+    "hitung waris",
+    "perhitungan waris",
+    "hukum waris",
+    "cara waris",
+    "pembagian harta"
+]
+
+# ===== KALIMAT STATIS UNTUK KALKULATOR WARIS =====
+KALKULATOR_WARIS_MESSAGE = (
+    "\n\n💡 *Tips:* Untuk perhitungan waris yang lebih akurat dan sesuai dengan kasus spesifik Anda, "
+    "saya sarankan menggunakan fitur **Kalkulator Waris** yang tersedia di aplikasi Smart Hijrah. "
+    "Fitur ini akan membantu Anda menghitung pembagian waris secara otomatis dan presisi."
+)
+
+# ===== BASE INSTRUCTION (SAMA SEPERTI GEMINI) =====
+BASE_INSTRUCTION = (
+    "Anda adalah 'Smart Hijrah Assistant', seorang pakar dan agamawan Islam yang berwawasan luas, "
+    "santun, bijaksana, dan objektif. Jawablah setiap pertanyaan pengguna dalam Bahasa Indonesia "
+    "yang formal, sejuk, dan penuh hormat.\n\n"
+    "Aturan Penulisan Jawaban:\n"
+    "1. WAJIB menyertakan referensi dalil yang shahih (nama surah dan nomor ayat untuk Al-Qur'an, "
+    "atau perawi hadis seperti HR. Bukhari, Muslim, dll. jika mengutip hadis).\n"
+    "2. Jika terdapat perbedaan pandangan fiqih yang debatable di antara para ulama, Anda HARUS "
+    "bersikap netral. Sebutkan secara jelas pandangan dari masing-masing madzhab utama.\n"
+    "3. Hindari menghakimi pengguna atau mengeluarkan fatwa mutlak tanpa dasar dalil yang jelas.\n"
+    "4. Jika pertanyaan tidak terkait dengan Islam, ibadah, akhlak, atau kehidupan Muslim, "
+    "jawab dengan: 'Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. "
+    "Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.'"
+)
+
+
+def chat_with_fallback(messages, max_retries=2):
+    """Kirim chat dengan fallback otomatis ke model Groq lain.
+    Returns: (response_text, model_name)
+    """
+    last_error = None
+
+    for model_name in MODEL_CHAIN:
+        for attempt in range(max_retries):
+            try:
+                print(f"[FALLBACK] Trying: {model_name} (attempt {attempt+1}/{max_retries})")
+
+                # Parameter khusus untuk model reasoning (gpt-oss, qwen3)
+                extra_kwargs = {}
+                if model_name.startswith(REASONING_MODELS_PREFIXES):
+                    extra_kwargs["reasoning_effort"] = "low"   # kurangi token yg "dipakai mikir"
+                    extra_kwargs["include_reasoning"] = False  # reasoning tidak nyampur ke content
+
+                response = groq_client.chat.completions.create(
+                    model=model_name,
+                    messages=messages,
+                    temperature=0.7,
+                    max_tokens=2048,  # dinaikkan dari 1024 agar reasoning tidak menghabiskan seluruh kuota
+                    **extra_kwargs,
+                )
+
+                choice = response.choices[0]
+                result = choice.message.content
+                finish_reason = getattr(choice, "finish_reason", None)
+
+                print(f"[FALLBACK] finish_reason={finish_reason} | panjang jawaban={len(result) if result else 0}")
+
+                # ===== VALIDASI: jawaban kosong dianggap GAGAL, bukan sukses =====
+                if not result or not result.strip():
+                    print(
+                        f"[FALLBACK] ⚠️ {model_name} mengembalikan jawaban kosong "
+                        f"(finish_reason={finish_reason}), mencoba lagi..."
+                    )
+                    last_error = Exception(
+                        f"Empty content from {model_name} (finish_reason={finish_reason})"
+                    )
+                    time.sleep(1)
+                    continue
+
+                print(f"[FALLBACK] ✅ Success: {model_name}")
+                return result, model_name
+
+            except Exception as e:
+                error_msg = str(e)
+                print(f"[FALLBACK] ❌ Error {model_name}: {error_msg[:80]}")
+                last_error = e
+
+                if "429" in error_msg or "rate" in error_msg.lower():
+                    time.sleep(5)
+                elif "413" in error_msg:
+                    print(f"[FALLBACK] ⚠️ Payload too large, skipping to next model...")
+                    break
+                else:
+                    time.sleep(1)
+
+                continue
+
+        print(f"[FALLBACK] ⚠️ Model {model_name} failed, trying next...")
+
+    return f"Maaf, semua layanan AI sedang sibuk. Terakhir error: {str(last_error)[:150]}", "none"
+
+
+def is_waris_question(text):
+    """Cek apakah pertanyaan terkait waris/faraid."""
+    text_lower = text.lower()
+    for keyword in WARIS_KEYWORDS:
+        if keyword in text_lower:
+            return True
+    return False
+
+
+def get_islamic_response(user_message, conversation_id=None, is_first_message=True,use_metode7=False):
+    """
+    Wrapper utama untuk Smart AI.
+    - Kirim 3 pertanyaan terakhir + jawaban (dipotong) agar konteks tetap terjaga.
+    - Bedakan pesan pertama vs lanjutan (salam, perkenalan, dll)
+    - Deteksi keyword waris → sisipkan kalimat statis di akhir jawaban.
+    """
+    print(f"\n[FALLBACK] ========== PERMINTAAN BARU ==========")
+    print(f"[FALLBACK] Conversation ID: {conversation_id}")
+    print(f"[FALLBACK] Status percakapan: {'Pertama' if is_first_message else 'Lanjutan'}")
+    print(f"[FALLBACK] Panjang prompt: {len(user_message)} karakter")
+
+    total_start_time = time.time()
+
+    try:
+        # ===== BANGUN PROMPT DENGAN 3 PERTANYAAN + JAWABAN TERAKHIR =====
+        prompt_parts = []
+
+        # 1. Base instruction (dengan aturan nomor 4)
+        
+        if use_metode7:
+            prompt_parts.append(get_metode7_system_prompt())
+        else:
+            prompt_parts.append(BASE_INSTRUCTION)
+
+        # 2. Instruksi khusus untuk pesan pertama atau lanjutan
+        if is_first_message:
+            prompt_parts.append(
+                "\n\nKhusus untuk pesan pertama ini, awali jawaban Anda dengan salam 'Assalamu'alaikum' "
+                "dan perkenalkan diri Anda singkat sebagai Smart Hijrah Assistant."
+            )
+        else:
+            prompt_parts.append(
+                "\n\nIni adalah kelanjutan percakapan. Jangan ulangi salam atau perkenalan diri. "
+                "Langsung jawab pertanyaan."
+            )
+
+        # 3. Riwayat 3 pertanyaan terakhir + jawaban (jika ada)
+        if not is_first_message and conversation_id:
+            # Ambil 3 pertanyaan terakhir dari USER
+            last_questions = ChatMessage.objects.filter(
+                conversation_id=conversation_id,
+                role='user'
+            ).order_by('-created_at')[:3]
+
+            last_questions = list(reversed(last_questions))
+
+            if last_questions:
+                prompt_parts.append("\n\nBerikut adalah riwayat percakapan sebelumnya (3 pertanyaan terakhir):")
+
+                for idx, q in enumerate(last_questions, 1):
+                    # Cari jawaban AI untuk pertanyaan ini
+                    ai_answer = ChatMessage.objects.filter(
+                        conversation_id=conversation_id,
+                        role='assistant',
+                        created_at__gt=q.created_at
+                    ).first()
+
+                    prompt_parts.append(f"\n{idx}. Pertanyaan user: {q.text}")
+
+                    if ai_answer:
+                        # Potong jawaban AI maksimal 1000 karakter
+                        answer_preview = ai_answer.text[:1000]
+                        if len(ai_answer.text) > 1000:
+                            answer_preview += "... (dipotong)"
+                        prompt_parts.append(f"   Jawaban AI: {answer_preview}")
+
+                prompt_parts.append(
+                    "\n\nINSTRUKSI: "
+                    "Jika pertanyaan saat ini masih bertopik sama dengan salah satu pertanyaan di atas, "
+                    "gunakan informasi dari percakapan sebelumnya sebagai referensi. "
+                    "Jika pertanyaan saat ini berbeda topik, ABAIKAN semua percakapan sebelumnya dan "
+                    "fokus hanya pada pertanyaan saat ini."
+                )
+
+        # 4. Pertanyaan user saat ini
+        prompt_parts.append(f"\nPertanyaan user saat ini: {user_message}")
+
+        final_prompt = " ".join(prompt_parts)
+
+        # ===== BANGUN MESSAGES UNTUK API =====
+        messages = [
+            {
+                "role": "system",
+                "content": "Anda adalah 'Smart Hijrah Assistant', pakar Islam yang santun dan berwawasan luas."
+            },
+            {
+                "role": "user",
+                "content": final_prompt
+            }
+        ]
+
+        print(f"[FALLBACK] Memanggil API dengan {len(messages)} pesan...")
+        print(f"[FALLBACK] Total prompt length: {len(final_prompt)} karakter")
+
+        api_call_start_time = time.time()
+
+        response_text, used_model = chat_with_fallback(messages)
+
+        print(f"[FALLBACK] ✅ Model yang digunakan: {used_model}")
+
+        # ===== DETEKSI WARIS & SISIPKAN KALIMAT STATIS =====
+        if is_waris_question(user_message):
+            print(f"[FALLBACK] 🔍 Detected waris-related question, adding calculator suggestion...")
+            response_text = response_text + KALKULATOR_WARIS_MESSAGE
+
+        api_duration = time.time() - api_call_start_time
+        print(f"[FALLBACK] Panggilan API selesai. Waktu: {api_duration:.4f}s")
+        print(f"[FALLBACK] TOTAL WAKTU: {time.time() - total_start_time:.4f}s")
+        print(f"[FALLBACK] ========== PERMINTAAN SELESAI ==========\n")
+
+        return response_text
+
+    except Exception as e:
+        print(f"[FALLBACK] ERROR: {e}")
+        return f"Maaf, saya mengalami masalah teknis. Error: {str(e)}", "none"
+=============================================
+FILE: main/models_hadis.py
+=============================================
+# main/models_hadis.py
+from django.db import models
+from django.contrib.postgres.search import SearchVectorField
+
+from pgvector.django import VectorField
+
+class KitabHadis(models.Model):
+    """Master kitab hadis (Bukhari, Muslim, dll)"""
+    nama_file = models.CharField(max_length=50, unique=True)  # 'abu-daud'
+    nama_indonesia = models.CharField(max_length=100)         # 'Sunan Abu Daud'
+    jumlah_hadis = models.IntegerField(default=0)
+    
+    class Meta:
+        db_table = 'hadis_kitab'
+        ordering = ['nama_indonesia']
+    
+    def __str__(self):
+        return self.nama_indonesia
+
+
+class Hadis(models.Model):
+    """Model untuk menyimpan hadis"""
+    kitab = models.ForeignKey(KitabHadis, on_delete=models.CASCADE, related_name='hadis')
+    nomor = models.IntegerField()
+    embedding = VectorField(dimensions=1024, null=True, blank=True)
+    # Teks asli (dengan sanad) - untuk display
+    teks_arab = models.TextField()
+    terjemahan = models.TextField()
+    
+    # Teks bersih (tanpa sanad) - untuk search
+    teks_hadis = models.TextField()      # Arab tanpa sanad
+    isi_hadis = models.TextField()       # Indonesia tanpa sanad
+    
+    # Untuk full-text search (PostgreSQL)
+    search_vector = SearchVectorField(null=True, blank=True)
+    
+    class Meta:
+        db_table = 'hadis'
+        unique_together = ('kitab', 'nomor')
+        indexes = [
+            models.Index(fields=['kitab', 'nomor']),
+        ]
+        ordering = ['kitab', 'nomor']
+    
+    def __str__(self):
+        return f"{self.kitab.nama_indonesia} No. {self.nomor}"
+=============================================
+FILE: main/models_tilawah.py
+=============================================
+# models_tilawah.py
+
+from django.db import models
+from django.conf import settings  # ganti import User
+from pgvector.django import VectorField
+
+LEVEL_CHOICES = [
+    ('basic', 'Basic'),
+    ('intermediate', 'Intermediate'),
+    ('expert', 'Expert'),
+]
+
+class TilawahSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # pakai string
+    surah_number = models.IntegerField()
+    surah_name = models.CharField(max_length=100)
+    ayah_number = models.IntegerField()
+    ayah_text = models.TextField()
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    tajwid_score = models.FloatField(null=True, blank=True)
+    word_accuracy = models.FloatField(null=True, blank=True)
+    audio_file = models.FileField(upload_to='tilawah_audio/', null=True, blank=True)
+    transcript = models.TextField(null=True, blank=True)
+    feedback_data = models.JSONField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user} - {self.surah_name}:{self.ayah_number}"
+
+
+
+class TilawahAyahPool(models.Model):
+    surah_number = models.IntegerField()
+    surah_name = models.CharField(max_length=100)
+    surah_name_id = models.CharField(max_length=100, blank=True, null=True)  # Nama surah dalam Bahasa Indonesia
+    ayah_number = models.IntegerField()
+    ayah_text = models.TextField()
+    ayah_transliteration = models.TextField(blank=True, null=True)
+    ayah_translation = models.TextField(blank=True, null=True)
+    juz = models.IntegerField(blank=True, null=True)  # Nomor juz (1-30)
+
+    embedding = VectorField(dimensions=1024, null=True, blank=True)
+    level = models.CharField(max_length=20, choices=[
+        ('basic', 'Basic'),
+        ('intermediate', 'Intermediate'),
+        ('expert', 'Expert')
+    ], default='basic')
+    audio_url = models.URLField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'tilawah_ayah_pool'
+        ordering = ['surah_number', 'ayah_number']
+        unique_together = ('surah_number', 'ayah_number')
+
+    def __str__(self):
+        return f"{self.surah_name}:{self.ayah_number} ({self.level})"
+=============================================
+FILE: main/utils_hadis/search.py
+=============================================
+# main/utils_hadis/search.py
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from main.models_hadis import Hadis, KitabHadis
+import re
+
+
+def search_hadis_by_keyword(query, limit=10):
+    """
+    Cari hadis berdasarkan kata kunci di teks + kitab + nomor
+    """
+    if not query:
+        return []
+    
+    query_lower = query.lower()
+    kitab_match = None
+    nomor_match = None
+    
+    # ===== 1. DETEKSI KITAB (lebih fleksibel) =====
+    all_kitab = KitabHadis.objects.all()
+    
+    for kitab in all_kitab:
+        kitab_words = kitab.nama_indonesia.lower().split()
+        # Cek apakah ada kata dari nama kitab yang muncul di query
+        for word in kitab_words:
+            if word in query_lower and len(word) > 2:
+                kitab_match = kitab
+                break
+        if kitab_match:
+            break
+    
+    # ===== 2. DETEKSI NOMOR =====
+    number_pattern = r'nomor\s*(\d+)|no\.?\s*(\d+)'
+    match = re.search(number_pattern, query_lower)
+    if match:
+        nomor_match = int(match.group(1) or match.group(2))
+    
+    # ===== 3. QUERY SPESIFIK (kitab + nomor) =====
+    if kitab_match and nomor_match:
+        results = Hadis.objects.filter(
+            kitab=kitab_match,
+            nomor=nomor_match
+        )[:limit]
+        if results:
+            return list(results)
+    
+    # ===== 4. QUERY KITAB SAJA =====
+    if kitab_match:
+        results = Hadis.objects.filter(kitab=kitab_match)[:limit]
+        if results:
+            return list(results)
+    
+    # ===== 5. FULL-TEXT SEARCH =====
+    search_query = SearchQuery(query, config='simple')
+    results = Hadis.objects.filter(
+        search_vector=search_query
+    ).annotate(
+        rank=SearchRank(
+            SearchVector('teks_hadis', weight='A') +
+            SearchVector('isi_hadis', weight='B'),
+            search_query
+        )
+    ).filter(rank__gt=0.1).order_by('-rank')[:limit]
+    
+    if results:
+        return list(results)
+    
+    return []
+=============================================
+FILE: main/utils_hadis/hybrid_search.py
+=============================================
+# main/utils_hadis/hybrid_search.py
+import re
+from main.utils_hadis.semantic_search import semantic_search_quran, semantic_search_hadis
+from main.utils_hadis.search import search_hadis_by_keyword
+
+
+def is_specific_query(query):
+    """
+    Deteksi apakah query meminta hal spesifik (nomor, kitab, ayat tertentu)
+    """
+    patterns = [
+        r'nomor\s*\d+',           # "nomor 3"
+        r'no\.?\s*\d+',           # "no. 3", "no 3"
+        r'ayat\s*\d+',            # "ayat 255"
+        r'surah\s*\d+',           # "surah 2"
+        r'\d+\s*:',               # "2:255"
+        r'hr\s*\.?\s*\w+',        # "HR Abu Daud"
+        r'riwayat\s*\w+',         # "riwayat Muslim"
+        r'abu daud',              # "abu daud"
+        r'bukhari',               # "bukhari"
+        r'muslim',                # "muslim"
+        r'tirmidzi',              # "tirmidzi"
+        r'nasai',                 # "nasai"
+        r'ibnu majah',            # "ibnu majah"
+        r'malik',                 # "malik"
+        r'ahmad',                 # "ahmad"
+        r'darimi',                # "darimi"
+    ]
+    query_lower = query.lower()
+    for pattern in patterns:
+        if re.search(pattern, query_lower):
+            return True
+    return False
+
+
+def _format_results(results, limit=5):
+    """Format hasil agar JSON serializable"""
+    formatted = []
+    for r in results[:limit]:
+        # Deteksi source
+        source = getattr(r, 'source', None)
+        if not source:
+            if hasattr(r, 'surah_name'):
+                source = 'quran'
+            elif hasattr(r, 'kitab'):
+                source = 'hadis'
+            else:
+                source = 'unknown'
+        
+        # Ambil text
+        text = getattr(r, 'isi_hadis', None) or getattr(r, 'ayah_translation', None) or getattr(r, 'ayah_text', '')
+        arabic = getattr(r, 'teks_hadis', None) or getattr(r, 'ayah_text', '')
+        
+        # Kitab (convert ke string)
+        kitab = None
+        if hasattr(r, 'kitab') and r.kitab:
+            kitab = str(r.kitab)
+        
+        item = {
+            'source': source,
+            'kitab': kitab,
+            'nomor': getattr(r, 'nomor', None),
+            'surah': getattr(r, 'surah_name', None),
+            'ayah': getattr(r, 'ayah_number', None),
+            'text': text[:500] if text else '',
+            'arabic': arabic[:300] if arabic else '',
+            'similarity': getattr(r, 'similarity', 0),
+        }
+        formatted.append(item)
+    
+    return formatted
+
+
+def hybrid_search(query, limit=5):
+    """
+    Hybrid search dengan logika terpisah:
+    - Query spesifik (nomor/kitab) → keyword search SAJA
+    - Query umum → semantic search dulu, baru keyword
+    """
+    results = []
+    
+    # ===== KASUS 1: QUERY SPESIFIK =====
+    if is_specific_query(query):
+        # 1a. Coba keyword search di hadis
+        keyword_results = search_hadis_by_keyword(query, limit=limit)
+        if keyword_results:
+            return _format_results(keyword_results, limit)
+        
+        # 1b. Jika keyword gagal, coba semantic sebagai fallback
+        semantic_results = semantic_search_hadis(query, limit=limit, threshold=0.3)
+        if semantic_results:
+            return _format_results(semantic_results, limit)
+        
+        # 1c. Jika masih gagal, coba Quran
+        quran_results = semantic_search_quran(query, limit=limit, threshold=0.3)
+        if quran_results:
+            return _format_results(quran_results, limit)
+        
+        return []
+    
+    # ===== KASUS 2: QUERY UMUM (natural language) =====
+    # 2a. Prioritas Quran
+    quran_results = semantic_search_quran(query, limit=5, threshold=0.5)
+    if quran_results:
+        results.extend(quran_results)
+    
+    # 2b. Jika Quran tidak ketemu, cari Hadis
+    if not results:
+        hadis_results = semantic_search_hadis(query, limit=5, threshold=0.5)
+        if hadis_results:
+            results.extend(hadis_results)
+    
+    # 2c. Jika semantic gagal, coba keyword
+    if not results:
+        keyword_results = search_hadis_by_keyword(query, limit=limit)
+        if keyword_results:
+            for r in keyword_results:
+                r.source = 'hadis'
+                r.similarity = 0.8
+            results.extend(keyword_results)
+    
+    return _format_results(results, limit)
+=============================================
+FILE: main/utils_rag/extractor.py
+=============================================
+# main/utils_rag/extractor.py
+import re
+
+def extract_claims(llm_response_text):
+    if not llm_response_text:
+        return "", []
+
+    # Regex mencari blok [DALIL_START] ... [DALIL_END]
+    pattern = r"\[DALIL_START\](.*?)\[DALIL_END\]"
+    match = re.search(pattern, llm_response_text, re.DOTALL)
+
+    claimed_sources = []
+    clean_narration = llm_response_text
+
+    if match:
+        raw_claims_block = match.group(1).strip()
+        # Hapus blok dalil dari narasi
+        clean_narration = re.sub(pattern, "", llm_response_text, flags=re.DOTALL).strip()
+        
+        # Jika setelah dihapus malah kosong (berarti AI salah menaruh seluruh jawaban di dalam tag), kembalikan teks asal!
+        if not clean_narration:
+            clean_narration = llm_response_text.replace("[DALIL_START]", "").replace("[DALIL_END]", "").strip()
+
+        if raw_claims_block:
+            for line in raw_claims_block.split('\n'):
+                line = line.strip().lstrip('- ').strip()
+                if not line or '|' not in line:
+                    continue
+                
+                parts = [p.strip() for p in line.split('|')]
+                source_type = parts[0].upper() if len(parts) > 0 else ""
+
+                try:
+                    if source_type == "QURAN" and len(parts) >= 3:
+                        claimed_sources.append({"type": "QURAN", "surah": int(parts[1]), "ayah": int(parts[2]), "raw": line})
+                    elif source_type == "HADIS" and len(parts) >= 3:
+                        kitab_name = parts[1].lower().replace(" ", "-")
+                        claimed_sources.append({"type": "HADIS", "kitab": kitab_name, "nomor": int(parts[2]), "raw": line})
+                    elif source_type == "EKSTERNAL" and len(parts) >= 2:
+                        claimed_sources.append({"type": "EKSTERNAL", "detail": " ".join(parts[1:]), "raw": line})
+                except ValueError:
+                    continue
+    else:
+        # Debugging jika model lupa pakai tag [DALIL_START]
+        print("[EXTRACTOR] Tag [DALIL_START] tidak ditemukan. Menggunakan seluruh teks sebagai narasi.")
+
+    return clean_narration, claimed_sources
+=============================================
+FILE: main/utils_rag/integration.py
+=============================================
+# main/utils_rag/integration.py
+from main.fallback_ai_client import get_islamic_response
+from main.utils_rag.extractor import extract_claims
+from main.utils_rag.verifier_guardrails import verify_and_apply_guardrails
+
+class RAGIntegration:
+    @staticmethod
+    def generate_metode7_response(user_message, conversation_id=None, is_first_message=True):
+        print(f"\n[METODE 7] Memulai pemrosesan untuk: '{user_message[:40]}...'")
+        
+        # 1. Panggil AI Client (dengan flag use_metode7=True)
+        raw_llm_output = get_islamic_response(
+            user_message, 
+            conversation_id=conversation_id, 
+            is_first_message=is_first_message,
+            use_metode7=True
+        )
+        
+        # 2. Ekstraksi Klaim Dalil
+        clean_text, claims = extract_claims(raw_llm_output)
+        print(f"[METODE 7] Ditemukan {len(claims)} klaim dalil dari LLM.")
+        
+        # 3. Verifikasi & Guardrails
+        verified_sources, status_global = verify_and_apply_guardrails(claims, user_query=user_message)
+        print(f"[METODE 7] Status Global: {status_global}")
+        
+        return {
+            "reply": clean_text,
+            "verification_status": status_global,
+            "verified_sources": verified_sources,
+            "raw_output_debug": raw_llm_output
+        }
+=============================================
+FILE: main/utils_rag/prompts.py
+=============================================
+# main/utils_rag/prompts.py
+
+def get_metode7_system_prompt():
+    return (
+        "Anda adalah 'Smart Hijrah Assistant', seorang pakar dan agamawan Islam yang berwawasan luas, "
+        "santun, bijaksana, objektif, dan penuh hormat. Jawablah setiap pertanyaan dalam Bahasa Indonesia "
+        "yang formal, sejuk, dan mudah dipahami.\n\n"
+        
+        "=== ATURAN SYAR'I & FIQIH (WAJIB DIPATUHI) ===\n"
+        "1. KETERIKATAN DALIL: Setiap klaim hukum atau nasihat ibadah WAJIB disertai rujukan dalil dari Al-Qur'an, "
+        "Hadis, atau kaidah fiqih/fatwa ulama yang mu'tamad (terpercaya).\n"
+        "2. NETRALITAS KHILAFIYAH: Jika pertanyaan menyangkut masalah ikhtilaf/khilafiyah (perbedaan pendapat ulama), "
+        "Anda HARUS bersikap netral. Jelaskan pandangan mazhab-mazhab utama (Hanafi, Maliki, Syafi'i, Hanbali) "
+        "tanpa menyalahkan salah satunya.\n"
+        "3. ANTI-FATWA MUTLAK: Jangan menghakimi pengguna atau mengeluarkan fatwa takfir (mengkafirkan)/tabdi' (membid'ahkan) "
+        "secara mudah. Gunakan kalimat yang penuh hikmah.\n"
+        "4. BATASAN DOMAIN: Jika pertanyaan di luar topik Islam, ibadah, akhlak, atau kehidupan Muslim, jawab dengan: "
+        "'Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.'\n"
+        "5. ANTI-KARANG TEKS DALIL: Jika pengguna meminta nomor hadis atau ayat tertentu tanpa menyebutkan bunyinya, "
+        "JANGAN PERNAH MENGARANG ATAU MENEBAK ISI TEKSNYA! Cukup berikan pengantar santun dan tuliskan kodenya di blok [DALIL_START] "
+        "agar sistem verifikasi kami yang menarik teks aslinya dari database!\n\n"
+        
+        "=== ATURAN FORMAT RUJUKAN DALIL ===\n"
+        "Di dalam teks jawaban narasi, sebutkan nama surah/ayat atau perawi hadis secara natural.\n\n"
+        "NAMUN, sebagai tambahan WAJIB untuk verifikasi sistem, di BAGIAN PALING AKHIR jawaban Anda, "
+        "Anda HARUS menyertakan blok metadata rahasia dengan format persis seperti ini:\n\n"
+        "[DALIL_START]\n"
+        "- QURAN|<nomor_surah>|<nomor_ayat>\n"
+        "- HADIS|<nama_kitab>|<nomor_hadis>\n"
+        "- EKSTERNAL|<sumber_keterangan_atau_fatwa>\n"
+        "[DALIL_END]\n\n"
+        
+        "Daftar <nama_kitab> hadis yang VALID (gunakan huruf kecil tanpa spasi/gelar):\n"
+        "bukhari, muslim, abu-daud, tirmidzi, nasai, ibnu-majah, malik, ahmad, darimi\n\n"
+        
+        "CONTOH FORMAT BLOK METADATA (JANGAN DISALIN ANGKA/ISINYA, GUNAKAN DALIL YANG SESUAI JAWABANMU):\n"
+        "[DALIL_START]\n"
+        "- QURAN|1|1\n"
+        "- HADIS|bukhari|1\n"
+        "- EKSTERNAL|Sebutkan nama kitab fiqih, kaidah, atau fatwa ulama yang relevan\n"
+        "[DALIL_END]\n\n"
+        
+        "PENTING:\n"
+        "- JANGAN PERNAH menyalin contoh angka di atas! Masukkan hanya angka surah/hadis yang nyata dan relevan dengan jawabanmu!\n"
+        "- Jangan masukkan teks Arab di dalam blok [DALIL_START] tersebut, cukup kode angka dan sumbernya saja."
+    )
+=============================================
+FILE: main/utils_rag/verifier_guardrails.py
+=============================================
+# main/utils_rag/verifier_guardrails.py
+import re
+from main.models_hadis import Hadis, KitabHadis
+from main.models_tilawah import TilawahAyahPool
+from main.utils_hadis.semantic_search import semantic_search_hadis
+
+def _is_text_relevant(query, text):
+    """Cek sederhana apakah teks hadis punya irisan kata dengan pertanyaan user"""
+    if not text or not query:
+        return False
+    ignore_words = {"apa", "apakah", "bagaimana", "hukum", "dalam", "islam", "dan", "atau", "yang", "itu", "ini", "di", "ke", "dari", "dalil", "benarkah", "ada", "tentang", "tampilkan", "sebutkan", "hadis", "surah", "ayat", "no", "nomor", "riwayat", "hr"}
+    query_words = set(query.lower().split()) - ignore_words
+    
+    # Jika query setelah dibersihkan ternyata KOSONG (berarti user cuma minta nomor/identitas dalil), anggap RELEVAN!
+    if not query_words:
+        return True
+
+    text_lower = text.lower()
+    for w in query_words:
+        if len(w) > 3 and w in text_lower:
+            return True
+    return False
+
+def verify_and_apply_guardrails(claims, user_query=""):
+    verified_sources = []
+    all_high_confidence = True
+
+    # Deteksi apakah user secara eksplisit meminta nomor tertentu (misal: "no 3", "nomor 109282", "ayat 183")
+    has_explicit_number = bool(re.search(r'\b(no|nomor|n|#)?\s*\d+\b', user_query.lower()))
+
+    for claim in claims:
+        stype = claim.get("type")
+        
+        # ---------------------------------------------------------
+        # 1. VERIFIKASI AL-QUR'AN (Dengan Anti-0|0 Bug)
+        # ---------------------------------------------------------
+        if stype == "QURAN":
+            try:
+                surah_num = int(claim.get("surah", 0))
+                ayah_num = int(claim.get("ayah", 0))
+            except (ValueError, TypeError):
+                continue
+            
+            # SANITIZER: Abaikan halusinasi angka 0 atau negatif dari LLM!
+            if surah_num <= 0 or ayah_num <= 0:
+                print(f"[GUARDRAIL SANITIZER] Membuang halusinasi metadata Quran tidak valid: {surah_num}|{ayah_num}")
+                continue
+
+            ayah_obj = TilawahAyahPool.objects.filter(ayah_number=ayah_num).first()
+            if ayah_obj:
+                verified_sources.append({
+                    "type": "QURAN",
+                    "label": "Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)",
+                    "reference": f"QS. {ayah_obj.surah_name} : {ayah_obj.ayah_number}",
+                    "arabic_text": getattr(ayah_obj, 'ayah_text', ''),
+                    "translation_text": getattr(ayah_obj, 'ayah_translation', ''),
+                    "is_verified": True
+                })
+            else:
+                all_high_confidence = False
+                verified_sources.append({
+                    "type": "QURAN", "label": "Belum Terverifikasi ⚠️ (Ayat tidak ditemukan di DB)",
+                    "reference": f"QS. Surah {surah_num} : {ayah_num}", "is_verified": False
+                })
+
+        # ---------------------------------------------------------
+        # 2. VERIFIKASI HADIS (Dengan Anti-Nomor Hantu / Out of Bounds)
+        # ---------------------------------------------------------
+        elif stype == "HADIS":
+            kitab_slug = str(claim.get("kitab", "")).lower()
+            try:
+                nomor = int(claim.get("nomor", 0))
+            except (ValueError, TypeError):
+                continue
+            
+            # SANITIZER: Abaikan nomor hadis 0 atau negatif
+            if nomor <= 0:
+                continue
+
+            # Cari exact match berdasarkan angka
+            hadis_obj = Hadis.objects.filter(kitab__nama_file__icontains=kitab_slug, nomor=nomor).first()
+            
+            is_relevant = True
+            if hadis_obj:
+                # JIKA user meminta nomor eksplisit DAN ketemu di DB -> LANGSUNG PERCAYA! (Bypass Relevansi)
+                if has_explicit_number:
+                    is_relevant = True
+                    print(f"[GUARDRAIL OVERRIDE] User meminta nomor eksplisit. HR {kitab_slug} No. {nomor} dikunci dari DB!")
+                else:
+                    terjemahan = hadis_obj.terjemahan or hadis_obj.isi_hadis
+                    is_relevant = _is_text_relevant(user_query, terjemahan)
+            
+            # IMPROVISASI KRITIS: Jika user minta nomor eksplisit (misal No. 109282) dan TIDAK KETEMU,
+            # JANGAN lakukan Semantic Search! Langsung vonis Tidak Ditemukan!
+            if not hadis_obj or not is_relevant:
+                if has_explicit_number and not hadis_obj:
+                    print(f"[GUARDRAIL BLOCK] Nomor eksplisit HR {kitab_slug} No. {nomor} TIDAK ADA DI DB! Memblokir Semantic Fallback.")
+                    hadis_obj = None # Biarkan None agar jatuh ke status Belum Terverifikasi
+                else:
+                    # Hanya lakukan semantic search jika user TIDAK sedang mencari nomor eksplisit
+                    search_query = f"{user_query} {kitab_slug}"
+                    fallback_results = semantic_search_hadis(search_query, limit=1, threshold=0.55)
+                    if fallback_results:
+                        hadis_obj = fallback_results[0]
+                        print(f"[GUARDRAIL SUCCESS] Fallback berhasil! Menemukan HR {hadis_obj.kitab.nama_indonesia} No. {hadis_obj.nomor}.")
+                    else:
+                        hadis_obj = None 
+            
+            if hadis_obj:
+                if any(k in kitab_slug for k in ["bukhari", "muslim"]):
+                    label = "Terverifikasi ✅ (Shahih Mutlak - Ash-Shahihayn)"
+                elif "ibnu-majah" in kitab_slug:
+                    label = "Terverifikasi ✅ (Kitab Sunan - Perlu tinjauan sanad spesifik)"
+                else:
+                    label = "Terverifikasi ✅ (Kitab Mu'tamad - Standar Ulama)"
+
+                verified_sources.append({
+                    "type": "HADIS", "label": label,
+                    "reference": f"{hadis_obj.kitab.nama_indonesia} No. {hadis_obj.nomor}",
+                    "arabic_text": hadis_obj.teks_arab or hadis_obj.teks_hadis,
+                    "translation_text": hadis_obj.terjemahan or hadis_obj.isi_hadis,
+                    "is_verified": True
+                })
+            else:
+                all_high_confidence = False
+                verified_sources.append({
+                    "type": "HADIS", "label": "Belum Terverifikasi ⚠️ (Nomor hadis tidak ditemukan di DB)",
+                    "reference": f"HR. {kitab_slug.title()} No. {nomor} (Tidak Terdapat dalam Kitab)", "is_verified": False
+                })
+
+        # ---------------------------------------------------------
+        # 3. RUJUKAN EKSTERNAL
+        # ---------------------------------------------------------
+        elif stype == "EKSTERNAL":
+            detail_text = str(claim.get("detail", ""))
+            if "116" in detail_text and "paylater" not in user_query.lower() and "uang" not in user_query.lower():
+                continue 
+                
+            verified_sources.append({
+                "type": "EKSTERNAL", "label": "Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)",
+                "reference": detail_text, "is_verified": True
+            })
+
+    status_global = "HIGH_CONFIDENCE" if all_high_confidence and len(verified_sources) > 0 else "NEEDS_REVIEW"
+    return verified_sources, status_global

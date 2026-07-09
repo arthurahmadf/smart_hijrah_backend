@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.conf import settings  # ganti import User
+from pgvector.django import VectorField
 
 LEVEL_CHOICES = [
     ('basic', 'Basic'),
@@ -40,6 +41,8 @@ class TilawahAyahPool(models.Model):
     ayah_transliteration = models.TextField(blank=True, null=True)
     ayah_translation = models.TextField(blank=True, null=True)
     juz = models.IntegerField(blank=True, null=True)  # Nomor juz (1-30)
+
+    embedding = VectorField(dimensions=1024, null=True, blank=True)
     level = models.CharField(max_length=20, choices=[
         ('basic', 'Basic'),
         ('intermediate', 'Intermediate'),

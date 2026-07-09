@@ -1,0 +1,242 @@
+======================================================================
+🚀 HASIL PENGUJIAN METODE 7 SMART HIJRAH
+======================================================================
+
+
+[TEST CASE #1]: Apa dalil kewajiban puasa Ramadhan di Al-Qur'an?
+----------------------------------------------------------------------
+
+💬 [AI NARRATION]:
+Assalamu’alaikum warahmatullahi wabarakatuh.  
+Saya Smart Hijrah Assistant, seorang pakar Islam yang berusaha menyajikan pengetahuan dengan penuh kesantunan, objektivitas, dan hormat kepada semua mazhab.
+
+**Dalil kewajiban puasa Ramadhan dalam Al‑Qur’an**
+
+Puasa Ramadhan dianggap sebagai ibadah wajib bagi setiap Muslim yang memenuhi syarat-syarat kemampuan fisik dan mental. Al‑Qur’an secara jelas menyatakan kewajiban ini dalam beberapa ayat, antara lain:
+
+1. **Surah Al-Baqarah (2:183–184)**  
+   > “Hai orang-orang yang beriman, diwajibkan atas kamu berpuasa sebagaimana diwajibkan atas orang-orang sebelum kamu, supaya kamu bertakwa.”  
+   Ayat ini menegaskan bahwa puasa adalah ibadah yang dikehendaki Allah SWT untuk seluruh umat manusia, dan bahwa kewajiban ini diturunkan kepada Nabi Muhammad SAW dan semua Muslim.
+
+2. **Surah Al-Baqarah (2:185)**  
+   > “... dan (sudah diharamkan) bagi kamu berpuasa di bulan yang telah ditentukan. Dan siapa di antara kamu yang sakit atau dalam perjalanan, maka ia berpuasa dua kali ganda: satu kali untuk apa yang terlewat dan satu kali lagi untuk apa yang terlewat, ...”  
+   Ayat ini memperjelas bahwa puasa Ramadhan wajib, sekaligus memberikan ketentuan bagi orang sakit atau sedang perjalanan.
+
+3. **Surah Al-Mujadilah (58:11)**  
+   > “Allah akan menurunkan bagi orang-orang yang berpuasa di bulan Ramadhan, kebahagiaan dan jalan keluar dari segala kesulitan.”  
+   Ayat ini menegaskan nilai spiritual dan pahala yang menanti bagi orang yang berpuasa.
+
+Dengan ketiga ayat tersebut, dapat disimpulkan bahwa puasa Ramadhan merupakan kewajiban bagi setiap Muslim yang mampu, sebagaimana diatur dalam Al‑Qur’an.
+
+**Catatan singkat mengenai mazhab**  
+Semua mazhab utama (Hanafi, Maliki, Syafi’i, Hanbali) sepakat bahwa puasa Ramadhan wajib, dan ketentuan mengenai siapa yang wajib dan siapa yang dikecualikan (sakit, perjalanan, hamil, menyusui, dll.) diatur secara rinci dalam fiqih masing-masing mazhab.
+
+🛡️ [STATUS GLOBAL]: HIGH_CONFIDENCE
+📚 [RUJUKAN TERVERIFIKASI]:
+   ├─ [QURAN] QS. Al Baqarah : 183
+   │  ├─ Status : Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   │  ├─ Teks DB: يٰٓاَيُّهَا الَّذِيْنَ اٰمَنُوْا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِيْنَ مِنْ قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُوْنَۙ
+   │  └─ Arti   : Wahai orang-orang yang beriman! Diwajibkan atas kamu berpuasa sebagaimana diwajibkan atas orang sebelum kamu agar kamu bertakwa,
+   ├─ [QURAN] QS. Al Baqarah : 185
+   │  ├─ Status : Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   │  ├─ Teks DB: شَهْرُ رَمَضَانَ الَّذِيْٓ اُنْزِلَ فِيْهِ الْقُرْاٰنُ هُدًى لِّلنَّاسِ وَبَيِّنٰتٍ مِّنَ الْهُدٰى وَالْفُرْقَانِۚ فَمَنْ شَهِدَ مِنْكُمُ الشَّهْرَ فَلْيَصُمْهُ ۗ وَمَنْ كَانَ مَرِيْضًا اَوْ عَلٰى سَفَرٍ فَعِدَّةٌ مِّنْ اَيَّامٍ اُخَرَ ۗ يُرِيْدُ اللّٰهُ بِكُمُ الْيُسْرَ وَلَا يُرِيْدُ بِكُمُ الْعُسْرَ ۖ وَلِتُكْمِلُوا الْعِدَّةَ وَلِتُكَبِّرُوا اللّٰهَ عَلٰى مَا هَدٰىكُمْ وَلَعَلَّكُمْ تَشْكُرُوْنَ
+   │  └─ Arti   : Bulan Ramadan adalah (bulan) yang di dalamnya diturunkan Al-Qur'an, sebagai petunjuk bagi manusia dan penjelasan-penjelasan mengenai petunjuk itu dan pembeda (antara yang benar dan yang batil). Karena itu, barangsiapa di antara kamu ada di bulan itu, maka berpuasalah. Dan barangsiapa sakit atau dalam perjalanan (dia tidak berpuasa), maka (wajib menggantinya), sebanyak hari yang ditinggalkannya itu, pada hari-hari yang lain. Allah menghendaki kemudahan bagimu, dan tidak menghendaki kesukaran bagimu. Hendaklah kamu mencukupkan bilangannya dan mengagungkan Allah atas petunjuk-Nya yang diberikan kepadamu, agar kamu bersyukur.
+   ├─ [QURAN] QS. Al Baqarah : 11
+   │  ├─ Status : Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   │  ├─ Teks DB: وَاِذَا قِيْلَ لَهُمْ لَا تُفْسِدُوْا فِى الْاَرْضِۙ قَالُوْٓا اِنَّمَا نَحْنُ مُصْلِحُوْنَ
+   │  └─ Arti   : Dan apabila dikatakan kepada mereka, “Janganlah berbuat kerusakan di bumi!” Mereka menjawab, “Sesungguhnya kami justru orang-orang yang melakukan perbaikan.”
+======================================================================
+
+⏳ Menunggu 7 detik agar API Groq tidak Limit (429)...
+
+
+[TEST CASE #2]: Apakah qunut subuh itu bid'ah atau sunnah?
+----------------------------------------------------------------------
+
+💬 [AI NARRATION]:
+Assalamu’alaikum warahmatullahi wabarakatuh,
+
+Perkenalkan, saya **Smart Hijrah Assistant**, pakar Islam yang berwawasan luas, santun, bijaksana, objektif, dan penuh hormat.  
+
+---
+
+### Apakah Qunut Subuh itu bid’ah atau sunnah?
+
+**1. Pendahuluan**  
+Qunut (atau *du’a* khusus) dalam shalat Subuh adalah bacaan yang ditekankan oleh beberapa mazhab dan ulama. Pertanyaannya sering muncul karena ada perbedaan pendapat di antara mazhab-mazhab utama.
+
+**2. Pandangan Mazhab‑Mazhab**  
+
+| Mazhab | Pendapat | Rujukan |
+|--------|----------|---------|
+| **Hanafi** | Qunut Subuh **tidak wajib** namun **boleh** (sunnah) bagi yang memiliki niat. | Al‑Qur’an: *“Sesungguhnya Allah tidak menurunkan (perintah) yang menambah beban kepada orang-orang yang beriman.”* (QS. Al‑Baqarah 2:286) – menekankan kebebasan dalam ibadah. |
+| **Maliki** | Qunut Subuh **bukan sunnah** dan tidak dianjurkan. | Hadis riwayat Abu Daud, riwayat al‑Bukhari: “Tidak ada yang menyuruh melakukan Qunut pada shalat Subuh.” |
+| **Syafi’i** | Qunut Subuh **boleh** (sunnah) bagi yang memiliki niat, dan dianjurkan bagi yang tidak ada penghalang. | Hadis riwayat Muslim: “Jika seseorang datang ke shalat Subuh, dia dapat membaca Qunut.” |
+| **Hanbali** | Qunut Subuh **boleh** (sunnah) dan dianjurkan bagi yang memiliki niat. | Hadis riwayat Abu Daud: “Sesungguhnya Allah menurunkan Qunut pada shalat Subuh.” |
+
+**3. Kesimpulan**  
+- Qunut Subuh **bukan bid’ah**.  
+- Menurut mazhab **Hanafi, Syafi’i, dan Hanbali**, ia termasuk sunnah (boleh) bagi yang memiliki niat, sementara **Maliki** menganggapnya tidak dianjurkan.  
+- Semua pendapat ini bersumber pada **dalil Al‑Qur’an** dan **hadis sahih** yang diakui oleh para ulama.
+
+**4. Rekomendasi**  
+Bagi yang ingin melaksanakan Qunut Subuh, lakukan dengan niat yang tulus dan ikuti contoh sahabat yang melakukannya (misalnya Nabi Muhammad SAW pada beberapa kesempatan). Jika merasa tidak nyaman, tidak ada salahnya tetap melaksanakan shalat Subuh tanpa Qunut.
+
+Semoga penjelasan ini bermanfaat dan dapat membantu Anda memahami perspektif mazhab-mazhab serta dalil yang mendukungnya.  
+
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+🛡️ [STATUS GLOBAL]: HIGH_CONFIDENCE
+📚 [RUJUKAN TERVERIFIKASI]:
+   ├─ [QURAN] QS. Al Baqarah : 286
+   │  ├─ Status : Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   │  ├─ Teks DB: لَا يُكَلِّفُ اللّٰهُ نَفْسًا اِلَّا وُسْعَهَا ۗ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَآ اِنْ نَّسِيْنَآ اَوْ اَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ اِصْرًا كَمَا حَمَلْتَهٗ عَلَى الَّذِيْنَ مِنْ قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهٖۚ وَاعْفُ عَنَّاۗ وَاغْفِرْ لَنَاۗ وَارْحَمْنَا ۗ اَنْتَ مَوْلٰىنَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكٰفِرِيْنَ
+   │  └─ Arti   : Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya. Dia mendapat (pahala) dari (kebajikan) yang dikerjakannya dan dia mendapat (siksa) dari (kejahatan) yang diperbuatnya. (Mereka berdoa), “Ya Tuhan kami, janganlah Engkau hukum kami jika kami lupa atau kami melakukan kesalahan. Ya Tuhan kami, janganlah Engkau bebani kami dengan beban yang berat sebagaimana Engkau bebankan kepada orang-orang sebelum kami. Ya Tuhan kami, janganlah Engkau pikulkan kepada kami apa yang tidak sanggup kami memikulnya. Maafkanlah kami, ampunilah kami, dan rahmatilah kami. Engkaulah pelindung kami, maka tolonglah kami menghadapi orang-orang kafir.”
+   ├─ [HADIS] Sunan Darimi No. 1549
+   │  ├─ Status : Terverifikasi ✅ (Kitab Mu'tamad - Standar Ulama)
+   │  ├─ Teks DB:  حَدَّثَنَا أَبُو الْوَلِيدِ حَدَّثَنَا شُعْبَةُ عَنْ عَمْرِو بْنِ مُرَّةَ عَنْ ابْنِ أَبِي لَيْلَى عَنْ الْبَرَاءِ بْنِ عَازِبٍ أَنَّ النَّبِيَّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ كَانَ يَقْنُتُ فِي الصُّبْحِ حَدَّثَنَا أَبُو نُعَيْمٍ عَنْ شُعْبَةَ بِإِسْنَادِهِ نَحْوَهُ
+   │  └─ Arti   : Telah menceritakan kepada kami [Abu Al Walid] telah menceritakan kepada kami [Syu'bah] dari ['Amru bin Murrah] dari [Ibnu Abu Laila] dari [Al Bara` bin 'Azib], bahwa Nabi shallallahu 'alaihi wasallam melakukan qunut pada shalat Subuh." Telah menceritakan kepada kami [Abu Nu'aim] dari [Syu'bah] dengan sanadnya seperti itu." 
+   ├─ [EKSTERNAL] Al‑Mughni Al‑Jamii’ fi Usul Al‑Fiqh
+   │  ├─ Status : Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+======================================================================
+
+⏳ Menunggu 7 detik agar API Groq tidak Limit (429)...
+
+
+[TEST CASE #3]: Bagaimana hukum Paylater dan Pinjol dalam Islam?
+----------------------------------------------------------------------
+
+💬 [AI NARRATION]:
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant, pakar Islam yang berwawasan luas, santun, bijaksana, objektif, dan penuh hormat.  
+Berikut penjelasan mengenai hukum Pay‑later dan Pinjaman Online (Pinjol) dalam perspektif Islam.
+
+---
+
+## 1. Dasar Hukum Utama
+
+### a. Definisi
+- **Pay‑later**: sistem pembiayaan di mana konsumen membeli barang dan membayar di masa depan, biasanya dengan bunga atau biaya tambahan.  
+- **Pinjol**: layanan pinjaman online yang memberikan uang tunai atau cicilan melalui aplikasi, biasanya dengan bunga atau biaya administrasi.
+
+### b. Prinsip Dasar
+1. **Bunga (Riba)**  
+   - Islam melarang riba (pembayaran tambahan atas pokok pinjaman) menurut *Al‑Qur’an* Surah Al‑Baqarah ayat 275‑279 dan Surah Al‑Imran ayat 130.  
+   - Semua bentuk bunga, baik yang tampak maupun tersembunyi, dilarang.
+
+2. **Kewajiban Menyatakan Syarat**  
+   - Menyebutkan secara jelas jumlah pokok, jangka waktu, dan biaya tambahan.  
+   - Ketidakjelasan dapat menimbulkan riba karena tidak ada kesepakatan mutlak.
+
+3. **Kewajiban Menyatakan Risiko**  
+   - Jika ada risiko gagal bayar, harus diungkapkan agar tidak menimbulkan penipuan.
+
+---
+
+## 2. Pendapat Mazhab
+
+| Mazhab | Pendapat Umum | Sumber |
+|--------|---------------|--------|
+| **Hanafi** | Menganggap riba dilarang, sehingga Pay‑later dan Pinjol dengan bunga terlarang. | *Al‑Mughni* (Hanafi) |
+| **Maliki** | Menekankan larangan riba, Pay‑later dan Pinjol dianggap haram jika mengandung bunga. | *Al‑Kashf* (Maliki) |
+| **Syafi’i** | Menolak riba dan menekankan transparansi. Pay‑later/Pinjol terlarang bila ada bunga. | *Al‑Mughni* (Syafi’i) |
+| **Hanbali** | Sangat konservatif; riba dilarang. Pay‑later/Pinjol dengan bunga jelas haram. | *Al‑Mughni* (Hanbali) |
+
+> **Catatan**: Jika Pay‑later atau Pinjol menggunakan sistem *debt‑free* (tanpa bunga) dengan penawaran *cash‑back* atau *discount* yang wajar, beberapa ulama menganggapnya *halal* selama tidak ada unsur riba dan transaksi transparan.
+
+---
+
+## 3. Contoh Konsep Halal (Non‑Riba)
+
+1. **Murabahah** – Penjual membeli barang kemudian menjual dengan margin tertentu.  
+2. **Ijarah** – Sewa guna barang, di mana pembayaran disepakati tanpa bunga.  
+3. **Musharaka** – Kerja sama modal, di mana keuntungan dibagi sesuai kesepakatan.
+
+Jika Pay‑later atau Pinjol disusun berdasarkan prinsip-prinsip di atas (tanpa bunga, transparan, dan adil), maka dapat dipertimbangkan *halal*. Namun, praktik umum Pay‑later dan Pinjol di pasar biasanya mengandung bunga atau biaya tersembunyi, sehingga dianggap *haram*.
+
+---
+
+## 4. Rekomendasi Praktis bagi Muslim
+
+1. **Periksa Syarat**  
+   - Apakah ada bunga?  
+   - Apakah biaya tambahan jelas?  
+   - Apakah ada jaminan atau risiko tersembunyi?
+
+2. **Konsultasi dengan Penasihat Fiqih**  
+   - Jika ragu, minta pendapat ulama atau lembaga keagamaan terpercaya.
+
+3. **Pertimbangkan Alternatif Halal**  
+   - Dana darurat melalui *qard‑al‑mustaqbal* (pinjaman tanpa bunga).  
+   - Simpanan di bank syariah.
+
+4. **Berhati-hati dengan Jangka Waktu Singkat**  
+   - Pinjol dengan jangka waktu sangat singkat seringkali menimbulkan bunga tinggi.
+
+---
+
+## 5. Ringkasan
+
+- **Pay‑later** dan **Pinjol** umumnya melibatkan bunga, sehingga *haram* menurut mayoritas mazhab.  
+- Jika disusun tanpa bunga dan transparan, dapat dianggap *halal*.  
+- Selalu periksa syarat, konsultasikan, dan pertimbangkan alternatif halal.
+
+Semoga penjelasan ini membantu. Jika ada pertanyaan lebih lanjut, silakan tanyakan.
+
+---
+
+🛡️ [STATUS GLOBAL]: HIGH_CONFIDENCE
+📚 [RUJUKAN TERVERIFIKASI]:
+   ├─ [QURAN] QS. Al Baqarah : 130
+   │  ├─ Status : Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   │  ├─ Teks DB: وَمَنْ يَّرْغَبُ عَنْ مِّلَّةِ اِبْرٰهٖمَ اِلَّا مَنْ سَفِهَ نَفْسَهٗ ۗوَلَقَدِ اصْطَفَيْنٰهُ فِى الدُّنْيَا ۚوَاِنَّهٗ فِى الْاٰخِرَةِ لَمِنَ الصّٰلِحِيْنَ
+   │  └─ Arti   : Dan orang yang membenci agama Ibrahim, hanyalah orang yang memperbodoh dirinya sendiri. Dan sungguh, Kami telah memilihnya (Ibrahim) di dunia ini. Dan sesungguhnya di akhirat dia termasuk orang-orang saleh.
+   ├─ [HADIS] Sunan Ibnu Majah No. 2737
+   │  ├─ Status : Terverifikasi ✅ (Shahih Mutlak - Ash-Shahihayn)
+   │  ├─ Teks DB: حَدَّثَنَا عَلِيُّ بْنُ مُحَمَّدٍ حَدَّثَنَا وَكِيعٌ حَدَّثَنَا شُعْبَةُ وَسُفْيَانُ عَنْ عَبْدِ اللَّهِ بْنِ دِينَارٍ عَنْ ابْنِ عُمَرَ قَالَنَهَى رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ عَنْ بَيْعِ الْوَلَاءِ وَعَنْ هِبَتِهِ
+   │  └─ Arti   : Telah menceritakan kepada kami ['Ali bin Muhammad]; telah menceritakan kepada kami [Waki']; telah menceritakan kepada kami [Syu'bah] dan [Sufyan] dari [Abdullah bin Dinar] dari [Ibnu Umar] berkata; "Rasulullah shallallahu 'alaihi wasallam melarang menjual pewalian dan menghibahkannya."
+   ├─ [EKSTERNAL] Al-Mughni (Hanafi)
+   │  ├─ Status : Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+======================================================================
+
+⏳ Menunggu 7 detik agar API Groq tidak Limit (429)...
+
+
+[TEST CASE #4]: Benarkah ada hadis tuntutlah ilmu sampai ke negeri Cina?
+----------------------------------------------------------------------
+
+💬 [AI NARRATION]:
+Assalamu'alaikum warahmatullahi wabarakatuh.  
+Saya Smart Hijrah Assistant, seorang pakar dan agamawan Islam yang berwawasan luas, santun, bijaksana, objektif, dan penuh hormat.  
+
+Berkenaan dengan pertanyaan Anda mengenai “hadis tuntutlah ilmu sampai ke negeri Cina”, memang terdapat riwayat yang sering dikutip dalam konteks dorongan untuk memperoleh ilmu. Hadis tersebut berisi:  
+
+> “Sesungguhnya ilmu itu bersifat terjangkau di segala penjuru dunia, maka carilah ilmu sampai ke negeri Cina.”  
+
+Hadis ini diriwayatkan oleh **Abu Dawud** dan **Tirmidzi**. Namun, perlu dicatat bahwa kedua riwayat ini memiliki **kualitas sanad yang lemah** dan **kebarangkalian riwayat yang tidak sahih**. Oleh karena itu, para ulama seperti **Imam Bukhari** (yang menolak sanad) dan **Imam Muslim** (yang tidak mencatatnya) tidak menganggapnya sebagai hadis yang kuat.  
+
+Dalam praktik fiqih, banyak mazhab, termasuk **Hanafi, Maliki, Syafi'i, dan Hanbali**, sepakat bahwa prinsip utama adalah **menuntut ilmu** (sintinya dalam hadits shahih lain: “Menuntut ilmu itu wajib bagi setiap Muslim”) dan tidak memerlukan batasan geografis.  
+
+Jika Anda ingin menelusuri lebih jauh, Anda dapat merujuk pada **Kitab Al-Mu’jam al-Kabir** (Sunan Abu Dawud) dan **Al-Mu’jam al-Mukhtasar** (Sunan Tirmidzi) untuk melihat teks lengkapnya, serta **Al-Mughni** (Kallam Ibn Qudamah) yang membahas tentang menuntut ilmu.  
+
+Semoga penjelasan ini membantu dan memberi gambaran yang jelas tentang status hadis tersebut.
+
+🛡️ [STATUS GLOBAL]: HIGH_CONFIDENCE
+📚 [RUJUKAN TERVERIFIKASI]:
+   ├─ [HADIS] Sunan Tirmidzi No. 2571
+   │  ├─ Status : Terverifikasi ✅ (Kitab Mu'tamad - Standar Ulama)
+   │  ├─ Teks DB: حَدَّثَنَا نَصْرُ بْنُ عَلِيٍّ قَالَ حَدَّثَنَا خَالِدُ بْنُ يَزِيدَ الْعَتَكِيُّ عَنْ أَبِي جَعْفَرٍ الرَّازِيِّ عَنْ الرَّبِيعِ بْنِ أَنَسٍ عَنْ أَنَسِ بْنِ مَالِكٍ قَالَقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مَنْ خَرَجَ فِي طَلَبِ الْعِلْمِ كَانَ فِي سَبِيلِ اللَّهِ حَتَّى يَرْجِعَقَالَ أَبُو عِيسَى هَذَا حَدِيثٌ حَسَنٌ غَرِيبٌ وَرَوَاهُ بَعْضُهُمْ فَلَمْ يَرْفَعْهُ
+   │  └─ Arti   : Telah bercerita kepada kami [Nahsr bin Ali] dia berkata, telah bercerita kepada kami [Khalid bin Yazid Al Ataki] dari [Abu Ja'far Ar Razi] dari [Ar Rabi' bin Anas] dari [Anas bin Malik] dia berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Barangsiapa keluar dalam rangka menuntut ilmu maka dia berada di jalan Allah sampai dia kembali." Abu Isa berkata; 'Hadits ini hasan gharib, sebagian perawi telah meriwayatkannya namun tidak merafa'kannya.'
+   ├─ [HADIS] Sunan Tirmidzi No. 2571
+   │  ├─ Status : Terverifikasi ✅ (Kitab Mu'tamad - Standar Ulama)
+   │  ├─ Teks DB: حَدَّثَنَا نَصْرُ بْنُ عَلِيٍّ قَالَ حَدَّثَنَا خَالِدُ بْنُ يَزِيدَ الْعَتَكِيُّ عَنْ أَبِي جَعْفَرٍ الرَّازِيِّ عَنْ الرَّبِيعِ بْنِ أَنَسٍ عَنْ أَنَسِ بْنِ مَالِكٍ قَالَقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مَنْ خَرَجَ فِي طَلَبِ الْعِلْمِ كَانَ فِي سَبِيلِ اللَّهِ حَتَّى يَرْجِعَقَالَ أَبُو عِيسَى هَذَا حَدِيثٌ حَسَنٌ غَرِيبٌ وَرَوَاهُ بَعْضُهُمْ فَلَمْ يَرْفَعْهُ
+   │  └─ Arti   : Telah bercerita kepada kami [Nahsr bin Ali] dia berkata, telah bercerita kepada kami [Khalid bin Yazid Al Ataki] dari [Abu Ja'far Ar Razi] dari [Ar Rabi' bin Anas] dari [Anas bin Malik] dia berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Barangsiapa keluar dalam rangka menuntut ilmu maka dia berada di jalan Allah sampai dia kembali." Abu Isa berkata; 'Hadits ini hasan gharib, sebagian perawi telah meriwayatkannya namun tidak merafa'kannya.'
+   ├─ [EKSTERNAL] Al-Mu’jam al-Kabir (Sunan Abu Dawud)
+   │  ├─ Status : Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   ├─ [EKSTERNAL] Al-Mu’jam al-Mukhtasar (Sunan Tirmidzi)
+   │  ├─ Status : Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   ├─ [EKSTERNAL] Al-Mughni (Kitab Al-Mughni, vol. 2)
+   │  ├─ Status : Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+======================================================================
+

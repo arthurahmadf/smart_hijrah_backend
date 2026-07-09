@@ -4,14 +4,15 @@ import re
 from groq import Groq
 from django.conf import settings
 from main.models_ai import ChatMessage
+from main.utils_rag.prompts import get_metode7_system_prompt
 
 groq_client = Groq(api_key=settings.GROQ_API_KEY)
 
 # ===== MODEL CHAIN (PRIORITAS) =====
 MODEL_CHAIN = [
-    # "openai/gpt-oss-20b",
-    # "qwen/qwen3-32b",
-    # "llama-3.3-70b-versatile",
+    "openai/gpt-oss-20b",
+    "qwen/qwen3-32b",
+    "llama-3.3-70b-versatile",
     "meta-llama/llama-4-scout-17b-16e-instruct",
 ]
 
@@ -58,6 +59,9 @@ BASE_INSTRUCTION = (
     "4. Jika pertanyaan tidak terkait dengan Islam, ibadah, akhlak, atau kehidupan Muslim, "
     "jawab dengan: 'Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. "
     "Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.'"
+    "5. Jika pengguna bertanya hukum Islam tentang objek modern/non-Islam seperti hiburan, teknologi, finansial, "
+    "atau konten negatif, tetap jawab dari sisi hukum/adab Islam. Jangan anggap di luar domain hanya karena objeknya "
+    "bukan istilah agama. Namun jangan membantu mencari, merekomendasikan, atau mendeskripsikan konten maksiat/eksplisit."
 )
 
 
@@ -136,7 +140,7 @@ def is_waris_question(text):
     return False
 
 
-def get_islamic_response(user_message, conversation_id=None, is_first_message=True):
+def get_islamic_response(user_message, conversation_id=None, is_first_message=True,use_metode7=False):
     """
     Wrapper utama untuk Smart AI.
     - Kirim 3 pertanyaan terakhir + jawaban (dipotong) agar konteks tetap terjaga.
@@ -155,7 +159,11 @@ def get_islamic_response(user_message, conversation_id=None, is_first_message=Tr
         prompt_parts = []
 
         # 1. Base instruction (dengan aturan nomor 4)
-        prompt_parts.append(BASE_INSTRUCTION)
+        
+        if use_metode7:
+            prompt_parts.append(get_metode7_system_prompt())
+        else:
+            prompt_parts.append(BASE_INSTRUCTION)
 
         # 2. Instruksi khusus untuk pesan pertama atau lanjutan
         if is_first_message:

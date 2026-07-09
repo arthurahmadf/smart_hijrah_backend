@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from main.models_ai import ChatConversation, ChatMessage
 from main.serializers.ai_serializers import ChatConversationSerializer
 # from main_client import get_islamic_response
-
+from main.utils_rag.integration import RAGIntegration
 from main.fallback_ai_client import get_islamic_response
 import json
 import time
@@ -67,23 +67,26 @@ def send_message(request):
         save_time = time.time() - save_start
         print(f"[VIEW] Save user message time: {save_time:.3f}s")
         
-        # Get AI response (history akan dimuat otomatis di_client.py)
+        # Get AI response via METODE 7 INTEGRATION
         ai_start = time.time()
-        print(f"[VIEW] Calling API...")
-        ai_response = get_islamic_response(
+        print(f"[VIEW] Calling API with Metode 7...")
+        
+        # Panggil RAGIntegration
+        rag_result = RAGIntegration.generate_metode7_response(
             message, 
-            conversation_id=conversation.id,  # ← Kunci: kirim conversation_id
+            conversation_id=conversation.id,
             is_first_message=is_first
         )
+        
         ai_time = time.time() - ai_start
         print(f"[VIEW] API total time: {ai_time:.3f}s")
         
-        # Save AI response
+        # Save AI response (simpan teks bersihnya ke DB)
         save_ai_start = time.time()
         assistant_msg = ChatMessage.objects.create(
             conversation=conversation,
             role='assistant',
-            text=ai_response
+            text=rag_result["reply"]
         )
         save_ai_time = time.time() - save_ai_start
         print(f"[VIEW] Save AI message time: {save_ai_time:.3f}s")
@@ -95,6 +98,12 @@ def send_message(request):
             "success": True,
             "conversation_id": conversation.id,
             "is_first_message": is_first,
+            "verification_status": rag_result["verification_status"],
+            "verified_sources": rag_result["verified_sources"],
+            "answer_mode": rag_result.get("answer_mode"),
+            "intent": rag_result.get("intent"),
+            "final_check_passed": rag_result.get("final_check_passed", True),
+            "final_check_warnings": rag_result.get("final_check_warnings", []),      
             "user_message": {
                 "id": user_msg.id,
                 "text": user_msg.text,

@@ -1,0 +1,2977 @@
+==========================================================================================
+🚀 SMART HIJRAH SMART AI BENCHMARK REPORT
+==========================================================================================
+Generated at: 2026-07-09T01:24:27.337529
+Total test cases: 47
+==========================================================================================
+
+
+##########################################################################################
+GROUP: DIRECT HADITH LOOKUP
+##########################################################################################
+
+==========================================================================================
+TEST CASE #1
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Tampilkan hadis Abu Daud no 5
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.04 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 5
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+   Translation: Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Sunan Abu Daud No. 5**
+
+**Teks Arab:**
+حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+
+**Terjemahan:**
+Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #2
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Tampilkan hadis Abu Daud no 3
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 3
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُوسَى بْنُ إِسْمَعِيلَ حَدَّثَنَا حَمَّادٌ أَخْبَرَنَا أَبُو التَّيَّاحِ قَالَ حَدَّثَنِي شَيْخٌ قَالَلَمَّا قَدِمَ عَبْدُ اللَّهِ بْنُ عَبَّاسٍ الْبَصْرَةَ فَكَانَ يُحَدِّثُ عَنْ أَبِي مُوسَى فَكَتَبَ عَبْدُ اللَّهِ إِلَى أَبِي مُوسَى يَسْأَلُهُ عَنْ أَشْيَاءَ فَكَتَبَ إِلَيْهِ أَبُو مُوسَى إِنِّي كُنْتُ مَعَ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ ذَاتَ يَوْمٍ فَأَرَادَ أَنْ يَبُولَ فَأَتَى دَمِثًا فِي أَصْلِ جِدَارٍ فَبَالَ ثُمَّ قَالَ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ إ
+   Translation: Telah menceritakan kepada kami [Musa bin Isma'il] telah menceritakan kepada kami [Hammad] telah mengabarkan kepada kami [Abu At Tayyah] dia berkata; Telah menceritakan kepada kami [Seorang Syaikh] dia berkata; Tatkala Abdullah bin Abbas datang ke Bashrah, ketika itu dia menceritakan hadits dari [Abu Musa], Abdullah menulis surat kepada Abu Musa dalam rangka menanyakan kepadanya tentang beberapa hal. Maka Abu Musa menulis surat kepadanya (sebagai jawaban), sesungguhnya saya pernah bersama Rasulullah shallallahu 'alaihi wasallam pada suatu hari, lalu beliau ingin buang air kecil, maka beliau mendatangi tempat yang bertanah lunak di bagian bawah dinding, kemudian beliau shallallahu 'alaihi wasa
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Sunan Abu Daud No. 3**
+
+**Teks Arab:**
+حَدَّثَنَا مُوسَى بْنُ إِسْمَعِيلَ حَدَّثَنَا حَمَّادٌ أَخْبَرَنَا أَبُو التَّيَّاحِ قَالَ حَدَّثَنِي شَيْخٌ قَالَلَمَّا قَدِمَ عَبْدُ اللَّهِ بْنُ عَبَّاسٍ الْبَصْرَةَ فَكَانَ يُحَدِّثُ عَنْ أَبِي مُوسَى فَكَتَبَ عَبْدُ اللَّهِ إِلَى أَبِي مُوسَى يَسْأَلُهُ عَنْ أَشْيَاءَ فَكَتَبَ إِلَيْهِ أَبُو مُوسَى إِنِّي كُنْتُ مَعَ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ ذَاتَ يَوْمٍ فَأَرَادَ أَنْ يَبُولَ فَأَتَى دَمِثًا فِي أَصْلِ جِدَارٍ فَبَالَ ثُمَّ قَالَ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ إِذَا أَرَادَ أَحَدُكُمْ أَنْ يَبُولَ فَلْيَرْتَدْ لِبَوْلِهِ مَوْضِعًا
+
+**Terjemahan:**
+Telah menceritakan kepada kami [Musa bin Isma'il] telah menceritakan kepada kami [Hammad] telah mengabarkan kepada kami [Abu At Tayyah] dia berkata; Telah menceritakan kepada kami [Seorang Syaikh] dia berkata; Tatkala Abdullah bin Abbas datang ke Bashrah, ketika itu dia menceritakan hadits dari [Abu Musa], Abdullah menulis surat kepada Abu Musa dalam rangka menanyakan kepadanya tentang beberapa hal. Maka Abu Musa menulis surat kepadanya (sebagai jawaban), sesungguhnya saya pernah bersama Rasulullah shallallahu 'alaihi wasallam pada suatu hari, lalu beliau ingin buang air kecil, maka beliau mendatangi tempat yang bertanah lunak di bagian bawah dinding, kemudian beliau shallallahu 'alaihi wasallam bersabda: "Apabila salah seorang dari kalian hendak buang air kecil, maka hendaklah dia mencari tempat yang bertanah lunak untuk kencingnya."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #3
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Tampilkan hadis Abu Daud no 109282
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: NEEDS_REVIEW
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 109282 (Tidak ditemukan di database)
+   Status: Belum Terverifikasi ⚠️ (Nomor hadis tidak ditemukan di DB)
+   Verified: False
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Sunan Abu Daud No. 109282**
+
+**Status:**
+⚠️ Nomor hadis tersebut belum ditemukan dalam database Smart Hijrah.
+
+Silakan cek kembali nama kitab atau nomor hadisnya. Saya tidak akan menampilkan isi hadis jika rujukannya tidak ditemukan di database.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #4
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+hr nabi daud no 10
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.75
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 10
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُحَمَّدُ بْنُ يَحْيَى بْنِ فَارِسٍ حَدَّثَنَا صَفْوَانُ بْنُ عِيسَى عَنْ الْحَسَنِ بْنِ ذَكْوَانَ عَنْ مَرْوَانَ الْأَصْفَرِ قَالَرَأَيْتُ ابْنَ عُمَرَ أَنَاخَ رَاحِلَتَهُ مُسْتَقْبِلَ الْقِبْلَةِ ثُمَّ جَلَسَ يَبُولُ إِلَيْهَا فَقُلْتُ يَا أَبَا عَبْدِ الرَّحْمَنِ أَلَيْسَ قَدْ نُهِيَ عَنْ هَذَا قَالَ بَلَى إِنَّمَا نُهِيَ عَنْ ذَلِكَ فِي الْفَضَاءِ فَإِذَا كَانَ بَيْنَكَ وَبَيْنَ الْقِبْلَةِ شَيْءٌ يَسْتُرُكَ فَلَا بَأْسَ
+   Translation: Telah menceritakan kepada kami [Muhammad bin Yahya bin Faris] telah menceritakan kepada kami [Shafwan bin Isa] dari [Al Hasan bin Dzakwan] dari [Marwan Al Ashfar] dia berkata; Saya pernah melihat [Ibnu Umar] menderumkan untanya menghadap kiblat, lalu dia duduk dan buang air kecil dalam keadaan menghadapnya, lalu saya bertanya; "wahai Abu Abdurrahman, bukankah hal ini telah dilarang?" Dia menjawab; "Benar, akan tetapi hal itu dilarang jika dilakukan di tempat terbuka, apabila antara dirimu dan kiblat ada sesuatu yang menutupimu, maka itu tidaklah mengapa."
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+Catatan: Saya menafsirkan maksud Anda sebagai Sunan Abu Daud no. 10, karena istilah 'Daud' dalam konteks hadis biasanya merujuk pada Abu Daud.
+
+**Sunan Abu Daud No. 10**
+
+**Teks Arab:**
+حَدَّثَنَا مُحَمَّدُ بْنُ يَحْيَى بْنِ فَارِسٍ حَدَّثَنَا صَفْوَانُ بْنُ عِيسَى عَنْ الْحَسَنِ بْنِ ذَكْوَانَ عَنْ مَرْوَانَ الْأَصْفَرِ قَالَرَأَيْتُ ابْنَ عُمَرَ أَنَاخَ رَاحِلَتَهُ مُسْتَقْبِلَ الْقِبْلَةِ ثُمَّ جَلَسَ يَبُولُ إِلَيْهَا فَقُلْتُ يَا أَبَا عَبْدِ الرَّحْمَنِ أَلَيْسَ قَدْ نُهِيَ عَنْ هَذَا قَالَ بَلَى إِنَّمَا نُهِيَ عَنْ ذَلِكَ فِي الْفَضَاءِ فَإِذَا كَانَ بَيْنَكَ وَبَيْنَ الْقِبْلَةِ شَيْءٌ يَسْتُرُكَ فَلَا بَأْسَ
+
+**Terjemahan:**
+Telah menceritakan kepada kami [Muhammad bin Yahya bin Faris] telah menceritakan kepada kami [Shafwan bin Isa] dari [Al Hasan bin Dzakwan] dari [Marwan Al Ashfar] dia berkata; Saya pernah melihat [Ibnu Umar] menderumkan untanya menghadap kiblat, lalu dia duduk dan buang air kecil dalam keadaan menghadapnya, lalu saya bertanya; "wahai Abu Abdurrahman, bukankah hal ini telah dilarang?" Dia menjawab; "Benar, akan tetapi hal itu dilarang jika dilakukan di tempat terbuka, apabila antara dirimu dan kiblat ada sesuatu yang menutupimu, maka itu tidaklah mengapa."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #5
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Hadis Abu Daud no 5 itu tentang manfaat manusia kan?
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 5
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+   Translation: Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Sunan Abu Daud No. 5**
+
+**Teks Arab:**
+حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+
+**Terjemahan:**
+Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #6
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Tampilkan hadis Bukhari no 999999 tentang internet
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: NEEDS_REVIEW
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Shahih Bukhari No. 999999 (Tidak ditemukan di database)
+   Status: Belum Terverifikasi ⚠️ (Nomor hadis tidak ditemukan di DB)
+   Verified: False
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Shahih Bukhari No. 999999**
+
+**Status:**
+⚠️ Nomor hadis tersebut belum ditemukan dalam database Smart Hijrah.
+
+Silakan cek kembali nama kitab atau nomor hadisnya. Saya tidak akan menampilkan isi hadis jika rujukannya tidak ditemukan di database.
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: DIRECT QURAN LOOKUP
+##########################################################################################
+
+==========================================================================================
+TEST CASE #7
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+QS Al Baqarah ayat 255
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.03 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah (2) : 255
+   Status: Ditemukan di Database ✅ (Al-Qur’an)
+   Verified: True
+   Arabic: اَللّٰهُ لَآ اِلٰهَ اِلَّا هُوَۚ اَلْحَيُّ الْقَيُّوْمُ ەۚ لَا تَأْخُذُهٗ سِنَةٌ وَّلَا نَوْمٌۗ لَهٗ مَا فِى السَّمٰوٰتِ وَمَا فِى الْاَرْضِۗ مَنْ ذَا الَّذِيْ يَشْفَعُ عِنْدَهٗٓ اِلَّا بِاِذْنِهٖۗ يَعْلَمُ مَا بَيْنَ اَيْدِيْهِمْ وَمَا خَلْفَهُمْۚ وَلَا يُحِيْطُوْنَ بِشَيْءٍ مِّنْ عِلْمِهٖٓ اِلَّا بِمَا شَاۤءَۚ وَسِعَ كُرْسِيُّهُ السَّمٰوٰتِ وَالْاَرْضَۚ وَلَا يَـُٔوْدُهٗ حِفْظُهُمَاۚ وَهُوَ الْعَلِيُّ الْعَظِيْمُ
+   Translation: Allah, tidak ada tuhan selain Dia. Yang Mahahidup, Yang terus menerus mengurus (makhluk-Nya), tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang di hadapan mereka dan apa yang di belakang mereka, dan mereka tidak mengetahui sesuatu apa pun tentang ilmu-Nya melainkan apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Dan Dia tidak merasa berat memelihara keduanya, dan Dia Mahatinggi, Mahabesar.
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Al Baqarah (2) Ayat 255**
+
+**Teks Arab:**
+اَللّٰهُ لَآ اِلٰهَ اِلَّا هُوَۚ اَلْحَيُّ الْقَيُّوْمُ ەۚ لَا تَأْخُذُهٗ سِنَةٌ وَّلَا نَوْمٌۗ لَهٗ مَا فِى السَّمٰوٰتِ وَمَا فِى الْاَرْضِۗ مَنْ ذَا الَّذِيْ يَشْفَعُ عِنْدَهٗٓ اِلَّا بِاِذْنِهٖۗ يَعْلَمُ مَا بَيْنَ اَيْدِيْهِمْ وَمَا خَلْفَهُمْۚ وَلَا يُحِيْطُوْنَ بِشَيْءٍ مِّنْ عِلْمِهٖٓ اِلَّا بِمَا شَاۤءَۚ وَسِعَ كُرْسِيُّهُ السَّمٰوٰتِ وَالْاَرْضَۚ وَلَا يَـُٔوْدُهٗ حِفْظُهُمَاۚ وَهُوَ الْعَلِيُّ الْعَظِيْمُ
+
+**Transliterasi:**
+allāhu lā ilāha illā huw, al-ḥayyul-qayyụm, lā ta`khużuhụ sinatuw wa lā na`ụm, lahụ mā fis-samāwāti wa mā fil-arḍ, man żallażī yasyfa'u 'indahū illā bi`iżnih, ya'lamu mā baina aidīhim wa mā khalfahum, wa lā yuḥīṭụna bisyai`im min 'ilmihī illā bimā syā`, wasi'a kursiyyuhus-samāwāti wal-arḍ, wa lā ya`ụduhụ ḥifẓuhumā, wa huwal-'aliyyul-'aẓīm
+
+**Terjemahan:**
+Allah, tidak ada tuhan selain Dia. Yang Mahahidup, Yang terus menerus mengurus (makhluk-Nya), tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang di hadapan mereka dan apa yang di belakang mereka, dan mereka tidak mengetahui sesuatu apa pun tentang ilmu-Nya melainkan apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Dan Dia tidak merasa berat memelihara keduanya, dan Dia Mahatinggi, Mahabesar.
+
+**Status:**
+✅ Ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #8
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Quran 2:255
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah (2) : 255
+   Status: Ditemukan di Database ✅ (Al-Qur’an)
+   Verified: True
+   Arabic: اَللّٰهُ لَآ اِلٰهَ اِلَّا هُوَۚ اَلْحَيُّ الْقَيُّوْمُ ەۚ لَا تَأْخُذُهٗ سِنَةٌ وَّلَا نَوْمٌۗ لَهٗ مَا فِى السَّمٰوٰتِ وَمَا فِى الْاَرْضِۗ مَنْ ذَا الَّذِيْ يَشْفَعُ عِنْدَهٗٓ اِلَّا بِاِذْنِهٖۗ يَعْلَمُ مَا بَيْنَ اَيْدِيْهِمْ وَمَا خَلْفَهُمْۚ وَلَا يُحِيْطُوْنَ بِشَيْءٍ مِّنْ عِلْمِهٖٓ اِلَّا بِمَا شَاۤءَۚ وَسِعَ كُرْسِيُّهُ السَّمٰوٰتِ وَالْاَرْضَۚ وَلَا يَـُٔوْدُهٗ حِفْظُهُمَاۚ وَهُوَ الْعَلِيُّ الْعَظِيْمُ
+   Translation: Allah, tidak ada tuhan selain Dia. Yang Mahahidup, Yang terus menerus mengurus (makhluk-Nya), tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang di hadapan mereka dan apa yang di belakang mereka, dan mereka tidak mengetahui sesuatu apa pun tentang ilmu-Nya melainkan apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Dan Dia tidak merasa berat memelihara keduanya, dan Dia Mahatinggi, Mahabesar.
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Al Baqarah (2) Ayat 255**
+
+**Teks Arab:**
+اَللّٰهُ لَآ اِلٰهَ اِلَّا هُوَۚ اَلْحَيُّ الْقَيُّوْمُ ەۚ لَا تَأْخُذُهٗ سِنَةٌ وَّلَا نَوْمٌۗ لَهٗ مَا فِى السَّمٰوٰتِ وَمَا فِى الْاَرْضِۗ مَنْ ذَا الَّذِيْ يَشْفَعُ عِنْدَهٗٓ اِلَّا بِاِذْنِهٖۗ يَعْلَمُ مَا بَيْنَ اَيْدِيْهِمْ وَمَا خَلْفَهُمْۚ وَلَا يُحِيْطُوْنَ بِشَيْءٍ مِّنْ عِلْمِهٖٓ اِلَّا بِمَا شَاۤءَۚ وَسِعَ كُرْسِيُّهُ السَّمٰوٰتِ وَالْاَرْضَۚ وَلَا يَـُٔوْدُهٗ حِفْظُهُمَاۚ وَهُوَ الْعَلِيُّ الْعَظِيْمُ
+
+**Transliterasi:**
+allāhu lā ilāha illā huw, al-ḥayyul-qayyụm, lā ta`khużuhụ sinatuw wa lā na`ụm, lahụ mā fis-samāwāti wa mā fil-arḍ, man żallażī yasyfa'u 'indahū illā bi`iżnih, ya'lamu mā baina aidīhim wa mā khalfahum, wa lā yuḥīṭụna bisyai`im min 'ilmihī illā bimā syā`, wasi'a kursiyyuhus-samāwāti wal-arḍ, wa lā ya`ụduhụ ḥifẓuhumā, wa huwal-'aliyyul-'aẓīm
+
+**Terjemahan:**
+Allah, tidak ada tuhan selain Dia. Yang Mahahidup, Yang terus menerus mengurus (makhluk-Nya), tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang di hadapan mereka dan apa yang di belakang mereka, dan mereka tidak mengetahui sesuatu apa pun tentang ilmu-Nya melainkan apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Dan Dia tidak merasa berat memelihara keduanya, dan Dia Mahatinggi, Mahabesar.
+
+**Status:**
+✅ Ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #9
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Surat Yasin ayat 1
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Yaa Siin (36) : 1
+   Status: Ditemukan di Database ✅ (Al-Qur’an)
+   Verified: True
+   Arabic: يٰسۤ ۚ
+   Translation: Ya Sin
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Yaa Siin (36) Ayat 1**
+
+**Teks Arab:**
+يٰسۤ ۚ
+
+**Transliterasi:**
+yā sīn
+
+**Terjemahan:**
+Ya Sin
+
+**Status:**
+✅ Ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #10
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Tampilkan surat Al Ikhlas ayat 1
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.02 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Ikhlash (112) : 1
+   Status: Ditemukan di Database ✅ (Al-Qur’an)
+   Verified: True
+   Arabic: قُلْ هُوَ اللّٰهُ اَحَدٌۚ
+   Translation: Katakanlah (Muhammad), “Dialah Allah, Yang Maha Esa.
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Al Ikhlash (112) Ayat 1**
+
+**Teks Arab:**
+قُلْ هُوَ اللّٰهُ اَحَدٌۚ
+
+**Transliterasi:**
+qul huwallāhu aḥad
+
+**Terjemahan:**
+Katakanlah (Muhammad), “Dialah Allah, Yang Maha Esa.
+
+**Status:**
+✅ Ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #11
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+QS Al Baqarah ayat 999
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: NEEDS_REVIEW
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Surah 2 : 999 (Tidak ditemukan di database)
+   Status: Belum Terverifikasi ⚠️ (Ayat tidak ditemukan di DB)
+   Verified: False
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Surah 2 Ayat 999**
+
+**Status:**
+⚠️ Ayat tersebut belum ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+Silakan cek kembali nomor surah atau nomor ayatnya. Saya tidak akan menampilkan isi ayat jika rujukannya tidak ditemukan di database.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #12
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+QS 999 ayat 1
+
+INTENT
+----------------------------------------
+Intent     : GENERAL_ISLAMIC_QA
+Confidence : 0.6
+Route      : metode7
+Reason     : Default general Islamic QA.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : True
+Process Time       : 0.84 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut penjelasan umum berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Rujukan:**
+⚠️ Belum ada rujukan spesifik yang berhasil diverifikasi dari database Smart Hijrah.
+
+**Catatan kehati-hatian:**
+Sebagian rujukan belum berhasil diverifikasi sepenuhnya. Jawaban ini sebaiknya dipahami sebagai penjelasan umum, bukan fatwa final untuk kasus personal yang kompleks.
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: FIQIH QA
+##########################################################################################
+
+==========================================================================================
+TEST CASE #13
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum memakai parfum saat puasa?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 8.85 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Nasa'i No. 5027
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: أَخْبَرَنَا أَبُو عُبَيْدَةَ بْنُ أَبِي السَّفَرِ عَنْ عَبْدِ الصَّمَدِ بْنِ عَبْدِ الْوَارِثِ قَالَ حَدَّثَنَا بَكْرٌ الْمُزَلِّقُ قَالَ حَدَّثَنَا عَبْدُ اللَّهِ بْنُ عَطَاءٍ الْهَاشِمِيُّ عَنْ مُحَمَّدِ بْنِ عَلِيٍّ قَالَ سَأَلْتُ عَائِشَةَأَكَانَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَتَطَيَّبُ قَالَتْ نَعَمْ بِذِكَارَةِ الطِّيبِ الْمِسْكِ وَالْعَنْبَرِ
+   Translation: Telah mengabarkan kepada kami [Abu Ubaidah bin Abu As Safar] dari [Abdu Ash Shamad bin Abdul Warits] ia berkata; telah menceritakan kepada kami [Bakr Al Muzalliq] ia berkata; telah menceritakan kepada kami [Abdullah bin 'Atha Al Hasyimi] dari [Muhammad bin Ali] ia berkata, "Aku pernah bertanya ['Aisyah], 'Apakah Rasulullah shallallahu 'alaihi wasallam memakai parfum, ia menjawab, "Ya, dengan minyak wangi misk dan 'anbar."
+
+2. [HADIS] Shahih Muslim No. 675
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا يَحْيَى بْنُ يَحْيَى وَإِسْحَقُ بْنُ إِبْرَاهِيمَ قَالَ يَحْيَى أَخْبَرَنَا عَبْدُ اللَّهِ بْنُ مُحَمَّدِ بْنِ عَبْدِ اللَّهِ بْنِ أَبِي فَرْوَةَ عَنْ يَزِيدَ بْنِ خُصَيْفَةَ عَنْ بُسْرِ بْنِ سَعِيدٍ عَنْ أَبِي هُرَيْرَةَ قَالَقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ أَيُّمَا امْرَأَةٍ أَصَابَتْ بَخُورًا فَلَا تَشْهَدْ مَعَنَا الْعِشَاءَ الْآخِرَةَ
+   Translation: Telah menceritakan kepada kami [Yahya bin Yahya] dan [Ishaq bin Ibrahim], [Yahya] berkata, telah mengabarkan kepada kami [Abdullah bin Muhammad bin Abdullah bin Abi Farwah] dari [Yazid bin Khushaifah] dari [Busr bin Sa'id] dari [Abu Hurairah] dia berkata, "Rasulullah shallallahu 'alaihi wasallam bersabda, 'Siapa pun wanita yang memakai parfum, maka janganlah dia hadir bersama kami dalam shalat Isya', shalat fardhu yang akhir'."
+
+3. [EKSTERNAL] Al-Mughni (al-Mansur al-Dahshani)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Nasa'i No. 5027**
+   > Telah mengabarkan kepada kami [Abu Ubaidah bin Abu As Safar] dari [Abdu Ash Shamad bin Abdul Warits] ia berkata; telah menceritakan kepada kami [Bakr Al Muzalliq] ia berkata; telah menceritakan kepada kami [Abdullah bin 'Atha Al Hasyimi] dari [Muhammad bin Ali] ia berkata, "Aku pernah bertanya ['Aisyah], 'Apakah Rasulullah shallallahu 'alaihi wasallam memakai parfum, ia menjawab, "Ya, dengan minyak wangi misk dan 'anbar."
+2. **Shahih Muslim No. 675**
+   > Telah menceritakan kepada kami [Yahya bin Yahya] dan [Ishaq bin Ibrahim], [Yahya] berkata, telah mengabarkan kepada kami [Abdullah bin Muhammad bin Abdullah bin Abi Farwah] dari [Yazid bin Khushaifah] dari [Busr bin Sa'id] dari [Abu Hurairah] dia berkata, "Rasulullah shallallahu 'alaihi wasallam bersabda, 'Siapa pun wanita yang memakai parfum, maka janganlah dia hadir bersama kami dalam shalat Isya', shalat fardhu yang akhir'."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Mughni (al-Mansur al-Dahshani)
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #14
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum qunut subuh?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 1.93 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 143
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: وَكَذٰلِكَ جَعَلْنٰكُمْ اُمَّةً وَّسَطًا لِّتَكُوْنُوْا شُهَدَاۤءَ عَلَى النَّاسِ وَيَكُوْنَ الرَّسُوْلُ عَلَيْكُمْ شَهِيْدًا ۗ وَمَا جَعَلْنَا الْقِبْلَةَ الَّتِيْ كُنْتَ عَلَيْهَآ اِلَّا لِنَعْلَمَ مَنْ يَّتَّبِعُ الرَّسُوْلَ مِمَّنْ يَّنْقَلِبُ عَلٰى عَقِبَيْهِۗ وَاِنْ كَانَتْ لَكَبِيْرَةً اِلَّا عَلَى الَّذِيْنَ هَدَى اللّٰهُ ۗوَمَا كَانَ اللّٰهُ لِيُضِيْعَ اِيْمَانَكُمْ ۗ اِنَّ اللّٰهَ بِالنَّاسِ لَرَءُوْفٌ رَّحِيْمٌ
+   Translation: Dan demikian pula Kami telah menjadikan kamu (umat Islam) ”umat pertengahan” agar kamu menjadi saksi atas (perbuatan) manusia dan agar Rasul (Muhammad) menjadi saksi atas (perbuatan) kamu. Kami tidak menjadikan kiblat yang (dahulu) kamu (berkiblat) kepadanya melainkan agar Kami mengetahui siapa yang mengikuti Rasul dan siapa yang berbalik ke belakang. Sungguh, (pemindahan kiblat) itu sangat berat, kecuali bagi orang yang telah diberi petunjuk oleh Allah. Dan Allah tidak akan menyia-nyiakan imanmu. Sungguh, Allah Maha Pengasih, Maha Penyayang kepada manusia.
+
+2. [HADIS] Shahih Muslim No. 1093
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُحَمَّدُ بْنُ الْمُثَنَّى وَابْنُ بَشَّارٍ قَالَا حَدَّثَنَا مُحَمَّدُ بْنُ جَعْفَرٍ حَدَّثَنَا شُعْبَةُ عَنْ عَمْرِو بْنِ مُرَّةَ قَالَ سَمِعْتُ ابْنَ أَبِي لَيْلَى قَالَ حَدَّثَنَا الْبَرَاءُ بْنُ عَازِبٍأَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ كَانَ يَقْنُتُ فِي الصُّبْحِ وَالْمَغْرِبِ
+   Translation: Telah menceritakan kepada kami [Muhammad bin Al Mutsanna] dan [Ibnu Basyar], keduanya berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] telah menceritakan kepada kami [Syu'bah] dari ['Amru bin Murrah], katanya; "Aku mendengar [Ibnu Abu Laila] berkata; telah menceritakan kepada kami [Al Barra` bin 'Azib], bahwa Rasulullah shallallahu 'alaihi wasallam pernah melakukan qunut ketika subuh dan maghrib."
+
+3. [HADIS] Shahih Muslim No. 1093
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُحَمَّدُ بْنُ الْمُثَنَّى وَابْنُ بَشَّارٍ قَالَا حَدَّثَنَا مُحَمَّدُ بْنُ جَعْفَرٍ حَدَّثَنَا شُعْبَةُ عَنْ عَمْرِو بْنِ مُرَّةَ قَالَ سَمِعْتُ ابْنَ أَبِي لَيْلَى قَالَ حَدَّثَنَا الْبَرَاءُ بْنُ عَازِبٍأَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ كَانَ يَقْنُتُ فِي الصُّبْحِ وَالْمَغْرِبِ
+   Translation: Telah menceritakan kepada kami [Muhammad bin Al Mutsanna] dan [Ibnu Basyar], keduanya berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] telah menceritakan kepada kami [Syu'bah] dari ['Amru bin Murrah], katanya; "Aku mendengar [Ibnu Abu Laila] berkata; telah menceritakan kepada kami [Al Barra` bin 'Azib], bahwa Rasulullah shallallahu 'alaihi wasallam pernah melakukan qunut ketika subuh dan maghrib."
+
+4. [EKSTERNAL] Al‑Mughniyyah by al‑Shawkānī
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 143**
+   > Dan demikian pula Kami telah menjadikan kamu (umat Islam) ”umat pertengahan” agar kamu menjadi saksi atas (perbuatan) manusia dan agar Rasul (Muhammad) menjadi saksi atas (perbuatan) kamu. Kami tidak menjadikan kiblat yang (dahulu) kamu (berkiblat) kepadanya melainkan agar Kami mengetahui siapa yang mengikuti Rasul dan siapa yang berbalik ke belakang. Sungguh, (pemindahan kiblat) itu sangat berat, kecuali bagi orang yang telah diberi petunjuk oleh Allah. Dan Allah tidak akan menyia-nyiakan imanmu. Sungguh, Allah Maha Pengasih, Maha Penyayang kepada manusia.
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Muslim No. 1093**
+   > Telah menceritakan kepada kami [Muhammad bin Al Mutsanna] dan [Ibnu Basyar], keduanya berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] telah menceritakan kepada kami [Syu'bah] dari ['Amru bin Murrah], katanya; "Aku mendengar [Ibnu Abu Laila] berkata; telah menceritakan kepada kami [Al Barra` bin 'Azib], bahwa Rasulullah shallallahu 'alaihi wasallam pernah melakukan qunut ketika subuh dan maghrib."
+2. **Shahih Muslim No. 1093**
+   > Telah menceritakan kepada kami [Muhammad bin Al Mutsanna] dan [Ibnu Basyar], keduanya berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] telah menceritakan kepada kami [Syu'bah] dari ['Amru bin Murrah], katanya; "Aku mendengar [Ibnu Abu Laila] berkata; telah menceritakan kepada kami [Al Barra` bin 'Azib], bahwa Rasulullah shallallahu 'alaihi wasallam pernah melakukan qunut ketika subuh dan maghrib."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al‑Mughniyyah by al‑Shawkānī
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #15
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum nonton film biasa?
+
+INTENT
+----------------------------------------
+Intent     : FIQH_QA
+Confidence : 0.86
+Route      : metode7
+Reason     : Pertanyaan hukum Islam umum.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 2.13 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Anbiyaa : 30
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَوَلَمْ يَرَ الَّذِيْنَ كَفَرُوْٓا اَنَّ السَّمٰوٰتِ وَالْاَرْضَ كَانَتَا رَتْقًا فَفَتَقْنٰهُمَاۗ وَجَعَلْنَا مِنَ الْمَاۤءِ كُلَّ شَيْءٍ حَيٍّۗ اَفَلَا يُؤْمِنُوْنَ
+   Translation: Dan apakah orang-orang kafir tidak mengetahui bahwa langit dan bumi keduanya dahulunya menyatu, kemudian Kami pisahkan antara keduanya; dan Kami jadikan segala sesuatu yang hidup berasal dari air; maka mengapa mereka tidak beriman?
+
+2. [HADIS] Sunan Abu Daud No. 2257
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُسَدَّدٌ حَدَّثَنَا يَحْيَى عَنْ عُبَيْدِ اللَّهِ حَدَّثَنِي نَافِعٌ عَنْ عَبْدِ اللَّهِعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ أَنَّهُ قَالَ السَّمْعُ وَالطَّاعَةُ عَلَى الْمَرْءِ الْمُسْلِمِ فِيمَا أَحَبَّ وَكَرِهَ مَا لَمْ يُؤْمَرْ بِمَعْصِيَةٍ فَإِذَا أُمِرَ بِمَعْصِيَةٍ فَلَا سَمْعَ وَلَا طَاعَةَ
+   Translation: Telah menceritakan kepada kami [Musaddad], telah menceritakan kepada kami [Yahya] dan ['Ubaidullah], telah menceritakan kepadaku [Nafi'], dari [Abdullah] dari Rasulullah shallallahu 'alaihi wasallam, bahwa beliau bersabda: "Kewajiban seorang muslim adalah mendengar dan mentaati dalam perkara yang ia senangi maupun ia benci, selama ia tidak diperintahkan untuk bermaksiat. Apabila ia diperintakan untuk bermaksiat, maka tidak boleh mendengar dan mentaati."
+
+3. [EKSTERNAL] Al-Mawrid Al-Shamil fi Usul Al-Fiqh (Hanafi)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Anbiyaa : 30**
+   > Dan apakah orang-orang kafir tidak mengetahui bahwa langit dan bumi keduanya dahulunya menyatu, kemudian Kami pisahkan antara keduanya; dan Kami jadikan segala sesuatu yang hidup berasal dari air; maka mengapa mereka tidak beriman?
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Abu Daud No. 2257**
+   > Telah menceritakan kepada kami [Musaddad], telah menceritakan kepada kami [Yahya] dan ['Ubaidullah], telah menceritakan kepadaku [Nafi'], dari [Abdullah] dari Rasulullah shallallahu 'alaihi wasallam, bahwa beliau bersabda: "Kewajiban seorang muslim adalah mendengar dan mentaati dalam perkara yang ia senangi maupun ia benci, selama ia tidak diperintahkan untuk bermaksiat. Apabila ia diperintakan untuk bermaksiat, maka tidak boleh mendengar dan mentaati."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Mawrid Al-Shamil fi Usul Al-Fiqh (Hanafi)
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #16
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+nonton anime hentai apa boleh
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 1.54 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 33
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: قَالَ يٰٓاٰدَمُ اَنْۢبِئْهُمْ بِاَسْمَاۤىِٕهِمْ ۚ فَلَمَّآ اَنْۢبَاَهُمْ بِاَسْمَاۤىِٕهِمْۙ قَالَ اَلَمْ اَقُلْ لَّكُمْ اِنِّيْٓ اَعْلَمُ غَيْبَ السَّمٰوٰتِ وَالْاَرْضِۙ وَاَعْلَمُ مَا تُبْدُوْنَ وَمَا كُنْتُمْ تَكْتُمُوْنَ
+   Translation: Dia (Allah) berfirman, “Wahai Adam! Beritahukanlah kepada mereka nama-nama itu!” Setelah dia (Adam) menyebutkan nama-namanya, Dia berfirman, “Bukankah telah Aku katakan kepadamu, bahwa Aku mengetahui rahasia langit dan bumi, dan Aku mengetahui apa yang kamu nyatakan dan apa yang kamu sembunyikan?”
+
+2. [EKSTERNAL] Fiqh-hanafi, Fiqh-maliki, Fiqh-syafi’i, Fiqh-hanbali
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Menonton konten pornografis atau yang membangkitkan syahwat secara sengaja tidak dibolehkan dalam Islam.
+
+Alasannya, seorang Muslim diperintahkan menjaga pandangan, menjaga hati, dan menjauhi hal-hal yang dapat membuka pintu maksiat. Jika konten tersebut menampilkan aurat, adegan seksual, atau sengaja dibuat untuk membangkitkan syahwat, maka sebaiknya ditinggalkan.
+
+Jika pernah terlanjur, jalan keluarnya adalah bertaubat, menghentikan aksesnya, menjauhi pemicunya, dan menggantinya dengan kegiatan atau tontonan yang halal dan bermanfaat.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 33**
+   > Dia (Allah) berfirman, “Wahai Adam! Beritahukanlah kepada mereka nama-nama itu!” Setelah dia (Adam) menyebutkan nama-namanya, Dia berfirman, “Bukankah telah Aku katakan kepadamu, bahwa Aku mengetahui rahasia langit dan bumi, dan Aku mengetahui apa yang kamu nyatakan dan apa yang kamu sembunyikan?”
+
+**Rujukan eksternal/kajian ulama:**
+1. Fiqh-hanafi, Fiqh-maliki, Fiqh-syafi’i, Fiqh-hanbali
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #17
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum membuat aplikasi judi?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 10.37 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- UNVERIFIED_QURAN_REFERENCE_IN_NARRATION: Narasi menyebut QS 2:219, tetapi tidak ada di verified_sources.
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 109
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: وَدَّ كَثِيْرٌ مِّنْ اَهْلِ الْكِتٰبِ لَوْ يَرُدُّوْنَكُمْ مِّنْۢ بَعْدِ اِيْمَانِكُمْ كُفَّارًاۚ حَسَدًا مِّنْ عِنْدِ اَنْفُسِهِمْ مِّنْۢ بَعْدِ مَا تَبَيَّنَ لَهُمُ الْحَقُّ ۚ فَاعْفُوْا وَاصْفَحُوْا حَتّٰى يَأْتِيَ اللّٰهُ بِاَمْرِهٖ ۗ اِنَّ اللّٰهَ عَلٰى كُلِّ شَيْءٍ قَدِيْرٌ
+   Translation: Banyak di antara Ahli Kitab menginginkan sekiranya mereka dapat mengembalikan kamu setelah kamu beriman, menjadi kafir kembali, karena rasa dengki dalam diri mereka, setelah kebenaran jelas bagi mereka. Maka maafkanlah dan berlapangdadalah, sampai Allah memberikan perintah-Nya. Sungguh, Allah Mahakuasa atas segala sesuatu.
+
+2. [HADIS] Sunan Tirmidzi No. 2975
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عَبْدُ اللَّهِ بْنُ عَبْدِ الرَّحْمَنِ أَخْبَرَنَا مُحَمَّدُ بْنُ يُوسُفَ أَخْبَرَنَا إِسْرَائِيلُ حَدَّثَنَا أَبُو إِسْحَقَ عَنْ عَمْرِو بْنِ شُرَحْبِيلَ أَبِي مَيْسَرَةَ عَنْ عُمَرَ بْنِ الْخَطَّابِ أَنَّهُ قَالَاللَّهُمَّ بَيِّنْ لَنَا فِي الْخَمْرِ بَيَانَ شِفَاءٍ فَنَزَلَتْ الَّتِي فِي الْبَقَرَةِ{ يَسْأَلُونَكَ عَنْ الْخَمْرِ وَالْمَيْسِرِ }الْآيَةَ فَدُعِيَ عُمَرُ فَقُرِئَتْ عَلَيْهِ فَقَالَ اللَّهُمَّ بَيِّنْ لَنَا فِي الْخَمْرِ بَيَانَ شِفَاءٍ فَنَزَلَتْ الَّتِي فِي النِّسَاء
+   Translation: Telah menceritakan kepada kami [Abdullah bin Abdurrahman] telah mengabarkan kepada kami [Muhammad bin Yusuf] telah mengabarkan kepada kami [Isra`il] telah menceritakan kepada kami [Abu Ishaq] dari ['Amru bin Syurahbil Abu Maisarah] dari [Umar bin Al Khaththab] ia berdoa; "Ya Allah, berilah kami penjelasan tentang khamer dengan penjelasan yang memadai." Lalu turunlah ayat yang ada dalam surat Al Baqarah; Mereka bertanya kepadamu tentang khamer dan judi. QS Al Baqarah: 219, lalu Umar dipanggil dan dibacakan kepadanya. Setelah itu ia berdoa; "Ya Allah, berilah kami penjelasan tentang khamer dengan penjelasan yang memadai." Lalu turunlah ayat yang ada dalam surat An Nisa` Hai orang-orang yang be
+
+3. [EKSTERNAL] Al‑Mughniyyah, Kitab Al‑Maqasid Al‑Furu’; Fiqh al‑Hanafi, Kitab Al‑Tawheed; Fiqh al‑Maliki, Kitab Al‑Qasida
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 109**
+   > Banyak di antara Ahli Kitab menginginkan sekiranya mereka dapat mengembalikan kamu setelah kamu beriman, menjadi kafir kembali, karena rasa dengki dalam diri mereka, setelah kebenaran jelas bagi mereka. Maka maafkanlah dan berlapangdadalah, sampai Allah memberikan perintah-Nya. Sungguh, Allah Mahakuasa atas segala sesuatu.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Tirmidzi No. 2975**
+   > Telah menceritakan kepada kami [Abdullah bin Abdurrahman] telah mengabarkan kepada kami [Muhammad bin Yusuf] telah mengabarkan kepada kami [Isra`il] telah menceritakan kepada kami [Abu Ishaq] dari ['Amru bin Syurahbil Abu Maisarah] dari [Umar bin Al Khaththab] ia berdoa; "Ya Allah, berilah kami penjelasan tentang khamer dengan penjelasan yang memadai." Lalu turunlah ayat yang ada dalam surat Al Baqarah; Mereka bertanya kepadamu tentang khamer dan judi. QS Al Baqarah: 219, lalu Umar dipanggil dan dibacakan kepadanya. Setelah itu ia berdoa; "Ya Allah, berilah kami penjelasan tentang khamer dengan penjelasan yang memadai." Lalu turunlah ayat yang ada dalam surat An Nisa` Hai orang-orang yang beriman, janganlah kamu mendekati shalat sedang kamu mabuk QS An Nisa`: 43. Selanjutnya ia berdoa; "Ya Allah, berilah kami penjelasan tentang khamer dengan penjelasan yang memadai." Lalu turunlah ayat yang ada dalam surat Al Mai`idah Sesungguhnya syaitan itu bermaksud hendak menimbulkan permusuhan dan kebencian di antara kamu lantaran (meminum) khamar dan berjudi itu, -sampai firmanNya- maka berhentilah kamu (dari mengerjakan pekerjaan itu) QS Al Ma`idah: 91. Umar lalu berkata; "Kami berhenti, kami berhenti." Abu Isa berkata; Hadits ini juga diriwayatkan dari Isra`il secara mursal. Telah menceritakan kepada kami [Muhammad bin Al Ala`] telah menceritakan kepada kami [Waki'] dari [Isra`il] dari [Abu Ishaq] dari [Abu Maisarah 'Amru bin Syurahbil] bahwa [Umar bin Al Khaththab] berkata; "Ya Allah, Ya Allah, berilah kami penjelasan tentang khamar dengan penjelasan yang memadai." Lalu ia menyebutkan seperti di atas, namun hadits ini lebih shahih dari hadits Muhammad bin Yusuf.
+
+**Rujukan eksternal/kajian ulama:**
+1. Al‑Mughniyyah, Kitab Al‑Maqasid Al‑Furu’; Fiqh al‑Hanafi, Kitab Al‑Tawheed; Fiqh al‑Maliki, Kitab Al‑Qasida
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #18
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum memakai AI untuk dakwah?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 1.82 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- UNVERIFIED_HADITH_REFERENCE_IN_NARRATION: Narasi menyebut hadis bukhari no. 2719, tetapi tidak ada di verified_sources.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 185
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: شَهْرُ رَمَضَانَ الَّذِيْٓ اُنْزِلَ فِيْهِ الْقُرْاٰنُ هُدًى لِّلنَّاسِ وَبَيِّنٰتٍ مِّنَ الْهُدٰى وَالْفُرْقَانِۚ فَمَنْ شَهِدَ مِنْكُمُ الشَّهْرَ فَلْيَصُمْهُ ۗ وَمَنْ كَانَ مَرِيْضًا اَوْ عَلٰى سَفَرٍ فَعِدَّةٌ مِّنْ اَيَّامٍ اُخَرَ ۗ يُرِيْدُ اللّٰهُ بِكُمُ الْيُسْرَ وَلَا يُرِيْدُ بِكُمُ الْعُسْرَ ۖ وَلِتُكْمِلُوا الْعِدَّةَ وَلِتُكَبِّرُوا اللّٰهَ عَلٰى مَا هَدٰىكُمْ وَلَعَلَّكُمْ تَشْكُرُوْنَ
+   Translation: Bulan Ramadan adalah (bulan) yang di dalamnya diturunkan Al-Qur'an, sebagai petunjuk bagi manusia dan penjelasan-penjelasan mengenai petunjuk itu dan pembeda (antara yang benar dan yang batil). Karena itu, barangsiapa di antara kamu ada di bulan itu, maka berpuasalah. Dan barangsiapa sakit atau dalam perjalanan (dia tidak berpuasa), maka (wajib menggantinya), sebanyak hari yang ditinggalkannya itu, pada hari-hari yang lain. Allah menghendaki kemudahan bagimu, dan tidak menghendaki kesukaran bagimu. Hendaklah kamu mencukupkan bilangannya dan mengagungkan Allah atas petunjuk-Nya yang diberikan kepadamu, agar kamu bersyukur.
+
+2. [HADIS] HR. Bukhari No. 2719 (Tidak Terdapat dalam Kitab)
+   Status: Belum Terverifikasi ⚠️ (Nomor hadis tidak ditemukan di DB)
+   Verified: False
+
+3. [EKSTERNAL] Madhhab Syafi'i: Kitab al-Mawrid al-Sharif (p. 45)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 185**
+   > Bulan Ramadan adalah (bulan) yang di dalamnya diturunkan Al-Qur'an, sebagai petunjuk bagi manusia dan penjelasan-penjelasan mengenai petunjuk itu dan pembeda (antara yang benar dan yang batil). Karena itu, barangsiapa di antara kamu ada di bulan itu, maka berpuasalah. Dan barangsiapa sakit atau dalam perjalanan (dia tidak berpuasa), maka (wajib menggantinya), sebanyak hari yang ditinggalkannya itu, pada hari-hari yang lain. Allah menghendaki kemudahan bagimu, dan tidak menghendaki kesukaran bagimu. Hendaklah kamu mencukupkan bilangannya dan mengagungkan Allah atas petunjuk-Nya yang diberikan kepadamu, agar kamu bersyukur.
+
+**Rujukan eksternal/kajian ulama:**
+1. Madhhab Syafi'i: Kitab al-Mawrid al-Sharif (p. 45)
+
+**Rujukan yang belum terverifikasi:**
+1. HR. Bukhari No. 2719 (Tidak Terdapat dalam Kitab)
+
+**Catatan kehati-hatian:**
+Sebagian rujukan belum berhasil diverifikasi sepenuhnya. Jawaban ini sebaiknya dipahami sebagai penjelasan umum, bukan fatwa final untuk kasus personal yang kompleks.
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: FATWA / MUAMALAH KONTEMPORER
+##########################################################################################
+
+==========================================================================================
+TEST CASE #19
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum paylater dalam Islam?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 2.30 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [HADIS] Sunan Nasa'i No. 4514
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: أَخْبَرَنَا مُحَمَّدُ بْنُ مَنْصُورٍ وَمُحَمَّدُ بْنُ عَبْدِ اللَّهِ بْنِ يَزِيدَ عَنْ سُفْيَانَ عَنْ مِسْعَرٍ عَنْ مُحَارِبِ بْنِ دِثَارٍ عَنْ جَابِرٍ قَالَقَضَانِي رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَزَادَنِي
+   Translation: Telah mengabarkan kepada kami [Muhammad bin Manshur] dan [Muhammad bin Abdullah bin Yazid] dari [Sufyan] dari [Mis'ar] dari [Muharib bin Ditsar] dari [Jabir], dia berkata; "Rasulullah shallallahu 'alaihi wasallam membayarku dan beliau menambahiku."
+
+3. [EKSTERNAL] Al-Muwatta (Maliki), Al-Mughni (Hanbali), Al-Umm (Hanafi), Al-Mudawwana (Syafi’i)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Paylater tidak bisa dihukumi satu jawaban untuk semua kasus. Hukumnya bergantung pada akad dan ketentuannya.
+
+Secara umum, paylater dapat bermasalah jika mengandung **riba**, seperti bunga keterlambatan atau tambahan berbasis waktu atas utang. Ia juga bermasalah jika mengandung **gharar**, yaitu ketidakjelasan biaya, denda, jangka waktu, atau kewajiban pihak-pihak terkait.
+
+Namun, jika akadnya jelas, harga disepakati sejak awal, tidak ada bunga/riba, tidak ada denda yang bersifat keuntungan, dan objek transaksinya halal, maka pembahasannya masuk ke wilayah muamalah yang perlu dilihat detail akadnya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Nasa'i No. 4514**
+   > Telah mengabarkan kepada kami [Muhammad bin Manshur] dan [Muhammad bin Abdullah bin Yazid] dari [Sufyan] dari [Mis'ar] dari [Muharib bin Ditsar] dari [Jabir], dia berkata; "Rasulullah shallallahu 'alaihi wasallam membayarku dan beliau menambahiku."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Muwatta (Maliki), Al-Mughni (Hanbali), Al-Umm (Hanafi), Al-Mudawwana (Syafi’i)
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #20
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+apa hukum trading saham
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 12.37 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [HADIS] Sunan Abu Daud No. 2589
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا أَحْمَدُ بْنُ صَالِحٍ حَدَّثَنَا عَنْبَسَةُ حَدَّثَنَا يُونُسُ عَنْ ابْنِ شِهَابٍ أَخْبَرَنِي يَزِيدُ بْنُ هُرْمُزَ أَنَّ نَجْدَةَ الْحَرُورِيَّحِينَ حَجَّ فِي فِتْنَةِ ابْنِ الزُّبَيْرِ أَرْسَلَ إِلَى ابْنِ عَبَّاسٍ يَسْأَلُهُ عَنْ سَهْمِ ذِي الْقُرْبَى وَيَقُولُ لِمَنْ تَرَاهُ قَالَ ابْنُ عَبَّاسٍ لِقُرْبَى رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَسَمَهُ لَهُمْ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَقَدْ كَانَ عُمَرُ عَرَضَ عَلَيْنَا مِنْ ذَلِكَ عَرْضًا رَأَي
+   Translation: Telah menceritakan kepada kami [Ahmad bin Shalih], telah menceritakan kepada kami ['Anbasah], telah menceritakan kepada kami [Yunus] dari [Ibnu Syihab], telah mengabarkan kepadaku [Yazid? bin Hurmuz], bahwa Najdah Al Haruri ketika berhaji disaat terjadinya fitnah terhadap Ibnu Az Zubair, ia mengirimkan surat kepada Ibnu Abbas, bertanya kepadanya mengenai saham kaum kerabat, ia berkata; untuk siapakah menurutmu? [Ibnu Abbas] berkata; untuk kerabat Rasulullah shallallahu 'alaihi wasallam, Rasulullah shallallahu 'alaihi wasallam telah membagikan kepada mereka. Dan Umar telah menawarkan kepada kami dari saham tersebut, dan kami melihat saham tersebut bukan hak kami. Kemudian kami mengembalikanny
+
+3. [EKSTERNAL] Al-Mawrid fi Usul al-Fiqh (Mazhab Hanafi)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Investasi pada dasarnya boleh dalam Islam selama objek dan mekanismenya halal.
+
+Yang perlu diperiksa adalah: tidak ada riba, tidak ada gharar berlebihan, tidak ada maysir/spekulasi judi, dana tidak ditempatkan pada bisnis haram, serta akad dan biaya transparan.
+
+Untuk saham, trading, reksa dana, aplikasi investasi, atau instrumen modern lainnya, hukumnya sangat bergantung pada produk dan mekanisme transaksinya. Karena itu, sebaiknya memilih instrumen yang memiliki pengawasan atau keterangan syariah yang jelas.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Abu Daud No. 2589**
+   > Telah menceritakan kepada kami [Ahmad bin Shalih], telah menceritakan kepada kami ['Anbasah], telah menceritakan kepada kami [Yunus] dari [Ibnu Syihab], telah mengabarkan kepadaku [Yazid? bin Hurmuz], bahwa Najdah Al Haruri ketika berhaji disaat terjadinya fitnah terhadap Ibnu Az Zubair, ia mengirimkan surat kepada Ibnu Abbas, bertanya kepadanya mengenai saham kaum kerabat, ia berkata; untuk siapakah menurutmu? [Ibnu Abbas] berkata; untuk kerabat Rasulullah shallallahu 'alaihi wasallam, Rasulullah shallallahu 'alaihi wasallam telah membagikan kepada mereka. Dan Umar telah menawarkan kepada kami dari saham tersebut, dan kami melihat saham tersebut bukan hak kami. Kemudian kami mengembalikannya dan kami menolak untuk menerimanya. 
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Mawrid fi Usul al-Fiqh (Mazhab Hanafi)
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #21
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+apa hukum investasi di aplikasi islami
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 7.36 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [HADIS] Sunan Tirmidzi No. 1206
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُحَمَّدُ بْنُ الْمُثَنَّى حَدَّثَنَا عُثْمَانُ بْنُ عُمَرَ وَأَبُو عَامِرٍ الْعَقَدِيُّ عَنْ ابْنِ أَبِي ذِئْبٍ عَنْ مَخْلَدِ بْنِ خُفَافٍ عَنْ عُرْوَةَ عَنْ عَائِشَةَأَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَضَى أَنَّ الْخَرَاجَ بِالضَّمَانِقَالَ أَبُو عِيسَى هَذَا حَدِيثٌ حَسَنٌ صَحِيحٌ وَقَدْ رُوِيَ هَذَا الْحَدِيثُ مِنْ غَيْرِ هَذَا الْوَجْهِ وَالْعَمَلُ عَلَى هَذَا عِنْدَ أَهْلِ الْعِلْمِ
+   Translation: Telah menceritakan kepada kami [Muhammad bin Al Mutsanna], telah menceritakan kepada kami [Utsman bin Umar] dan [Abu Amir Al 'Aqadi] dari [Ibnu Abu Dzi`b] dari [Mukhlad bin Khufaf] dari [Urwah] dari [A`isyah] bahwa Rasulullah shallallahu 'alaihi wasallam menetapkan bahwa keuntungan itu berkait dengan jaminan (atas kerugian). Abu Isa berkata; Hadits ini hasan shahih. Hadits ini telah diriwayatkan melalui selain jalur ini dan menjadi pedoman amal menurut para ulama.
+
+3. [EKSTERNAL] Al-Muwafaqat fi Al-Usul Al-Shariah (Kitab Shariah)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Investasi pada dasarnya boleh dalam Islam selama objek dan mekanismenya halal.
+
+Yang perlu diperiksa adalah: tidak ada riba, tidak ada gharar berlebihan, tidak ada maysir/spekulasi judi, dana tidak ditempatkan pada bisnis haram, serta akad dan biaya transparan.
+
+Untuk saham, trading, reksa dana, aplikasi investasi, atau instrumen modern lainnya, hukumnya sangat bergantung pada produk dan mekanisme transaksinya. Karena itu, sebaiknya memilih instrumen yang memiliki pengawasan atau keterangan syariah yang jelas.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Tirmidzi No. 1206**
+   > Telah menceritakan kepada kami [Muhammad bin Al Mutsanna], telah menceritakan kepada kami [Utsman bin Umar] dan [Abu Amir Al 'Aqadi] dari [Ibnu Abu Dzi`b] dari [Mukhlad bin Khufaf] dari [Urwah] dari [A`isyah] bahwa Rasulullah shallallahu 'alaihi wasallam menetapkan bahwa keuntungan itu berkait dengan jaminan (atas kerugian). Abu Isa berkata; Hadits ini hasan shahih. Hadits ini telah diriwayatkan melalui selain jalur ini dan menjadi pedoman amal menurut para ulama.
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Muwafaqat fi Al-Usul Al-Shariah (Kitab Shariah)
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #22
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum kerja di bank?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 6.19 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [HADIS] Shahih Muslim No. 1662
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا سَعِيدُ بْنُ مُحَمَّدٍ الْجَرْمِيُّ حَدَّثَنَا عَبْدُ الرَّحْمَنِ بْنُ عَبْدِ الْمَلِكِ بْنِ أَبْجَرَ الْكِنَانِيُّ عَنْ أَبِيهِ عَنْ طَلْحَةَ بْنِ مُصَرِّفٍ عَنْ خَيْثَمَةَ قَالَ كُنَّا جُلُوسًا مَعَ عَبْدِ اللَّهِ بْنِ عَمْرٍو إِذْ جَاءَهُ قَهْرَمَانٌ لَهُ فَدَخَلَ فَقَالَ أَعْطَيْتَ الرَّقِيقَ قُوتَهُمْ قَالَ لَا قَالَ فَانْطَلِقْ فَأَعْطِهِمْ قَالَقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ كَفَى بِالْمَرْءِ إِثْمًا أَنْ يَحْبِسَ عَمَّنْ يَمْلِكُ قُوتَهُ
+   Translation: Telah menceritakan kepada kami [Sa'id bin Muhammad Al Jarmi] Telah menceritakan kepada kami [Abdurrahman bin Abdul Malik bin Abjar Al Kinani] dari [bapaknya] dari [Thalhah bin Musharrif] dari [Khaitsamah] ia berkata; Ketika kami sedang duduk (belajar) bersama [Abdullah bin Amr], tiba-tiba datang bendaharanya, lalu masuk dan Abdullah pun bertanya padanya, "Apakah kamu telah memberikan makan para hamba sahaya?" Sang bendahara menjawab, "Belum tuanku." Abdullah berkata, "Pergi, dan berilah makan mereka segera." Kemudian Ibnu Umar berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Cukuplah seseorang itu dikatakan berdosa orang-orang yang menahan makan (upah dan sebagainya) orang yang me
+
+3. [EKSTERNAL] Al-Muʿtamad (Syafi’i), Al-Mughni (Hanafi, Maliki, Hanbali)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Muslim No. 1662**
+   > Telah menceritakan kepada kami [Sa'id bin Muhammad Al Jarmi] Telah menceritakan kepada kami [Abdurrahman bin Abdul Malik bin Abjar Al Kinani] dari [bapaknya] dari [Thalhah bin Musharrif] dari [Khaitsamah] ia berkata; Ketika kami sedang duduk (belajar) bersama [Abdullah bin Amr], tiba-tiba datang bendaharanya, lalu masuk dan Abdullah pun bertanya padanya, "Apakah kamu telah memberikan makan para hamba sahaya?" Sang bendahara menjawab, "Belum tuanku." Abdullah berkata, "Pergi, dan berilah makan mereka segera." Kemudian Ibnu Umar berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Cukuplah seseorang itu dikatakan berdosa orang-orang yang menahan makan (upah dan sebagainya) orang yang menjadi tanggungannya."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Muʿtamad (Syafi’i), Al-Mughni (Hanafi, Maliki, Hanbali)
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #23
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum pinjol?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 9.35 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [QURAN] QS. Al Baqarah : 279
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: فَاِنْ لَّمْ تَفْعَلُوْا فَأْذَنُوْا بِحَرْبٍ مِّنَ اللّٰهِ وَرَسُوْلِهٖۚ وَاِنْ تُبْتُمْ فَلَكُمْ رُءُوْسُ اَمْوَالِكُمْۚ لَا تَظْلِمُوْنَ وَلَا تُظْلَمُوْنَ
+   Translation: Jika kamu tidak melaksanakannya, maka umumkanlah perang dari Allah dan Rasul-Nya. Tetapi jika kamu bertobat, maka kamu berhak atas pokok hartamu. Kamu tidak berbuat zalim (merugikan) dan tidak dizalimi (dirugikan).
+
+3. [QURAN] QS. An Nisaa : 29
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: يٰٓاَيُّهَا الَّذِيْنَ اٰمَنُوْا لَا تَأْكُلُوْٓا اَمْوَالَكُمْ بَيْنَكُمْ بِالْبَاطِلِ اِلَّآ اَنْ تَكُوْنَ تِجَارَةً عَنْ تَرَاضٍ مِّنْكُمْ ۗ وَلَا تَقْتُلُوْٓا اَنْفُسَكُمْ ۗ اِنَّ اللّٰهَ كَانَ بِكُمْ رَحِيْمًا
+   Translation: Wahai orang-orang yang beriman! Janganlah kamu saling memakan harta sesamamu dengan jalan yang batil (tidak benar), kecuali dalam perdagangan yang berlaku atas dasar suka sama suka di antara kamu. Dan janganlah kamu membunuh dirimu. Sungguh, Allah Maha Penyayang kepadamu.
+
+4. [HADIS] Sunan Abu Daud No. 3458
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا مُحَمَّدُ بْنُ عِيسَى حَدَّثَنَا مُعْتَمِرٌ قَالَ سَمِعْتُ أَبِي قَالَ سَمِعْتُ أَنَسَ بْنَ مَالِكٍ يَقُولُقَالَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْبَخَلِ وَالْهَرَمِ
+   Translation: Telah menceritakan kepada kami [Muhammad bin Isa] telah menceritakan kepada kami [Mu'tamir] ia berkata; aku mendengar [Ayahku] berkata; aku pernah mendengar [Anas bin Malik] berkata, "Nabi shallallahu 'alaihi wasallam bersabda: "ALLAAHUMMA INNII A'UUDZU BIKA MINAL BUKHLI WAL HARAMI (Ya Allah, aku berlindung kepada-Mu dari sifat kikir dan pikun) '."
+
+5. [EKSTERNAL] Kumpulan fatwa Syariah OJK
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+2. **QS. Al Baqarah : 279**
+   > Jika kamu tidak melaksanakannya, maka umumkanlah perang dari Allah dan Rasul-Nya. Tetapi jika kamu bertobat, maka kamu berhak atas pokok hartamu. Kamu tidak berbuat zalim (merugikan) dan tidak dizalimi (dirugikan).
+3. **QS. An Nisaa : 29**
+   > Wahai orang-orang yang beriman! Janganlah kamu saling memakan harta sesamamu dengan jalan yang batil (tidak benar), kecuali dalam perdagangan yang berlaku atas dasar suka sama suka di antara kamu. Dan janganlah kamu membunuh dirimu. Sungguh, Allah Maha Penyayang kepadamu.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Abu Daud No. 3458**
+   > Telah menceritakan kepada kami [Muhammad bin Isa] telah menceritakan kepada kami [Mu'tamir] ia berkata; aku mendengar [Ayahku] berkata; aku pernah mendengar [Anas bin Malik] berkata, "Nabi shallallahu 'alaihi wasallam bersabda: "ALLAAHUMMA INNII A'UUDZU BIKA MINAL BUKHLI WAL HARAMI (Ya Allah, aku berlindung kepada-Mu dari sifat kikir dan pikun) '."
+
+**Rujukan eksternal/kajian ulama:**
+1. Kumpulan fatwa Syariah OJK
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #24
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa hukum crypto dalam Islam?
+
+INTENT
+----------------------------------------
+Intent     : FATWA_QA
+Confidence : 0.88
+Route      : metode7
+Reason     : Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 1.89 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [HADIS] Sunan Ibnu Majah No. 2254
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ وَسُوَيْدُ بْنُ سَعِيدٍ وَهَارُونُ بْنُ إِسْحَقَ قَالُوا حَدَّثَنَا الْمُعْتَمِرُ بْنُ سُلَيْمَانَ عَنْ مُحَمَّدِ بْنِ فَضَاءٍ عَنْ أَبِيهِ عَنْ عَلْقَمَةَ بْنِ عَبْدِ اللَّهِ عَنْ أَبِيهِ قَالَنَهَى رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ عَنْ كَسْرِ سِكَّةِ الْمُسْلِمِينَ الْجَائِزَةِ بَيْنَهُمْ إِلَّا مِنْ بَأْسٍ
+   Translation: Telah menceritakan kepada kami [Abu Bakr bin Abu Syaibah] dan [Suwaid bin Sa'id] dan [Harun bin Ishaq] mereka berkata; telah menceritakan kepada kami [Al Mu'tamir bin Sulaiman] dari [Muhammad bin Fadla] dari [Bapaknya] dari [Alqamah bin Abdullah] dari [Bapaknya] ia berkata, "Rasulullah shallallahu 'alaihi wasallam melarang memecah mata uang kaum muslimin yang tersedia di antara mereka kecuali karena bahaya."
+
+3. [EKSTERNAL] Al-Muwatta (Hanafi), Al-Majmu (Syafi’i), Al-Muwatta (Maliki), Al-Muwatta (Hanbali)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Investasi pada dasarnya boleh dalam Islam selama objek dan mekanismenya halal.
+
+Yang perlu diperiksa adalah: tidak ada riba, tidak ada gharar berlebihan, tidak ada maysir/spekulasi judi, dana tidak ditempatkan pada bisnis haram, serta akad dan biaya transparan.
+
+Untuk saham, trading, reksa dana, aplikasi investasi, atau instrumen modern lainnya, hukumnya sangat bergantung pada produk dan mekanisme transaksinya. Karena itu, sebaiknya memilih instrumen yang memiliki pengawasan atau keterangan syariah yang jelas.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Ibnu Majah No. 2254**
+   > Telah menceritakan kepada kami [Abu Bakr bin Abu Syaibah] dan [Suwaid bin Sa'id] dan [Harun bin Ishaq] mereka berkata; telah menceritakan kepada kami [Al Mu'tamir bin Sulaiman] dari [Muhammad bin Fadla] dari [Bapaknya] dari [Alqamah bin Abdullah] dari [Bapaknya] ia berkata, "Rasulullah shallallahu 'alaihi wasallam melarang memecah mata uang kaum muslimin yang tersedia di antara mereka kecuali karena bahaya."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Muwatta (Hanafi), Al-Majmu (Syafi’i), Al-Muwatta (Maliki), Al-Muwatta (Hanbali)
+
+**Catatan fatwa:**
+Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan kepada ahli syariah.
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: SPIRITUAL ADVICE
+##########################################################################################
+
+==========================================================================================
+TEST CASE #25
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Aku susah istiqamah shalat
+
+INTENT
+----------------------------------------
+Intent     : SPIRITUAL_ADVICE
+Confidence : 0.82
+Route      : metode7
+Reason     : User membutuhkan nasihat spiritual.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 1.98 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 110
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic:  وَاَقِيْمُوا الصَّلٰوةَ وَاٰتُوا الزَّكٰوةَ ۗ وَمَا تُقَدِّمُوْا لِاَنْفُسِكُمْ مِّنْ خَيْرٍ تَجِدُوْهُ عِنْدَ اللّٰهِ ۗ اِنَّ اللّٰهَ بِمَا تَعْمَلُوْنَ بَصِيْرٌ
+   Translation: Dan laksanakanlah salat dan tunaikanlah zakat. Dan segala kebaikan yang kamu kerjakan untuk dirimu, kamu akan mendapatkannya (pahala) di sisi Allah. Sungguh, Allah Maha Melihat apa yang kamu kerjakan.
+
+2. [HADIS] Sunan Ibnu Majah No. 975
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا أَحْمَدُ بْنُ عَبْدَةَ وَحُمَيْدُ بْنُ مَسْعَدَةَ قَالَا حَدَّثَنَا حَمَّادُ بْنُ زَيْدٍ أَنْبَأَنَا عَبْدُ الْعَزِيزِ بْنُ صُهَيْبٍ عَنْ أَنَسِ بْنِ مَالِكٍ قَالَكَانَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يُوجِزُ وَيُتِمُّ الصَّلَاةَ
+   Translation: Telah menceritakan kepada kami [Ahmad bin Abdah] dan [Humaid bin Mas'adah] keduanya berkata; telah menceritakan kepada kami [Hammad bin Zaid] berkata, telah memberitakan kepada kami [Abdul Aziz bin Shuhaib] dari [Anas bin Malik] ia berkata, "Rasulullah shallallahu 'alaihi wasallam memperingan shalat meskipun sempurna. "
+
+3. [EKSTERNAL] Sunnah.com/Al-Bukhari/1
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Kesulitan istiqamah shalat adalah ujian yang banyak orang alami, tetapi tetap harus dilawan dengan langkah bertahap dan serius.
+
+Beberapa langkah praktis:
+1. Mulai dari menjaga shalat wajib tepat waktu semampunya.
+2. Gunakan alarm atau pengingat adzan.
+3. Kurangi pemicu yang membuat sering menunda.
+4. Cari teman atau lingkungan yang membantu menjaga shalat.
+5. Jika tertinggal, jangan putus asa; segera kembali dan perbaiki shalat berikutnya.
+
+Yang penting adalah tidak menyerah. Istiqamah biasanya tumbuh dari usaha kecil yang diulang terus-menerus.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 110**
+   > Dan laksanakanlah salat dan tunaikanlah zakat. Dan segala kebaikan yang kamu kerjakan untuk dirimu, kamu akan mendapatkannya (pahala) di sisi Allah. Sungguh, Allah Maha Melihat apa yang kamu kerjakan.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Ibnu Majah No. 975**
+   > Telah menceritakan kepada kami [Ahmad bin Abdah] dan [Humaid bin Mas'adah] keduanya berkata; telah menceritakan kepada kami [Hammad bin Zaid] berkata, telah memberitakan kepada kami [Abdul Aziz bin Shuhaib] dari [Anas bin Malik] ia berkata, "Rasulullah shallallahu 'alaihi wasallam memperingan shalat meskipun sempurna. "
+
+**Rujukan eksternal/kajian ulama:**
+1. Sunnah.com/Al-Bukhari/1
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #26
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Aku merasa jauh dari Allah
+
+INTENT
+----------------------------------------
+Intent     : SPIRITUAL_ADVICE
+Confidence : 0.82
+Route      : metode7
+Reason     : User membutuhkan nasihat spiritual.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 1.84 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Anbiyaa : 107
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: وَمَآ اَرْسَلْنٰكَ اِلَّا رَحْمَةً لِّلْعٰلَمِيْنَ
+   Translation: Dan Kami tidak mengutus engkau (Muhammad) melainkan untuk (menjadi) rahmat bagi seluruh alam.
+
+2. [HADIS] Shahih Muslim No. 1
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: وَهُوَ الْأَثَرُ الْمَشْهُورُعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مَنْ حَدَّثَ عَنِّي بِحَدِيثٍ يُرَى أَنَّهُ كَذِبٌ فَهُوَ أَحَدُ الْكَاذِبِينَ حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ حَدَّثَنَا وَكِيعٌ عَنْ شُعْبَةَ عَنْ الْحَكَمِ عَنْ عَبْدِ الرَّحْمَنِ بْنِ أَبِي لَيْلَى عَنْ سَمُرَةَ بْنِ جُنْدَبٍ ح و حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ أَيْضًا حَدَّثَنَا وَكِيعٌ عَنْ شُعْبَةَ وَسُفْيَانَ عَنْ حَبِيبٍ عَنْ مَيْمُونِ بْنِ أَبِي شَبِيبٍ عَنْ الْمُغِيرَةِ بْنِ شُع
+   Translation: Dan ia merupakan atsar yang masyhur dari Rasulullah shallallahu 'alaihi wasallam, "Barangsiapa menceritakan hadits dariku, yang mana riwayat itu diduga adalah kebohongan, maka dia (perawi) adalah salah satu dari para pembohong tersebut." Telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dari [al Hakam] dari [Abdurrahman bin Abu Laila] dari [Samurah bin Jundab]. (dalam riwayat lain disebutkan) dan juga telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dan [Sufyan] dari [Habib] dari [Maimun bin Abu Syabib] dari [al-Mughirah bin Syu'bah] keduanya berkata, "Rasulullah sha
+
+3. [EKSTERNAL] Kitab Fiqih Al‑Muwattaʿ
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Dalam kondisi seperti ini, Islam mengajarkan agar seorang Muslim tetap kembali kepada Allah, tidak berputus asa, dan memperbaiki diri secara bertahap.
+
+Mulailah dari langkah kecil yang konsisten, perbanyak doa, jaga lingkungan yang baik, dan jangan biarkan rasa bersalah membuat Anda berhenti berusaha.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Anbiyaa : 107**
+   > Dan Kami tidak mengutus engkau (Muhammad) melainkan untuk (menjadi) rahmat bagi seluruh alam.
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Muslim No. 1**
+   > Dan ia merupakan atsar yang masyhur dari Rasulullah shallallahu 'alaihi wasallam, "Barangsiapa menceritakan hadits dariku, yang mana riwayat itu diduga adalah kebohongan, maka dia (perawi) adalah salah satu dari para pembohong tersebut." Telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dari [al Hakam] dari [Abdurrahman bin Abu Laila] dari [Samurah bin Jundab]. (dalam riwayat lain disebutkan) dan juga telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dan [Sufyan] dari [Habib] dari [Maimun bin Abu Syabib] dari [al-Mughirah bin Syu'bah] keduanya berkata, "Rasulullah shallallahu 'alaihi wasallam bersabda tentang hal tersebut."
+
+**Rujukan eksternal/kajian ulama:**
+1. Kitab Fiqih Al‑Muwattaʿ
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #27
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Aku sering meninggalkan shalat dan ingin berubah
+
+INTENT
+----------------------------------------
+Intent     : GENERAL_ISLAMIC_QA
+Confidence : 0.6
+Route      : metode7
+Reason     : Default general Islamic QA.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 3.45 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 43
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: وَاَقِيْمُوا الصَّلٰوةَ وَاٰتُوا الزَّكٰوةَ وَارْكَعُوْا مَعَ الرَّاكِعِيْنَ
+   Translation: Dan laksanakanlah salat, tunaikanlah zakat, dan rukuklah beserta orang yang rukuk.
+
+2. [HADIS] Sunan Nasa'i No. 460
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: أَخْبَرَنَا أَحْمَدُ بْنُ حَرْبٍ حَدَّثَنَا مُحَمَّدُ بْنُ رَبِيعَةَ عَنْ ابْنِ جُرَيْجٍ عَنْ أَبِي الزُّبَيْرِ عَنْ جَابِرٍ قَالَقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ لَيْسَ بَيْنَ الْعَبْدِ وَبَيْنَ الْكُفْرِ إِلَّا تَرْكُ الصَّلَاةِ
+   Translation: Telah mengabarkan kepada kami [Ahmad bin Harb] Telah menceritakan kepada kami [Muhammad bin Rabi'ah] dari [Ibnu Juraij] dari [Abu Jubair] dari [Jabir] dia berkata; Rasulullah shallallahu 'alaihi wasallam bersabda; " Tidak ada perbedaan antara hamba dengan kekufuran, kecuali meninggalkan shalat."
+
+3. [HADIS] Shahih Muslim No. 123
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عُثْمَانُ بْنُ أَبِي شَيْبَةَ حَدَّثَنَا جَرِيرٌ عَنْ الْحَسَنِ بْنِ عُبَيْدِ اللَّهِ عَنْ أَبِي عَمْرٍو الشَّيْبَانِيِّ عَنْ عَبْدِ اللَّهِعَنْ النَّبِيِّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ أَفْضَلُ الْأَعْمَالِ أَوْ الْعَمَلِ الصَّلَاةُ لِوَقْتِهَا وَبِرُّ الْوَالِدَيْنِ
+   Translation: Telah menceritakan kepada kami [Utsman bin Abu Syaibah] telah menceritakan kepada kami [Jarir] dari [al-Hasan bin Ubaidullah] dari [Abu Amru asy-Syaibani] dari [Abdullah] dari Nabi shallallahu 'alaihi wasallam, beliau bersabda, "Amalan-amalan yang paling utama (atau amal) adalah shalat pada waktunya dan berbakti kepada orang tua."
+
+4. [EKSTERNAL] Fiqih Syafi'i, Kitab Al‑Hidayah, Jilid 3, Halaman 45
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut penjelasan umum berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 43**
+   > Dan laksanakanlah salat, tunaikanlah zakat, dan rukuklah beserta orang yang rukuk.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Nasa'i No. 460**
+   > Telah mengabarkan kepada kami [Ahmad bin Harb] Telah menceritakan kepada kami [Muhammad bin Rabi'ah] dari [Ibnu Juraij] dari [Abu Jubair] dari [Jabir] dia berkata; Rasulullah shallallahu 'alaihi wasallam bersabda; " Tidak ada perbedaan antara hamba dengan kekufuran, kecuali meninggalkan shalat."
+2. **Shahih Muslim No. 123**
+   > Telah menceritakan kepada kami [Utsman bin Abu Syaibah] telah menceritakan kepada kami [Jarir] dari [al-Hasan bin Ubaidullah] dari [Abu Amru asy-Syaibani] dari [Abdullah] dari Nabi shallallahu 'alaihi wasallam, beliau bersabda, "Amalan-amalan yang paling utama (atau amal) adalah shalat pada waktunya dan berbakti kepada orang tua."
+
+**Rujukan eksternal/kajian ulama:**
+1. Fiqih Syafi'i, Kitab Al‑Hidayah, Jilid 3, Halaman 45
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #28
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Aku ingin bertaubat tapi sering jatuh lagi
+
+INTENT
+----------------------------------------
+Intent     : GENERAL_ISLAMIC_QA
+Confidence : 0.6
+Route      : metode7
+Reason     : Default general Islamic QA.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 8.14 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 156
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ اِذَآ اَصَابَتْهُمْ مُّصِيْبَةٌ ۗ قَالُوْٓا اِنَّا لِلّٰهِ وَاِنَّآ اِلَيْهِ رٰجِعُوْنَۗ
+   Translation: (yaitu) orang-orang yang apabila ditimpa musibah, mereka berkata “Inna lillahi wa inna ilaihi raji‘un” (sesungguhnya kami milik Allah dan kepada-Nyalah kami kembali).
+
+2. [QURAN] QS. Al Baqarah : 195
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: وَاَنْفِقُوْا فِيْ سَبِيْلِ اللّٰهِ وَلَا تُلْقُوْا بِاَيْدِيْكُمْ اِلَى التَّهْلُكَةِ ۛ وَاَحْسِنُوْا ۛ اِنَّ اللّٰهَ يُحِبُّ الْمُحْسِنِيْنَ
+   Translation: Dan infakkanlah (hartamu) di jalan Allah, dan janganlah kamu jatuhkan (diri sendiri) ke dalam kebinasaan dengan tangan sendiri, dan berbuatbaiklah. Sungguh, Allah menyukai orang-orang yang berbuat baik.
+
+3. [HADIS] Shahih Bukhari No. 1
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا الْحُمَيْدِيُّ عَبْدُ اللَّهِ بْنُ الزُّبَيْرِ قَالَ حَدَّثَنَا سُفْيَانُ قَالَ حَدَّثَنَا يَحْيَى بْنُ سَعِيدٍ الْأَنْصَارِيُّ قَالَ أَخْبَرَنِي مُحَمَّدُ بْنُ إِبْرَاهِيمَ التَّيْمِيُّ أَنَّهُ سَمِعَ عَلْقَمَةَ بْنَ وَقَّاصٍ اللَّيْثِيَّ يَقُولُ سَمِعْتُ عُمَرَ بْنَ الْخَطَّابِ رَضِيَ اللَّهُ عَنْهُ عَلَى الْمِنْبَرِقَالَ سَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى فَمَنْ كَانَتْ هِجْرَتُ
+   Translation: Telah menceritakan kepada kami [Al Humaidi Abdullah bin Az Zubair] dia berkata, Telah menceritakan kepada kami [Sufyan] yang berkata, bahwa Telah menceritakan kepada kami [Yahya bin Sa'id Al Anshari] berkata, telah mengabarkan kepada kami [Muhammad bin Ibrahim At Taimi], bahwa dia pernah mendengar [Alqamah bin Waqash Al Laitsi] berkata; saya pernah mendengar [Umar bin Al Khaththab] diatas mimbar berkata; saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Semua perbuatan tergantung niatnya, dan (balasan) bagi tiap-tiap orang (tergantung) apa yang diniatkan; Barangsiapa niat hijrahnya karena dunia yang ingin digapainya atau karena seorang perempuan yang ingin dinikahinya, maka h
+
+4. [EKSTERNAL] Al‑Bukhari, Kitab Al‑Muslim, Fiqih Hanafi (Al‑Mughni)
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut penjelasan umum berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 156**
+   > (yaitu) orang-orang yang apabila ditimpa musibah, mereka berkata “Inna lillahi wa inna ilaihi raji‘un” (sesungguhnya kami milik Allah dan kepada-Nyalah kami kembali).
+2. **QS. Al Baqarah : 195**
+   > Dan infakkanlah (hartamu) di jalan Allah, dan janganlah kamu jatuhkan (diri sendiri) ke dalam kebinasaan dengan tangan sendiri, dan berbuatbaiklah. Sungguh, Allah menyukai orang-orang yang berbuat baik.
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Bukhari No. 1**
+   > Telah menceritakan kepada kami [Al Humaidi Abdullah bin Az Zubair] dia berkata, Telah menceritakan kepada kami [Sufyan] yang berkata, bahwa Telah menceritakan kepada kami [Yahya bin Sa'id Al Anshari] berkata, telah mengabarkan kepada kami [Muhammad bin Ibrahim At Taimi], bahwa dia pernah mendengar [Alqamah bin Waqash Al Laitsi] berkata; saya pernah mendengar [Umar bin Al Khaththab] diatas mimbar berkata; saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Semua perbuatan tergantung niatnya, dan (balasan) bagi tiap-tiap orang (tergantung) apa yang diniatkan; Barangsiapa niat hijrahnya karena dunia yang ingin digapainya atau karena seorang perempuan yang ingin dinikahinya, maka hijrahnya adalah kepada apa dia diniatkan"
+
+**Rujukan eksternal/kajian ulama:**
+1. Al‑Bukhari, Kitab Al‑Muslim, Fiqih Hanafi (Al‑Mughni)
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #29
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Imanku lagi turun, harus bagaimana?
+
+INTENT
+----------------------------------------
+Intent     : GENERAL_ISLAMIC_QA
+Confidence : 0.6
+Route      : metode7
+Reason     : Default general Islamic QA.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 12.41 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- UNVERIFIED_QURAN_REFERENCE_IN_NARRATION: Narasi menyebut QS 21:114, tetapi tidak ada di verified_sources.
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Surah 21 : 114
+   Status: Belum Terverifikasi ⚠️ (Ayat tidak ditemukan di DB)
+   Verified: False
+
+2. [QURAN] QS. Al Baqarah : 110
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic:  وَاَقِيْمُوا الصَّلٰوةَ وَاٰتُوا الزَّكٰوةَ ۗ وَمَا تُقَدِّمُوْا لِاَنْفُسِكُمْ مِّنْ خَيْرٍ تَجِدُوْهُ عِنْدَ اللّٰهِ ۗ اِنَّ اللّٰهَ بِمَا تَعْمَلُوْنَ بَصِيْرٌ
+   Translation: Dan laksanakanlah salat dan tunaikanlah zakat. Dan segala kebaikan yang kamu kerjakan untuk dirimu, kamu akan mendapatkannya (pahala) di sisi Allah. Sungguh, Allah Maha Melihat apa yang kamu kerjakan.
+
+3. [QURAN] QS. Az Zumar : 7
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اِنْ تَكْفُرُوْا فَاِنَّ اللّٰهَ غَنِيٌّ عَنْكُمْ ۗوَلَا يَرْضٰى لِعِبَادِهِ الْكُفْرَۚ وَاِنْ تَشْكُرُوْا يَرْضَهُ لَكُمْۗ وَلَا تَزِرُ وَازِرَةٌ وِّزْرَ اُخْرٰىۗ ثُمَّ اِلٰى رَبِّكُمْ مَّرْجِعُكُمْ فَيُنَبِّئُكُمْ بِمَا كُنْتُمْ تَعْمَلُوْنَۗ اِنَّهٗ عَلِيْمٌ ۢبِذَاتِ الصُّدُوْرِ
+   Translation: Jika kamu kafir (ketahuilah) maka sesungguhnya Allah tidak memerlukanmu dan Dia tidak meridai kekafiran hamba-hamba-Nya. Jika kamu bersyukur, Dia meridai kesyukuranmu itu. Seseorang yang berdosa tidak memikul dosa orang lain. Kemudian kepada Tuhanmulah kembalimu lalu Dia beritakan kepadamu apa yang telah kamu kerjakan. Sungguh, Dia Maha Mengetahui apa yang tersimpan dalam dada(mu).
+
+4. [HADIS] Shahih Bukhari No. 5892
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا خَالِدُ بْنُ مَخْلَدٍ حَدَّثَنَا سُلَيْمَانُ قَالَ حَدَّثَنِي عَمْرُو بْنُ أَبِي عَمْرٍو قَالَ سَمِعْتُ أَنَسَ بْنَ مَالِكٍ قَالَكَانَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ وَالْجُبْنِ وَالْبُخْلِ وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ
+   Translation: Telah menceritakan kepada kami [Khalid bin Makhlad] telah menceritakan kepada kami [Sulaiman] dia berkata; telah menceritakan kepadaku ['Amru bin Abu 'Amru] dia berkata; saya mendengar [Anas bin Malik] dia berkata; Nabi shallallahu 'alaihi wasallam mengucapkan: "ALLAHUMMA INII A'UUDZUBIKA MINAL HAMMI WAL HAZANI WAL 'AJZI WAL KASALI WALJUBNI WALBUKHLI WADLALA'ID DAINI WAGHALABATIR RIJAALI (Ya Allah, aku berlindung kepada-Mu dari rasa sedih dan duka cita, lemah dan malas, pengecut dan kikir dan terlilit hutang serta dikuasai musuh."
+
+5. [HADIS] Shahih Bukhari No. 5892
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا خَالِدُ بْنُ مَخْلَدٍ حَدَّثَنَا سُلَيْمَانُ قَالَ حَدَّثَنِي عَمْرُو بْنُ أَبِي عَمْرٍو قَالَ سَمِعْتُ أَنَسَ بْنَ مَالِكٍ قَالَكَانَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ وَالْجُبْنِ وَالْبُخْلِ وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ
+   Translation: Telah menceritakan kepada kami [Khalid bin Makhlad] telah menceritakan kepada kami [Sulaiman] dia berkata; telah menceritakan kepadaku ['Amru bin Abu 'Amru] dia berkata; saya mendengar [Anas bin Malik] dia berkata; Nabi shallallahu 'alaihi wasallam mengucapkan: "ALLAHUMMA INII A'UUDZUBIKA MINAL HAMMI WAL HAZANI WAL 'AJZI WAL KASALI WALJUBNI WALBUKHLI WADLALA'ID DAINI WAGHALABATIR RIJAALI (Ya Allah, aku berlindung kepada-Mu dari rasa sedih dan duka cita, lemah dan malas, pengecut dan kikir dan terlilit hutang serta dikuasai musuh."
+
+6. [EKSTERNAL] Al‑Muḥkam al‑Fatawa, Kitab al‑Iman
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut penjelasan umum berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 110**
+   > Dan laksanakanlah salat dan tunaikanlah zakat. Dan segala kebaikan yang kamu kerjakan untuk dirimu, kamu akan mendapatkannya (pahala) di sisi Allah. Sungguh, Allah Maha Melihat apa yang kamu kerjakan.
+2. **QS. Az Zumar : 7**
+   > Jika kamu kafir (ketahuilah) maka sesungguhnya Allah tidak memerlukanmu dan Dia tidak meridai kekafiran hamba-hamba-Nya. Jika kamu bersyukur, Dia meridai kesyukuranmu itu. Seseorang yang berdosa tidak memikul dosa orang lain. Kemudian kepada Tuhanmulah kembalimu lalu Dia beritakan kepadamu apa yang telah kamu kerjakan. Sungguh, Dia Maha Mengetahui apa yang tersimpan dalam dada(mu).
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Bukhari No. 5892**
+   > Telah menceritakan kepada kami [Khalid bin Makhlad] telah menceritakan kepada kami [Sulaiman] dia berkata; telah menceritakan kepadaku ['Amru bin Abu 'Amru] dia berkata; saya mendengar [Anas bin Malik] dia berkata; Nabi shallallahu 'alaihi wasallam mengucapkan: "ALLAHUMMA INII A'UUDZUBIKA MINAL HAMMI WAL HAZANI WAL 'AJZI WAL KASALI WALJUBNI WALBUKHLI WADLALA'ID DAINI WAGHALABATIR RIJAALI (Ya Allah, aku berlindung kepada-Mu dari rasa sedih dan duka cita, lemah dan malas, pengecut dan kikir dan terlilit hutang serta dikuasai musuh."
+2. **Shahih Bukhari No. 5892**
+   > Telah menceritakan kepada kami [Khalid bin Makhlad] telah menceritakan kepada kami [Sulaiman] dia berkata; telah menceritakan kepadaku ['Amru bin Abu 'Amru] dia berkata; saya mendengar [Anas bin Malik] dia berkata; Nabi shallallahu 'alaihi wasallam mengucapkan: "ALLAHUMMA INII A'UUDZUBIKA MINAL HAMMI WAL HAZANI WAL 'AJZI WAL KASALI WALJUBNI WALBUKHLI WADLALA'ID DAINI WAGHALABATIR RIJAALI (Ya Allah, aku berlindung kepada-Mu dari rasa sedih dan duka cita, lemah dan malas, pengecut dan kikir dan terlilit hutang serta dikuasai musuh."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al‑Muḥkam al‑Fatawa, Kitab al‑Iman
+
+**Rujukan yang belum terverifikasi:**
+1. QS. Surah 21 : 114
+
+**Catatan kehati-hatian:**
+Sebagian rujukan belum berhasil diverifikasi sepenuhnya. Jawaban ini sebaiknya dipahami sebagai penjelasan umum, bukan fatwa final untuk kasus personal yang kompleks.
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: THEMATIC DALIL SEARCH
+##########################################################################################
+
+==========================================================================================
+TEST CASE #30
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Apa dalil tentang sabar?
+
+INTENT
+----------------------------------------
+Intent     : THEMATIC_DALIL_SEARCH
+Confidence : 0.85
+Route      : metode7
+Reason     : User mencari dalil tematik.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 2.03 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 153
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: يٰٓاَيُّهَا الَّذِيْنَ اٰمَنُوا اسْتَعِيْنُوْا بِالصَّبْرِ وَالصَّلٰوةِ ۗ اِنَّ اللّٰهَ مَعَ الصّٰبِرِيْنَ
+   Translation: Wahai orang-orang yang beriman! Mohonlah pertolongan (kepada Allah) dengan sabar dan salat. Sungguh, Allah beserta orang-orang yang sabar.
+
+2. [QURAN] QS. Al Anfaal : 46
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: وَاَطِيْعُوا اللّٰهَ وَرَسُوْلَهٗ وَلَا تَنَازَعُوْا فَتَفْشَلُوْا وَتَذْهَبَ رِيْحُكُمْ وَاصْبِرُوْاۗ اِنَّ اللّٰهَ مَعَ الصّٰبِرِيْنَۚ
+   Translation: Dan taatilah Allah dan Rasul-Nya dan janganlah kamu berselisih, yang menyebabkan kamu menjadi gentar dan kekuatanmu hilang dan bersabarlah. Sungguh, Allah beserta orang-orang sabar.
+
+3. [HADIS] Sunan Nasa'i No. 1846
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: أَخْبَرَنَا عَمْرُو بْنُ عَلِيٍّ قَالَ حَدَّثَنَا مُحَمَّدُ بْنُ جَعْفَرٍ قَالَ حَدَّثَنَا شُعْبَةُ عَنْ ثَابِتٍ قَالَ سَمِعْتُ أَنَسًا يَقُولُقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ الصَّبْرُ عِنْدَ الصَّدْمَةِ الْأُولَى
+   Translation: Telah mengabarkan kepada kami ['Amru bin 'Ali] dia berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] dia berkata; telah menceritakan kepada kami [Syu'bah] dari [Tsabit] dia berkata; Aku mendengar [Anas] berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Sabar adalah ketika mendapat tekanan (gejolak, hantaman) pertama kali."
+
+4. [HADIS] Sunan Nasa'i No. 1846
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: أَخْبَرَنَا عَمْرُو بْنُ عَلِيٍّ قَالَ حَدَّثَنَا مُحَمَّدُ بْنُ جَعْفَرٍ قَالَ حَدَّثَنَا شُعْبَةُ عَنْ ثَابِتٍ قَالَ سَمِعْتُ أَنَسًا يَقُولُقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ الصَّبْرُ عِنْدَ الصَّدْمَةِ الْأُولَى
+   Translation: Telah mengabarkan kepada kami ['Amru bin 'Ali] dia berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] dia berkata; telah menceritakan kepada kami [Syu'bah] dari [Tsabit] dia berkata; Aku mendengar [Anas] berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Sabar adalah ketika mendapat tekanan (gejolak, hantaman) pertama kali."
+
+5. [EKSTERNAL] Al‑Mughni (Al‑Hanafi) – Bab ‘Sabar’
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 153**
+   > Wahai orang-orang yang beriman! Mohonlah pertolongan (kepada Allah) dengan sabar dan salat. Sungguh, Allah beserta orang-orang yang sabar.
+2. **QS. Al Anfaal : 46**
+   > Dan taatilah Allah dan Rasul-Nya dan janganlah kamu berselisih, yang menyebabkan kamu menjadi gentar dan kekuatanmu hilang dan bersabarlah. Sungguh, Allah beserta orang-orang sabar.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Nasa'i No. 1846**
+   > Telah mengabarkan kepada kami ['Amru bin 'Ali] dia berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] dia berkata; telah menceritakan kepada kami [Syu'bah] dari [Tsabit] dia berkata; Aku mendengar [Anas] berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Sabar adalah ketika mendapat tekanan (gejolak, hantaman) pertama kali."
+2. **Sunan Nasa'i No. 1846**
+   > Telah mengabarkan kepada kami ['Amru bin 'Ali] dia berkata; telah menceritakan kepada kami [Muhammad bin Ja'far] dia berkata; telah menceritakan kepada kami [Syu'bah] dari [Tsabit] dia berkata; Aku mendengar [Anas] berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Sabar adalah ketika mendapat tekanan (gejolak, hantaman) pertama kali."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al‑Mughni (Al‑Hanafi) – Bab ‘Sabar’
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #31
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Sebutkan hadis tentang niat
+
+INTENT
+----------------------------------------
+Intent     : THEMATIC_DALIL_SEARCH
+Confidence : 0.85
+Route      : metode7
+Reason     : User mencari dalil tematik.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 5.07 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Kahfi : 11
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: فَضَرَبْنَا عَلٰٓى اٰذَانِهِمْ فِى الْكَهْفِ سِنِيْنَ عَدَدًاۙ
+   Translation: Maka Kami tutup telinga mereka di dalam gua itu, selama beberapa tahun.
+
+2. [HADIS] Shahih Bukhari No. 1
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا الْحُمَيْدِيُّ عَبْدُ اللَّهِ بْنُ الزُّبَيْرِ قَالَ حَدَّثَنَا سُفْيَانُ قَالَ حَدَّثَنَا يَحْيَى بْنُ سَعِيدٍ الْأَنْصَارِيُّ قَالَ أَخْبَرَنِي مُحَمَّدُ بْنُ إِبْرَاهِيمَ التَّيْمِيُّ أَنَّهُ سَمِعَ عَلْقَمَةَ بْنَ وَقَّاصٍ اللَّيْثِيَّ يَقُولُ سَمِعْتُ عُمَرَ بْنَ الْخَطَّابِ رَضِيَ اللَّهُ عَنْهُ عَلَى الْمِنْبَرِقَالَ سَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى فَمَنْ كَانَتْ هِجْرَتُ
+   Translation: Telah menceritakan kepada kami [Al Humaidi Abdullah bin Az Zubair] dia berkata, Telah menceritakan kepada kami [Sufyan] yang berkata, bahwa Telah menceritakan kepada kami [Yahya bin Sa'id Al Anshari] berkata, telah mengabarkan kepada kami [Muhammad bin Ibrahim At Taimi], bahwa dia pernah mendengar [Alqamah bin Waqash Al Laitsi] berkata; saya pernah mendengar [Umar bin Al Khaththab] diatas mimbar berkata; saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Semua perbuatan tergantung niatnya, dan (balasan) bagi tiap-tiap orang (tergantung) apa yang diniatkan; Barangsiapa niat hijrahnya karena dunia yang ingin digapainya atau karena seorang perempuan yang ingin dinikahinya, maka h
+
+3. [EKSTERNAL] Sunan An-Nasa’i, Kitab Ibadah
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Kahfi : 11**
+   > Maka Kami tutup telinga mereka di dalam gua itu, selama beberapa tahun.
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Bukhari No. 1**
+   > Telah menceritakan kepada kami [Al Humaidi Abdullah bin Az Zubair] dia berkata, Telah menceritakan kepada kami [Sufyan] yang berkata, bahwa Telah menceritakan kepada kami [Yahya bin Sa'id Al Anshari] berkata, telah mengabarkan kepada kami [Muhammad bin Ibrahim At Taimi], bahwa dia pernah mendengar [Alqamah bin Waqash Al Laitsi] berkata; saya pernah mendengar [Umar bin Al Khaththab] diatas mimbar berkata; saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Semua perbuatan tergantung niatnya, dan (balasan) bagi tiap-tiap orang (tergantung) apa yang diniatkan; Barangsiapa niat hijrahnya karena dunia yang ingin digapainya atau karena seorang perempuan yang ingin dinikahinya, maka hijrahnya adalah kepada apa dia diniatkan"
+
+**Rujukan eksternal/kajian ulama:**
+1. Sunan An-Nasa’i, Kitab Ibadah
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #32
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Ayat tentang sedekah
+
+INTENT
+----------------------------------------
+Intent     : THEMATIC_DALIL_SEARCH
+Confidence : 0.85
+Route      : metode7
+Reason     : User mencari dalil tematik.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 3.65 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- UNVERIFIED_QURAN_REFERENCE_IN_NARRATION: Narasi menyebut QS 4:101, tetapi tidak ada di verified_sources.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 274
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يُنْفِقُوْنَ اَمْوَالَهُمْ بِالَّيْلِ وَالنَّهَارِ سِرًّا وَّعَلَانِيَةً فَلَهُمْ اَجْرُهُمْ عِنْدَ رَبِّهِمْۚ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُوْنَ
+   Translation: Orang-orang yang menginfakkan hartanya malam dan siang hari (secara) sembunyi-sembunyi maupun terang-terangan, mereka mendapat pahala di sisi Tuhannya. Tidak ada rasa takut pada mereka dan mereka tidak bersedih hati.
+
+2. [HADIS] Sunan Darimi No. 1466
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic:  أَخْبَرَنَا أَبُو عَاصِمٍ عَنْ ابْنِ جُرَيْجٍ عَنْ ابْنِ أَبِي عَمَّارٍ عَنْ عَبْدِ اللَّهِ بْنِ بَابَيْهِ عَنْ يَعْلَى بْنِ أُمَيَّةَ قَالَ قُلْتُ لِعُمَرَ بْنِ الْخَطَّابِ قَالَ اللَّهُ تَعَالَى { أَنْ تَقْصُرُوا مِنْ الصَّلَاةِ إِنْ خِفْتُمْ } فَقَدْ أَمِنَ النَّاسُ قَالَ عَجِبْتُ مِمَّا عَجِبْتَ مِنْهُ فَقَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ صَدَقَةٌ تَصَدَّقَ اللَّهُ بِهَا عَلَيْكُمْ فَاقْبَلُوهَا
+   Translation: Telah mengabarkan kepada kami [Abu 'Ashim] dari [Ibnu Juraij] dari [Ibnu Abu 'Ammar] dari [Abdullah bin Babaih] dari [Ya'la bin Umayyah] ia berkata, "Aku katakan kepada [Umar bin Al Khathab, "Allah Ta'ala berfirman: '(Kamu men-qashar sembahyang(mu), jika kamu takut) ' (Qs. An Nisa: 101). Sementara orang-orang sekarang telah merasa aman?" Umar menjawab, "Aku juga pernah heran sebagaimana engkau heran. Maka Rasulullah shallallahu 'alaihi wasallam bersabda: "Itu adalah sedekah yang telah Allah berikan kepada kalian, maka terimalah sedekah-Nya."
+
+3. [EKSTERNAL] Al-Majlisi, Al-Kashf, Al-Ilal
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 274**
+   > Orang-orang yang menginfakkan hartanya malam dan siang hari (secara) sembunyi-sembunyi maupun terang-terangan, mereka mendapat pahala di sisi Tuhannya. Tidak ada rasa takut pada mereka dan mereka tidak bersedih hati.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Darimi No. 1466**
+   > Telah mengabarkan kepada kami [Abu 'Ashim] dari [Ibnu Juraij] dari [Ibnu Abu 'Ammar] dari [Abdullah bin Babaih] dari [Ya'la bin Umayyah] ia berkata, "Aku katakan kepada [Umar bin Al Khathab, "Allah Ta'ala berfirman: '(Kamu men-qashar sembahyang(mu), jika kamu takut) ' (Qs. An Nisa: 101). Sementara orang-orang sekarang telah merasa aman?" Umar menjawab, "Aku juga pernah heran sebagaimana engkau heran. Maka Rasulullah shallallahu 'alaihi wasallam bersabda: "Itu adalah sedekah yang telah Allah berikan kepada kalian, maka terimalah sedekah-Nya."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Majlisi, Al-Kashf, Al-Ilal
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #33
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Dalil tentang menjaga pandangan
+
+INTENT
+----------------------------------------
+Intent     : THEMATIC_DALIL_SEARCH
+Confidence : 0.85
+Route      : metode7
+Reason     : User mencari dalil tematik.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 4.91 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Mu'minun : 6
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اِلَّا عَلٰٓى اَزْوَاجِهِمْ اَوْ مَا مَلَكَتْ اَيْمَانُهُمْ فَاِنَّهُمْ غَيْرُ مَلُوْمِيْنَۚ
+   Translation: kecuali terhadap istri-istri mereka atau hamba sahaya yang mereka miliki; maka sesungguhnya mereka tidak tercela.
+
+2. [HADIS] Sunan Tirmidzi No. 2701
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عَلِيُّ بْنُ حُجْرٍ أَخْبَرَنَا شَرِيكٌ عَنْ أَبِي رَبِيعَةَ عَنْ ابْنِ بُرَيْدَةَ عَنْ أَبِيهِرَفَعَهُ قَالَ يَا عَلِيُّ لَا تُتْبِعْ النَّظْرَةَ النَّظْرَةَ فَإِنَّ لَكَ الْأُولَى وَلَيْسَتْ لَكَ الْآخِرَةُقَالَ أَبُو عِيسَى هَذَا حَدِيثٌ حَسَنٌ غَرِيبٌ لَا نَعْرِفُهُ إِلَّا مِنْ حَدِيثِ شَرِيكٍ
+   Translation: Telah menceritakan kepada kami [Ali bin Hujr] telah mengabarkan kepada kami [Syarik] dari [Abu Rabi'ah] dari [Ibnu Buraidah] dari [Ayahnya] ia memarfu'kan (menyambungkan sampai Nabi shallallahu 'alaihi wasallam), sabdanya; "Wahai Ali, janganlah kamu ikuti pandangan yang pertama dengan pandangan berikutnya, karena yang pertama untukmu dan yang kedua bukan lagi untukmu." Abu Isa berkata; Hadits ini hasan gharib, kami tidak mengetahuinya kecuali dari hadits Syarik.
+
+3. [HADIS] Sunan Darimi No. 2593
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic:  أَخْبَرَنَا أَبُو الْوَلِيدِ الطَّيَالِسِيُّ حَدَّثَنَا حَمَّادُ بْنُ سَلَمَةَ عَنْ مُحَمَّدِ بْنِ إِسْحَقَ عَنْ مُحَمَّدِ بْنِ إِبْرَاهِيمَ عَنْ سَلَمَةَ بْنِ أَبِي الطُّفَيْلِ عَنْ عَلِيٍّ قَالَ لِي قَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ لَا تُتْبِعْ النَّظْرَةَ النَّظْرَةَ فَإِنَّ الْأُولَى لَكَ وَالْآخِرَةَ عَلَيْكَ
+   Translation: Telah mengabarkan kepada kami [Abu Al Walid Ath Thayalisi] telah menceritakan kepada kami [Hammad bin Salamah] dari [Muhammad bin Ishaq] dari [Muhammad bin Ibrahim] dari [Salamah bin Abu Ath Thufail] dari [Ali] ia berkata kepadaku bahwa Rasulullah shallallahu 'alaihi wasallam bersabda: "Janganlah engkau terus menerus memandang (sesuatu yang haram), karena pandangan pertama adalah boleh untukmu, sedangkan pandangan selanjutnya adalah haram bagimu."
+
+4. [EKSTERNAL] Al-Mughni fi al-Fiqh al-Shafi'i
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Mu'minun : 6**
+   > kecuali terhadap istri-istri mereka atau hamba sahaya yang mereka miliki; maka sesungguhnya mereka tidak tercela.
+
+**Hadis yang ditemukan dalam database:**
+1. **Sunan Tirmidzi No. 2701**
+   > Telah menceritakan kepada kami [Ali bin Hujr] telah mengabarkan kepada kami [Syarik] dari [Abu Rabi'ah] dari [Ibnu Buraidah] dari [Ayahnya] ia memarfu'kan (menyambungkan sampai Nabi shallallahu 'alaihi wasallam), sabdanya; "Wahai Ali, janganlah kamu ikuti pandangan yang pertama dengan pandangan berikutnya, karena yang pertama untukmu dan yang kedua bukan lagi untukmu." Abu Isa berkata; Hadits ini hasan gharib, kami tidak mengetahuinya kecuali dari hadits Syarik.
+2. **Sunan Darimi No. 2593**
+   > Telah mengabarkan kepada kami [Abu Al Walid Ath Thayalisi] telah menceritakan kepada kami [Hammad bin Salamah] dari [Muhammad bin Ishaq] dari [Muhammad bin Ibrahim] dari [Salamah bin Abu Ath Thufail] dari [Ali] ia berkata kepadaku bahwa Rasulullah shallallahu 'alaihi wasallam bersabda: "Janganlah engkau terus menerus memandang (sesuatu yang haram), karena pandangan pertama adalah boleh untukmu, sedangkan pandangan selanjutnya adalah haram bagimu."
+
+**Rujukan eksternal/kajian ulama:**
+1. Al-Mughni fi al-Fiqh al-Shafi'i
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #34
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Dalil tentang larangan riba
+
+INTENT
+----------------------------------------
+Intent     : THEMATIC_DALIL_SEARCH
+Confidence : 0.85
+Route      : metode7
+Reason     : User mencari dalil tematik.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 7.56 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Baqarah : 275
+   Status: Terverifikasi ✅ (Kalamullah - Wahyu Mutlak)
+   Verified: True
+   Arabic: اَلَّذِيْنَ يَأْكُلُوْنَ الرِّبٰوا لَا يَقُوْمُوْنَ اِلَّا كَمَا يَقُوْمُ الَّذِيْ يَتَخَبَّطُهُ الشَّيْطٰنُ مِنَ الْمَسِّۗ ذٰلِكَ بِاَنَّهُمْ قَالُوْٓا اِنَّمَا الْبَيْعُ مِثْلُ الرِّبٰواۘ وَاَحَلَّ اللّٰهُ الْبَيْعَ وَحَرَّمَ الرِّبٰواۗ فَمَنْ جَاۤءَهٗ مَوْعِظَةٌ مِّنْ رَّبِّهٖ فَانْتَهٰى فَلَهٗ مَا سَلَفَۗ وَاَمْرُهٗٓ اِلَى اللّٰهِ ۗ وَمَنْ عَادَ فَاُولٰۤىِٕكَ اَصْحٰبُ النَّارِ ۚ هُمْ فِيْهَا خٰلِدُوْنَ
+   Translation: Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+2. [EKSTERNAL] Mughni al‑Mufid, Kitab al‑Kharaj
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi.
+
+**Dalil Al-Qur’an yang terverifikasi:**
+1. **QS. Al Baqarah : 275**
+   > Orang-orang yang memakan riba tidak dapat berdiri melainkan seperti berdirinya orang yang kemasukan setan karena gila. Yang demikian itu karena mereka berkata bahwa jual beli sama dengan riba. Padahal Allah telah menghalalkan jual beli dan mengharamkan riba. Barangsiapa mendapat peringatan dari Tuhannya, lalu dia berhenti, maka apa yang telah diperolehnya dahulu menjadi miliknya dan urusannya (terserah) kepada Allah. Barangsiapa mengulangi, maka mereka itu penghuni neraka, mereka kekal di dalamnya.
+
+**Rujukan eksternal/kajian ulama:**
+1. Mughni al‑Mufid, Kitab al‑Kharaj
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #35
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Hadis tentang shalat berjamaah
+
+INTENT
+----------------------------------------
+Intent     : THEMATIC_DALIL_SEARCH
+Confidence : 0.85
+Route      : metode7
+Reason     : User mencari dalil tematik.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 2.20 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Musnad Ahmad No. 4866
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا يُونُسُ بْنُ مُحَمَّدٍ حَدَّثَنَا مَرْثَدٌ يَعْنِي ابْنَ عَامِرٍ الْهُنَائِيَّ حَدَّثَنِي أَبُو عَمْرٍو النَّدَبِيُّ حَدَّثَنِي عَبْدُ اللَّهِ بْنُ عُمَرَ بْنِ الْخَطَّابِ قَالَسَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ إِنَّ اللَّهَ لَيَعْجَبُ مِنْ الصَّلَاةِ فِي الْجَمِيعِ
+   Translation: Telah menceritakan kepada kami [Yunus bin Muhammad] telah menceritakan kepada kami [Martsad] -yakni Ibnu Amir Al Huna`i- telah menceritakan kepadaku [Abu Amru An Nadabi] telah menceritakan kepadaku [Abdullah bin Umar bin Al Khaththab] ia berkata, "Aku mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, Allah kagum dengan shalat yang dilakukan dengan berjama'ah."
+
+2. [HADIS] Musnad Ahmad No. 4866
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا يُونُسُ بْنُ مُحَمَّدٍ حَدَّثَنَا مَرْثَدٌ يَعْنِي ابْنَ عَامِرٍ الْهُنَائِيَّ حَدَّثَنِي أَبُو عَمْرٍو النَّدَبِيُّ حَدَّثَنِي عَبْدُ اللَّهِ بْنُ عُمَرَ بْنِ الْخَطَّابِ قَالَسَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ إِنَّ اللَّهَ لَيَعْجَبُ مِنْ الصَّلَاةِ فِي الْجَمِيعِ
+   Translation: Telah menceritakan kepada kami [Yunus bin Muhammad] telah menceritakan kepada kami [Martsad] -yakni Ibnu Amir Al Huna`i- telah menceritakan kepadaku [Abu Amru An Nadabi] telah menceritakan kepadaku [Abdullah bin Umar bin Al Khaththab] ia berkata, "Aku mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, Allah kagum dengan shalat yang dilakukan dengan berjama'ah."
+
+3. [HADIS] Sunan Tirmidzi No. 1
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا قُتَيْبَةُ بْنُ سَعِيدٍ حَدَّثَنَا أَبُو عَوَانَةَ عَنْ سِمَاكِ بْنِ حَرْبٍ ح و حَدَّثَنَا هَنَّادٌ حَدَّثَنَا وَكِيعٌ عَنْ إِسْرَائِيلَ عَنْ سِمَاكٍ عَنْ مُصْعَبِ بْنِ سَعْدٍ عَنْ ابْنِ عُمَرَعَنْ النَّبِيِّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ لَا تُقْبَلُ صَلَاةٌ بِغَيْرِ طُهُورٍ وَلَا صَدَقَةٌ مِنْ غُلُولٍقَالَ هَنَّادٌ فِي حَدِيثِهِ إِلَّا بِطُهُورٍ قَالَ أَبُو عِيسَى هَذَا الْحَدِيثُ أَصَحُّ شَيْءٍ فِي هَذَا الْبَابِ وَأَحْسَنُ وَفِي الْبَاب عَنْ أَبِي الْمَلِيحِ عَنْ أَبِيهِ
+   Translation: telah menceritakan kepada kami [Qutaibah bin Sa'id] berkata, telah menceritakan kepada kami [Abu Awanah] dari [Simak bin Harb], dan telah menceritakan kepada kami [Hannad] berkata, telah menceritakan kepada kami [Waki'] dari [Israil] dari [Simak] dari [Mush'ab bin Sa'd] dari [Ibnu Umar] dari Nabi Shallahu 'alaihi wa Sallam, beliau bersabda: " Tidak akan diterima shalat yang dilakukan tanpa bersuci, dan tidak akan diterima sedekah yang berasal dari harta curian." Hannad menyebutkan dalam haditsnya, "tidak suci." Abu Isa berkata; "Hadits ini adalah yang paling shahih dan paling baik dalam bab ini." Dalam bab tersebut juga ada hadits dari Abu Al Malih dari Bapaknya dan Abu Hurairah dan Anas. Da
+
+4. [HADIS] Musnad Ahmad No. 4866
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا يُونُسُ بْنُ مُحَمَّدٍ حَدَّثَنَا مَرْثَدٌ يَعْنِي ابْنَ عَامِرٍ الْهُنَائِيَّ حَدَّثَنِي أَبُو عَمْرٍو النَّدَبِيُّ حَدَّثَنِي عَبْدُ اللَّهِ بْنُ عُمَرَ بْنِ الْخَطَّابِ قَالَسَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ إِنَّ اللَّهَ لَيَعْجَبُ مِنْ الصَّلَاةِ فِي الْجَمِيعِ
+   Translation: Telah menceritakan kepada kami [Yunus bin Muhammad] telah menceritakan kepada kami [Martsad] -yakni Ibnu Amir Al Huna`i- telah menceritakan kepadaku [Abu Amru An Nadabi] telah menceritakan kepadaku [Abdullah bin Umar bin Al Khaththab] ia berkata, "Aku mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, Allah kagum dengan shalat yang dilakukan dengan berjama'ah."
+
+5. [EKSTERNAL] Sunan Abu Dawud, Jami’ at-Tirmidhi, Sahih Bukhari, Sahih Muslim
+   Status: Rujukan Eksternal ℹ️ (Kajian Ulama/Fatwa)
+   Verified: True
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi.
+
+**Hadis yang ditemukan dalam database:**
+1. **Musnad Ahmad No. 4866**
+   > Telah menceritakan kepada kami [Yunus bin Muhammad] telah menceritakan kepada kami [Martsad] -yakni Ibnu Amir Al Huna`i- telah menceritakan kepadaku [Abu Amru An Nadabi] telah menceritakan kepadaku [Abdullah bin Umar bin Al Khaththab] ia berkata, "Aku mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, Allah kagum dengan shalat yang dilakukan dengan berjama'ah."
+2. **Musnad Ahmad No. 4866**
+   > Telah menceritakan kepada kami [Yunus bin Muhammad] telah menceritakan kepada kami [Martsad] -yakni Ibnu Amir Al Huna`i- telah menceritakan kepadaku [Abu Amru An Nadabi] telah menceritakan kepadaku [Abdullah bin Umar bin Al Khaththab] ia berkata, "Aku mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, Allah kagum dengan shalat yang dilakukan dengan berjama'ah."
+3. **Sunan Tirmidzi No. 1**
+   > telah menceritakan kepada kami [Qutaibah bin Sa'id] berkata, telah menceritakan kepada kami [Abu Awanah] dari [Simak bin Harb], dan telah menceritakan kepada kami [Hannad] berkata, telah menceritakan kepada kami [Waki'] dari [Israil] dari [Simak] dari [Mush'ab bin Sa'd] dari [Ibnu Umar] dari Nabi Shallahu 'alaihi wa Sallam, beliau bersabda: " Tidak akan diterima shalat yang dilakukan tanpa bersuci, dan tidak akan diterima sedekah yang berasal dari harta curian." Hannad menyebutkan dalam haditsnya, "tidak suci." Abu Isa berkata; "Hadits ini adalah yang paling shahih dan paling baik dalam bab ini." Dalam bab tersebut juga ada hadits dari Abu Al Malih dari Bapaknya dan Abu Hurairah dan Anas. Dan Abu Al Malih bin Usamah namanya adalah Amir, disebut juga Zaid bin Usamah bin Umair Al Hudzali."
+4. **Musnad Ahmad No. 4866**
+   > Telah menceritakan kepada kami [Yunus bin Muhammad] telah menceritakan kepada kami [Martsad] -yakni Ibnu Amir Al Huna`i- telah menceritakan kepadaku [Abu Amru An Nadabi] telah menceritakan kepadaku [Abdullah bin Umar bin Al Khaththab] ia berkata, "Aku mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, Allah kagum dengan shalat yang dilakukan dengan berjama'ah."
+
+**Rujukan eksternal/kajian ulama:**
+1. Sunan Abu Dawud, Jami’ at-Tirmidhi, Sahih Bukhari, Sahih Muslim
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: OUT OF DOMAIN
+##########################################################################################
+
+==========================================================================================
+TEST CASE #36
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+Buatkan kode Python sorting array
+
+INTENT
+----------------------------------------
+Intent     : OUT_OF_DOMAIN
+Confidence : 0.92
+Route      : blocked
+Blocked    : Permintaan merupakan tugas non-Islam tanpa konteks hukum Islam.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : OUT_OF_DOMAIN
+Composer           : OUT_OF_DOMAIN_TEMPLATE
+Verification Status: OUT_OF_DOMAIN
+Final Check Passed : True
+Process Time       : 0.00 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #37
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+bolehkah kamu bikin kode python?
+
+INTENT
+----------------------------------------
+Intent     : FIQH_QA
+Confidence : 0.86
+Route      : metode7
+Reason     : Pertanyaan hukum Islam umum.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : True
+Process Time       : 0.69 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, atau melalaikan kewajiban.
+
+Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.
+
+Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya.
+
+**Rujukan:**
+⚠️ Belum ada rujukan spesifik yang berhasil diverifikasi dari database Smart Hijrah.
+
+**Catatan kehati-hatian:**
+Sebagian rujukan belum berhasil diverifikasi sepenuhnya. Jawaban ini sebaiknya dipahami sebagai penjelasan umum, bukan fatwa final untuk kasus personal yang kompleks.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #38
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+jelaskan recursion
+
+INTENT
+----------------------------------------
+Intent     : OUT_OF_DOMAIN
+Confidence : 0.75
+Route      : blocked
+Blocked    : Tidak ditemukan konteks Islam pada permintaan umum.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : OUT_OF_DOMAIN
+Composer           : OUT_OF_DOMAIN_TEMPLATE
+Verification Status: OUT_OF_DOMAIN
+Final Check Passed : True
+Process Time       : 0.00 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #39
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+buatkan resep nasi goreng
+
+INTENT
+----------------------------------------
+Intent     : OUT_OF_DOMAIN
+Confidence : 0.92
+Route      : blocked
+Blocked    : Permintaan merupakan tugas non-Islam tanpa konteks hukum Islam.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : OUT_OF_DOMAIN
+Composer           : OUT_OF_DOMAIN_TEMPLATE
+Verification Status: OUT_OF_DOMAIN
+Final Check Passed : True
+Process Time       : 0.00 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #40
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+rekomendasikan anime terbaik
+
+INTENT
+----------------------------------------
+Intent     : OUT_OF_DOMAIN
+Confidence : 0.82
+Route      : blocked
+Blocked    : Topik non-Islam tanpa konteks Islam.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : OUT_OF_DOMAIN
+Composer           : OUT_OF_DOMAIN_TEMPLATE
+Verification Status: OUT_OF_DOMAIN
+Final Check Passed : True
+Process Time       : 0.00 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #41
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+carikan hotel murah di Jakarta
+
+INTENT
+----------------------------------------
+Intent     : OUT_OF_DOMAIN
+Confidence : 0.92
+Route      : blocked
+Blocked    : Permintaan merupakan tugas non-Islam tanpa konteks hukum Islam.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : OUT_OF_DOMAIN
+Composer           : OUT_OF_DOMAIN_TEMPLATE
+Verification Status: OUT_OF_DOMAIN
+Final Check Passed : True
+Process Time       : 0.00 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+(Tidak ada rujukan dalil spesifik yang diekstrak)
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.
+
+==========================================================================================
+
+
+##########################################################################################
+GROUP: AMBIGUOUS / TYPO
+##########################################################################################
+
+==========================================================================================
+TEST CASE #42
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+daud no 5
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.75
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 5
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+   Translation: Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+Catatan: Saya menafsirkan maksud Anda sebagai Sunan Abu Daud no. 5, karena istilah 'Daud' dalam konteks hadis biasanya merujuk pada Abu Daud.
+
+**Sunan Abu Daud No. 5**
+
+**Teks Arab:**
+حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+
+**Terjemahan:**
+Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #43
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+abu dawud no 5
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Sunan Abu Daud No. 5
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+   Translation: Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Sunan Abu Daud No. 5**
+
+**Teks Arab:**
+حَدَّثَنَا عَمْرُو بْنُ مَرْزُوقٍ أَخْبَرَنَا شُعْبَةُ عَنْ قَتَادَةَ عَنْ النَّضِرِ بْنِ أَنَسٍ عَنْ زَيْدِ بْنِ أَرْقَمَعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ إِنَّ هَذِهِ الْحُشُوشَ مُحْتَضَرَةٌ فَإِذَا أَتَى أَحَدُكُمْ الْخَلَاءَ فَلْيَقُلْ أَعُوذُ بِاللَّهِ مِنْ الْخُبُثِ وَالْخَبَائِثِ
+
+**Terjemahan:**
+Telah menceritakan kepada kami [Amru bin Marzuq] telah mengabarkan kepada kami [Syu'bah] dari [Qatadah] dari [an Nadhr bin Anas] dari [Zaid bin Arqam] dari Rasulullah shallallahu 'alaihi wasallam, beliau bersabda: "Sesungguhnya tempat buang hajat itu dihadiri oleh setan-setan, maka apabila salah seorang dari kalian mendatangi WC, hendaklah dia mengucapkan; 'Aku berlindung kepada Allah dari setan jantan dan setan betina'."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #44
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+bukhori no 1
+
+INTENT
+----------------------------------------
+Intent     : GENERAL_ISLAMIC_QA
+Confidence : 0.6
+Route      : metode7
+Reason     : Default general Islamic QA.
+
+PIPELINE
+----------------------------------------
+Answer Mode        : EVIDENCE_GROUNDED
+Composer           : EVIDENCE_GROUNDED_COMPOSER_V1
+Verification Status: NEEDS_REVIEW
+Final Check Passed : False
+Process Time       : 1.05 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+- HADITH_GRADING_CLAIM_NEEDS_REVIEW: Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Shahih Bukhari No. 1
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: حَدَّثَنَا الْحُمَيْدِيُّ عَبْدُ اللَّهِ بْنُ الزُّبَيْرِ قَالَ حَدَّثَنَا سُفْيَانُ قَالَ حَدَّثَنَا يَحْيَى بْنُ سَعِيدٍ الْأَنْصَارِيُّ قَالَ أَخْبَرَنِي مُحَمَّدُ بْنُ إِبْرَاهِيمَ التَّيْمِيُّ أَنَّهُ سَمِعَ عَلْقَمَةَ بْنَ وَقَّاصٍ اللَّيْثِيَّ يَقُولُ سَمِعْتُ عُمَرَ بْنَ الْخَطَّابِ رَضِيَ اللَّهُ عَنْهُ عَلَى الْمِنْبَرِقَالَ سَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى فَمَنْ كَانَتْ هِجْرَتُ
+   Translation: Telah menceritakan kepada kami [Al Humaidi Abdullah bin Az Zubair] dia berkata, Telah menceritakan kepada kami [Sufyan] yang berkata, bahwa Telah menceritakan kepada kami [Yahya bin Sa'id Al Anshari] berkata, telah mengabarkan kepada kami [Muhammad bin Ibrahim At Taimi], bahwa dia pernah mendengar [Alqamah bin Waqash Al Laitsi] berkata; saya pernah mendengar [Umar bin Al Khaththab] diatas mimbar berkata; saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Semua perbuatan tergantung niatnya, dan (balasan) bagi tiap-tiap orang (tergantung) apa yang diniatkan; Barangsiapa niat hijrahnya karena dunia yang ingin digapainya atau karena seorang perempuan yang ingin dinikahinya, maka h
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Jawaban ringkas:**
+Berikut penjelasan umum berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah.
+
+**Hadis yang ditemukan dalam database:**
+1. **Shahih Bukhari No. 1**
+   > Telah menceritakan kepada kami [Al Humaidi Abdullah bin Az Zubair] dia berkata, Telah menceritakan kepada kami [Sufyan] yang berkata, bahwa Telah menceritakan kepada kami [Yahya bin Sa'id Al Anshari] berkata, telah mengabarkan kepada kami [Muhammad bin Ibrahim At Taimi], bahwa dia pernah mendengar [Alqamah bin Waqash Al Laitsi] berkata; saya pernah mendengar [Umar bin Al Khaththab] diatas mimbar berkata; saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Semua perbuatan tergantung niatnya, dan (balasan) bagi tiap-tiap orang (tergantung) apa yang diniatkan; Barangsiapa niat hijrahnya karena dunia yang ingin digapainya atau karena seorang perempuan yang ingin dinikahinya, maka hijrahnya adalah kepada apa dia diniatkan"
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #45
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+muslim nomor 1
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_HADITH_LOOKUP
+Confidence : 0.95
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_HADITH_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [HADIS] Shahih Muslim No. 1
+   Status: Ditemukan di Database ✅ (Derajat hadis belum ditampilkan)
+   Verified: True
+   Arabic: وَهُوَ الْأَثَرُ الْمَشْهُورُعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مَنْ حَدَّثَ عَنِّي بِحَدِيثٍ يُرَى أَنَّهُ كَذِبٌ فَهُوَ أَحَدُ الْكَاذِبِينَ حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ حَدَّثَنَا وَكِيعٌ عَنْ شُعْبَةَ عَنْ الْحَكَمِ عَنْ عَبْدِ الرَّحْمَنِ بْنِ أَبِي لَيْلَى عَنْ سَمُرَةَ بْنِ جُنْدَبٍ ح و حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ أَيْضًا حَدَّثَنَا وَكِيعٌ عَنْ شُعْبَةَ وَسُفْيَانَ عَنْ حَبِيبٍ عَنْ مَيْمُونِ بْنِ أَبِي شَبِيبٍ عَنْ الْمُغِيرَةِ بْنِ شُع
+   Translation: Dan ia merupakan atsar yang masyhur dari Rasulullah shallallahu 'alaihi wasallam, "Barangsiapa menceritakan hadits dariku, yang mana riwayat itu diduga adalah kebohongan, maka dia (perawi) adalah salah satu dari para pembohong tersebut." Telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dari [al Hakam] dari [Abdurrahman bin Abu Laila] dari [Samurah bin Jundab]. (dalam riwayat lain disebutkan) dan juga telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dan [Sufyan] dari [Habib] dari [Maimun bin Abu Syabib] dari [al-Mughirah bin Syu'bah] keduanya berkata, "Rasulullah sha
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**Shahih Muslim No. 1**
+
+**Teks Arab:**
+وَهُوَ الْأَثَرُ الْمَشْهُورُعَنْ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مَنْ حَدَّثَ عَنِّي بِحَدِيثٍ يُرَى أَنَّهُ كَذِبٌ فَهُوَ أَحَدُ الْكَاذِبِينَ حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ حَدَّثَنَا وَكِيعٌ عَنْ شُعْبَةَ عَنْ الْحَكَمِ عَنْ عَبْدِ الرَّحْمَنِ بْنِ أَبِي لَيْلَى عَنْ سَمُرَةَ بْنِ جُنْدَبٍ ح و حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ أَيْضًا حَدَّثَنَا وَكِيعٌ عَنْ شُعْبَةَ وَسُفْيَانَ عَنْ حَبِيبٍ عَنْ مَيْمُونِ بْنِ أَبِي شَبِيبٍ عَنْ الْمُغِيرَةِ بْنِ شُعْبَةَ قَالَا قَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ ذَلِكَ
+
+**Terjemahan:**
+Dan ia merupakan atsar yang masyhur dari Rasulullah shallallahu 'alaihi wasallam, "Barangsiapa menceritakan hadits dariku, yang mana riwayat itu diduga adalah kebohongan, maka dia (perawi) adalah salah satu dari para pembohong tersebut." Telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dari [al Hakam] dari [Abdurrahman bin Abu Laila] dari [Samurah bin Jundab]. (dalam riwayat lain disebutkan) dan juga telah menceritakan kepada kami [Abu Bakar bin Abu Syaibah] telah menceritakan kepada kami [Waki'] dari [Syu'bah] dan [Sufyan] dari [Habib] dari [Maimun bin Abu Syabib] dari [al-Mughirah bin Syu'bah] keduanya berkata, "Rasulullah shallallahu 'alaihi wasallam bersabda tentang hal tersebut."
+
+**Status:**
+✅ Ditemukan dalam database hadis Smart Hijrah.
+ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #46
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+yasin ayat 1
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.03 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Yaa Siin (36) : 1
+   Status: Ditemukan di Database ✅ (Al-Qur’an)
+   Verified: True
+   Arabic: يٰسۤ ۚ
+   Translation: Ya Sin
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Yaa Siin (36) Ayat 1**
+
+**Teks Arab:**
+يٰسۤ ۚ
+
+**Transliterasi:**
+yā sīn
+
+**Terjemahan:**
+Ya Sin
+
+**Status:**
+✅ Ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+==========================================================================================
+
+==========================================================================================
+TEST CASE #47
+==========================================================================================
+
+PERTANYAAN
+----------------------------------------
+ikhlas ayat 1
+
+INTENT
+----------------------------------------
+Intent     : DIRECT_QURAN_LOOKUP
+Confidence : 0.98
+Route      : direct_lookup
+
+PIPELINE
+----------------------------------------
+Answer Mode        : DIRECT_QURAN_LOOKUP
+Composer           : DIRECT_LOOKUP_TEMPLATE
+Verification Status: HIGH_CONFIDENCE
+Final Check Passed : True
+Process Time       : 0.01 detik
+
+FINAL CHECK WARNINGS
+----------------------------------------
+(Tidak ada warning)
+
+VERIFIED SOURCES
+----------------------------------------
+1. [QURAN] QS. Al Ikhlash (112) : 1
+   Status: Ditemukan di Database ✅ (Al-Qur’an)
+   Verified: True
+   Arabic: قُلْ هُوَ اللّٰهُ اَحَدٌۚ
+   Translation: Katakanlah (Muhammad), “Dialah Allah, Yang Maha Esa.
+
+AI NARRATION / FINAL REPLY
+----------------------------------------
+Assalamu’alaikum warahmatullahi wabarakatuh.
+
+Saya Smart Hijrah Assistant. Berikut rujukan yang Anda minta berdasarkan database Smart Hijrah.
+
+**QS. Al Ikhlash (112) Ayat 1**
+
+**Teks Arab:**
+قُلْ هُوَ اللّٰهُ اَحَدٌۚ
+
+**Transliterasi:**
+qul huwallāhu aḥad
+
+**Terjemahan:**
+Katakanlah (Muhammad), “Dialah Allah, Yang Maha Esa.
+
+**Status:**
+✅ Ditemukan dalam database Al-Qur’an Smart Hijrah.
+
+==========================================================================================
+
+
+==========================================================================================
+📊 SUMMARY
+==========================================================================================
+total: 47
+high_confidence: 21
+needs_review: 21
+out_of_domain: 5
+final_check_passed: 31
+final_check_failed: 16
+direct_lookup: 16
+evidence_grounded: 26
+metode7: 0
+errors: 0
+
+HIGH_CONFIDENCE rate: 44.68%
+NEEDS_REVIEW rate   : 44.68%
+OUT_OF_DOMAIN rate  : 10.64%
+Final Check Pass rate: 65.96%
