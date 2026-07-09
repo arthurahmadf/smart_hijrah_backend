@@ -22,7 +22,9 @@ from .models_doa import (
 
 from main.models_healthy_tip import HealthyTip
 
-
+from main.models_media_category import MediaCategory
+from main.models_short_islami import ShortIslami
+from main.models_artikel_islami import ArtikelIslami
 
 # User
 @admin.register(User)
@@ -256,4 +258,181 @@ class HealthyTipAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not obj.uploader:
             obj.uploader = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(MediaCategory)
+class MediaCategoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+    )
+
+    search_fields = (
+        "name",
+    )
+
+    ordering = (
+        "name",
+    )
+
+@admin.register(ShortIslami)
+class ShortIslamiAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "category",
+        "view_count",
+        "uploader",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "category",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "description",
+    )
+
+    readonly_fields = (
+        "view_count",
+        "created_at",
+        "updated_at",
+    )
+
+    autocomplete_fields = (
+        "category",
+        "uploader",
+    )
+
+    fieldsets = (
+        (
+            "Informasi",
+            {
+                "fields": (
+                    "title",
+                    "thumbnail",
+                    "video",
+                    "description",
+                    "category",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_published",
+                    "view_count",
+                )
+            },
+        ),
+        (
+            "Uploader",
+            {
+                "fields": (
+                    "uploader",
+                )
+            },
+        ),
+        (
+            "Tanggal",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+
+        super().save_model(request, obj, form, change)
+
+@admin.register(ArtikelIslami)
+class ArtikelIslamiAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "category",
+        "uploader",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "category",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "description",
+        "article",
+    )
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+    autocomplete_fields = (
+        "category",
+        "uploader",
+    )
+
+    fieldsets = (
+        (
+            "Informasi",
+            {
+                "fields": (
+                    "title",
+                    "banner",
+                    "description",
+                    "category",
+                    "article",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_published",
+                )
+            },
+        ),
+        (
+            "Uploader",
+            {
+                "fields": (
+                    "uploader",
+                )
+            },
+        ),
+        (
+            "Tanggal",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+
         super().save_model(request, obj, form, change)

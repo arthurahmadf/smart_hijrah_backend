@@ -9,7 +9,9 @@ from .models_ai import *
 from .models_tilawah import *
 from .models_gamification import *
 from .models_hadis import *
-
+from .models_media_category import MediaCategory
+from .models_short_islami import ShortIslami
+from .models_artikel_islami import ArtikelIslami
 
 from .models_tuntunan_shalat import TuntunanShalat, validate_tuntunan_blocks
 from .models_doa import (

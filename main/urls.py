@@ -26,7 +26,7 @@ from main.endpoint.doa.views import (
     DoaDetailView,
     DoaBookmarkToggleView,
 )
-
+from .endpoint.media_islami import views as media_islami_views
 from .endpoint.healthy_tip import views as healthy_tip_views
 from .endpoint import gamification_views
 # from .views.auth_views import CustomTokenObtainPairView 
@@ -174,6 +174,24 @@ urlpatterns = [
         "tips_hidup_sehat/search/<str:query>/",
         healthy_tip_views.search_tips_hidup_sehat,
         name="search_tips_hidup_sehat",
+    ),
+    # MEDIA ISLAMI
+    path(
+        "media_islami/",
+        media_islami_views.get_media_islami,
+        name="get_media_islami",
+    ),
+
+    path(
+        "media_islami/search/",
+        media_islami_views.search_media_islami,
+        name="search_media_islami",
+    ),
+
+    path(
+        "media_islami/short/<int:short_id>/view/",
+        media_islami_views.increase_short_view,
+        name="increase_short_view",
     ),
     
 ]
