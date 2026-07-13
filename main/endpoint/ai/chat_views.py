@@ -113,7 +113,11 @@ def send_message(request):
                 "id": assistant_msg.id,
                 "text": assistant_msg.text,
                 "created_at": assistant_msg.created_at
-            }
+            },
+            "answer_strategy": rag_result.get(
+                "answer_strategy",
+                {},
+            ),
         }, status=200)
         
     except Exception as e:

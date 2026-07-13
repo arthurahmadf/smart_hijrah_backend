@@ -1,0 +1,1931 @@
+
+================================================================================
+FILE: main/utils_rag/evidence_composer.py
+================================================================================
+
+# main/utils_rag/evidence_composer.py
+import re
+from main.utils_rag.router import IntentType
+from typing import Any
+
+from main.utils_rag.answer_strategy import (
+    AnswerStrategy,
+    select_answer_strategy,
+)
+
+def _resolve_strategy(
+    intent_result: Any,
+    conversation_context: dict[str, Any] | None,
+    verified_sources: list[dict[str, Any]] | None,
+    strategy: AnswerStrategy | None = None,
+) -> AnswerStrategy:
+    """
+    Strategy dapat dikirim dari integration.py.
+
+    Fallback tetap tersedia agar composer aman jika dipanggil langsung
+    dari test atau modul lama.
+    """
+    if strategy is not None:
+        return strategy
+
+    return select_answer_strategy(
+        intent=intent_result,
+        conversation_context=conversation_context,
+        verified_sources=verified_sources,
+    )
+
+
+def _strategy_opening(
+    strategy: AnswerStrategy,
+    is_first_message: bool,
+) -> str:
+    """
+    Opening hanya muncul jika strategy mengizinkan.
+
+    Follow-up dan topic refinement tidak mengulang salam.
+    """
+    if not strategy.show_opening:
+        return ""
+
+    if not is_first_message and strategy.is_follow_up:
+        return ""
+
+    return "Assalamu’alaikum warahmatullahi wabarakatuh."
+
+
+def _join_non_empty_blocks(
+    blocks: list[str | None],
+) -> str:
+    return "\n\n".join(
+        block.strip()
+        for block in blocks
+        if block and block.strip()
+    )
+
+
+def _limit_sources_by_strategy(
+    sources: list[dict[str, Any]],
+    strategy: AnswerStrategy,
+) -> list[dict[str, Any]]:
+    """
+    Batasi evidence sesuai blueprint strategy.
+    """
+    result = []
+
+    counters = {
+        "QURAN": 0,
+        "HADIS": 0,
+        "EKSTERNAL": 0,
+        "UNVERIFIED": 0,
+    }
+
+    for source in sources or []:
+        source_type = str(
+            source.get("type", "")
+        ).upper()
+
+        is_verified = bool(
+            source.get(
+                "is_verified",
+                source.get("verified", False),
+            )
+        )
+
+        if not is_verified:
+            if not strategy.show_unverified_sources:
+                continue
+
+            if (
+                counters["UNVERIFIED"]
+                >= strategy.max_unverified
+            ):
+                continue
+
+            counters["UNVERIFIED"] += 1
+            result.append(source)
+            continue
+
+        if source_type == "QURAN":
+            if counters["QURAN"] >= strategy.max_quran:
+                continue
+
+            counters["QURAN"] += 1
+            result.append(source)
+            continue
+
+        if source_type in {"HADIS", "HADITH"}:
+            if counters["HADIS"] >= strategy.max_hadith:
+                continue
+
+            counters["HADIS"] += 1
+            result.append(source)
+            continue
+
+        if source_type == "EKSTERNAL":
+            if not strategy.show_external_sources:
+                continue
+
+            if (
+                counters["EKSTERNAL"]
+                >= strategy.max_external
+            ):
+                continue
+
+            counters["EKSTERNAL"] += 1
+            result.append(source)
+            continue
+
+        result.append(source)
+
+    return result
+
+
+def _build_context_reference(
+    strategy: AnswerStrategy,
+    conversation_context: dict[str, Any] | None,
+) -> str:
+    """
+    Referensi singkat terhadap konteks lama.
+
+    Jangan menampilkan internal resolved query atau metadata teknis.
+    """
+    if not strategy.reference_previous_context_briefly:
+        return ""
+
+    if not conversation_context:
+        return ""
+
+    previous_topic = (
+        conversation_context.get("previous_topic")
+        or {}
+    )
+
+    summary = (
+        previous_topic.get("summary")
+        or previous_topic.get("label")
+        or ""
+    ).strip()
+
+    if not summary:
+        return ""
+
+    return f"Terkait pembahasan sebelumnya tentang **{summary}**:"
+
+def _norm(text: str) -> str:
+    text = (text or "").lower().strip()
+    text = re.sub(r"\s+", " ", text)
+    return text
+
+
+def _opening(is_first_message: bool) -> str:
+    if is_first_message:
+        return (
+            "Assalamu’alaikum warahmatullahi wabarakatuh.\n\n"
+            "Saya Smart Hijrah Assistant. Berikut jawaban berdasarkan rujukan yang berhasil "
+            "diverifikasi dalam database Smart Hijrah."
+        )
+
+    return (
+        "Berikut jawaban berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah."
+    )
+
+
+def _split_sources(
+    verified_sources: list[dict[str, Any]],
+):
+    quran_sources = []
+    hadith_sources = []
+    external_sources = []
+    unverified_sources = []
+
+    for source in verified_sources or []:
+        is_verified = bool(
+            source.get(
+                "is_verified",
+                source.get("verified", False),
+            )
+        )
+
+        if not is_verified:
+            unverified_sources.append(source)
+            continue
+
+        source_type = str(
+            source.get("type", "")
+        ).upper()
+
+        if source_type == "QURAN":
+            quran_sources.append(source)
+        elif source_type in {"HADIS", "HADITH"}:
+            hadith_sources.append(source)
+        elif source_type == "EKSTERNAL":
+            external_sources.append(source)
+
+    return (
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_sources,
+    )
+
+
+def _format_references(quran_sources, hadith_sources, external_sources, unverified_sources):
+    lines = []
+
+    if quran_sources:
+        lines.append("**Dalil Al-Qur’an yang terverifikasi:**")
+        for idx, src in enumerate(quran_sources, 1):
+            ref = src.get("reference", "Rujukan Al-Qur’an")
+            translation = src.get("translation_text", "")
+            lines.append(f"{idx}. **{ref}**")
+            if translation:
+                lines.append(f"   > {translation}")
+
+    if hadith_sources:
+        if lines:
+            lines.append("")
+        lines.append("**Hadis yang ditemukan dalam database:**")
+        for idx, src in enumerate(hadith_sources, 1):
+            ref = src.get("reference", "Rujukan Hadis")
+            translation = src.get("translation_text", "")
+            lines.append(f"{idx}. **{ref}**")
+            if translation:
+                lines.append(f"   > {translation}")
+
+    if external_sources:
+        if lines:
+            lines.append("")
+        lines.append("**Rujukan eksternal/kajian ulama:**")
+        for idx, src in enumerate(external_sources, 1):
+            ref = src.get("reference", "Rujukan eksternal")
+            lines.append(f"{idx}. {ref}")
+
+    if unverified_sources:
+        if lines:
+            lines.append("")
+        lines.append("**Rujukan yang belum terverifikasi:**")
+        for idx, src in enumerate(unverified_sources, 1):
+            ref = src.get("reference", "Rujukan tidak ditemukan")
+            lines.append(f"{idx}. {ref}")
+
+    if not lines:
+        return (
+            "**Rujukan:**\n"
+            "⚠️ Belum ada rujukan spesifik yang berhasil diverifikasi dari database Smart Hijrah."
+        )
+
+    return "\n".join(lines)
+
+
+def _compose_paylater_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Paylater tidak bisa dihukumi satu jawaban untuk semua kasus. Hukumnya bergantung pada akad dan ketentuannya.\n\n"
+        "Secara umum, paylater dapat bermasalah jika mengandung **riba**, seperti bunga keterlambatan atau tambahan berbasis waktu "
+        "atas utang. Ia juga bermasalah jika mengandung **gharar**, yaitu ketidakjelasan biaya, denda, jangka waktu, atau kewajiban pihak-pihak terkait.\n\n"
+        "Namun, jika akadnya jelas, harga disepakati sejak awal, tidak ada bunga/riba, tidak ada denda yang bersifat keuntungan, "
+        "dan objek transaksinya halal, maka pembahasannya masuk ke wilayah muamalah yang perlu dilihat detail akadnya."
+    )
+
+
+def _compose_investment_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Investasi pada dasarnya boleh dalam Islam selama objek dan mekanismenya halal.\n\n"
+        "Yang perlu diperiksa adalah: tidak ada riba, tidak ada gharar berlebihan, tidak ada maysir/spekulasi judi, "
+        "dana tidak ditempatkan pada bisnis haram, serta akad dan biaya transparan.\n\n"
+        "Untuk saham, trading, reksa dana, aplikasi investasi, atau instrumen modern lainnya, hukumnya sangat bergantung pada "
+        "produk dan mekanisme transaksinya. Karena itu, sebaiknya memilih instrumen yang memiliki pengawasan atau keterangan syariah "
+        "yang jelas."
+    )
+
+
+def _compose_sexual_content_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Menonton konten pornografis atau yang membangkitkan syahwat secara sengaja tidak dibolehkan dalam Islam.\n\n"
+        "Alasannya, seorang Muslim diperintahkan menjaga pandangan, menjaga hati, dan menjauhi hal-hal yang dapat membuka pintu maksiat. "
+        "Jika konten tersebut menampilkan aurat, adegan seksual, atau sengaja dibuat untuk membangkitkan syahwat, maka sebaiknya ditinggalkan.\n\n"
+        "Jika pernah terlanjur, jalan keluarnya adalah bertaubat, menghentikan aksesnya, menjauhi pemicunya, dan menggantinya dengan "
+        "kegiatan atau tontonan yang halal dan bermanfaat."
+    )
+
+
+def _compose_shalat_istiqamah_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Kesulitan istiqamah shalat adalah ujian yang banyak orang alami, tetapi tetap harus dilawan dengan langkah bertahap dan serius.\n\n"
+        "Beberapa langkah praktis:\n"
+        "1. Mulai dari menjaga shalat wajib tepat waktu semampunya.\n"
+        "2. Gunakan alarm atau pengingat adzan.\n"
+        "3. Kurangi pemicu yang membuat sering menunda.\n"
+        "4. Cari teman atau lingkungan yang membantu menjaga shalat.\n"
+        "5. Jika tertinggal, jangan putus asa; segera kembali dan perbaiki shalat berikutnya.\n\n"
+        "Yang penting adalah tidak menyerah. Istiqamah biasanya tumbuh dari usaha kecil yang diulang terus-menerus."
+    )
+
+
+def _compose_generic_fiqh_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Masalah ini perlu dilihat dari prinsip umum syariat: apakah mengandung unsur haram, riba, gharar, kezaliman, membuka pintu maksiat, "
+        "atau melalaikan kewajiban.\n\n"
+        "Jika unsur-unsur tersebut ada, maka hukumnya bisa terlarang atau minimal perlu dihindari. Jika tidak ada unsur haram dan manfaatnya jelas, "
+        "maka pada dasarnya perkara muamalah atau kebiasaan duniawi bisa menjadi boleh, selama tidak bertentangan dengan syariat.\n\n"
+        "Untuk kasus yang detail, keputusan akhirnya bergantung pada rincian praktiknya."
+    )
+
+
+def _compose_generic_dalil_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Berikut beberapa rujukan yang relevan berdasarkan hasil verifikasi database Smart Hijrah. "
+        "Daftar ini bukan berarti seluruh dalil tentang tema tersebut, tetapi rujukan yang berhasil ditemukan dan diverifikasi."
+    )
+
+
+def _compose_generic_advice_answer(query):
+    return (
+        "**Jawaban ringkas:**\n"
+        "Dalam kondisi seperti ini, Islam mengajarkan agar seorang Muslim tetap kembali kepada Allah, tidak berputus asa, "
+        "dan memperbaiki diri secara bertahap.\n\n"
+        "Mulailah dari langkah kecil yang konsisten, perbanyak doa, jaga lingkungan yang baik, dan jangan biarkan rasa bersalah membuat Anda berhenti berusaha."
+    )
+
+
+def _compose_by_intent(user_query, intent_type):
+    q = _norm(user_query)
+
+    if "paylater" in q or "pay later" in q:
+        return _compose_paylater_answer(user_query)
+
+    if any(k in q for k in ["saham", "trading", "investasi", "crypto", "kripto", "forex", "reksadana", "reksa dana", "emas digital"]):
+        return _compose_investment_answer(user_query)
+
+    if any(k in q for k in ["hentai", "pornografi", "porno", "konten dewasa", "video dewasa", "syahwat"]):
+        return _compose_sexual_content_answer(user_query)
+
+    if any(k in q for k in ["susah istiqamah shalat", "sulit istiqamah shalat", "malas shalat", "malas sholat", "istiqamah shalat"]):
+        return _compose_shalat_istiqamah_answer(user_query)
+
+    if intent_type == IntentType.THEMATIC_DALIL_SEARCH:
+        return _compose_generic_dalil_answer(user_query)
+
+    if intent_type == IntentType.SPIRITUAL_ADVICE:
+        return _compose_generic_advice_answer(user_query)
+
+    if intent_type in [IntentType.FIQH_QA, IntentType.FATWA_QA]:
+        return _compose_generic_fiqh_answer(user_query)
+
+    return (
+        "**Jawaban ringkas:**\n"
+        "Berikut penjelasan umum berdasarkan rujukan yang berhasil diverifikasi dalam database Smart Hijrah."
+    )
+
+
+def compose_evidence_grounded_answer(
+    user_query,
+    intent_result,
+    draft_text,
+    verified_sources,
+    status_global,
+    is_first_message=True,
+    conversation_context=None,
+    strategy=None,
+):
+    """
+    Phase 4A MVP:
+    - Tidak memakai draft LLM sebagai final answer.
+    - Draft LLM hanya dipakai sebagai proses awal untuk menghasilkan klaim dalil.
+    - Final answer dirender ulang dari:
+      1. intent
+      2. user_query
+      3. verified_sources
+    """
+
+    strategy = _resolve_strategy(
+        intent_result=intent_result,
+        conversation_context=conversation_context,
+        verified_sources=verified_sources,
+        strategy=strategy,
+    )
+
+    limited_sources = _limit_sources_by_strategy(
+        sources=verified_sources,
+        strategy=strategy,
+    )
+
+    (
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_sources,
+    ) = _split_sources(limited_sources)
+
+    opening = _strategy_opening(
+        strategy=strategy,
+        is_first_message=is_first_message,
+    )
+
+    context_reference = _build_context_reference(
+        strategy=strategy,
+        conversation_context=conversation_context,
+    )
+    intent_type = None
+    if isinstance(intent_result, dict):
+        intent_type = intent_result.get("intent")
+
+    quran_sources, hadith_sources, external_sources, unverified_sources = _split_sources(verified_sources)
+
+    # answer_body = _compose_by_intent(user_query, intent_type)
+    answer_body = _build_strategy_answer_body(
+        user_query=user_query,
+        intent_result=intent_result,
+        strategy=strategy,
+        draft_text=draft_text,
+        has_verified_sources=bool(limited_sources),
+    )
+    references_block = _format_references(
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_sources
+    )
+
+
+    practical_block = ""
+
+    if strategy.show_practical_steps:
+        if strategy.name == "SPIRITUAL":
+            practical_block = (
+                "**Langkah praktis:**\n"
+                "1. Mulai kembali dari satu amal kecil yang konsisten.\n"
+                "2. Jauhi pemicu yang membuatmu kembali jatuh.\n"
+                "3. Jaga shalat dan perbanyak istighfar.\n"
+                "4. Cari lingkungan atau teman yang membantu kebaikan.\n"
+                "5. Jangan menunda taubat hanya karena takut gagal lagi."
+            )
+
+        elif strategy.name == "FATWA":
+            practical_block = (
+                "**Hal yang perlu diperiksa:**\n"
+                "1. Akad atau bentuk transaksinya.\n"
+                "2. Adanya bunga, denda, gharar, atau spekulasi.\n"
+                "3. Objek usaha atau penggunaan dananya.\n"
+                "4. Transparansi biaya, risiko, dan kewajiban.\n"
+                "5. Fatwa resmi yang relevan dengan produk tersebut."
+            )
+    caution_block = ""
+
+    if strategy.require_fatwa_disclaimer:
+        caution_block = (
+            "**Catatan fatwa:**\n"
+            "Kasus kontemporer sering bergantung pada rincian akad dan "
+            "praktiknya. Jawaban ini merupakan panduan umum, bukan fatwa "
+            "personal yang menggantikan pemeriksaan ahli syariah."
+        )
+
+    elif strategy.show_caution_note:
+        if not limited_sources:
+            caution_block = (
+                "**Catatan kehati-hatian:**\n"
+                "Belum ada rujukan spesifik yang berhasil diverifikasi. "
+                "Jawaban ini hanya menggunakan prinsip umum dan tidak "
+                "boleh dipahami sebagai penetapan hukum final."
+            )
+        elif unverified_sources:
+            caution_block = (
+                "**Catatan kehati-hatian:**\n"
+                "Sebagian rujukan belum berhasil diverifikasi sepenuhnya."
+            )
+        elif status_global != "HIGH_CONFIDENCE":
+            caution_block = (
+                "**Catatan kehati-hatian:**\n"
+                "Jawaban ini masih memerlukan kehati-hatian karena "
+                "tingkat verifikasinya belum mencapai keyakinan tinggi."
+            )
+    
+    doa_block = ""
+
+    if strategy.show_doa and strategy.name == "SPIRITUAL":
+        doa_block = (
+            "**Doa singkat:**\n"
+            "Ya Allah, teguhkan hatiku di atas ketaatan, ampuni "
+            "kesalahanku, dan mudahkan aku untuk terus kembali "
+            "kepada-Mu."
+        )
+
+
+    # caution = ""
+    # if status_global != "HIGH_CONFIDENCE":
+    #     caution = (
+    #         "\n\n**Catatan kehati-hatian:**\n"
+    #         "Sebagian rujukan belum berhasil diverifikasi sepenuhnya. Jawaban ini sebaiknya dipahami sebagai penjelasan umum, "
+    #         "bukan fatwa final untuk kasus personal yang kompleks."
+    #     )
+
+    # if intent_type == IntentType.FATWA_QA:
+    #     caution += (
+    #         "\n\n**Catatan fatwa:**\n"
+    #         "Untuk masalah kontemporer seperti transaksi digital, investasi, atau produk keuangan, keputusan hukum sangat bergantung "
+    #         "pada detail akad dan praktiknya. Jika menyangkut keputusan finansial nyata, sebaiknya cek fatwa resmi atau konsultasikan "
+    #         "kepada ahli syariah."
+    #     )
+
+    # reply = (
+    #     f"{_opening(is_first_message)}\n\n"
+    #     f"{answer_body}\n\n"
+    #     f"{references_block}"
+    #     f"{caution}"
+    # )
+
+    reply = _join_non_empty_blocks([
+        opening,
+        context_reference,
+        answer_body,
+        references_block,
+        practical_block,
+        doa_block,
+        caution_block,
+    ])
+    narrative_text = _join_non_empty_blocks([
+        context_reference,
+        answer_body,
+        practical_block,
+        doa_block,
+        caution_block,
+    ])
+    return {
+        "reply": reply,
+        "narrative_text": narrative_text,
+        "verification_status": status_global,
+        "verified_sources": limited_sources,
+        "composer": "STRATEGY_AWARE_COMPOSER_V1",
+        "strategy": strategy.to_dict(),
+    }
+
+def _build_strategy_answer_body(
+    user_query: str,
+    intent_result: Any,
+    strategy: AnswerStrategy,
+    draft_text: str,
+    has_verified_sources: bool,
+) -> str:
+    """
+    V1 masih memakai template topical composer yang sudah ada.
+
+    Helper ini mengatur perilaku lintas-intent dan conversation.
+    """
+    intent = strategy.intent
+
+    # Follow-up yang meminta aspek tertentu sebaiknya tidak
+    # mengulang seluruh jawaban umum.
+    if (
+        strategy.is_follow_up
+        and strategy.answer_only_requested_aspect
+    ):
+        query_lower = (user_query or "").lower()
+
+        if "mui" in query_lower:
+            return (
+                "**Jawaban lanjutan:**\n"
+                "Untuk aspek pandangan atau fatwa MUI, jawaban harus "
+                "mengacu pada dokumen resmi MUI yang relevan. "
+                "Jika sumber resmi tersebut belum tersedia dalam "
+                "knowledge base Smart Hijrah, saya tidak akan "
+                "mengatasnamakan MUI secara pasti."
+            )
+
+        if any(
+            term in query_lower
+            for term in [
+                "hadis",
+                "hadits",
+                "ayat",
+                "dalil",
+                "rujukan",
+                "sumber",
+            ]
+        ):
+            return (
+                "**Rujukan yang diminta:**\n"
+                "Berikut dalil yang berhasil ditemukan dan "
+                "diverifikasi untuk topik tersebut."
+            )
+
+        if any(
+            term in query_lower
+            for term in [
+                "kenapa",
+                "mengapa",
+                "maksud",
+                "jelaskan",
+            ]
+        ):
+            return (
+                "**Penjelasan lanjutan:**\n"
+                + (
+                    draft_text.strip()
+                    if draft_text and draft_text.strip()
+                    else (
+                        "Penjelasan ini merupakan kelanjutan dari "
+                        "jawaban sebelumnya dan difokuskan pada "
+                        "alasan atau prinsip syariat yang mendasarinya."
+                    )
+                )
+            )
+
+    if strategy.name == "SPIRITUAL":
+        if draft_text and draft_text.strip():
+            return _join_non_empty_blocks([
+                "**Untukmu saat ini:**",
+                draft_text.strip(),
+            ])
+
+        return (
+            "**Untukmu saat ini:**\n"
+            "Kondisi ini tidak berarti pintu kembali kepada Allah "
+            "tertutup. Teruslah kembali dan memperbaiki langkah "
+            "sedikit demi sedikit."
+        )
+
+    if strategy.name == "FATWA":
+        if draft_text and draft_text.strip():
+            return _join_non_empty_blocks([
+                "**Jawaban ringkas:**",
+                draft_text.strip(),
+            ])
+
+        return (
+            "**Jawaban ringkas:**\n"
+            "Hukum kasus ini bergantung pada mekanisme, akad, tujuan, "
+            "dan unsur yang menyertainya. Penilaian tidak cukup hanya "
+            "berdasarkan nama produk atau kegiatannya."
+        )
+
+    if strategy.name == "FIQH":
+        if draft_text and draft_text.strip():
+            return _join_non_empty_blocks([
+                "**Jawaban ringkas:**",
+                draft_text.strip(),
+            ])
+
+        return (
+            "**Jawaban ringkas:**\n"
+            "Masalah ini dinilai berdasarkan rincian perbuatan, "
+            "syarat, dampak, dan prinsip umum syariat yang berlaku."
+        )
+
+    if strategy.name == "GENERAL_ISLAMIC":
+        if draft_text and draft_text.strip():
+            return (
+                "**Jawaban ringkas:**\n"
+                f"{draft_text.strip()}"
+            )
+
+        return (
+            "**Jawaban ringkas:**\n"
+            "Berikut penjelasan berdasarkan prinsip Islam dan "
+            "rujukan yang berhasil diverifikasi."
+        )
+
+    return (
+        draft_text.strip()
+        if draft_text and draft_text.strip()
+        else (
+            "**Jawaban ringkas:**\n"
+            "Berikut jawaban berdasarkan rujukan yang berhasil "
+            "diverifikasi."
+        )
+    )
+
+def compose_thematic_retrieval_answer(
+    user_query,
+    intent_result,
+    retrieval_result,
+    is_first_message=True,
+    conversation_context=None,
+    strategy=None,
+):
+    verified_sources = retrieval_result.get(
+        "verified_sources",
+        [],
+    )
+
+    strategy = _resolve_strategy(
+        intent_result=intent_result,
+        conversation_context=conversation_context,
+        verified_sources=verified_sources,
+        strategy=strategy,
+    )
+
+    limited_sources = _limit_sources_by_strategy(
+        sources=verified_sources,
+        strategy=strategy,
+    )
+
+    (
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_sources,
+    ) = _split_sources(limited_sources)
+
+    opening = _strategy_opening(
+        strategy=strategy,
+        is_first_message=is_first_message,
+    )
+
+    context_reference = _build_context_reference(
+        strategy=strategy,
+        conversation_context=conversation_context,
+    )
+    
+
+    quran_sources, hadith_sources, external_sources, unverified_sources = (
+        _split_sources(verified_sources)
+    )
+
+    theme = retrieval_result.get("theme") or user_query
+    preference = retrieval_result.get(
+        "source_preference",
+        "both",
+    )
+
+    if limited_sources:
+        if preference == "quran":
+            introduction = (
+                f"Berikut beberapa ayat Al-Qur’an yang paling relevan "
+                f"dengan tema **{theme}** berdasarkan pencarian database "
+                f"Smart Hijrah."
+            )
+        elif preference == "hadis":
+            introduction = (
+                f"Berikut beberapa hadis yang paling relevan "
+                f"dengan tema **{theme}** berdasarkan pencarian database "
+                f"Smart Hijrah."
+            )
+        else:
+            introduction = (
+                f"Berikut beberapa dalil Al-Qur’an dan hadis yang paling "
+                f"relevan dengan tema **{theme}** berdasarkan pencarian "
+                f"database Smart Hijrah."
+            )
+
+        references_block = _format_references(
+            quran_sources,
+            hadith_sources,
+            external_sources,
+            unverified_sources,
+        )
+
+        # reply = (
+        #     f"{_opening(is_first_message)}\n\n"
+        #     f"**Hasil pencarian dalil tematik:**\n"
+        #     f"{introduction}\n\n"
+        #     f"{references_block}\n\n"
+        #     f"**Catatan:**\n"
+        #     f"Hasil ini merupakan rujukan paling relevan yang ditemukan "
+        #     f"oleh sistem, bukan daftar lengkap seluruh dalil mengenai "
+        #     f"tema tersebut."
+        # )
+        reply = _join_non_empty_blocks([
+            opening,
+            context_reference,
+            "**Hasil pencarian dalil tematik:**",
+            introduction,
+            references_block,
+            (
+                "**Catatan:**\n"
+                "Hasil ini merupakan rujukan paling relevan yang ditemukan, "
+                "bukan daftar lengkap seluruh dalil mengenai tema tersebut."
+            ),
+        ])
+        status = "HIGH_CONFIDENCE"
+        return {
+            "reply": reply,
+            "narrative_text": introduction,
+            "verification_status": "HIGH_CONFIDENCE",
+            "verified_sources": limited_sources,
+            "composer": "THEMATIC_STRATEGY_COMPOSER_V1",
+            "strategy": strategy.to_dict(),
+        }
+    else:
+        reply = (
+            f"{_opening(is_first_message)}\n\n"
+            f"**Hasil pencarian dalil tematik:**\n"
+            f"Saya belum menemukan ayat atau hadis dengan relevansi yang "
+            f"cukup kuat untuk tema **{theme}**.\n\n"
+            f"Saya tidak akan memaksakan rujukan yang kurang sesuai. "
+            f"Coba gunakan kata kunci yang lebih spesifik."
+        )
+
+        return {
+            "reply": reply,
+            "narrative_text": "",
+            "verification_status": "NEEDS_REVIEW",
+            "verified_sources": [],
+            "composer": "THEMATIC_STRATEGY_COMPOSER_V1",
+            "strategy": strategy.to_dict(),
+        }
+
+    
+
+END FILE: main/utils_rag/evidence_composer.py
+
+
+================================================================================
+FILE: main/utils_rag/router.py
+================================================================================
+
+# main/utils_rag/router.py
+import re
+from main.utils_rag.reference_parser import (
+    parse_direct_hadith_reference,
+    parse_direct_quran_reference,
+)
+
+
+class IntentType:
+    DIRECT_HADITH_LOOKUP = "DIRECT_HADITH_LOOKUP"
+    DIRECT_QURAN_LOOKUP = "DIRECT_QURAN_LOOKUP"
+    THEMATIC_DALIL_SEARCH = "THEMATIC_DALIL_SEARCH"
+    FIQH_QA = "FIQH_QA"
+    FATWA_QA = "FATWA_QA"
+    SPIRITUAL_ADVICE = "SPIRITUAL_ADVICE"
+    GENERAL_ISLAMIC_QA = "GENERAL_ISLAMIC_QA"
+    OUT_OF_DOMAIN = "OUT_OF_DOMAIN"
+
+
+def normalize(text: str) -> str:
+    text = (text or "").lower().strip()
+    text = text.replace("ḥ", "h").replace("ṣ", "s").replace("ḍ", "d")
+    text = text.replace("ṭ", "t").replace("ż", "z").replace("’", "'")
+    text = re.sub(r"\s+", " ", text)
+    return text
+
+
+def contains_any(text: str, keywords):
+    for keyword in keywords:
+        keyword = keyword.strip().lower()
+
+        if not keyword:
+            continue
+
+        # Keyword sangat pendek harus cocok sebagai kata utuh.
+        if len(keyword) <= 3:
+            pattern = r"(?<!\w)" + re.escape(keyword) + r"(?!\w)"
+            if re.search(pattern, text):
+                return True
+        elif keyword in text:
+            return True
+
+    return False
+
+
+def matches_any(text: str, patterns):
+    return any(re.search(pattern, text) for pattern in patterns)
+
+
+def detect_normative_islamic_intent(text: str) -> bool:
+    """
+    Deteksi apakah user sedang bertanya hukum/nilai Islam.
+    Ini lebih penting daripada objek pertanyaannya.
+
+    Contoh yang harus True:
+    - apa hukum trading saham
+    - nonton anime hentai apa boleh
+    - bolehkah kerja di bank
+    - halal atau haram investasi crypto
+    - berdosa tidak kalau ...
+    """
+    normative_patterns = [
+        r"\bapa hukum\b",
+        r"\bhukumnya\b",
+        r"\bbagaimana hukum\b",
+        r"\bbolehkah\b",
+        r"\bapa boleh\b",
+        r"\bboleh tidak\b",
+        r"\bboleh gak\b",
+        r"\bboleh nggak\b",
+        r"\bboleh kah\b",
+        r"\bhalal\b",
+        r"\bharam\b",
+        r"\bdosa\b",
+        r"\bberdosa\b",
+        r"\bpahala\b",
+        r"\bberpahala\b",
+        r"\bsah tidak\b",
+        r"\bsahkah\b",
+        r"\bbatal tidak\b",
+        r"\bmembatalkan\b",
+        r"\bmenurut islam\b",
+        r"\bdalam islam\b",
+        r"\bpandangan islam\b",
+        r"\bsecara islam\b",
+        r"\bsecara syariat\b",
+        r"\bmenurut syariat\b",
+        r"\bmenurut fiqih\b",
+        r"\bmenurut fikih\b",
+        r"\bsyariah\b",
+        r"\bsyar'i\b",
+        r"\bsyari\b",
+    ]
+
+    return matches_any(text, normative_patterns)
+
+
+def detect_thematic_dalil_intent(text: str) -> bool:
+    patterns = [
+        r"\bdalil\b",
+        r"\bayat tentang\b",
+        r"\bhadis tentang\b",
+        r"\bhadits tentang\b",
+        r"\bquran tentang\b",
+        r"\bal quran tentang\b",
+        r"\bapa dalil\b",
+        r"\bsebutkan dalil\b",
+        r"\bcarikan dalil\b",
+        r"\briwayat tentang\b",
+    ]
+    return matches_any(text, patterns)
+
+
+def detect_spiritual_advice_intent(text: str) -> bool:
+    advice_keywords = [
+        # kondisi hati
+        "aku merasa",
+        "saya merasa",
+        "gelisah",
+        "sedih",
+        "cemas",
+        "takut",
+        "putus asa",
+        "hati kosong",
+        "hati gelisah",
+        "hati tidak tenang",
+
+        # hubungan dengan Allah
+        "jauh dari allah",
+        "merasa jauh dari allah",
+        "ingin dekat dengan allah",
+
+        # iman
+        "iman turun",
+        "imanku turun",
+        "imanku lagi turun",
+        "iman sedang turun",
+        "iman lemah",
+        "imanku lemah",
+        "futur",
+
+        # taubat
+        "ingin taubat",
+        "ingin bertaubat",
+        "mau taubat",
+        "mau bertaubat",
+        "cara taubat",
+        "cara bertaubat",
+        "sering jatuh lagi",
+        "mengulangi dosa",
+        "kembali melakukan dosa",
+        "merasa berdosa",
+
+        # shalat dan istiqamah
+        "malas shalat",
+        "malas sholat",
+        "susah istiqamah",
+        "sulit istiqamah",
+        "sering meninggalkan shalat",
+        "sering meninggalkan sholat",
+        "ingin berubah",
+        "ingin memperbaiki diri",
+
+        # hijrah
+        "ingin hijrah",
+        "cara hijrah",
+        "tips istiqamah",
+    ]
+
+    if contains_any(text, advice_keywords):
+        return True
+
+    advice_patterns = [
+        r"\b(?:aku|saya)\s+ingin\s+(?:berubah|bertaubat|taubat|hijrah)\b",
+        r"\b(?:aku|saya)\s+sering\s+(?:jatuh|mengulangi dosa|meninggalkan shalat|meninggalkan sholat)\b",
+        r"\biman(?:ku)?\s+(?:lagi\s+|sedang\s+)?turun\b",
+        r"\bharus bagaimana\b",
+        r"\bbagaimana agar istiqamah\b",
+    ]
+
+    return matches_any(text, advice_patterns)
+
+
+def detect_fatwa_category(text: str) -> bool:
+    """
+    Ini bukan daftar semua objek fiqih.
+    Ini hanya kategori yang biasanya butuh fatwa/kajian kontemporer.
+    Kalau tidak kena kategori ini tapi normative intent True, fallback ke FIQH_QA.
+    """
+    fatwa_category_keywords = [
+        # lembaga / fatwa
+        "fatwa",
+        "mui",
+        "dsn",
+        "dsn-mui",
+        "nu",
+        "nahdlatul ulama",
+        "muhammadiyah",
+        "tarjih",
+        "bahtsul masail",
+        "kemenag",
+
+        # muamalah kontemporer
+        "paylater",
+        "pay later",
+        "pinjol",
+        "pinjaman online",
+        "bank",
+        "bank syariah",
+        "asuransi",
+        "bpjs",
+        "leasing",
+        "kredit",
+        "cicilan",
+        "kartu kredit",
+        "e-wallet",
+        "ewallet",
+        "dompet digital",
+        "fintech",
+
+        # investasi / finansial
+        "saham",
+        "trading",
+        "forex",
+        "crypto",
+        "kripto",
+        "bitcoin",
+        "investasi",
+        "reksadana",
+        "reksa dana",
+        "obligasi",
+        "sukuk",
+        "emas digital",
+
+        # kontemporer medis/sosial
+        "vaksin",
+        "transplantasi",
+        "bayi tabung",
+        "donor organ",
+        "operasi plastik",
+        "tes dna",
+        "kloning",
+
+        # teknologi modern
+        "artificial intelligence",
+        "kecerdasan buatan",
+        "marketplace",
+        "artificial intelligence",
+        "kecerdasan buatan",
+        "teknologi ai",
+        "penggunaan ai",
+    ]
+
+    return contains_any(text, fatwa_category_keywords)
+
+
+def detect_clear_non_islamic_task(text: str) -> bool:
+    """
+    Deteksi permintaan bantuan non-Islam yang jelas.
+    Ini bukan untuk pertanyaan hukum Islam.
+    """
+    non_islamic_task_patterns = [
+        # coding task
+        r"\bbuatkan kode\b",
+        r"\bbikin kode\b",
+        r"\btulis kode\b",
+        r"\bdebug\b",
+        r"\bfix bug\b",
+        r"\bsorting array\b",
+        r"\bcontoh program\b",
+        r"\bscript python\b",
+        r"\bkode python\b",
+
+        # generic creation/search unrelated
+        r"\bbuatkan resep\b",
+        r"\bresep\b",
+        r"\brekomendasi anime\b",
+        r"\brekomendasi film\b",
+        r"\brekomendasi game\b",
+        r"\bcarikan hotel\b",
+        r"\bcarikan tiket\b",
+        r"\bberapa harga\b",
+        r"\bcuaca\b",
+    ]
+
+    return matches_any(text, non_islamic_task_patterns)
+
+
+def detect_non_islamic_subject_signal(text: str) -> bool:
+    """
+    Sinyal topik non-Islam. Ini tidak otomatis diblokir.
+    Kalau user bertanya hukum Islam tentang topik ini, tetap boleh masuk FIQH_QA/FATWA_QA.
+    """
+    subject_keywords = [
+        "coding",
+        "kode",
+        "program",
+        "programming",
+        "python",
+        "javascript",
+        "java",
+        "php",
+        "laravel",
+        "django",
+        "flutter",
+        "react",
+        "nodejs",
+        "sql",
+        "database",
+        "api",
+        "html",
+        "css",
+
+        "resep",
+        "masakan",
+        "game",
+        "anime",
+        "film",
+        "movie",
+        "hentai",
+        "pornografi",
+        "porno",
+
+        "saham",
+        "trading",
+        "forex",
+        "bitcoin",
+        "crypto price",
+        "harga bitcoin",
+        "cuaca",
+        "hotel",
+        "tiket pesawat",
+    ]
+
+    return contains_any(text, subject_keywords)
+
+
+def detect_islamic_signal(text: str) -> bool:
+    islam_keywords = [
+        "islam",
+        "muslim",
+        "muslimah",
+        "allah",
+        "rasul",
+        "rasulullah",
+        "nabi",
+        "sahabat",
+        "ulama",
+        "ustadz",
+        "ustaz",
+        "kyai",
+        "quran",
+        "al quran",
+        "alquran",
+        "qs",
+        "surah",
+        "surat",
+        "ayat",
+        "hadis",
+        "hadits",
+        "hr",
+        "riwayat",
+        "shalat",
+        "sholat",
+        "wudhu",
+        "puasa",
+        "zakat",
+        "sedekah",
+        "haji",
+        "umrah",
+        "fiqih",
+        "fikih",
+        "akhlak",
+        "dosa",
+        "pahala",
+        "halal",
+        "haram",
+        "sunnah",
+        "wajib",
+        "makruh",
+        "mubah",
+        "doa",
+        "dzikir",
+        "zikir",
+        "taubat",
+        "hijrah",
+        "istiqamah",
+        "imam",
+        "makmum",
+        "masjid",
+        "musholla",
+        "mushala",
+        "mazhab",
+        "fatwa",
+        "mui",
+        "nu",
+        "muhammadiyah",
+        "waris",
+        "faraid",
+        "nikah",
+        "talak",
+        "cerai",
+        "haid",
+        "najis",
+        "syariat",
+        "syariah",
+        "syar'i",
+    ]
+
+    return contains_any(text, islam_keywords)
+
+
+def classify_intent(user_message: str):
+    text = normalize(user_message)
+
+    # =========================================================
+    # 1. DIRECT LOOKUP HARUS PALING AWAL
+    # Karena deterministic dan tidak perlu LLM.
+    # =========================================================
+
+    quran_ref = parse_direct_quran_reference(text)
+    if quran_ref:
+        return {
+            "intent": IntentType.DIRECT_QURAN_LOOKUP,
+            "confidence": 0.98,
+            "entities": quran_ref,
+            "route": "direct_lookup",
+        }
+
+    hadith_ref = parse_direct_hadith_reference(text)
+    if hadith_ref:
+        return {
+            "intent": IntentType.DIRECT_HADITH_LOOKUP,
+            "confidence": hadith_ref.get("confidence", 0.95),
+            "entities": hadith_ref,
+            "route": "direct_lookup",
+        }
+
+    # =========================================================
+    # 2. HITUNG SINYAL INTENT
+    # =========================================================
+
+    has_strong_normative = detect_strong_normative_intent(text)
+    has_weak_permission = detect_weak_permission_intent(text)
+
+    has_clear_non_islamic_task = detect_clear_non_islamic_task(text)
+    has_islamic_signal = detect_islamic_signal(text)
+
+    has_normative = (
+        has_strong_normative
+        or (
+            has_weak_permission
+            and (
+                has_islamic_signal
+                or not has_clear_non_islamic_task
+            )
+        )
+    )
+    has_fatwa_category = detect_fatwa_category(text)
+    has_spiritual_advice = detect_spiritual_advice_intent(text)
+    has_thematic_dalil = detect_thematic_dalil_intent(text)
+    has_clear_non_islamic_task = detect_clear_non_islamic_task(text)
+    has_non_islamic_subject = detect_non_islamic_subject_signal(text)
+    has_islamic_signal = detect_islamic_signal(text)
+
+    # =========================================================
+    # 3. CLEAR NON-ISLAMIC TASK
+    # Blokir hanya jika user memang meminta tugas non-Islam,
+    # dan bukan sedang bertanya hukum Islam.
+    # =========================================================
+
+    if has_clear_non_islamic_task and not has_strong_normative and not has_islamic_signal:
+        return {
+            "intent": IntentType.OUT_OF_DOMAIN,
+            "confidence": 0.94,
+            "entities": {},
+            "route": "blocked",
+            "blocked_reason": "Permintaan merupakan tugas non-Islam tanpa konteks Islam.",
+        }
+
+    if has_clear_non_islamic_task and not has_normative and not has_islamic_signal:
+        return {
+            "intent": IntentType.OUT_OF_DOMAIN,
+            "confidence": 0.92,
+            "entities": {},
+            "route": "blocked",
+            "blocked_reason": "Permintaan merupakan tugas non-Islam tanpa konteks hukum Islam.",
+            "signals": {
+                "has_clear_non_islamic_task": has_clear_non_islamic_task,
+                "has_normative": has_normative,
+                "has_islamic_signal": has_islamic_signal,
+            }
+        }
+
+    # =========================================================
+    # 4. NORMATIVE ISLAMIC QUESTION
+    # Ini inti patch.
+    # Objek apa pun boleh masuk selama user bertanya hukum Islam.
+    # =========================================================
+
+    if has_normative:
+        if has_fatwa_category:
+            return {
+                "intent": IntentType.FATWA_QA,
+                "confidence": 0.88,
+                "entities": {},
+                "route": "metode7",
+                "reason": "Pertanyaan hukum Islam dengan kategori kontemporer/fatwa.",
+                "signals": {
+                    "has_normative": has_normative,
+                    "has_fatwa_category": has_fatwa_category,
+                }
+            }
+
+        return {
+            "intent": IntentType.FIQH_QA,
+            "confidence": 0.86,
+            "entities": {},
+            "route": "metode7",
+            "reason": "Pertanyaan hukum Islam umum.",
+            "signals": {
+                "has_normative": has_normative,
+                "has_fatwa_category": has_fatwa_category,
+            }
+        }
+
+    # =========================================================
+    # 5. SPIRITUAL ADVICE
+    # Setelah normative. Karena "aku merasa berdosa..." bisa hukum,
+    # tapi "aku merasa jauh dari Allah" lebih cocok nasihat.
+    # =========================================================
+
+    if has_spiritual_advice:
+        return {
+            "intent": IntentType.SPIRITUAL_ADVICE,
+            "confidence": 0.82,
+            "entities": {},
+            "route": "metode7",
+            "reason": "User membutuhkan nasihat spiritual.",
+        }
+
+    # =========================================================
+    # 6. THEMATIC DALIL SEARCH
+    # =========================================================
+
+    if has_thematic_dalil:
+        return {
+            "intent": IntentType.THEMATIC_DALIL_SEARCH,
+            "confidence": 0.85,
+            "entities": {},
+            "route": "metode7",
+            "reason": "User mencari dalil tematik.",
+        }
+
+    # =========================================================
+    # 7. FATWA CATEGORY TANPA POLA HUKUM
+    # Contoh: "fatwa MUI paylater", "MUI crypto"
+    # =========================================================
+
+    if has_fatwa_category and has_islamic_signal:
+        return {
+            "intent": IntentType.FATWA_QA,
+            "confidence": 0.8,
+            "entities": {},
+            "route": "metode7",
+            "reason": "Ada sinyal fatwa/kontemporer dan sinyal Islam.",
+        }
+
+    # =========================================================
+    # 8. NON-ISLAMIC SUBJECT TANPA KONTEXT ISLAM
+    # Contoh:
+    # - "jelaskan recursion"
+    # - "aku merasa kamu bisa bikin kode python"
+    # =========================================================
+
+    if has_non_islamic_subject and not has_islamic_signal:
+        return {
+            "intent": IntentType.OUT_OF_DOMAIN,
+            "confidence": 0.82,
+            "entities": {},
+            "route": "blocked",
+            "blocked_reason": "Topik non-Islam tanpa konteks Islam.",
+            "signals": {
+                "has_non_islamic_subject": has_non_islamic_subject,
+                "has_islamic_signal": has_islamic_signal,
+            }
+        }
+
+    # =========================================================
+    # 9. GENERIC REQUEST TANPA SINYAL ISLAM
+    # =========================================================
+
+    generic_request_patterns = [
+        r"\bbuatkan\b",
+        r"\bbikin\b",
+        r"\btolong buat\b",
+        r"\bcarikan\b",
+        r"\bjelaskan\b",
+        r"\bapa itu\b",
+    ]
+
+    if not has_islamic_signal and matches_any(text, generic_request_patterns):
+        return {
+            "intent": IntentType.OUT_OF_DOMAIN,
+            "confidence": 0.75,
+            "entities": {},
+            "route": "blocked",
+            "blocked_reason": "Tidak ditemukan konteks Islam pada permintaan umum.",
+        }
+
+    # =========================================================
+    # 10. DEFAULT
+    # Untuk saat ini tetap masuk Metode 7.
+    # Nanti bisa ditambah LLM classifier fallback.
+    # =========================================================
+
+    return {
+        "intent": IntentType.GENERAL_ISLAMIC_QA,
+        "confidence": 0.6,
+        "entities": {},
+        "route": "metode7",
+        "reason": "Default general Islamic QA.",
+    }
+
+def detect_strong_normative_intent(text: str) -> bool:
+    patterns = [
+        r"\bapa hukum\b",
+        r"\bbagaimana hukum\b",
+        r"\bhukumnya\b",
+        r"\bhalal\b",
+        r"\bharam\b",
+        r"\bdosa\b",
+        r"\bberdosa\b",
+        r"\bpahala\b",
+        r"\bsahkah\b",
+        r"\bsah tidak\b",
+        r"\bmenurut islam\b",
+        r"\bdalam islam\b",
+        r"\bpandangan islam\b",
+        r"\bmenurut syariat\b",
+        r"\bsecara syariat\b",
+        r"\bmenurut fiqih\b",
+        r"\bmenurut fikih\b",
+    ]
+    return matches_any(text, patterns)
+
+
+def detect_weak_permission_intent(text: str) -> bool:
+    patterns = [
+        r"\bbolehkah\b",
+        r"\bapa boleh\b",
+        r"\bboleh tidak\b",
+        r"\bboleh gak\b",
+        r"\bboleh nggak\b",
+    ]
+    return matches_any(text, patterns)
+
+END FILE: main/utils_rag/router.py
+
+
+================================================================================
+FILE: main/utils_rag/prompts.py
+================================================================================
+
+# main/utils_rag/prompts.py
+
+def get_metode7_system_prompt():
+    return (
+        "Anda adalah 'Smart Hijrah Assistant', seorang pakar dan agamawan Islam yang berwawasan luas, "
+        "santun, bijaksana, objektif, dan penuh hormat. Jawablah setiap pertanyaan dalam Bahasa Indonesia "
+        "yang formal, sejuk, dan mudah dipahami.\n\n"
+        
+        "=== ATURAN SYAR'I & FIQIH (WAJIB DIPATUHI) ===\n"
+        "1. KETERIKATAN DALIL: Setiap klaim hukum atau nasihat ibadah WAJIB disertai rujukan dalil dari Al-Qur'an, "
+        "Hadis, atau kaidah fiqih/fatwa ulama yang mu'tamad (terpercaya).\n"
+        "2. NETRALITAS KHILAFIYAH: Jika pertanyaan menyangkut masalah ikhtilaf/khilafiyah (perbedaan pendapat ulama), "
+        "Anda HARUS bersikap netral. Jelaskan pandangan mazhab-mazhab utama (Hanafi, Maliki, Syafi'i, Hanbali) "
+        "tanpa menyalahkan salah satunya.\n"
+        "3. ANTI-FATWA MUTLAK: Jangan menghakimi pengguna atau mengeluarkan fatwa takfir (mengkafirkan)/tabdi' (membid'ahkan) "
+        "secara mudah. Gunakan kalimat yang penuh hikmah.\n"
+        "4. BATASAN DOMAIN: Jika pertanyaan di luar topik Islam, ibadah, akhlak, atau kehidupan Muslim, jawab dengan: "
+        "'Maaf, saya adalah asisten khusus untuk pertanyaan seputar Islam. Saya tidak dapat menjawab pertanyaan di luar lingkup tersebut.'\n"
+        "4B. PERTANYAAN HUKUM TENTANG OBJEK NON-ISLAM: "
+        "Jika pengguna bertanya dengan pola seperti 'apa hukum...', 'bolehkah...', 'halal/haram...', "
+        "'dosa atau tidak...', atau 'menurut Islam...', maka pertanyaan tersebut TETAP termasuk domain Islam, "
+        "meskipun objeknya adalah hal modern, hiburan, teknologi, finansial, atau konten negatif. "
+        "Jawablah dari sisi hukum/adab Islam secara santun dan edukatif. "
+        "Jangan membantu mencari, merekomendasikan, atau mendeskripsikan konten maksiat/eksplisit. "
+        "Namun, jelaskan hukum umumnya, alasan syar'i, dan nasihat untuk menjauhinya.\n"
+        "5. ANTI-KARANG TEKS DALIL: Jika pengguna meminta nomor hadis atau ayat tertentu tanpa menyebutkan bunyinya, "
+        "JANGAN PERNAH MENGARANG ATAU MENEBAK ISI TEKSNYA! Cukup berikan pengantar santun dan tuliskan kodenya di blok [DALIL_START] "
+        "agar sistem verifikasi kami yang menarik teks aslinya dari database!\n\n"
+        
+        "=== ATURAN FORMAT RUJUKAN DALIL ===\n"
+        "Di dalam teks jawaban narasi, sebutkan nama surah/ayat atau perawi hadis secara natural.\n\n"
+        "NAMUN, sebagai tambahan WAJIB untuk verifikasi sistem, di BAGIAN PALING AKHIR jawaban Anda, "
+        "Anda HARUS menyertakan blok metadata rahasia dengan format persis seperti ini:\n\n"
+        "[DALIL_START]\n"
+        "- QURAN|<nomor_surah>|<nomor_ayat>\n"
+        "- HADIS|<nama_kitab>|<nomor_hadis>\n"
+        "- EKSTERNAL|<sumber_keterangan_atau_fatwa>\n"
+        "[DALIL_END]\n\n"
+        
+        "Daftar <nama_kitab> hadis yang VALID (gunakan huruf kecil tanpa spasi/gelar):\n"
+        "bukhari, muslim, abu-daud, tirmidzi, nasai, ibnu-majah, malik, ahmad, darimi\n\n"
+        
+        "CONTOH FORMAT BLOK METADATA (JANGAN DISALIN ANGKA/ISINYA, GUNAKAN DALIL YANG SESUAI JAWABANMU):\n"
+        "[DALIL_START]\n"
+        "- QURAN|1|1\n"
+        "- HADIS|bukhari|1\n"
+        "- EKSTERNAL|Sebutkan nama kitab fiqih, kaidah, atau fatwa ulama yang relevan\n"
+        "[DALIL_END]\n\n"
+        
+        "PENTING:\n"
+        "- JANGAN PERNAH menyalin contoh angka di atas! Masukkan hanya angka surah/hadis yang nyata dan relevan dengan jawabanmu!\n"
+        "- Jangan masukkan teks Arab di dalam blok [DALIL_START] tersebut, cukup kode angka dan sumbernya saja."
+    )
+
+END FILE: main/utils_rag/prompts.py
+
+
+================================================================================
+FILE: main/utils_rag/extractor.py
+================================================================================
+
+# main/utils_rag/extractor.py
+import re
+
+def extract_claims(llm_response_text):
+    if not llm_response_text:
+        return "", []
+
+    # Regex mencari blok [DALIL_START] ... [DALIL_END]
+    pattern = r"\[DALIL_START\](.*?)\[DALIL_END\]"
+    match = re.search(pattern, llm_response_text, re.DOTALL)
+
+    claimed_sources = []
+    clean_narration = llm_response_text
+
+    if match:
+        raw_claims_block = match.group(1).strip()
+        # Hapus blok dalil dari narasi
+        clean_narration = re.sub(pattern, "", llm_response_text, flags=re.DOTALL).strip()
+        
+        # Jika setelah dihapus malah kosong (berarti AI salah menaruh seluruh jawaban di dalam tag), kembalikan teks asal!
+        if not clean_narration:
+            clean_narration = llm_response_text.replace("[DALIL_START]", "").replace("[DALIL_END]", "").strip()
+
+        if raw_claims_block:
+            for line in raw_claims_block.split('\n'):
+                line = line.strip().lstrip('- ').strip()
+                if not line or '|' not in line:
+                    continue
+                
+                parts = [p.strip() for p in line.split('|')]
+                source_type = parts[0].upper() if len(parts) > 0 else ""
+
+                try:
+                    if source_type == "QURAN" and len(parts) >= 3:
+                        claimed_sources.append({"type": "QURAN", "surah": int(parts[1]), "ayah": int(parts[2]), "raw": line})
+                    elif source_type == "HADIS" and len(parts) >= 3:
+                        kitab_name = parts[1].lower().replace(" ", "-")
+                        claimed_sources.append({"type": "HADIS", "kitab": kitab_name, "nomor": int(parts[2]), "raw": line})
+                    elif source_type == "EKSTERNAL" and len(parts) >= 2:
+                        claimed_sources.append({"type": "EKSTERNAL", "detail": " ".join(parts[1:]), "raw": line})
+                except ValueError:
+                    continue
+    else:
+        # Debugging jika model lupa pakai tag [DALIL_START]
+        print("[EXTRACTOR] Tag [DALIL_START] tidak ditemukan. Menggunakan seluruh teks sebagai narasi.")
+
+    return clean_narration, claimed_sources
+
+END FILE: main/utils_rag/extractor.py
+
+
+================================================================================
+FILE: main/utils_rag/final_checker.py
+================================================================================
+
+# main/utils_rag/final_checker.py
+import re
+
+
+HADITH_BOOK_ALIASES = {
+    "bukhari": ["bukhari"],
+    "muslim": ["muslim"],
+    "abu-daud": ["abu daud", "abu-daud", "abu dawud", "dawud"],
+    "tirmidzi": ["tirmidzi", "at tirmidzi", "at-tirmidzi"],
+    "nasai": ["nasai", "nasa'i", "an nasai", "an-nasai"],
+    "ibnu-majah": ["ibnu majah", "ibn majah", "ibnu-majah"],
+    "malik": ["malik", "muwatta"],
+    "ahmad": ["ahmad", "musnad ahmad"],
+    "darimi": ["darimi", "ad darimi", "ad-darimi"],
+}
+
+
+SURAH_NAME_TO_NUMBER = {
+    "al baqarah": 2,
+    "al-baqarah": 2,
+    "baqarah": 2,
+    "ali imran": 3,
+    "an nisa": 4,
+    "al maidah": 5,
+    "al an'am": 6,
+    "al anam": 6,
+    "al araf": 7,
+    "al anfal": 8,
+    "at taubah": 9,
+    "yunus": 10,
+    "hud": 11,
+    "yusuf": 12,
+    "ibrahim": 14,
+    "al hijr": 15,
+    "an nahl": 16,
+    "al isra": 17,
+    "al kahfi": 18,
+    "maryam": 19,
+    "taha": 20,
+    "al anbiya": 21,
+    "al hajj": 22,
+    "al muminun": 23,
+    "an nur": 24,
+    "al furqan": 25,
+    "asy syuara": 26,
+    "an naml": 27,
+    "al qasas": 28,
+    "al ankabut": 29,
+    "ar rum": 30,
+    "luqman": 31,
+    "yasin": 36,
+    "az zumar": 39,
+    "ghafir": 40,
+    "muhammad": 47,
+    "al fath": 48,
+    "al hujurat": 49,
+    "qaf": 50,
+    "ar rahman": 55,
+    "al waqiah": 56,
+    "al mulk": 67,
+    "al ikhlas": 112,
+    "al falaq": 113,
+    "an nas": 114,
+}
+
+
+def _norm(text):
+    text = (text or "").lower()
+    text = text.replace("’", "'")
+    text = re.sub(r"[\u2010-\u2015]", "-", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def _normalize_book_name(text):
+    text = _norm(text)
+
+    for slug, aliases in HADITH_BOOK_ALIASES.items():
+        for alias in aliases:
+            if alias in text:
+                return slug
+
+    return None
+
+
+def _extract_verified_quran_set(verified_sources):
+    result = set()
+
+    for source in verified_sources or []:
+        if source.get("type") != "QURAN" or not source.get("is_verified"):
+            continue
+
+        surah = source.get("surah_number")
+        ayah = source.get("ayah_number")
+
+        if surah and ayah:
+            result.add((int(surah), int(ayah)))
+            continue
+
+        ref = _norm(source.get("reference", ""))
+
+        match = re.search(r"\((\d{1,3})\)\s*:\s*(\d{1,3})", ref)
+        if match:
+            result.add((int(match.group(1)), int(match.group(2))))
+            continue
+
+        match = re.search(r"surah\s+(\d{1,3})\s*:\s*(\d{1,3})", ref)
+        if match:
+            result.add((int(match.group(1)), int(match.group(2))))
+            continue
+
+        # contoh: QS. Al Baqarah : 275
+        match = re.search(r"qs\.?\s+(.+?)\s*:\s*(\d{1,3})", ref)
+        if match:
+            surah_name = match.group(1).strip()
+            ayah_num = int(match.group(2))
+            surah_num = SURAH_NAME_TO_NUMBER.get(surah_name)
+            if surah_num:
+                result.add((surah_num, ayah_num))
+
+    return result
+
+
+def _extract_verified_hadith_set(verified_sources):
+    result = set()
+
+    for source in verified_sources or []:
+        if source.get("type") != "HADIS" or not source.get("is_verified"):
+            continue
+
+        book_slug = source.get("book_slug")
+        number = source.get("number")
+
+        if book_slug and number:
+            result.add((_normalize_book_name(book_slug) or book_slug, int(number)))
+            continue
+
+        ref = _norm(source.get("reference", ""))
+        book = _normalize_book_name(ref)
+
+        match = re.search(r"(?:no|nomor|hadis|hadith)?\.?\s*(\d{1,7})\b", ref)
+        if book and match:
+            result.add((book, int(match.group(1))))
+
+    return result
+
+
+def _extract_claimed_quran_refs(text):
+    text = _norm(text)
+    claims = set()
+
+    # QS 2:255 / Quran 2:255
+    for match in re.finditer(r"\b(?:qs|q\.s\.|quran|al-qur'an|al quran)?\s*(\d{1,3})\s*:\s*(\d{1,3})", text):
+        surah = int(match.group(1))
+        ayah = int(match.group(2))
+        if 1 <= surah <= 114:
+            claims.add((surah, ayah))
+
+    # QS. Al-Baqarah: 275 / Surah Al Baqarah ayat 275
+    patterns = [
+        r"\b(?:qs|q\.s\.|surah|surat)\.?\s+([a-zA-Z' -]+?)\s*[:\-]\s*(\d{1,3})",
+        r"\b(?:qs|q\.s\.|surah|surat)\.?\s+([a-zA-Z' -]+?)\s+ayat\s+(\d{1,3})",
+    ]
+
+    for pattern in patterns:
+        for match in re.finditer(pattern, text):
+            surah_name = match.group(1).strip()
+            ayah = int(match.group(2))
+            surah = SURAH_NAME_TO_NUMBER.get(surah_name)
+            if surah:
+                claims.add((surah, ayah))
+
+    return claims
+
+
+def _extract_claimed_hadith_refs(text):
+    text = _norm(text)
+    claims = set()
+
+    for slug, aliases in HADITH_BOOK_ALIASES.items():
+        for alias in aliases:
+            # HR. Bukhari 3134 / Hadis Bukhari no. 1 / Sunan Abu Daud No. 5
+            pattern = (
+                r"\b(?:hr|hadis|hadits|sunan|shahih|sahih|musnad)?\.?\s*"
+                + re.escape(alias)
+                + r"\s*(?:no|nomor|hadis|hadith)?\.?\s*(\d{1,7})\b"
+            )
+
+            for match in re.finditer(pattern, text):
+                claims.add((slug, int(match.group(1))))
+
+    return claims
+
+def _contains_explicit_hadith_grading_claim(text):
+    """
+    Deteksi klaim grading hadis secara eksplisit.
+
+    Tidak boleh memicu warning hanya karena ada nama kitab:
+    - Shahih Bukhari
+    - Shahih Muslim
+
+    Warning hanya muncul untuk kalimat seperti:
+    - hadis ini sahih
+    - riwayat tersebut hasan
+    - hadis itu dhaif
+    - derajat hadisnya maudhu
+    """
+    text = _norm(text)
+
+    grading_patterns = [
+        r"\bhadis\s+(?:ini|itu|tersebut)\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bhadits\s+(?:ini|itu|tersebut)\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\briwayat\s+(?:ini|itu|tersebut)\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bderajat(?:nya|\s+hadis|\s+hadits)?\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bberstatus\s+(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bdinilai\s+(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\btergolong\s+(?:hadis\s+|hadits\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+    ]
+
+    return any(re.search(pattern, text) for pattern in grading_patterns)
+
+def apply_final_checks(reply, verified_sources, status_global):
+    """
+    Final checker sederhana.
+    Tidak mengubah isi jawaban.
+    Hanya:
+    - mendeteksi rujukan QS/HR di narasi
+    - membandingkan dengan verified_sources
+    - menurunkan status jika ada mismatch
+    """
+    warnings = []
+    reply = reply or ""
+
+    verified_quran = _extract_verified_quran_set(verified_sources)
+    verified_hadith = _extract_verified_hadith_set(verified_sources)
+
+    claimed_quran = _extract_claimed_quran_refs(reply)
+    claimed_hadith = _extract_claimed_hadith_refs(reply)
+
+    for claim in sorted(claimed_quran):
+        if claim not in verified_quran:
+            warnings.append({
+                "code": "UNVERIFIED_QURAN_REFERENCE_IN_NARRATION",
+                "message": f"Narasi menyebut QS {claim[0]}:{claim[1]}, tetapi tidak ada di verified_sources.",
+                "claim": {
+                    "type": "QURAN",
+                    "surah": claim[0],
+                    "ayah": claim[1],
+                }
+            })
+
+    for book, number in sorted(claimed_hadith):
+        if (book, number) not in verified_hadith:
+            warnings.append({
+                "code": "UNVERIFIED_HADITH_REFERENCE_IN_NARRATION",
+                "message": f"Narasi menyebut hadis {book} no. {number}, tetapi tidak ada di verified_sources.",
+                "claim": {
+                    "type": "HADIS",
+                    "book": book,
+                    "number": number,
+                }
+            })
+
+    # Jika narasi memakai redaksi Rasulullah bersabda tapi tidak ada hadis verified.
+    risky_prophetic_phrases = [
+        "rasulullah bersabda",
+        "nabi bersabda",
+        "rasul saw bersabda",
+        "rasulullah saw bersabda",
+        "shallallahu 'alaihi wasallam bersabda",
+        "shallallahu alaihi wasallam bersabda",
+    ]
+
+    if any(phrase in _norm(reply) for phrase in risky_prophetic_phrases) and not verified_hadith:
+        warnings.append({
+            "code": "PROPHETIC_QUOTE_WITHOUT_VERIFIED_HADITH",
+            "message": "Narasi mengutip sabda Nabi, tetapi tidak ada hadis verified.",
+        })
+
+    # Jika narasi menyebut sahih/hasan/daif tapi verified source belum punya grading.
+    # grading_words = ["sahih", "shahih", "hasan", "daif", "dhaif", "maudhu"]
+    # if any(word in _norm(reply) for word in grading_words):
+    #     has_hadith = any(s.get("type") == "HADIS" for s in verified_sources or [])
+    #     if has_hadith:
+    #         warnings.append({
+    #             "code": "HADITH_GRADING_CLAIM_NEEDS_REVIEW",
+    #             "message": "Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.",
+    #         })
+    if _contains_explicit_hadith_grading_claim(reply):
+        warnings.append({
+            "code": "HADITH_GRADING_CLAIM_NEEDS_REVIEW",
+            "message": (
+                "Narasi menyebut derajat hadis secara eksplisit. "
+                "Pastikan data grading atau takhrij tersedia."
+            ),
+        })
+
+    final_status = status_global
+
+    if warnings and status_global == "HIGH_CONFIDENCE":
+        final_status = "NEEDS_REVIEW"
+
+    return {
+        "reply": reply,
+        "verification_status": final_status,
+        "final_check_warnings": warnings,
+        "final_check_passed": len(warnings) == 0,
+    }
+
+END FILE: main/utils_rag/final_checker.py
+

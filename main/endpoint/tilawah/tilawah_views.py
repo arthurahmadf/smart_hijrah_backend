@@ -8,12 +8,171 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from main.models_tilawah import TilawahAyahPool, TilawahSession
-from main.serializers.tilawah_serializers import TilawahAyahSerializer, TilawahSessionSerializer
+from main.serializers.tilawah_serializers import (
+    TilawahAyahSerializer,
+    TilawahSessionSerializer,
+    TilawahSurahSerializer,
+    TilawahSelectAyahSerializer,
+)
 from main.utils_tilawah.whisper_engine import transcribe_audio
 from main.utils_tilawah.feedback_builder import build_feedback
 from main.pagination_utils import paginate_queryset
+from django.db.models import Count, Max, Q
 
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_all_surah(request):
+    """
+    GET /tilawah/surah/all/
+    GET /tilawah/surah/all/?query=al-fatihah
+
+    Ketentuan:
+    - Tanpa query: mengembalikan seluruh surah.
+    - Dengan query: minimal 3 karakter.
+    - Pencarian dilakukan terhadap nama Indonesia/Latin dan nama Arab.
+    - Response langsung berupa array sesuai kontrak frontend.
+    """
+
+    query = request.GET.get("query", "")
+
+    # Mengantisipasi frontend mengirim:
+    # ?query=al-fatihah/
+    query = query.strip().strip("/")
+
+    if query and len(query) < 3:
+        return Response(
+            {
+                "success": False,
+                "message": (
+                    "Query pencarian minimal harus terdiri "
+                    "dari 3 karakter."
+                ),
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    queryset = TilawahAyahPool.objects.all()
+
+    if query:
+        queryset = queryset.filter(
+            Q(surah_name_id__icontains=query)
+            | Q(surah_name__icontains=query)
+        )
+
+    # Group berdasarkan nomor surah agar tetap menghasilkan satu record
+    # per surah meskipun ada ribuan record ayat.
+    surahs = (
+        queryset
+        .values("surah_number")
+        .annotate(
+            surah_name=Max("surah_name"),
+            surah_name_id=Max("surah_name_id"),
+            total_ayah=Count("id"),
+        )
+        .order_by("surah_number")
+    )
+
+    serializer = TilawahSurahSerializer(
+        surahs,
+        many=True,
+    )
+
+    return Response({
+            'success': True,
+            'message': 'Surah berhasil diambil.',
+            'data': serializer.data
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_ayahs_by_surah(request, surah_id):
+    """
+    GET /tilawah/ayah/<surah_id>/?page=1&page_size=10
+
+    Mengembalikan ayat berdasarkan surah dengan pagination.
+    """
+
+    try:
+        if surah_id < 1 or surah_id > 114:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Surah tidak ditemukan.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        ayahs = (
+            TilawahAyahPool.objects
+            .filter(surah_number=surah_id)
+            .only(
+                "id",
+                "surah_number",
+                "surah_name",
+                "surah_name_id",
+                "ayah_number",
+                "ayah_text",
+                "ayah_translation",
+                "audio_url",
+                "level",
+            )
+            .order_by("ayah_number")
+        )
+
+        if not ayahs.exists():
+            return Response(
+                {
+                    "success": False,
+                    "message": "Ayat untuk surah tersebut tidak ditemukan.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        paginated = paginate_queryset(
+            request=request,
+            queryset=ayahs,
+            page_size=10,
+            items_key="ayahs",
+        )
+
+        serializer = TilawahSelectAyahSerializer(
+            paginated["ayahs"],
+            many=True,
+        )
+
+        paginated["ayahs"] = serializer.data
+
+        return Response(
+            {
+                "success": True,
+                "message": "Ayat berhasil diambil.",
+                "data": paginated,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    except (TypeError, ValueError):
+        return Response(
+            {
+                "success": False,
+                "message": "Parameter page dan page_size harus berupa angka.",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    except Exception as e:
+        return Response(
+            {
+                "success": False,
+                "message": str(e),
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_random_ayah(request):

@@ -4,16 +4,36 @@ import re
 
 HADITH_BOOK_ALIASES = {
     "bukhari": [
-        "bukhari", "bukari", "al bukhari", "al-bukhari", "shahih bukhari",
-        "sahih bukhari", "hr bukhari"
+        "bukhari",
+        "bukhori",
+        "bukari",
+        "bokhari",
+        "al bukhari",
+        "al-bukhari",
+        "al bukhori",
+        "shahih bukhari",
+        "sahih bukhari",
+        "shahih bukhori",
+        "sahih bukhori",
+        "hr bukhari",
+        "hr bukhori",
     ],
     "muslim": [
         "muslim", "shahih muslim", "sahih muslim", "hr muslim"
     ],
     "abu-daud": [
-        "abu daud", "abu-daud", "abudaud", "abu dawud", "abu-dawud",
-        "dawud", "daud", "sunan abu daud", "sunan abu dawud", "hr abu daud",
-        "hr abu dawud"
+        "abu daud",
+        "abu-daud",
+        "abudaud",
+        "abu dawud",
+        "abu-dawud",
+        "abudawud",
+        "dawud",
+        "daud",
+        "sunan abu daud",
+        "sunan abu dawud",
+        "hr abu daud",
+        "hr abu dawud",
     ],
     "tirmidzi": [
         "tirmidzi", "at tirmidzi", "at-tirmidzi", "turmudzi",
@@ -150,12 +170,6 @@ def parse_direct_hadith_reference(user_message: str):
     number = extract_hadith_number(text)
 
     if not book or not number:
-        return None
-
-    # Minimal harus ada indikasi hadis/HR/nomor/no/tampilkan agar tidak salah tangkap angka biasa.
-    has_lookup_intent = any(keyword in text for keyword in DIRECT_LOOKUP_KEYWORDS)
-
-    if not has_lookup_intent:
         return None
 
     assumption_note = ""
@@ -300,7 +314,6 @@ SURAH_ALIASES = {
 def detect_surah(text: str):
     text = normalize_text(text)
 
-    # Pola numerik: QS 2:255, quran 2 255, surah 2 ayat 255
     numeric_patterns = [
         r"\b(?:qs|q\.s\.|quran|al quran|surah|surat)\s*[:\-]?\s*(\d{1,3})\b",
         r"\b(\d{1,3})\s*:\s*\d{1,3}\b",
@@ -310,26 +323,29 @@ def detect_surah(text: str):
         match = re.search(pattern, text)
         if match:
             num = int(match.group(1))
-            if 1 <= num <= 114:
-                return {
-                    "surah_number": num,
-                    "matched_alias": str(num),
-                    "confidence": 0.98,
-                    "is_numeric": True,
-                }
+
+            return {
+                "surah_number": num,
+                "matched_alias": str(num),
+                "confidence": 0.98 if 1 <= num <= 114 else 1.0,
+                "is_numeric": True,
+                "is_valid": 1 <= num <= 114,
+            }
 
     matches = []
+
     for surah_number, aliases in SURAH_ALIASES.items():
         for alias in aliases:
             alias_norm = normalize_text(alias)
             pattern = r"(?<!\w)" + re.escape(alias_norm) + r"(?!\w)"
+
             if re.search(pattern, text):
                 matches.append((surah_number, alias_norm))
 
     if not matches:
         return None
 
-    matches.sort(key=lambda x: len(x[1]), reverse=True)
+    matches.sort(key=lambda item: len(item[1]), reverse=True)
     surah_number, alias = matches[0]
 
     return {
@@ -337,6 +353,7 @@ def detect_surah(text: str):
         "matched_alias": alias,
         "confidence": 0.95,
         "is_numeric": False,
+        "is_valid": True,
     }
 
 
@@ -402,4 +419,5 @@ def parse_direct_quran_reference(user_message: str):
         "ayah_number": ayah_number,
         "confidence": surah["confidence"],
         "matched_alias": surah["matched_alias"],
+        "is_valid_surah": surah.get("is_valid", True),
     }

@@ -149,7 +149,16 @@ urlpatterns = [
     path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
     path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
     path('tilawah/session/<int:session_id>/', tilawah_views.get_session_detail, name='tilawah_session_detail'),
-
+    path(
+        "tilawah/surah/all/",
+        tilawah_views.get_all_surah,
+        name="tilawah_all_surah",
+    ),
+    path(
+        "tilawah/ayah/<int:surah_id>/",
+        tilawah_views.get_ayahs_by_surah,
+        name="tilawah_ayah_by_surah",
+    ),
 
     path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
     path('auth/social/', include('social_django.urls', namespace='social')),
@@ -210,6 +219,8 @@ urlpatterns = [
         epustaka_views.get_all_epustaka,
         name="get_all_epustaka",
     ),
+
+    
     
 ]
 

@@ -26,7 +26,21 @@ def normalize(text: str) -> str:
 
 
 def contains_any(text: str, keywords):
-    return any(k in text for k in keywords)
+    for keyword in keywords:
+        keyword = keyword.strip().lower()
+
+        if not keyword:
+            continue
+
+        # Keyword sangat pendek harus cocok sebagai kata utuh.
+        if len(keyword) <= 3:
+            pattern = r"(?<!\w)" + re.escape(keyword) + r"(?!\w)"
+            if re.search(pattern, text):
+                return True
+        elif keyword in text:
+            return True
+
+    return False
 
 
 def matches_any(text: str, patterns):
@@ -99,6 +113,7 @@ def detect_thematic_dalil_intent(text: str) -> bool:
 
 def detect_spiritual_advice_intent(text: str) -> bool:
     advice_keywords = [
+        # kondisi hati
         "aku merasa",
         "saya merasa",
         "gelisah",
@@ -106,22 +121,64 @@ def detect_spiritual_advice_intent(text: str) -> bool:
         "cemas",
         "takut",
         "putus asa",
+        "hati kosong",
+        "hati gelisah",
+        "hati tidak tenang",
+
+        # hubungan dengan Allah
         "jauh dari allah",
+        "merasa jauh dari allah",
+        "ingin dekat dengan allah",
+
+        # iman
+        "iman turun",
+        "imanku turun",
+        "imanku lagi turun",
+        "iman sedang turun",
+        "iman lemah",
+        "imanku lemah",
+        "futur",
+
+        # taubat
+        "ingin taubat",
+        "ingin bertaubat",
+        "mau taubat",
+        "mau bertaubat",
+        "cara taubat",
+        "cara bertaubat",
+        "sering jatuh lagi",
+        "mengulangi dosa",
+        "kembali melakukan dosa",
+        "merasa berdosa",
+
+        # shalat dan istiqamah
         "malas shalat",
         "malas sholat",
         "susah istiqamah",
         "sulit istiqamah",
+        "sering meninggalkan shalat",
+        "sering meninggalkan sholat",
+        "ingin berubah",
+        "ingin memperbaiki diri",
+
+        # hijrah
         "ingin hijrah",
         "cara hijrah",
         "tips istiqamah",
-        "iman turun",
-        "futur",
-        "hati kosong",
-        "merasa berdosa",
-        "ingin taubat",
-        "cara taubat",
     ]
-    return contains_any(text, advice_keywords)
+
+    if contains_any(text, advice_keywords):
+        return True
+
+    advice_patterns = [
+        r"\b(?:aku|saya)\s+ingin\s+(?:berubah|bertaubat|taubat|hijrah)\b",
+        r"\b(?:aku|saya)\s+sering\s+(?:jatuh|mengulangi dosa|meninggalkan shalat|meninggalkan sholat)\b",
+        r"\biman(?:ku)?\s+(?:lagi\s+|sedang\s+)?turun\b",
+        r"\bharus bagaimana\b",
+        r"\bbagaimana agar istiqamah\b",
+    ]
+
+    return matches_any(text, advice_patterns)
 
 
 def detect_fatwa_category(text: str) -> bool:
@@ -185,12 +242,13 @@ def detect_fatwa_category(text: str) -> bool:
         "kloning",
 
         # teknologi modern
-        "ai",
         "artificial intelligence",
         "kecerdasan buatan",
-        "aplikasi",
-        "platform",
         "marketplace",
+        "artificial intelligence",
+        "kecerdasan buatan",
+        "teknologi ai",
+        "penggunaan ai",
     ]
 
     return contains_any(text, fatwa_category_keywords)
@@ -382,7 +440,22 @@ def classify_intent(user_message: str):
     # 2. HITUNG SINYAL INTENT
     # =========================================================
 
-    has_normative = detect_normative_islamic_intent(text)
+    has_strong_normative = detect_strong_normative_intent(text)
+    has_weak_permission = detect_weak_permission_intent(text)
+
+    has_clear_non_islamic_task = detect_clear_non_islamic_task(text)
+    has_islamic_signal = detect_islamic_signal(text)
+
+    has_normative = (
+        has_strong_normative
+        or (
+            has_weak_permission
+            and (
+                has_islamic_signal
+                or not has_clear_non_islamic_task
+            )
+        )
+    )
     has_fatwa_category = detect_fatwa_category(text)
     has_spiritual_advice = detect_spiritual_advice_intent(text)
     has_thematic_dalil = detect_thematic_dalil_intent(text)
@@ -395,6 +468,15 @@ def classify_intent(user_message: str):
     # Blokir hanya jika user memang meminta tugas non-Islam,
     # dan bukan sedang bertanya hukum Islam.
     # =========================================================
+
+    if has_clear_non_islamic_task and not has_strong_normative and not has_islamic_signal:
+        return {
+            "intent": IntentType.OUT_OF_DOMAIN,
+            "confidence": 0.94,
+            "entities": {},
+            "route": "blocked",
+            "blocked_reason": "Permintaan merupakan tugas non-Islam tanpa konteks Islam.",
+        }
 
     if has_clear_non_islamic_task and not has_normative and not has_islamic_signal:
         return {
@@ -539,3 +621,36 @@ def classify_intent(user_message: str):
         "route": "metode7",
         "reason": "Default general Islamic QA.",
     }
+
+def detect_strong_normative_intent(text: str) -> bool:
+    patterns = [
+        r"\bapa hukum\b",
+        r"\bbagaimana hukum\b",
+        r"\bhukumnya\b",
+        r"\bhalal\b",
+        r"\bharam\b",
+        r"\bdosa\b",
+        r"\bberdosa\b",
+        r"\bpahala\b",
+        r"\bsahkah\b",
+        r"\bsah tidak\b",
+        r"\bmenurut islam\b",
+        r"\bdalam islam\b",
+        r"\bpandangan islam\b",
+        r"\bmenurut syariat\b",
+        r"\bsecara syariat\b",
+        r"\bmenurut fiqih\b",
+        r"\bmenurut fikih\b",
+    ]
+    return matches_any(text, patterns)
+
+
+def detect_weak_permission_intent(text: str) -> bool:
+    patterns = [
+        r"\bbolehkah\b",
+        r"\bapa boleh\b",
+        r"\bboleh tidak\b",
+        r"\bboleh gak\b",
+        r"\bboleh nggak\b",
+    ]
+    return matches_any(text, patterns)

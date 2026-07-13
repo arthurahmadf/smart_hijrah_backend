@@ -1,0 +1,4916 @@
+
+================================================================================
+FILE: main/utils_rag/followup_compression.py
+================================================================================
+
+# main/utils_rag/followup_compression.py
+
+from __future__ import annotations
+
+import re
+from dataclasses import asdict, dataclass
+from difflib import SequenceMatcher
+from typing import Any
+
+from main.utils_rag.answer_strategy import (
+    AnswerStrategy,
+    STRATEGY_FATWA,
+)
+
+
+ASPECT_GENERAL = "GENERAL"
+ASPECT_HADITH = "HADITH"
+ASPECT_QURAN = "QURAN"
+ASPECT_DALIL = "DALIL"
+ASPECT_REASON = "REASON"
+ASPECT_EXAMPLE = "EXAMPLE"
+ASPECT_PRACTICAL = "PRACTICAL"
+ASPECT_DOA = "DOA"
+ASPECT_MUI = "MUI"
+ASPECT_SUMMARY = "SUMMARY"
+ASPECT_RULING = "RULING"
+ASPECT_CONTINUATION = "CONTINUATION"
+
+FOLLOW_UP_RELATIONS = {
+    "FOLLOW_UP",
+    "TOPIC_REFINEMENT",
+    "AMBIGUOUS",
+}
+
+INFORMAL_REPLACEMENTS = {
+    "klo": "kalau",
+    "kalo": "kalau",
+    "klw": "kalau",
+    "mnrt": "menurut",
+    "gmn": "bagaimana",
+    "gimana": "bagaimana",
+    "knp": "kenapa",
+    "hadisny": "hadisnya",
+    "haditsny": "hadisnya",
+    "ayatny": "ayatnya",
+    "dalilny": "dalilnya",
+    "doany": "doanya",
+}
+
+
+@dataclass(frozen=True)
+class FollowUpPolicy:
+    """
+    Aturan presentation untuk jawaban lanjutan.
+
+    Policy ini tidak menentukan hukum atau substansi agama. Ia hanya
+    mengendalikan fokus, panjang, section, dan pengulangan jawaban.
+    """
+
+    enabled: bool
+    relation: str
+    requested_aspect: str
+
+    max_paragraphs: int
+    max_list_items: int
+    max_chars: int
+
+    include_references: bool
+    include_practical_steps: bool
+    include_doa: bool
+    include_caution: bool
+    include_context_reference: bool
+    preserve_headings: bool
+
+    reasoning_codes: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        result = asdict(self)
+        result["reasoning_codes"] = list(
+            self.reasoning_codes
+        )
+        return result
+
+
+def normalize_followup_text(
+    text: str | None,
+) -> str:
+    normalized = (text or "").lower().strip()
+    normalized = normalized.replace("’", "'")
+    normalized = re.sub(
+        r"[^\w\s'-]",
+        " ",
+        normalized,
+    )
+    normalized = re.sub(
+        r"\s+",
+        " ",
+        normalized,
+    ).strip()
+
+    tokens = normalized.split()
+
+    return " ".join(
+        INFORMAL_REPLACEMENTS.get(token, token)
+        for token in tokens
+    )
+
+
+def detect_requested_aspect(
+    user_message: str | None,
+) -> str:
+    text = normalize_followup_text(
+        user_message
+    )
+
+    if not text:
+        return ASPECT_GENERAL
+
+    if re.search(
+        r"\b(mui|dsn mui|dsn-mui|fatwa mui)\b",
+        text,
+    ):
+        return ASPECT_MUI
+
+    if re.search(
+        r"\b(hadis|hadits|riwayat|sabda nabi)\b",
+        text,
+    ):
+        return ASPECT_HADITH
+
+    if re.search(
+        r"\b(ayat|quran|al quran|alquran|surah|surat)\b",
+        text,
+    ):
+        return ASPECT_QURAN
+
+    if re.search(
+        r"\b(dalil|rujukan|sumber)\b",
+        text,
+    ):
+        return ASPECT_DALIL
+
+    if re.search(
+        r"\b(doa|doanya|doakan)\b",
+        text,
+    ):
+        return ASPECT_DOA
+
+    if re.search(
+        r"\b(kenapa|mengapa|alasannya|alasan|sebab|dasarnya)\b",
+        text,
+    ):
+        return ASPECT_REASON
+
+    if re.search(
+        r"\b(contoh|contohnya|misalnya|ilustrasi)\b",
+        text,
+    ):
+        return ASPECT_EXAMPLE
+
+    if re.search(
+        r"\b(caranya|cara|langkah|tips|praktiknya|praktis)\b",
+        text,
+    ):
+        return ASPECT_PRACTICAL
+
+    if re.search(
+        r"\b(ringkas|singkat|kesimpulan|intinya|simpulkan)\b",
+        text,
+    ):
+        return ASPECT_SUMMARY
+
+    if re.search(
+        r"\b(hukum|hukumnya|boleh|haram|halal|wajib|sunnah|makruh)\b",
+        text,
+    ):
+        return ASPECT_RULING
+
+    if text in {
+        "terus",
+        "lanjut",
+        "lalu",
+        "bagaimana",
+        "terus bagaimana",
+        "lanjutkan",
+    }:
+        return ASPECT_CONTINUATION
+
+    return ASPECT_GENERAL
+
+
+def _conversation_relation(
+    conversation_context: dict[str, Any] | None,
+) -> str:
+    if not conversation_context:
+        return "NEW_TOPIC"
+
+    return str(
+        conversation_context.get(
+            "conversation_relation",
+            "NEW_TOPIC",
+        )
+        or "NEW_TOPIC"
+    ).upper()
+
+
+def build_followup_policy(
+    user_message: str,
+    strategy: AnswerStrategy,
+    conversation_context: dict[str, Any] | None,
+) -> FollowUpPolicy:
+    relation = _conversation_relation(
+        conversation_context
+    )
+    requested_aspect = detect_requested_aspect(
+        user_message
+    )
+
+    enabled = bool(
+        strategy.is_follow_up
+        or relation in FOLLOW_UP_RELATIONS
+    )
+
+    if not enabled:
+        return FollowUpPolicy(
+            enabled=False,
+            relation=relation,
+            requested_aspect=requested_aspect,
+            max_paragraphs=max(
+                1,
+                strategy.max_summary_paragraphs,
+            ),
+            max_list_items=max(
+                1,
+                strategy.max_practical_steps,
+            ),
+            max_chars=5000,
+            include_references=True,
+            include_practical_steps=(
+                strategy.show_practical_steps
+            ),
+            include_doa=strategy.show_doa,
+            include_caution=(
+                strategy.show_caution_note
+                or strategy.require_fatwa_disclaimer
+            ),
+            include_context_reference=False,
+            preserve_headings=True,
+            reasoning_codes=(
+                "FOLLOWUP_COMPRESSION_DISABLED",
+            ),
+        )
+
+    reasoning_codes = [
+        "FOLLOWUP_COMPRESSION_ENABLED",
+        f"ASPECT_{requested_aspect}",
+    ]
+
+    is_refinement = (
+        relation == "TOPIC_REFINEMENT"
+    )
+
+    max_paragraphs = 3 if is_refinement else 2
+    max_list_items = 3
+    max_chars = 1800 if is_refinement else 1300
+
+    include_references = False
+    include_practical_steps = False
+    include_doa = False
+    include_caution = False
+    include_context_reference = is_refinement
+    preserve_headings = False
+
+    if requested_aspect in {
+        ASPECT_HADITH,
+        ASPECT_QURAN,
+        ASPECT_DALIL,
+        ASPECT_MUI,
+    }:
+        include_references = True
+        max_paragraphs = 1
+        max_chars = 1100
+        reasoning_codes.append(
+            "SOURCE_FOCUSED_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_REASON:
+        max_paragraphs = 2
+        max_chars = 1200
+        reasoning_codes.append(
+            "REASON_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_EXAMPLE:
+        max_paragraphs = 2
+        max_list_items = 2
+        max_chars = 1100
+        reasoning_codes.append(
+            "EXAMPLE_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_PRACTICAL:
+        include_practical_steps = True
+        max_paragraphs = 1
+        max_list_items = 4
+        max_chars = 1200
+        reasoning_codes.append(
+            "PRACTICAL_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_DOA:
+        include_doa = True
+        max_paragraphs = 1
+        max_chars = 900
+        reasoning_codes.append(
+            "DOA_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_SUMMARY:
+        max_paragraphs = 1
+        max_list_items = 2
+        max_chars = 700
+        reasoning_codes.append(
+            "SUMMARY_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_RULING:
+        include_references = is_refinement
+        include_caution = (
+            strategy.name == STRATEGY_FATWA
+            and is_refinement
+        )
+        max_paragraphs = 2
+        max_chars = 1300
+        reasoning_codes.append(
+            "RULING_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_CONTINUATION:
+        max_paragraphs = 2
+        max_chars = 1100
+        reasoning_codes.append(
+            "CONTINUATION_FOLLOWUP"
+        )
+
+    else:
+        include_references = is_refinement
+        max_paragraphs = 2
+        max_chars = 1300
+        reasoning_codes.append(
+            "GENERAL_FOLLOWUP"
+        )
+
+    return FollowUpPolicy(
+        enabled=True,
+        relation=relation,
+        requested_aspect=requested_aspect,
+        max_paragraphs=max_paragraphs,
+        max_list_items=max_list_items,
+        max_chars=max_chars,
+        include_references=include_references,
+        include_practical_steps=(
+            include_practical_steps
+        ),
+        include_doa=include_doa,
+        include_caution=include_caution,
+        include_context_reference=(
+            include_context_reference
+        ),
+        preserve_headings=preserve_headings,
+        reasoning_codes=tuple(
+            reasoning_codes
+        ),
+    )
+
+
+def build_followup_prompt_instruction(
+    policy: FollowUpPolicy,
+) -> str:
+    if not policy.enabled:
+        return ""
+
+    lines = [
+        "ATURAN NATURAL FOLLOW-UP:",
+        "- Jawab langsung aspek baru yang diminta.",
+        "- Jangan mengulang salam atau perkenalan.",
+        "- Jangan mengulang seluruh jawaban sebelumnya.",
+        (
+            f"- Fokus jawaban: "
+            f"{policy.requested_aspect}."
+        ),
+        (
+            f"- Maksimal sekitar "
+            f"{policy.max_paragraphs} paragraf."
+        ),
+        (
+            f"- Maksimal sekitar "
+            f"{policy.max_list_items} item daftar."
+        ),
+    ]
+
+    if not policy.include_references:
+        lines.append(
+            "- Jangan mengulang daftar rujukan lama kecuali "
+            "diperlukan untuk menjawab aspek baru."
+        )
+
+    if policy.requested_aspect == ASPECT_REASON:
+        lines.append(
+            "- Fokus pada alasan atau prinsip yang mendasari "
+            "jawaban sebelumnya."
+        )
+
+    elif policy.requested_aspect == ASPECT_EXAMPLE:
+        lines.append(
+            "- Berikan contoh yang konkret dan singkat."
+        )
+
+    elif policy.requested_aspect == ASPECT_SUMMARY:
+        lines.append(
+            "- Berikan inti jawaban dalam bentuk sangat ringkas."
+        )
+
+    elif policy.requested_aspect in {
+        ASPECT_HADITH,
+        ASPECT_QURAN,
+        ASPECT_DALIL,
+        ASPECT_MUI,
+    }:
+        lines.append(
+            "- Fokus hanya pada sumber yang diminta pengguna."
+        )
+
+    return "\n".join(
+        lines
+    )
+
+
+def select_display_sources(
+    sources: list[dict[str, Any]] | None,
+    policy: FollowUpPolicy,
+) -> list[dict[str, Any]]:
+    """
+    Pilih source yang dirender di teks jawaban.
+
+    verified_sources utama tetap dapat dipertahankan untuk final
+    checker. Fungsi ini hanya mengontrol source yang ditampilkan.
+    """
+    if not policy.enabled:
+        return list(
+            sources or []
+        )
+
+    if not policy.include_references:
+        return []
+
+    result: list[dict[str, Any]] = []
+
+    for source in sources or []:
+        source_type = str(
+            source.get("type", "")
+        ).upper()
+
+        if source_type == "HADITH":
+            source_type = "HADIS"
+
+        if (
+            policy.requested_aspect == ASPECT_HADITH
+            and source_type != "HADIS"
+        ):
+            continue
+
+        if (
+            policy.requested_aspect == ASPECT_QURAN
+            and source_type != "QURAN"
+        ):
+            continue
+
+        if (
+            policy.requested_aspect == ASPECT_DALIL
+            and source_type
+            not in {"QURAN", "HADIS"}
+        ):
+            continue
+
+        if (
+            policy.requested_aspect == ASPECT_MUI
+            and source_type != "EKSTERNAL"
+        ):
+            continue
+
+        result.append(
+            source
+        )
+
+    return result
+
+
+def _normalize_sentence(
+    sentence: str,
+) -> str:
+    normalized = sentence.lower()
+    normalized = re.sub(
+        r"[*_`>#]",
+        " ",
+        normalized,
+    )
+    normalized = re.sub(
+        r"[^\w\s]",
+        " ",
+        normalized,
+    )
+    normalized = re.sub(
+        r"\s+",
+        " ",
+        normalized,
+    )
+    return normalized.strip()
+
+
+def _sentence_is_duplicate(
+    sentence: str,
+    previous_sentences: list[str],
+) -> bool:
+    normalized = _normalize_sentence(
+        sentence
+    )
+
+    tokens = set(
+        normalized.split()
+    )
+
+    if len(tokens) < 6:
+        return False
+
+    for previous in previous_sentences:
+        previous_normalized = _normalize_sentence(
+            previous
+        )
+
+        if normalized == previous_normalized:
+            return True
+
+        ratio = SequenceMatcher(
+            None,
+            normalized,
+            previous_normalized,
+        ).ratio()
+
+        if ratio >= 0.90:
+            return True
+
+        previous_tokens = set(
+            previous_normalized.split()
+        )
+
+        if not previous_tokens:
+            continue
+
+        union = tokens | previous_tokens
+
+        if not union:
+            continue
+
+        jaccard = len(
+            tokens & previous_tokens
+        ) / len(union)
+
+        if jaccard >= 0.88:
+            return True
+
+    return False
+
+
+def _split_sentences(
+    text: str,
+) -> list[str]:
+    return [
+        sentence.strip()
+        for sentence in re.split(
+            r"(?<=[.!?])\s+",
+            text,
+        )
+        if sentence.strip()
+    ]
+
+
+def _strip_opening_and_identity(
+    text: str,
+) -> str:
+    cleaned = (text or "").strip()
+
+    cleaned = re.sub(
+        (
+            r"^\s*assalamu[’']?alaikum"
+            r"(?:\s+warahmatullahi\s+wabarakatuh)?"
+            r"[\s,.:;!\-–—]*"
+        ),
+        "",
+        cleaned,
+        flags=re.IGNORECASE,
+    ).lstrip()
+
+    lines = cleaned.splitlines()
+
+    while lines and not lines[0].strip():
+        lines.pop(0)
+
+    while lines:
+        first_line = lines[0].strip()
+        normalized = first_line.lower()
+
+        is_separator = normalized in {
+            "---",
+            "***",
+            "___",
+        }
+
+        is_identity = (
+            "smart hijrah assistant" in normalized
+            and (
+                normalized.startswith("saya")
+                or normalized.startswith(
+                    "perkenalkan"
+                )
+            )
+        )
+
+        if is_separator or is_identity:
+            lines.pop(0)
+
+            while lines and not lines[0].strip():
+                lines.pop(0)
+
+            continue
+
+        break
+
+    return "\n".join(
+        lines
+    ).strip()
+
+
+def _strip_leading_heading(
+    text: str,
+) -> str:
+    cleaned = text.strip()
+
+    patterns = [
+        r"^\s*#{1,6}\s+.+?\n+",
+        r"^\s*\*\*(?:jawaban ringkas|jawaban lanjutan|kesimpulan|penjelasan lanjutan|rujukan yang diminta|untukmu saat ini|menurut sumber yang tersedia)\s*:\*\*\s*",
+        r"^\s*(?:jawaban ringkas|jawaban lanjutan|kesimpulan|penjelasan lanjutan)\s*:\s*",
+    ]
+
+    changed = True
+
+    while changed:
+        changed = False
+
+        for pattern in patterns:
+            updated = re.sub(
+                pattern,
+                "",
+                cleaned,
+                count=1,
+                flags=re.IGNORECASE,
+            ).lstrip()
+
+            if updated != cleaned:
+                cleaned = updated
+                changed = True
+
+    return cleaned
+
+
+def _limit_list_items(
+    block: str,
+    max_items: int,
+) -> str:
+    lines = block.splitlines()
+    output: list[str] = []
+    list_count = 0
+
+    for line in lines:
+        stripped = line.strip()
+
+        is_list_item = bool(
+            re.match(
+                r"^(?:[-*+]|\d+[.)])\s+",
+                stripped,
+            )
+        )
+
+        if is_list_item:
+            list_count += 1
+
+            if list_count > max_items:
+                continue
+
+        output.append(
+            line
+        )
+
+    return "\n".join(
+        output
+    ).strip()
+
+
+def _truncate_at_boundary(
+    text: str,
+    max_chars: int,
+) -> str:
+    if len(text) <= max_chars:
+        return text
+
+    candidate = text[:max_chars].rstrip()
+
+    boundary = max(
+        candidate.rfind(". "),
+        candidate.rfind("! "),
+        candidate.rfind("? "),
+        candidate.rfind("\n"),
+    )
+
+    if boundary >= int(
+        max_chars * 0.60
+    ):
+        candidate = candidate[
+            : boundary + 1
+        ].rstrip()
+
+    return candidate.rstrip(
+        " ,;:-"
+    ) + "…"
+
+
+def compress_followup_draft(
+    draft_text: str | None,
+    previous_assistant_text: str | None,
+    policy: FollowUpPolicy,
+) -> str:
+    """
+    Bersihkan dan kompres draft follow-up secara deterministik.
+
+    Tidak menggunakan LLM tambahan sehingga tidak menambah latency
+    atau biaya.
+    """
+    text = _strip_opening_and_identity(
+        draft_text or ""
+    )
+
+    if not text:
+        return ""
+
+    if not policy.enabled:
+        return text
+
+    if not policy.preserve_headings:
+        text = _strip_leading_heading(
+            text
+        )
+
+    previous_sentences = _split_sentences(
+        previous_assistant_text or ""
+    )
+
+    blocks = [
+        block.strip()
+        for block in re.split(
+            r"\n\s*\n",
+            text,
+        )
+        if block.strip()
+    ]
+
+    compressed_blocks: list[str] = []
+
+    for block in blocks:
+        block = _limit_list_items(
+            block=block,
+            max_items=policy.max_list_items,
+        )
+
+        if not block:
+            continue
+
+        is_list_block = any(
+            re.match(
+                r"^(?:[-*+]|\d+[.)])\s+",
+                line.strip(),
+            )
+            for line in block.splitlines()
+        )
+
+        if is_list_block:
+            compressed_blocks.append(
+                block
+            )
+        else:
+            unique_sentences = [
+                sentence
+                for sentence in _split_sentences(
+                    block
+                )
+                if not _sentence_is_duplicate(
+                    sentence,
+                    previous_sentences,
+                )
+            ]
+
+            unique_block = " ".join(
+                unique_sentences
+            ).strip()
+
+            if unique_block:
+                compressed_blocks.append(
+                    unique_block
+                )
+
+        if (
+            len(compressed_blocks)
+            >= policy.max_paragraphs
+        ):
+            break
+
+    if not compressed_blocks:
+        # Hindari jawaban kosong ketika seluruh draft sangat mirip
+        # dengan jawaban sebelumnya. Tetap berikan blok pertama yang
+        # sudah dibersihkan sebagai fallback.
+        first_block = blocks[0] if blocks else text
+
+        compressed_blocks = [
+            _limit_list_items(
+                block=first_block,
+                max_items=policy.max_list_items,
+            )
+        ]
+
+    result = "\n\n".join(
+        compressed_blocks[
+            : policy.max_paragraphs
+        ]
+    ).strip()
+
+    return _truncate_at_boundary(
+        text=result,
+        max_chars=policy.max_chars,
+    )
+
+END FILE: main/utils_rag/followup_compression.py
+
+
+================================================================================
+FILE: main/utils_rag/integration.py
+================================================================================
+
+# main/utils_rag/integration.py
+
+from __future__ import annotations
+
+from main.fallback_ai_client import get_islamic_response
+from main.models_ai import ChatMessage
+from main.utils_rag.answer_strategy import (
+    select_answer_strategy,
+)
+from main.utils_rag.answer_strategy_prompt import (
+    build_answer_strategy_prompt,
+)
+from main.utils_rag.conversation_context import (
+    resolve_conversation_context,
+)
+from main.utils_rag.direct_lookup import try_direct_lookup
+from main.utils_rag.evidence_composer import (
+    compose_evidence_grounded_answer,
+    compose_thematic_retrieval_answer,
+)
+from main.utils_rag.extractor import extract_claims
+from main.utils_rag.final_checker import apply_final_checks
+from main.utils_rag.followup_compression import (
+    build_followup_policy,
+    build_followup_prompt_instruction,
+)
+from main.utils_rag.router import (
+    IntentType,
+    classify_intent,
+)
+from main.utils_rag.thematic_retrieval import (
+    retrieve_thematic_evidence,
+)
+from main.utils_rag.verifier_guardrails import (
+    verify_and_apply_guardrails,
+)
+
+
+def _get_previous_assistant_text(
+    conversation_id,
+) -> str:
+    """
+    Ambil jawaban assistant terakhir sebelum jawaban saat ini dibuat.
+
+    Pesan user terbaru sudah tersimpan di database, tetapi jawaban
+    assistant untuk turn tersebut belum disimpan ketika integration
+    dipanggil. Karena itu latest assistant adalah jawaban turn lama.
+    """
+    if not conversation_id:
+        return ""
+
+    previous_message = (
+        ChatMessage.objects.filter(
+            conversation_id=conversation_id,
+            role="assistant",
+        )
+        .order_by("-created_at", "-id")
+        .only("text")
+        .first()
+    )
+
+    if previous_message is None:
+        return ""
+
+    return (
+        previous_message.text or ""
+    ).strip()
+
+
+class RAGIntegration:
+    @staticmethod
+    def generate_metode7_response(
+        user_message,
+        conversation_id=None,
+        is_first_message=True,
+    ):
+        # =====================================================
+        # PHASE 4C: CONVERSATION CONTEXT
+        # =====================================================
+        conversation_context = resolve_conversation_context(
+            user_message=user_message,
+            conversation_id=conversation_id,
+            is_first_message=is_first_message,
+        )
+
+        effective_message = conversation_context.get(
+            "resolved_query",
+            user_message,
+        )
+
+        should_include_history = bool(
+            conversation_context.get(
+                "should_include_history",
+                False,
+            )
+        )
+
+        print(
+            "[SMART AI] Conversation relation: "
+            f"{conversation_context.get('conversation_relation')} | "
+            "topic_changed="
+            f"{conversation_context.get('topic_changed')} | "
+            "similarity="
+            f"{conversation_context.get('topic_similarity')} | "
+            "llm_fallback="
+            f"{conversation_context.get('used_llm_topic_classifier')} | "
+            "include_history="
+            f"{should_include_history}"
+        )
+
+        print(
+            "\n[SMART AI] Memulai pemrosesan untuk: "
+            f"'{user_message[:40]}...'"
+        )
+
+        # =====================================================
+        # PHASE 2: INTENT ROUTER
+        # =====================================================
+        intent_result = classify_intent(
+            effective_message
+        )
+
+        intent = intent_result["intent"]
+
+        print(
+            f"[SMART AI] Intent: {intent} | "
+            f"Confidence: {intent_result.get('confidence')}"
+        )
+
+        # =====================================================
+        # PHASE 5A: BASE ANSWER STRATEGY
+        # =====================================================
+        base_strategy = select_answer_strategy(
+            intent=intent_result,
+            conversation_context=conversation_context,
+            verified_sources=[],
+        )
+
+        followup_policy = build_followup_policy(
+            user_message=user_message,
+            strategy=base_strategy,
+            conversation_context=conversation_context,
+        )
+
+        previous_assistant_text = ""
+
+        if followup_policy.enabled:
+            previous_assistant_text = (
+                _get_previous_assistant_text(
+                    conversation_id=conversation_id,
+                )
+            )
+
+        base_strategy_prompt = (
+            build_answer_strategy_prompt(
+                strategy=base_strategy,
+                conversation_context=conversation_context,
+            )
+        )
+
+        followup_prompt = (
+            build_followup_prompt_instruction(
+                followup_policy
+            )
+        )
+
+        if followup_prompt:
+            base_strategy_prompt = (
+                f"{base_strategy_prompt}\n\n"
+                f"{followup_prompt}"
+            )
+
+        print(
+            "[SMART AI] Follow-up policy: "
+            f"enabled={followup_policy.enabled} | "
+            f"aspect={followup_policy.requested_aspect} | "
+            f"max_paragraphs={followup_policy.max_paragraphs}"
+        )
+
+        # =====================================================
+        # OUT OF DOMAIN
+        # =====================================================
+        if intent == IntentType.OUT_OF_DOMAIN:
+            return {
+                "reply": (
+                    "Maaf, saya adalah asisten khusus untuk "
+                    "pertanyaan seputar Islam. Saya tidak dapat "
+                    "menjawab pertanyaan di luar lingkup tersebut."
+                ),
+                "verification_status": "OUT_OF_DOMAIN",
+                "verified_sources": [],
+                "displayed_sources": [],
+                "raw_output_debug": None,
+                "answer_mode": "OUT_OF_DOMAIN",
+                "intent": intent_result,
+                "final_check_warnings": [],
+                "final_check_passed": True,
+                "composer": "OUT_OF_DOMAIN_TEMPLATE",
+                "conversation_context": conversation_context,
+                "answer_strategy": base_strategy.to_dict(),
+                "followup_policy": followup_policy.to_dict(),
+            }
+
+        # =====================================================
+        # PHASE 1 / 1B: DIRECT LOOKUP
+        # =====================================================
+        direct_result = try_direct_lookup(
+            effective_message,
+            is_first_message=is_first_message,
+        )
+
+        if direct_result:
+            direct_sources = direct_result.get(
+                "verified_sources",
+                [],
+            )
+
+            direct_strategy = select_answer_strategy(
+                intent=intent_result,
+                conversation_context=conversation_context,
+                verified_sources=direct_sources,
+            )
+
+            direct_followup_policy = (
+                build_followup_policy(
+                    user_message=user_message,
+                    strategy=direct_strategy,
+                    conversation_context=conversation_context,
+                )
+            )
+
+            print(
+                "[SMART AI] Direct Lookup Mode aktif. "
+                "LLM dilewati."
+            )
+
+            direct_result.update({
+                "intent": intent_result,
+                "final_check_warnings": [],
+                "final_check_passed": True,
+                "composer": "DIRECT_LOOKUP_TEMPLATE",
+                "conversation_context": conversation_context,
+                "answer_strategy": direct_strategy.to_dict(),
+                "followup_policy": (
+                    direct_followup_policy.to_dict()
+                ),
+            })
+
+            return direct_result
+
+        # =====================================================
+        # PHASE 4B: RETRIEVAL-FIRST THEMATIC SEARCH
+        # =====================================================
+        if intent == IntentType.THEMATIC_DALIL_SEARCH:
+            print(
+                "[SMART AI] Thematic Retrieval Mode aktif. "
+                "LLM dilewati."
+            )
+
+            retrieval_result = retrieve_thematic_evidence(
+                user_query=effective_message,
+                quran_limit=3,
+                hadith_limit=3,
+            )
+
+            thematic_sources = retrieval_result.get(
+                "verified_sources",
+                [],
+            )
+
+            thematic_strategy = select_answer_strategy(
+                intent=intent_result,
+                conversation_context=conversation_context,
+                verified_sources=thematic_sources,
+            )
+
+            thematic_followup_policy = (
+                build_followup_policy(
+                    user_message=user_message,
+                    strategy=thematic_strategy,
+                    conversation_context=conversation_context,
+                )
+            )
+
+            composed = compose_thematic_retrieval_answer(
+                user_query=effective_message,
+                intent_result=intent_result,
+                retrieval_result=retrieval_result,
+                is_first_message=is_first_message,
+                conversation_context=conversation_context,
+                strategy=thematic_strategy,
+                followup_policy=(
+                    thematic_followup_policy
+                ),
+                previous_assistant_text=(
+                    previous_assistant_text
+                ),
+            )
+
+            composed_sources = composed.get(
+                "verified_sources",
+                [],
+            )
+
+            final_check = apply_final_checks(
+                reply=composed.get(
+                    "narrative_text",
+                    "",
+                ),
+                verified_sources=composed_sources,
+                status_global=composed.get(
+                    "verification_status",
+                    "NEEDS_REVIEW",
+                ),
+            )
+
+            return {
+                "reply": composed["reply"],
+                "verification_status": final_check[
+                    "verification_status"
+                ],
+                "verified_sources": composed_sources,
+                "displayed_sources": composed.get(
+                    "displayed_sources",
+                    composed_sources,
+                ),
+                "raw_output_debug": None,
+                "answer_mode": "THEMATIC_RETRIEVAL",
+                "intent": intent_result,
+                "final_check_warnings": final_check[
+                    "final_check_warnings"
+                ],
+                "final_check_passed": final_check[
+                    "final_check_passed"
+                ],
+                "composer": composed.get(
+                    "composer",
+                    "THEMATIC_NATURAL_FOLLOWUP_V1",
+                ),
+                "retrieval_debug": {
+                    "theme": retrieval_result.get(
+                        "theme"
+                    ),
+                    "source_preference": (
+                        retrieval_result.get(
+                            "source_preference"
+                        )
+                    ),
+                    "quran_count": retrieval_result.get(
+                        "quran_count"
+                    ),
+                    "hadith_count": retrieval_result.get(
+                        "hadith_count"
+                    ),
+                },
+                "conversation_context": conversation_context,
+                "answer_strategy": composed.get(
+                    "strategy",
+                    thematic_strategy.to_dict(),
+                ),
+                "followup_policy": composed.get(
+                    "followup_policy",
+                    thematic_followup_policy.to_dict(),
+                ),
+            }
+
+        # =====================================================
+        # PHASE 5A.3 + 5A.4: STRATEGY-AWARE LLM DRAFT
+        # =====================================================
+        raw_llm_output = get_islamic_response(
+            user_message=effective_message,
+            conversation_id=conversation_id,
+            is_first_message=is_first_message,
+            use_metode7=True,
+
+            # Pesan asli yang sudah tersimpan harus dikecualikan
+            # dari selective conversation history.
+            current_db_message=user_message,
+
+            include_conversation_history=(
+                should_include_history
+            ),
+
+            answer_strategy_prompt=(
+                base_strategy_prompt
+            ),
+        )
+
+        clean_text, claims = extract_claims(
+            raw_llm_output
+        )
+
+        print(
+            f"[SMART AI] Ditemukan {len(claims)} "
+            "klaim dalil dari LLM."
+        )
+
+        # =====================================================
+        # PHASE 3: VERIFIER + GUARDRAILS
+        # =====================================================
+        verified_sources, status_global = (
+            verify_and_apply_guardrails(
+                claims,
+                user_query=effective_message,
+            )
+        )
+
+        answer_strategy = select_answer_strategy(
+            intent=intent_result,
+            conversation_context=conversation_context,
+            verified_sources=verified_sources,
+        )
+
+        final_followup_policy = (
+            build_followup_policy(
+                user_message=user_message,
+                strategy=answer_strategy,
+                conversation_context=conversation_context,
+            )
+        )
+
+        # =====================================================
+        # PHASE 4A + PHASE 5A.4: NATURAL FOLLOW-UP COMPOSER
+        # =====================================================
+        grounded = compose_evidence_grounded_answer(
+            user_query=effective_message,
+            intent_result=intent_result,
+            draft_text=clean_text,
+            verified_sources=verified_sources,
+            status_global=status_global,
+            is_first_message=is_first_message,
+            conversation_context=conversation_context,
+            strategy=answer_strategy,
+            followup_policy=final_followup_policy,
+            previous_assistant_text=(
+                previous_assistant_text
+            ),
+        )
+
+        grounded_sources = grounded.get(
+            "verified_sources",
+            verified_sources,
+        )
+
+        grounded_status = grounded.get(
+            "verification_status",
+            status_global,
+        )
+
+        # =====================================================
+        # PHASE 3: FINAL CHECKER
+        # =====================================================
+        final_check = apply_final_checks(
+            reply=grounded.get(
+                "narrative_text",
+                grounded.get("reply", ""),
+            ),
+            verified_sources=grounded_sources,
+            status_global=grounded_status,
+        )
+
+        print(
+            "[SMART AI] Status sebelum final check: "
+            f"{grounded_status}"
+        )
+        print(
+            "[SMART AI] Status setelah final check: "
+            f"{final_check['verification_status']}"
+        )
+        print(
+            "[SMART AI] Final warnings: "
+            f"{len(final_check['final_check_warnings'])}"
+        )
+        print(
+            "[SMART AI] Composer: "
+            f"{grounded.get('composer')}"
+        )
+
+        return {
+            "reply": grounded["reply"],
+            "verification_status": final_check[
+                "verification_status"
+            ],
+            "verified_sources": grounded_sources,
+            "displayed_sources": grounded.get(
+                "displayed_sources",
+                grounded_sources,
+            ),
+            "raw_output_debug": raw_llm_output,
+            "raw_clean_text_debug": clean_text,
+            "answer_mode": "EVIDENCE_GROUNDED",
+            "intent": intent_result,
+            "final_check_warnings": final_check[
+                "final_check_warnings"
+            ],
+            "final_check_passed": final_check[
+                "final_check_passed"
+            ],
+            "composer": grounded.get(
+                "composer",
+                "NATURAL_FOLLOWUP_COMPOSER_V1",
+            ),
+            "conversation_context": conversation_context,
+            "answer_strategy": grounded.get(
+                "strategy",
+                answer_strategy.to_dict(),
+            ),
+            "followup_policy": grounded.get(
+                "followup_policy",
+                final_followup_policy.to_dict(),
+            ),
+        }
+
+END FILE: main/utils_rag/integration.py
+
+
+================================================================================
+FILE: main/utils_rag/evidence_composer.py
+================================================================================
+
+# main/utils_rag/evidence_composer.py
+
+from __future__ import annotations
+
+import re
+from typing import Any
+
+from main.utils_rag.answer_strategy import (
+    AnswerStrategy,
+    STRATEGY_FATWA,
+    STRATEGY_FIQH,
+    STRATEGY_GENERAL_ISLAMIC,
+    STRATEGY_SPIRITUAL,
+    select_answer_strategy,
+)
+
+from main.utils_rag.followup_compression import (
+    ASPECT_DALIL,
+    ASPECT_DOA,
+    ASPECT_EXAMPLE,
+    ASPECT_HADITH,
+    ASPECT_MUI,
+    ASPECT_PRACTICAL,
+    ASPECT_QURAN,
+    ASPECT_REASON,
+    ASPECT_SUMMARY,
+    FollowUpPolicy,
+    build_followup_policy,
+    compress_followup_draft,
+    select_display_sources,
+)
+
+
+# ============================================================
+# STRATEGY HELPERS
+# ============================================================
+
+def _resolve_strategy(
+    intent_result: Any,
+    conversation_context: dict[str, Any] | None,
+    verified_sources: list[dict[str, Any]] | None,
+    strategy: AnswerStrategy | None = None,
+) -> AnswerStrategy:
+    """
+    Gunakan strategy dari integration.py jika tersedia.
+
+    Fallback ke select_answer_strategy() dipertahankan agar composer
+    tetap aman ketika dipanggil langsung dari management command,
+    unit test, atau modul lama.
+    """
+    if strategy is not None:
+        return strategy
+
+    return select_answer_strategy(
+        intent=intent_result,
+        conversation_context=conversation_context,
+        verified_sources=verified_sources,
+    )
+
+
+def _strategy_opening(
+    strategy: AnswerStrategy,
+    is_first_message: bool,
+) -> str:
+    """
+    Salam hanya boleh muncul pada pesan pertama dan ketika strategy
+    memang mengizinkan opening.
+
+    Pesan lanjutan, refinement, maupun NEW_TOPIC di conversation yang
+    sama tidak mengulang salam.
+    """
+    if not strategy.show_opening:
+        return ""
+
+    if not is_first_message:
+        return ""
+
+    return "Assalamu’alaikum warahmatullahi wabarakatuh."
+
+
+def _join_non_empty_blocks(
+    blocks: list[str | None],
+) -> str:
+    return "\n\n".join(
+        block.strip()
+        for block in blocks
+        if block and block.strip()
+    )
+
+
+def _build_context_reference(
+    strategy: AnswerStrategy,
+    conversation_context: dict[str, Any] | None,
+    followup_policy: FollowUpPolicy | None = None,
+) -> str:
+    """
+    Tampilkan referensi konteks secara singkat tanpa membocorkan
+    resolved_query atau metadata internal.
+    """
+    if followup_policy and followup_policy.enabled:
+        if not followup_policy.include_context_reference:
+            return ""
+
+    if not strategy.reference_previous_context_briefly:
+        return ""
+
+    if not conversation_context:
+        return ""
+
+    previous_topic = (
+        conversation_context.get("previous_topic")
+        or {}
+    )
+
+    summary = str(
+        previous_topic.get("summary")
+        or previous_topic.get("label")
+        or ""
+    ).strip()
+
+    if not summary:
+        return ""
+
+    return (
+        "Terkait pembahasan sebelumnya tentang "
+        f"**{summary}**:"
+    )
+
+
+# ============================================================
+# DRAFT SANITIZER
+# ============================================================
+
+def _sanitize_draft_text(
+    draft_text: str | None,
+) -> str:
+    """
+    Bersihkan pembukaan yang mungkin masih dibuat oleh LLM.
+
+    Composer memiliki opening sendiri. Tanpa sanitizer, pesan pertama
+    dapat memperoleh salam atau perkenalan dua kali.
+    """
+    text = (draft_text or "").strip()
+
+    if not text:
+        return ""
+
+    text = re.sub(
+        (
+            r"^\s*assalamu[’']?alaikum"
+            r"(?:\s+warahmatullahi\s+wabarakatuh)?"
+            r"[\s,.:;!\-–—]*"
+        ),
+        "",
+        text,
+        flags=re.IGNORECASE,
+    ).lstrip()
+
+    lines = text.splitlines()
+
+    while lines and not lines[0].strip():
+        lines.pop(0)
+
+    while lines:
+        first_line = lines[0].strip()
+        normalized = first_line.lower()
+
+        is_separator = normalized in {
+            "---",
+            "***",
+            "___",
+        }
+
+        is_identity_line = (
+            "smart hijrah assistant" in normalized
+            and (
+                normalized.startswith("saya ")
+                or normalized.startswith("saya adalah")
+                or normalized.startswith("perkenalkan")
+            )
+        )
+
+        if is_separator or is_identity_line:
+            lines.pop(0)
+
+            while lines and not lines[0].strip():
+                lines.pop(0)
+
+            continue
+
+        break
+
+    return "\n".join(lines).strip()
+
+
+# ============================================================
+# SOURCE HELPERS
+# ============================================================
+
+def _is_source_verified(
+    source: dict[str, Any],
+) -> bool:
+    return bool(
+        source.get(
+            "is_verified",
+            source.get("verified", False),
+        )
+    )
+
+
+def _normalize_source_type(
+    source: dict[str, Any],
+) -> str:
+    source_type = str(
+        source.get("type", "")
+    ).strip().upper()
+
+    if source_type == "HADITH":
+        return "HADIS"
+
+    return source_type
+
+
+def _limit_sources_by_strategy(
+    sources: list[dict[str, Any]] | None,
+    strategy: AnswerStrategy,
+) -> list[dict[str, Any]]:
+    """
+    Batasi evidence berdasarkan strategy.
+
+    Aturan visibility tetap diterapkan pada sumber eksternal meskipun
+    sumber tersebut belum terverifikasi. Ini mencegah external source
+    masuk melalui jalur UNVERIFIED ketika strategy melarang external.
+    """
+    result: list[dict[str, Any]] = []
+
+    counters = {
+        "QURAN": 0,
+        "HADIS": 0,
+        "EKSTERNAL": 0,
+        "UNVERIFIED": 0,
+    }
+
+    type_limits = {
+        "QURAN": max(0, strategy.max_quran),
+        "HADIS": max(0, strategy.max_hadith),
+        "EKSTERNAL": max(0, strategy.max_external),
+    }
+
+    for source in sources or []:
+        source_type = _normalize_source_type(source)
+        is_verified = _is_source_verified(source)
+
+        if source_type == "EKSTERNAL":
+            if not strategy.show_external_sources:
+                continue
+
+        if source_type in type_limits:
+            if (
+                counters[source_type]
+                >= type_limits[source_type]
+            ):
+                continue
+        else:
+            # Jenis sumber tak dikenal diperlakukan secara hati-hati
+            # sebagai sumber belum terverifikasi.
+            is_verified = False
+
+        if not is_verified:
+            if not strategy.show_unverified_sources:
+                continue
+
+            if (
+                counters["UNVERIFIED"]
+                >= max(0, strategy.max_unverified)
+            ):
+                continue
+
+        result.append(source)
+
+        if source_type in counters:
+            counters[source_type] += 1
+
+        if not is_verified:
+            counters["UNVERIFIED"] += 1
+
+    return result
+
+
+def _split_sources(
+    sources: list[dict[str, Any]] | None,
+) -> tuple[
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+    list[dict[str, Any]],
+]:
+    quran_sources: list[dict[str, Any]] = []
+    hadith_sources: list[dict[str, Any]] = []
+    external_sources: list[dict[str, Any]] = []
+    unverified_sources: list[dict[str, Any]] = []
+
+    for source in sources or []:
+        source_type = _normalize_source_type(source)
+        is_verified = _is_source_verified(source)
+
+        if not is_verified:
+            unverified_sources.append(source)
+            continue
+
+        if source_type == "QURAN":
+            quran_sources.append(source)
+        elif source_type == "HADIS":
+            hadith_sources.append(source)
+        elif source_type == "EKSTERNAL":
+            external_sources.append(source)
+        else:
+            # Jangan hilangkan source tak dikenal secara diam-diam.
+            unverified_sources.append(source)
+
+    return (
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_sources,
+    )
+
+
+def _format_references(
+    quran_sources: list[dict[str, Any]],
+    hadith_sources: list[dict[str, Any]],
+    external_sources: list[dict[str, Any]],
+    unverified_sources: list[dict[str, Any]],
+) -> str:
+    lines: list[str] = []
+
+    if quran_sources:
+        lines.append(
+            "**Dalil Al-Qur’an yang terverifikasi:**"
+        )
+
+        for index, source in enumerate(
+            quran_sources,
+            start=1,
+        ):
+            reference = source.get(
+                "reference",
+                "Rujukan Al-Qur’an",
+            )
+            translation = source.get(
+                "translation_text",
+                "",
+            )
+
+            lines.append(
+                f"{index}. **{reference}**"
+            )
+
+            if translation:
+                lines.append(
+                    f"   > {translation}"
+                )
+
+    if hadith_sources:
+        if lines:
+            lines.append("")
+
+        lines.append(
+            "**Hadis yang ditemukan dalam database:**"
+        )
+
+        for index, source in enumerate(
+            hadith_sources,
+            start=1,
+        ):
+            reference = source.get(
+                "reference",
+                "Rujukan Hadis",
+            )
+            translation = source.get(
+                "translation_text",
+                "",
+            )
+
+            lines.append(
+                f"{index}. **{reference}**"
+            )
+
+            if translation:
+                lines.append(
+                    f"   > {translation}"
+                )
+
+    if external_sources:
+        if lines:
+            lines.append("")
+
+        lines.append(
+            "**Rujukan eksternal/kajian ulama:**"
+        )
+
+        for index, source in enumerate(
+            external_sources,
+            start=1,
+        ):
+            reference = source.get(
+                "reference",
+                "Rujukan eksternal",
+            )
+
+            lines.append(
+                f"{index}. {reference}"
+            )
+
+    if unverified_sources:
+        if lines:
+            lines.append("")
+
+        lines.append(
+            "**Rujukan yang belum terverifikasi:**"
+        )
+
+        for index, source in enumerate(
+            unverified_sources,
+            start=1,
+        ):
+            reference = source.get(
+                "reference",
+                "Rujukan tidak ditemukan",
+            )
+
+            lines.append(
+                f"{index}. {reference}"
+            )
+
+    if not lines:
+        return (
+            "**Rujukan:**\n"
+            "⚠️ Belum ada rujukan spesifik yang berhasil "
+            "diverifikasi dari database Smart Hijrah."
+        )
+
+    return "\n".join(lines)
+
+
+# ============================================================
+# STRATEGY-AWARE ANSWER BODY
+# ============================================================
+
+def _build_strategy_answer_body(
+    user_query: str,
+    intent_result: Any,
+    strategy: AnswerStrategy,
+    draft_text: str,
+    has_verified_sources: bool,
+    followup_policy: FollowUpPolicy,
+    previous_assistant_text: str | None = None,
+) -> str:
+    """
+    Strategy menentukan bentuk jawaban, sedangkan draft LLM tetap
+    menjadi substansi utama selama tersedia.
+
+    Untuk follow-up, draft dikompres secara deterministik agar tidak
+    mengulang jawaban sebelumnya.
+    """
+    del intent_result  # Dipertahankan untuk kompatibilitas signature.
+
+    clean_draft = _sanitize_draft_text(
+        draft_text
+    )
+
+    if followup_policy.enabled:
+        clean_draft = compress_followup_draft(
+            draft_text=clean_draft,
+            previous_assistant_text=(
+                previous_assistant_text
+            ),
+            policy=followup_policy,
+        )
+
+    if followup_policy.enabled:
+        aspect = followup_policy.requested_aspect
+
+        if aspect == ASPECT_MUI:
+            if clean_draft:
+                return _join_non_empty_blocks([
+                    "**Menurut sumber yang tersedia:**",
+                    clean_draft,
+                ])
+
+            return (
+                "**Menurut sumber yang tersedia:**\n"
+                "Dokumen resmi MUI yang relevan belum tersedia "
+                "dalam knowledge base Smart Hijrah, sehingga saya "
+                "tidak akan mengatasnamakan MUI secara pasti."
+            )
+
+        if aspect in {
+            ASPECT_HADITH,
+            ASPECT_QURAN,
+            ASPECT_DALIL,
+        }:
+            if clean_draft:
+                return _join_non_empty_blocks([
+                    "**Rujukan yang diminta:**",
+                    clean_draft,
+                ])
+
+            return (
+                "**Rujukan yang diminta:**\n"
+                "Berikut dalil yang berhasil ditemukan dan "
+                "diverifikasi untuk topik tersebut."
+            )
+
+        if aspect == ASPECT_REASON:
+            if clean_draft:
+                return _join_non_empty_blocks([
+                    "**Alasannya:**",
+                    clean_draft,
+                ])
+
+        elif aspect == ASPECT_EXAMPLE:
+            if clean_draft:
+                return _join_non_empty_blocks([
+                    "**Contohnya:**",
+                    clean_draft,
+                ])
+
+        elif aspect == ASPECT_SUMMARY:
+            if clean_draft:
+                return clean_draft
+
+        elif aspect in {
+            ASPECT_PRACTICAL,
+            ASPECT_DOA,
+        }:
+            if clean_draft:
+                return clean_draft
+
+        elif clean_draft:
+            return clean_draft
+
+    if strategy.name == STRATEGY_SPIRITUAL:
+        if clean_draft:
+            return _join_non_empty_blocks([
+                "**Untukmu saat ini:**",
+                clean_draft,
+            ])
+
+        return (
+            "**Untukmu saat ini:**\n"
+            "Pintu kembali kepada Allah tetap terbuka. "
+            "Mulailah kembali dari langkah kecil dan jangan "
+            "menyerah."
+        )
+
+    if strategy.name == STRATEGY_FATWA:
+        if clean_draft:
+            return _join_non_empty_blocks([
+                "**Jawaban ringkas:**",
+                clean_draft,
+            ])
+
+        return (
+            "**Jawaban ringkas:**\n"
+            "Hukum kasus ini bergantung pada rincian akad, "
+            "mekanisme, tujuan, dan unsur yang menyertainya."
+        )
+
+    if strategy.name == STRATEGY_FIQH:
+        if clean_draft:
+            return _join_non_empty_blocks([
+                "**Jawaban ringkas:**",
+                clean_draft,
+            ])
+
+        return (
+            "**Jawaban ringkas:**\n"
+            "Masalah ini perlu dinilai berdasarkan rincian "
+            "perbuatan, syarat, dampak, dan prinsip umum "
+            "syariat."
+        )
+
+    if strategy.name == STRATEGY_GENERAL_ISLAMIC:
+        if clean_draft:
+            return _join_non_empty_blocks([
+                "**Jawaban ringkas:**",
+                clean_draft,
+            ])
+
+        return (
+            "**Jawaban ringkas:**\n"
+            "Berikut penjelasan berdasarkan prinsip Islam dan "
+            "rujukan yang berhasil diverifikasi."
+        )
+
+    if clean_draft:
+        return clean_draft
+
+    if has_verified_sources:
+        return (
+            "**Jawaban ringkas:**\n"
+            "Berikut jawaban berdasarkan rujukan yang berhasil "
+            "diverifikasi."
+        )
+
+    return (
+        "**Jawaban ringkas:**\n"
+        "Belum ada rujukan spesifik yang berhasil diverifikasi. "
+        "Jawaban perlu dipahami sebagai penjelasan umum."
+    )
+
+
+# ============================================================
+# OPTIONAL SECTIONS
+# ============================================================
+
+def _build_practical_block(
+    strategy: AnswerStrategy,
+    followup_policy: FollowUpPolicy,
+) -> str:
+    if followup_policy.enabled:
+        if not followup_policy.include_practical_steps:
+            return ""
+    elif not strategy.show_practical_steps:
+        return ""
+
+    if strategy.name == STRATEGY_SPIRITUAL:
+        return (
+            "**Langkah praktis:**\n"
+            "1. Mulai kembali dari satu amal kecil yang konsisten.\n"
+            "2. Jauhi pemicu yang membuatmu kembali jatuh.\n"
+            "3. Jaga shalat dan perbanyak istighfar.\n"
+            "4. Cari lingkungan atau teman yang membantu kebaikan."
+        )
+
+    if strategy.name == STRATEGY_FATWA:
+        return (
+            "**Hal yang perlu diperiksa:**\n"
+            "1. Akad atau bentuk transaksinya.\n"
+            "2. Adanya bunga, denda, gharar, atau spekulasi.\n"
+            "3. Objek usaha atau penggunaan dananya.\n"
+            "4. Transparansi biaya, risiko, dan kewajiban."
+        )
+
+    return ""
+
+
+def _build_doa_block(
+    user_query: str,
+    strategy: AnswerStrategy,
+    followup_policy: FollowUpPolicy,
+) -> str:
+    del user_query  # Fokus doa sudah ditentukan oleh policy.
+
+    if followup_policy.enabled:
+        if not followup_policy.include_doa:
+            return ""
+    elif (
+        not strategy.show_doa
+        or strategy.name != STRATEGY_SPIRITUAL
+    ):
+        return ""
+
+    if strategy.name != STRATEGY_SPIRITUAL:
+        return ""
+
+    return (
+        "**Doa singkat:**\n"
+        "Ya Allah, teguhkan hatiku di atas ketaatan, ampuni "
+        "kesalahanku, dan mudahkan aku untuk terus kembali "
+        "kepada-Mu."
+    )
+
+
+def _build_caution_block(
+    strategy: AnswerStrategy,
+    status_global: str,
+    limited_sources: list[dict[str, Any]],
+    unverified_sources: list[dict[str, Any]],
+    followup_policy: FollowUpPolicy,
+) -> str:
+    if (
+        followup_policy.enabled
+        and not followup_policy.include_caution
+    ):
+        return ""
+
+    blocks: list[str] = []
+
+    if strategy.require_fatwa_disclaimer:
+        blocks.append(
+            "**Catatan fatwa:**\n"
+            "Kasus kontemporer sering bergantung pada rincian "
+            "akad, syarat, dan praktik sebenarnya. Jawaban ini "
+            "merupakan panduan umum, bukan fatwa personal yang "
+            "menggantikan pemeriksaan ahli syariah."
+        )
+
+    should_show_verification_caution = (
+        strategy.show_caution_note
+        or status_global != "HIGH_CONFIDENCE"
+    )
+
+    if should_show_verification_caution:
+        if not limited_sources:
+            blocks.append(
+                "**Catatan kehati-hatian:**\n"
+                "Belum ada rujukan spesifik yang berhasil "
+                "diverifikasi. Jawaban ini menggunakan prinsip "
+                "umum dan tidak boleh dipahami sebagai penetapan "
+                "hukum final."
+            )
+
+        elif unverified_sources:
+            blocks.append(
+                "**Catatan kehati-hatian:**\n"
+                "Sebagian rujukan belum berhasil diverifikasi "
+                "sepenuhnya."
+            )
+
+        elif status_global != "HIGH_CONFIDENCE":
+            blocks.append(
+                "**Catatan kehati-hatian:**\n"
+                "Tingkat verifikasi jawaban ini belum mencapai "
+                "keyakinan tinggi sehingga masih perlu dipahami "
+                "secara hati-hati."
+            )
+
+    return _join_non_empty_blocks(
+        blocks
+    )
+
+
+# ============================================================
+# EVIDENCE-GROUNDED COMPOSER
+# ============================================================
+
+def compose_evidence_grounded_answer(
+    user_query,
+    intent_result,
+    draft_text,
+    verified_sources,
+    status_global,
+    is_first_message=True,
+    conversation_context=None,
+    strategy=None,
+    followup_policy=None,
+    previous_assistant_text=None,
+):
+    """
+    Menyusun final answer dari:
+    1. strategy,
+    2. draft LLM yang sudah dibersihkan,
+    3. evidence hasil verifier,
+    4. conversation context,
+    5. natural follow-up policy.
+    """
+    strategy = _resolve_strategy(
+        intent_result=intent_result,
+        conversation_context=conversation_context,
+        verified_sources=verified_sources,
+        strategy=strategy,
+    )
+
+    if followup_policy is None:
+        followup_policy = build_followup_policy(
+            user_message=user_query,
+            strategy=strategy,
+            conversation_context=conversation_context,
+        )
+
+    limited_sources = _limit_sources_by_strategy(
+        sources=verified_sources,
+        strategy=strategy,
+    )
+
+    display_sources = select_display_sources(
+        sources=limited_sources,
+        policy=followup_policy,
+    )
+
+    (
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_display_sources,
+    ) = _split_sources(
+        display_sources
+    )
+
+    (
+        _all_quran_sources,
+        _all_hadith_sources,
+        _all_external_sources,
+        all_unverified_sources,
+    ) = _split_sources(
+        limited_sources
+    )
+
+    opening = _strategy_opening(
+        strategy=strategy,
+        is_first_message=is_first_message,
+    )
+
+    context_reference = _build_context_reference(
+        strategy=strategy,
+        conversation_context=conversation_context,
+        followup_policy=followup_policy,
+    )
+
+    answer_body = _build_strategy_answer_body(
+        user_query=user_query,
+        intent_result=intent_result,
+        strategy=strategy,
+        draft_text=draft_text,
+        has_verified_sources=bool(
+            limited_sources
+        ),
+        followup_policy=followup_policy,
+        previous_assistant_text=(
+            previous_assistant_text
+        ),
+    )
+
+    references_block = ""
+
+    if (
+        not followup_policy.enabled
+        or followup_policy.include_references
+    ):
+        references_block = _format_references(
+            quran_sources=quran_sources,
+            hadith_sources=hadith_sources,
+            external_sources=external_sources,
+            unverified_sources=(
+                unverified_display_sources
+            ),
+        )
+
+    practical_block = _build_practical_block(
+        strategy=strategy,
+        followup_policy=followup_policy,
+    )
+
+    doa_block = _build_doa_block(
+        user_query=user_query,
+        strategy=strategy,
+        followup_policy=followup_policy,
+    )
+
+    caution_block = _build_caution_block(
+        strategy=strategy,
+        status_global=status_global,
+        limited_sources=limited_sources,
+        unverified_sources=(
+            all_unverified_sources
+        ),
+        followup_policy=followup_policy,
+    )
+
+    reply = _join_non_empty_blocks([
+        opening,
+        context_reference,
+        answer_body,
+        references_block,
+        practical_block,
+        doa_block,
+        caution_block,
+    ])
+
+    narrative_text = _join_non_empty_blocks([
+        context_reference,
+        answer_body,
+        practical_block,
+        doa_block,
+        caution_block,
+    ])
+
+    return {
+        "reply": reply,
+        "narrative_text": narrative_text,
+        "verification_status": status_global,
+        "verified_sources": limited_sources,
+        "displayed_sources": display_sources,
+        "composer": "NATURAL_FOLLOWUP_COMPOSER_V1",
+        "strategy": strategy.to_dict(),
+        "followup_policy": followup_policy.to_dict(),
+    }
+
+
+# ============================================================
+# THEMATIC RETRIEVAL COMPOSER
+# ============================================================
+
+def compose_thematic_retrieval_answer(
+    user_query,
+    intent_result,
+    retrieval_result,
+    is_first_message=True,
+    conversation_context=None,
+    strategy=None,
+    followup_policy=None,
+    previous_assistant_text=None,
+):
+    del previous_assistant_text  # Thematic route tidak memakai draft LLM.
+
+    verified_sources = retrieval_result.get(
+        "verified_sources",
+        [],
+    )
+
+    strategy = _resolve_strategy(
+        intent_result=intent_result,
+        conversation_context=conversation_context,
+        verified_sources=verified_sources,
+        strategy=strategy,
+    )
+
+    if followup_policy is None:
+        followup_policy = build_followup_policy(
+            user_message=user_query,
+            strategy=strategy,
+            conversation_context=conversation_context,
+        )
+
+    limited_sources = _limit_sources_by_strategy(
+        sources=verified_sources,
+        strategy=strategy,
+    )
+
+    display_sources = select_display_sources(
+        sources=limited_sources,
+        policy=followup_policy,
+    )
+
+    (
+        quran_sources,
+        hadith_sources,
+        external_sources,
+        unverified_sources,
+    ) = _split_sources(
+        display_sources
+    )
+
+    opening = _strategy_opening(
+        strategy=strategy,
+        is_first_message=is_first_message,
+    )
+
+    context_reference = _build_context_reference(
+        strategy=strategy,
+        conversation_context=conversation_context,
+        followup_policy=followup_policy,
+    )
+
+    theme = (
+        retrieval_result.get("theme")
+        or user_query
+    )
+
+    preference = retrieval_result.get(
+        "source_preference",
+        "both",
+    )
+
+    if followup_policy.enabled:
+        if followup_policy.requested_aspect == ASPECT_QURAN:
+            preference = "quran"
+        elif followup_policy.requested_aspect == ASPECT_HADITH:
+            preference = "hadis"
+
+    has_verified_primary_source = any(
+        _is_source_verified(source)
+        and _normalize_source_type(source)
+        in {"QURAN", "HADIS"}
+        for source in display_sources
+    )
+
+    if has_verified_primary_source:
+        if preference == "quran":
+            introduction = (
+                "Berikut ayat Al-Qur’an yang paling relevan "
+                f"dengan tema **{theme}**."
+            )
+
+        elif preference == "hadis":
+            introduction = (
+                "Berikut hadis yang paling relevan "
+                f"dengan tema **{theme}**."
+            )
+
+        else:
+            introduction = (
+                "Berikut dalil Al-Qur’an dan hadis yang paling "
+                f"relevan dengan tema **{theme}**."
+            )
+
+        references_block = _format_references(
+            quran_sources=quran_sources,
+            hadith_sources=hadith_sources,
+            external_sources=external_sources,
+            unverified_sources=unverified_sources,
+        )
+
+        coverage_note = ""
+
+        if not followup_policy.enabled:
+            coverage_note = (
+                "**Catatan:**\n"
+                "Hasil ini merupakan rujukan paling relevan yang "
+                "ditemukan, bukan daftar lengkap seluruh dalil "
+                "mengenai tema tersebut."
+            )
+
+        heading = (
+            "**Rujukan yang diminta:**"
+            if followup_policy.enabled
+            else "**Hasil pencarian dalil tematik:**"
+        )
+
+        reply = _join_non_empty_blocks([
+            opening,
+            context_reference,
+            heading,
+            introduction,
+            references_block,
+            coverage_note,
+        ])
+
+        narrative_text = _join_non_empty_blocks([
+            context_reference,
+            introduction,
+            coverage_note,
+        ])
+
+        return {
+            "reply": reply,
+            "narrative_text": narrative_text,
+            "verification_status": "HIGH_CONFIDENCE",
+            "verified_sources": limited_sources,
+            "displayed_sources": display_sources,
+            "composer": "THEMATIC_NATURAL_FOLLOWUP_V1",
+            "strategy": strategy.to_dict(),
+            "followup_policy": followup_policy.to_dict(),
+        }
+
+    if followup_policy.enabled:
+        if followup_policy.requested_aspect == ASPECT_HADITH:
+            source_label = "hadis"
+        elif followup_policy.requested_aspect == ASPECT_QURAN:
+            source_label = "ayat Al-Qur’an"
+        else:
+            source_label = "ayat atau hadis"
+
+        no_result_message = (
+            f"Saya belum menemukan {source_label} dengan "
+            f"relevansi yang cukup kuat untuk tema **{theme}**."
+        )
+    else:
+        no_result_message = (
+            "Saya belum menemukan ayat atau hadis dengan "
+            f"relevansi yang cukup kuat untuk tema **{theme}**."
+        )
+
+    suggestion = (
+        "Saya tidak akan memaksakan rujukan yang kurang sesuai. "
+        "Coba gunakan kata kunci yang lebih spesifik."
+    )
+
+    reply = _join_non_empty_blocks([
+        opening,
+        context_reference,
+        (
+            "**Rujukan yang diminta:**"
+            if followup_policy.enabled
+            else "**Hasil pencarian dalil tematik:**"
+        ),
+        no_result_message,
+        suggestion,
+    ])
+
+    narrative_text = _join_non_empty_blocks([
+        context_reference,
+        no_result_message,
+        suggestion,
+    ])
+
+    return {
+        "reply": reply,
+        "narrative_text": narrative_text,
+        "verification_status": "NEEDS_REVIEW",
+        "verified_sources": limited_sources,
+        "displayed_sources": [],
+        "composer": "THEMATIC_NATURAL_FOLLOWUP_V1",
+        "strategy": strategy.to_dict(),
+        "followup_policy": followup_policy.to_dict(),
+    }
+
+END FILE: main/utils_rag/evidence_composer.py
+
+
+================================================================================
+FILE: main/utils_rag/answer_strategy.py
+================================================================================
+
+# main/utils_rag/answer_strategy.py
+
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass, field
+from typing import Any
+
+
+# ============================================================
+# STRATEGY NAMES
+# ============================================================
+
+STRATEGY_DIRECT_LOOKUP = "DIRECT_LOOKUP"
+STRATEGY_THEMATIC_DALIL = "THEMATIC_DALIL"
+STRATEGY_FIQH = "FIQH"
+STRATEGY_FATWA = "FATWA"
+STRATEGY_SPIRITUAL = "SPIRITUAL"
+STRATEGY_GENERAL_ISLAMIC = "GENERAL_ISLAMIC"
+STRATEGY_OUT_OF_DOMAIN = "OUT_OF_DOMAIN"
+
+
+# ============================================================
+# ANSWER DEPTH
+# ============================================================
+
+DEPTH_CONCISE = "CONCISE"
+DEPTH_STANDARD = "STANDARD"
+DEPTH_DETAILED = "DETAILED"
+
+
+# ============================================================
+# CONVERSATION MODES
+# ============================================================
+
+CONVERSATION_NEW_TOPIC = "NEW_TOPIC"
+CONVERSATION_FOLLOW_UP = "FOLLOW_UP"
+CONVERSATION_TOPIC_REFINEMENT = "TOPIC_REFINEMENT"
+CONVERSATION_AMBIGUOUS = "AMBIGUOUS"
+
+
+@dataclass(frozen=True)
+class AnswerSection:
+    """
+    Satu bagian dalam struktur jawaban.
+
+    key:
+        Identifier internal yang stabil.
+
+    title:
+        Judul default yang dapat dipakai composer.
+
+    required:
+        Apakah section wajib muncul.
+
+    max_items:
+        Maksimal jumlah evidence/item yang ditampilkan.
+
+    condition:
+        Kondisi opsional yang nanti dapat dibaca composer.
+    """
+
+    key: str
+    title: str
+    required: bool = False
+    max_items: int | None = None
+    condition: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class AnswerStrategy:
+    """
+    Blueprint jawaban yang dipilih berdasarkan intent dan context.
+
+    Strategy tidak menyusun teks akhir. Strategy hanya memberi aturan
+    kepada composer mengenai struktur, panjang, tone, dan evidence.
+    """
+
+    name: str
+    intent: str
+    depth: str
+
+    sections: list[AnswerSection] = field(default_factory=list)
+
+    # Presentation behavior
+    show_opening: bool = True
+    show_identity_intro: bool = False
+    show_summary_first: bool = True
+    show_conclusion: bool = True
+    show_caution_note: bool = False
+    show_practical_steps: bool = False
+    show_empathy: bool = False
+    show_doa: bool = False
+    show_external_sources: bool = True
+    show_unverified_sources: bool = True
+
+    # Evidence limits
+    max_quran: int = 2
+    max_hadith: int = 2
+    max_external: int = 2
+    max_unverified: int = 2
+
+    # Conversation behavior
+    is_follow_up: bool = False
+    avoid_repeating_previous_answer: bool = False
+    answer_only_requested_aspect: bool = False
+    reference_previous_context_briefly: bool = False
+
+    # Safety and epistemic behavior
+    require_verified_evidence: bool = False
+    allow_general_principles_without_specific_evidence: bool = True
+    require_fatwa_disclaimer: bool = False
+    require_scholarly_difference_note: bool = False
+    prohibit_hadith_grading_claim: bool = True
+
+    # Length guidance
+    max_summary_paragraphs: int = 2
+    max_practical_steps: int = 5
+    max_total_sections: int = 8
+
+    # Debug / observability
+    reasoning_codes: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        result = asdict(self)
+        result["sections"] = [
+            section.to_dict()
+            for section in self.sections
+        ]
+        return result
+
+
+def _normalize_intent(intent: Any) -> str:
+    """
+    Mendukung:
+    - Enum dengan .value
+    - string
+    - dictionary intent dari router
+    """
+    if isinstance(intent, dict):
+        intent = intent.get("intent")
+
+    if hasattr(intent, "value"):
+        intent = intent.value
+
+    return str(intent or "").strip().upper()
+
+
+def _get_context_relation(
+    conversation_context: dict[str, Any] | None,
+) -> str:
+    if not conversation_context:
+        return CONVERSATION_NEW_TOPIC
+
+    relation = conversation_context.get(
+        "conversation_relation",
+        CONVERSATION_NEW_TOPIC,
+    )
+
+    return str(relation or "").strip().upper()
+
+
+def _count_verified_sources(
+    verified_sources: list[dict[str, Any]] | None,
+) -> dict[str, int]:
+    counts = {
+        "quran": 0,
+        "hadith": 0,
+        "external": 0,
+        "unverified": 0,
+        "total_verified": 0,
+    }
+
+    for source in verified_sources or []:
+        source_type = str(
+            source.get("type", "")
+        ).upper()
+
+        is_verified = bool(
+            source.get(
+                "is_verified",
+                source.get("verified", False),
+            )
+        )
+
+        if source_type == "QURAN":
+            counts["quran"] += 1
+        elif source_type in {"HADIS", "HADITH"}:
+            counts["hadith"] += 1
+        elif source_type == "EKSTERNAL":
+            counts["external"] += 1
+
+        if is_verified:
+            counts["total_verified"] += 1
+        else:
+            counts["unverified"] += 1
+
+    return counts
+
+
+def _direct_lookup_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_DIRECT_LOOKUP,
+        intent=intent,
+        depth=DEPTH_CONCISE,
+        sections=[
+            AnswerSection(
+                key="reference",
+                title="Rujukan",
+                required=True,
+                max_items=1,
+            ),
+            AnswerSection(
+                key="arabic_text",
+                title="Teks Arab",
+                required=False,
+                max_items=1,
+            ),
+            AnswerSection(
+                key="translation",
+                title="Terjemahan",
+                required=True,
+                max_items=1,
+            ),
+            AnswerSection(
+                key="verification",
+                title="Status Verifikasi",
+                required=True,
+                max_items=1,
+            ),
+        ],
+        show_opening=True,
+        show_identity_intro=False,
+        show_summary_first=False,
+        show_conclusion=False,
+        show_caution_note=False,
+        show_practical_steps=False,
+        show_empathy=False,
+        show_doa=False,
+        show_external_sources=False,
+        show_unverified_sources=True,
+        max_quran=1,
+        max_hadith=1,
+        max_external=0,
+        max_unverified=1,
+        require_verified_evidence=True,
+        allow_general_principles_without_specific_evidence=False,
+        max_summary_paragraphs=0,
+        max_total_sections=4,
+        reasoning_codes=[
+            "DIRECT_REFERENCE_REQUEST",
+            "NO_LLM_NARRATIVE_REQUIRED",
+        ],
+    )
+
+
+def _thematic_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_THEMATIC_DALIL,
+        intent=intent,
+        depth=DEPTH_STANDARD,
+        sections=[
+            AnswerSection(
+                key="theme_summary",
+                title="Ringkasan Tema",
+                required=True,
+            ),
+            AnswerSection(
+                key="quran",
+                title="Dalil Al-Qur’an",
+                max_items=3,
+                condition="WHEN_QURAN_AVAILABLE",
+            ),
+            AnswerSection(
+                key="hadith",
+                title="Hadis",
+                max_items=3,
+                condition="WHEN_HADITH_AVAILABLE",
+            ),
+            AnswerSection(
+                key="evidence_relationship",
+                title="Keterkaitan Dalil",
+                required=False,
+            ),
+            AnswerSection(
+                key="coverage_note",
+                title="Catatan",
+                required=True,
+            ),
+        ],
+        show_opening=True,
+        show_identity_intro=False,
+        show_summary_first=True,
+        show_conclusion=False,
+        show_caution_note=False,
+        show_practical_steps=False,
+        show_external_sources=False,
+        show_unverified_sources=False,
+        max_quran=3,
+        max_hadith=3,
+        max_external=0,
+        max_unverified=0,
+        require_verified_evidence=True,
+        allow_general_principles_without_specific_evidence=False,
+        max_summary_paragraphs=1,
+        max_total_sections=5,
+        reasoning_codes=[
+            "RETRIEVAL_FIRST",
+            "THEMATIC_EVIDENCE_ONLY",
+        ],
+    )
+
+
+def _fiqh_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_FIQH,
+        intent=intent,
+        depth=DEPTH_STANDARD,
+        sections=[
+            AnswerSection(
+                key="legal_summary",
+                title="Jawaban Ringkas",
+                required=True,
+            ),
+            AnswerSection(
+                key="conditions",
+                title="Syarat dan Rincian Hukum",
+                required=False,
+            ),
+            AnswerSection(
+                key="quran",
+                title="Dalil Al-Qur’an",
+                max_items=2,
+                condition="WHEN_QURAN_AVAILABLE",
+            ),
+            AnswerSection(
+                key="hadith",
+                title="Hadis",
+                max_items=2,
+                condition="WHEN_HADITH_AVAILABLE",
+            ),
+            AnswerSection(
+                key="general_principles",
+                title="Prinsip Umum Syariat",
+                required=False,
+            ),
+            AnswerSection(
+                key="scholarly_difference",
+                title="Perbedaan Pendapat",
+                required=False,
+                condition="WHEN_DIFFERENCE_EXISTS",
+            ),
+            AnswerSection(
+                key="conclusion",
+                title="Kesimpulan",
+                required=True,
+            ),
+        ],
+        show_opening=True,
+        show_identity_intro=False,
+        show_summary_first=True,
+        show_conclusion=True,
+        show_caution_note=True,
+        show_practical_steps=False,
+        show_external_sources=True,
+        show_unverified_sources=True,
+        max_quran=2,
+        max_hadith=2,
+        max_external=2,
+        max_unverified=1,
+        require_verified_evidence=False,
+        allow_general_principles_without_specific_evidence=True,
+        require_scholarly_difference_note=False,
+        max_summary_paragraphs=2,
+        max_total_sections=7,
+        reasoning_codes=[
+            "FIQH_LEGAL_ANALYSIS",
+            "SUMMARY_BEFORE_EVIDENCE",
+        ],
+    )
+
+
+def _fatwa_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_FATWA,
+        intent=intent,
+        depth=DEPTH_DETAILED,
+        sections=[
+            AnswerSection(
+                key="case_definition",
+                title="Gambaran Masalah",
+                required=True,
+            ),
+            AnswerSection(
+                key="legal_summary",
+                title="Jawaban Ringkas",
+                required=True,
+            ),
+            AnswerSection(
+                key="quran",
+                title="Dalil Umum Al-Qur’an",
+                max_items=2,
+                condition="WHEN_QURAN_AVAILABLE",
+            ),
+            AnswerSection(
+                key="hadith",
+                title="Hadis dan Prinsip Umum",
+                max_items=2,
+                condition="WHEN_HADITH_AVAILABLE",
+            ),
+            AnswerSection(
+                key="legal_reasoning",
+                title="Analisis Fiqih",
+                required=True,
+            ),
+            AnswerSection(
+                key="external_fatwa",
+                title="Fatwa atau Pendapat Lembaga",
+                required=False,
+                max_items=3,
+                condition="WHEN_EXTERNAL_SOURCE_AVAILABLE",
+            ),
+            AnswerSection(
+                key="practical_checklist",
+                title="Hal yang Perlu Diperiksa",
+                required=False,
+            ),
+            AnswerSection(
+                key="conclusion",
+                title="Kesimpulan",
+                required=True,
+            ),
+        ],
+        show_opening=True,
+        show_identity_intro=False,
+        show_summary_first=True,
+        show_conclusion=True,
+        show_caution_note=True,
+        show_practical_steps=True,
+        show_external_sources=True,
+        show_unverified_sources=True,
+        max_quran=2,
+        max_hadith=2,
+        max_external=3,
+        max_unverified=1,
+        require_verified_evidence=False,
+        allow_general_principles_without_specific_evidence=True,
+        require_fatwa_disclaimer=True,
+        require_scholarly_difference_note=True,
+        max_summary_paragraphs=2,
+        max_practical_steps=5,
+        max_total_sections=8,
+        reasoning_codes=[
+            "CONTEMPORARY_FATWA_CASE",
+            "DETAIL_DEPENDENT_LEGAL_RULING",
+            "REQUIRE_CONDITIONAL_CONCLUSION",
+        ],
+    )
+
+
+def _spiritual_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_SPIRITUAL,
+        intent=intent,
+        depth=DEPTH_STANDARD,
+        sections=[
+            AnswerSection(
+                key="empathy",
+                title="Respons Empatik",
+                required=True,
+            ),
+            AnswerSection(
+                key="hope",
+                title="Harapan dan Penguatan",
+                required=True,
+            ),
+            AnswerSection(
+                key="quran",
+                title="Dalil Al-Qur’an",
+                max_items=2,
+                condition="WHEN_QURAN_AVAILABLE",
+            ),
+            AnswerSection(
+                key="hadith",
+                title="Hadis",
+                max_items=2,
+                condition="WHEN_HADITH_AVAILABLE",
+            ),
+            AnswerSection(
+                key="practical_steps",
+                title="Langkah Praktis",
+                required=True,
+                max_items=5,
+            ),
+            AnswerSection(
+                key="doa",
+                title="Doa",
+                required=False,
+                condition="WHEN_DOA_RELEVANT",
+            ),
+        ],
+        show_opening=True,
+        show_identity_intro=False,
+        show_summary_first=False,
+        show_conclusion=False,
+        show_caution_note=False,
+        show_practical_steps=True,
+        show_empathy=True,
+        show_doa=True,
+        show_external_sources=False,
+        show_unverified_sources=False,
+        max_quran=2,
+        max_hadith=2,
+        max_external=0,
+        max_unverified=0,
+        require_verified_evidence=False,
+        allow_general_principles_without_specific_evidence=True,
+        max_summary_paragraphs=2,
+        max_practical_steps=5,
+        max_total_sections=6,
+        reasoning_codes=[
+            "SPIRITUAL_SUPPORT",
+            "EMPATHY_BEFORE_EVIDENCE",
+            "PRACTICAL_SMALL_STEPS",
+        ],
+    )
+
+
+def _general_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_GENERAL_ISLAMIC,
+        intent=intent,
+        depth=DEPTH_STANDARD,
+        sections=[
+            AnswerSection(
+                key="summary",
+                title="Jawaban Ringkas",
+                required=True,
+            ),
+            AnswerSection(
+                key="explanation",
+                title="Penjelasan",
+                required=True,
+            ),
+            AnswerSection(
+                key="quran",
+                title="Dalil Al-Qur’an",
+                max_items=2,
+                condition="WHEN_QURAN_AVAILABLE",
+            ),
+            AnswerSection(
+                key="hadith",
+                title="Hadis",
+                max_items=2,
+                condition="WHEN_HADITH_AVAILABLE",
+            ),
+            AnswerSection(
+                key="conclusion",
+                title="Kesimpulan",
+                required=False,
+            ),
+        ],
+        show_opening=True,
+        show_identity_intro=False,
+        show_summary_first=True,
+        show_conclusion=True,
+        show_caution_note=False,
+        show_practical_steps=False,
+        show_external_sources=True,
+        show_unverified_sources=True,
+        max_quran=2,
+        max_hadith=2,
+        max_external=2,
+        max_unverified=1,
+        require_verified_evidence=False,
+        allow_general_principles_without_specific_evidence=True,
+        max_summary_paragraphs=2,
+        max_total_sections=5,
+        reasoning_codes=[
+            "GENERAL_ISLAMIC_EXPLANATION",
+        ],
+    )
+
+
+def _out_of_domain_strategy(
+    intent: str,
+) -> AnswerStrategy:
+    return AnswerStrategy(
+        name=STRATEGY_OUT_OF_DOMAIN,
+        intent=intent,
+        depth=DEPTH_CONCISE,
+        sections=[
+            AnswerSection(
+                key="scope_notice",
+                title="Batas Lingkup",
+                required=True,
+            ),
+        ],
+        show_opening=False,
+        show_identity_intro=False,
+        show_summary_first=False,
+        show_conclusion=False,
+        show_caution_note=False,
+        show_practical_steps=False,
+        show_empathy=False,
+        show_doa=False,
+        show_external_sources=False,
+        show_unverified_sources=False,
+        max_quran=0,
+        max_hadith=0,
+        max_external=0,
+        max_unverified=0,
+        require_verified_evidence=False,
+        allow_general_principles_without_specific_evidence=False,
+        max_summary_paragraphs=1,
+        max_total_sections=1,
+        reasoning_codes=[
+            "OUT_OF_DOMAIN",
+        ],
+    )
+
+
+def _apply_conversation_behavior(
+    strategy: AnswerStrategy,
+    conversation_context: dict[str, Any] | None,
+) -> AnswerStrategy:
+    """
+    Modifikasi strategy berdasarkan hubungan percakapan.
+
+    FOLLOW_UP:
+    - Jangan membuka dengan salam/identitas berulang.
+    - Fokus hanya pada aspek yang diminta.
+    - Hindari mengulang seluruh jawaban sebelumnya.
+
+    TOPIC_REFINEMENT:
+    - Tidak perlu opening lengkap.
+    - Jawab detail kondisi baru.
+    - Boleh merujuk konteks lama secara singkat.
+
+    NEW_TOPIC:
+    - Gunakan struktur lengkap sesuai intent.
+    """
+    relation = _get_context_relation(
+        conversation_context
+    )
+
+    if relation == CONVERSATION_FOLLOW_UP:
+        strategy.is_follow_up = True
+        strategy.show_opening = False
+        strategy.show_identity_intro = False
+        strategy.avoid_repeating_previous_answer = True
+        strategy.answer_only_requested_aspect = True
+        strategy.reference_previous_context_briefly = True
+        strategy.max_summary_paragraphs = 1
+        strategy.max_total_sections = min(
+            strategy.max_total_sections,
+            4,
+        )
+        strategy.reasoning_codes.append(
+            "CONVERSATION_FOLLOW_UP"
+        )
+
+    elif relation == CONVERSATION_TOPIC_REFINEMENT:
+        strategy.is_follow_up = True
+        strategy.show_opening = False
+        strategy.show_identity_intro = False
+        strategy.avoid_repeating_previous_answer = True
+        strategy.answer_only_requested_aspect = False
+        strategy.reference_previous_context_briefly = True
+        strategy.max_summary_paragraphs = 1
+        strategy.reasoning_codes.append(
+            "CONVERSATION_TOPIC_REFINEMENT"
+        )
+
+    elif relation == CONVERSATION_AMBIGUOUS:
+        strategy.is_follow_up = True
+        strategy.show_opening = False
+        strategy.avoid_repeating_previous_answer = True
+        strategy.reference_previous_context_briefly = True
+        strategy.reasoning_codes.append(
+            "CONVERSATION_AMBIGUOUS"
+        )
+
+    else:
+        strategy.reasoning_codes.append(
+            "CONVERSATION_NEW_TOPIC"
+        )
+
+    return strategy
+
+
+def _apply_evidence_behavior(
+    strategy: AnswerStrategy,
+    verified_sources: list[dict[str, Any]] | None,
+) -> AnswerStrategy:
+    counts = _count_verified_sources(
+        verified_sources
+    )
+
+    if counts["quran"] == 0:
+        strategy.reasoning_codes.append(
+            "NO_QURAN_SOURCE"
+        )
+
+    if counts["hadith"] == 0:
+        strategy.reasoning_codes.append(
+            "NO_HADITH_SOURCE"
+        )
+
+    if counts["total_verified"] == 0:
+        strategy.reasoning_codes.append(
+            "NO_VERIFIED_SOURCE"
+        )
+
+        if strategy.require_verified_evidence:
+            strategy.show_caution_note = True
+
+    if counts["external"] == 0:
+        strategy.show_external_sources = False
+
+    if counts["unverified"] == 0:
+        strategy.show_unverified_sources = False
+
+    return strategy
+
+
+def select_answer_strategy(
+    intent: Any,
+    conversation_context: dict[str, Any] | None = None,
+    verified_sources: list[dict[str, Any]] | None = None,
+) -> AnswerStrategy:
+    """
+    Public API Phase 5A.
+
+    Contoh:
+
+        strategy = select_answer_strategy(
+            intent=intent_result,
+            conversation_context=conversation_context,
+            verified_sources=verified_sources,
+        )
+    """
+    normalized_intent = _normalize_intent(intent)
+
+    if normalized_intent in {
+        "DIRECT_HADITH_LOOKUP",
+        "DIRECT_QURAN_LOOKUP",
+    }:
+        strategy = _direct_lookup_strategy(
+            normalized_intent
+        )
+
+    elif normalized_intent == "THEMATIC_DALIL_SEARCH":
+        strategy = _thematic_strategy(
+            normalized_intent
+        )
+
+    elif normalized_intent == "FIQH_QA":
+        strategy = _fiqh_strategy(
+            normalized_intent
+        )
+
+    elif normalized_intent == "FATWA_QA":
+        strategy = _fatwa_strategy(
+            normalized_intent
+        )
+
+    elif normalized_intent == "SPIRITUAL_ADVICE":
+        strategy = _spiritual_strategy(
+            normalized_intent
+        )
+
+    elif normalized_intent == "OUT_OF_DOMAIN":
+        strategy = _out_of_domain_strategy(
+            normalized_intent
+        )
+
+    else:
+        strategy = _general_strategy(
+            normalized_intent
+            or "GENERAL_ISLAMIC_QA"
+        )
+
+    strategy = _apply_conversation_behavior(
+        strategy=strategy,
+        conversation_context=conversation_context,
+    )
+
+    strategy = _apply_evidence_behavior(
+        strategy=strategy,
+        verified_sources=verified_sources,
+    )
+
+    return strategy
+
+END FILE: main/utils_rag/answer_strategy.py
+
+
+================================================================================
+FILE: main/management/commands/test_smart_ai_followup_compression.py
+================================================================================
+
+# main/management/commands/test_smart_ai_followup_compression.py
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+
+from django.core.management.base import BaseCommand
+
+from main.utils_rag.answer_strategy import (
+    select_answer_strategy,
+)
+from main.utils_rag.followup_compression import (
+    ASPECT_DALIL,
+    ASPECT_DOA,
+    ASPECT_EXAMPLE,
+    ASPECT_HADITH,
+    ASPECT_MUI,
+    ASPECT_PRACTICAL,
+    ASPECT_QURAN,
+    ASPECT_REASON,
+    ASPECT_SUMMARY,
+    build_followup_policy,
+    build_followup_prompt_instruction,
+    compress_followup_draft,
+    detect_requested_aspect,
+    select_display_sources,
+)
+
+
+@dataclass
+class PolicyCase:
+    name: str
+    message: str
+    intent: str
+    relation: str
+    expected_aspect: str
+    expected_enabled: bool
+    expected_references: bool
+    expected_practical: bool = False
+    expected_doa: bool = False
+
+
+POLICY_CASES = [
+    PolicyCase(
+        name="NEW_TOPIC_DISABLED",
+        message="Apa hukum paylater?",
+        intent="FATWA_QA",
+        relation="NEW_TOPIC",
+        expected_aspect="RULING",
+        expected_enabled=False,
+        expected_references=True,
+    ),
+    PolicyCase(
+        name="HADITH_FOLLOW_UP",
+        message="hadisnya ada?",
+        intent="THEMATIC_DALIL_SEARCH",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_HADITH,
+        expected_enabled=True,
+        expected_references=True,
+    ),
+    PolicyCase(
+        name="QURAN_FOLLOW_UP",
+        message="ayatnya?",
+        intent="THEMATIC_DALIL_SEARCH",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_QURAN,
+        expected_enabled=True,
+        expected_references=True,
+    ),
+    PolicyCase(
+        name="DALIL_FOLLOW_UP",
+        message="ada dalil lain?",
+        intent="FIQH_QA",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_DALIL,
+        expected_enabled=True,
+        expected_references=True,
+    ),
+    PolicyCase(
+        name="MUI_INFORMAL_FOLLOW_UP",
+        message="klo mnrt mui?",
+        intent="FATWA_QA",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_MUI,
+        expected_enabled=True,
+        expected_references=True,
+    ),
+    PolicyCase(
+        name="REASON_FOLLOW_UP",
+        message="kenapa?",
+        intent="FIQH_QA",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_REASON,
+        expected_enabled=True,
+        expected_references=False,
+    ),
+    PolicyCase(
+        name="EXAMPLE_FOLLOW_UP",
+        message="contohnya?",
+        intent="FIQH_QA",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_EXAMPLE,
+        expected_enabled=True,
+        expected_references=False,
+    ),
+    PolicyCase(
+        name="PRACTICAL_FOLLOW_UP",
+        message="langkah praktisnya gimana?",
+        intent="SPIRITUAL_ADVICE",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_PRACTICAL,
+        expected_enabled=True,
+        expected_references=False,
+        expected_practical=True,
+    ),
+    PolicyCase(
+        name="DOA_FOLLOW_UP",
+        message="ada doa yang bisa kubaca?",
+        intent="SPIRITUAL_ADVICE",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_DOA,
+        expected_enabled=True,
+        expected_references=False,
+        expected_doa=True,
+    ),
+    PolicyCase(
+        name="SUMMARY_FOLLOW_UP",
+        message="singkatnya gimana?",
+        intent="FIQH_QA",
+        relation="FOLLOW_UP",
+        expected_aspect=ASPECT_SUMMARY,
+        expected_enabled=True,
+        expected_references=False,
+    ),
+]
+
+
+class Command(BaseCommand):
+    help = (
+        "Menguji Natural Follow-Up Compression Phase 5A.4."
+    )
+
+    def handle(self, *args, **options):
+        total = 0
+        passed = 0
+        failed = 0
+        failed_cases: list[dict[str, Any]] = []
+
+        self.stdout.write("")
+        self.stdout.write("=" * 94)
+        self.stdout.write(
+            "SMART AI — NATURAL FOLLOW-UP COMPRESSION TEST"
+        )
+        self.stdout.write("=" * 94)
+
+        for index, case in enumerate(
+            POLICY_CASES,
+            start=1,
+        ):
+            total += 1
+
+            context = {
+                "conversation_relation": case.relation,
+            }
+
+            strategy = select_answer_strategy(
+                intent=case.intent,
+                conversation_context=context,
+                verified_sources=[],
+            )
+
+            policy = build_followup_policy(
+                user_message=case.message,
+                strategy=strategy,
+                conversation_context=context,
+            )
+
+            failures = []
+
+            if (
+                policy.requested_aspect
+                != case.expected_aspect
+            ):
+                failures.append(
+                    (
+                        "aspect: "
+                        f"expected={case.expected_aspect}, "
+                        f"actual={policy.requested_aspect}"
+                    )
+                )
+
+            if (
+                policy.enabled
+                != case.expected_enabled
+            ):
+                failures.append(
+                    (
+                        "enabled: "
+                        f"expected={case.expected_enabled}, "
+                        f"actual={policy.enabled}"
+                    )
+                )
+
+            if (
+                policy.include_references
+                != case.expected_references
+            ):
+                failures.append(
+                    (
+                        "include_references: "
+                        f"expected={case.expected_references}, "
+                        f"actual={policy.include_references}"
+                    )
+                )
+
+            if (
+                policy.include_practical_steps
+                != case.expected_practical
+            ):
+                failures.append(
+                    (
+                        "include_practical_steps: "
+                        f"expected={case.expected_practical}, "
+                        f"actual={policy.include_practical_steps}"
+                    )
+                )
+
+            if policy.include_doa != case.expected_doa:
+                failures.append(
+                    (
+                        "include_doa: "
+                        f"expected={case.expected_doa}, "
+                        f"actual={policy.include_doa}"
+                    )
+                )
+
+            self._record_case(
+                index=index,
+                name=case.name,
+                failures=failures,
+                payload=policy.to_dict(),
+                failed_cases=failed_cases,
+            )
+
+            if failures:
+                failed += 1
+            else:
+                passed += 1
+
+        compression_results = [
+            self._test_opening_removal(),
+            self._test_previous_answer_deduplication(),
+            self._test_list_limit(),
+            self._test_source_filtering(),
+            self._test_prompt_instruction(),
+        ]
+
+        for result in compression_results:
+            total += 1
+            index = total
+            failures = result["failures"]
+
+            self._record_case(
+                index=index,
+                name=result["name"],
+                failures=failures,
+                payload=result.get("payload", {}),
+                failed_cases=failed_cases,
+            )
+
+            if failures:
+                failed += 1
+            else:
+                passed += 1
+
+        pass_rate = (
+            passed / total * 100
+            if total
+            else 0
+        )
+
+        self.stdout.write("")
+        self.stdout.write("=" * 94)
+        self.stdout.write("SUMMARY")
+        self.stdout.write("=" * 94)
+        self.stdout.write(f"total     : {total}")
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"passed    : {passed}"
+            )
+        )
+
+        failed_style = (
+            self.style.ERROR
+            if failed
+            else self.style.SUCCESS
+        )
+
+        self.stdout.write(
+            failed_style(
+                f"failed    : {failed}"
+            )
+        )
+        self.stdout.write(
+            f"pass rate : {pass_rate:.2f}%"
+        )
+
+        if failed_cases:
+            self.stdout.write("")
+            self.stdout.write("FAILED CASES:")
+
+            for case in failed_cases:
+                self.stdout.write(
+                    self.style.ERROR(
+                        f"- {case['name']}: "
+                        f"{case['failures']}"
+                    )
+                )
+
+    def _record_case(
+        self,
+        index,
+        name,
+        failures,
+        payload,
+        failed_cases,
+    ):
+        if failures:
+            status = self.style.ERROR("FAIL")
+            failed_cases.append({
+                "name": name,
+                "failures": failures,
+                "payload": payload,
+            })
+        else:
+            status = self.style.SUCCESS("PASS")
+
+        self.stdout.write(
+            f"[{index:02d}] {name}: {status}"
+        )
+
+        for failure in failures:
+            self.stdout.write(
+                self.style.ERROR(
+                    f"     - {failure}"
+                )
+            )
+
+    def _build_policy(
+        self,
+        message,
+        intent="FIQH_QA",
+        relation="FOLLOW_UP",
+    ):
+        context = {
+            "conversation_relation": relation,
+        }
+
+        strategy = select_answer_strategy(
+            intent=intent,
+            conversation_context=context,
+            verified_sources=[],
+        )
+
+        return build_followup_policy(
+            user_message=message,
+            strategy=strategy,
+            conversation_context=context,
+        )
+
+    def _test_opening_removal(self):
+        policy = self._build_policy(
+            "kenapa?"
+        )
+
+        draft = (
+            "Assalamu'alaikum warahmatullahi wabarakatuh.\n\n"
+            "Saya Smart Hijrah Assistant.\n\n"
+            "**Jawaban ringkas:**\n"
+            "Karena tindakan tersebut mengandung unsur kezaliman."
+        )
+
+        compressed = compress_followup_draft(
+            draft_text=draft,
+            previous_assistant_text="",
+            policy=policy,
+        )
+
+        failures = []
+
+        if "assalamu" in compressed.lower():
+            failures.append(
+                "Salam belum dihapus."
+            )
+
+        if "smart hijrah assistant" in compressed.lower():
+            failures.append(
+                "Perkenalan belum dihapus."
+            )
+
+        if "jawaban ringkas" in compressed.lower():
+            failures.append(
+                "Heading generik belum dihapus."
+            )
+
+        return {
+            "name": "OPENING_AND_HEADING_REMOVAL",
+            "failures": failures,
+            "payload": {
+                "compressed": compressed,
+            },
+        }
+
+    def _test_previous_answer_deduplication(self):
+        policy = self._build_policy(
+            "kenapa?"
+        )
+
+        previous = (
+            "Paylater dapat bermasalah jika mengandung riba. "
+            "Hukumnya bergantung pada akad yang digunakan."
+        )
+
+        draft = (
+            "Paylater dapat bermasalah jika mengandung riba. "
+            "Alasannya, tambahan atas utang berbasis waktu "
+            "termasuk unsur yang perlu dihindari."
+        )
+
+        compressed = compress_followup_draft(
+            draft_text=draft,
+            previous_assistant_text=previous,
+            policy=policy,
+        )
+
+        failures = []
+
+        if (
+            "paylater dapat bermasalah jika mengandung riba"
+            in compressed.lower()
+        ):
+            failures.append(
+                "Kalimat lama belum dihapus."
+            )
+
+        if "alasannya" not in compressed.lower():
+            failures.append(
+                "Informasi baru ikut terhapus."
+            )
+
+        return {
+            "name": "PREVIOUS_ANSWER_DEDUPLICATION",
+            "failures": failures,
+            "payload": {
+                "compressed": compressed,
+            },
+        }
+
+    def _test_list_limit(self):
+        policy = self._build_policy(
+            "contohnya?"
+        )
+
+        draft = (
+            "Contoh:\n"
+            "1. Contoh pertama.\n"
+            "2. Contoh kedua.\n"
+            "3. Contoh ketiga.\n"
+            "4. Contoh keempat."
+        )
+
+        compressed = compress_followup_draft(
+            draft_text=draft,
+            previous_assistant_text="",
+            policy=policy,
+        )
+
+        failures = []
+
+        if "3. Contoh ketiga" in compressed:
+            failures.append(
+                "List melebihi limit policy."
+            )
+
+        if "2. Contoh kedua" not in compressed:
+            failures.append(
+                "Item yang masih dalam limit hilang."
+            )
+
+        return {
+            "name": "LIST_ITEM_LIMIT",
+            "failures": failures,
+            "payload": {
+                "compressed": compressed,
+            },
+        }
+
+    def _test_source_filtering(self):
+        sources = [
+            {
+                "type": "QURAN",
+                "reference": "QS 2:275",
+            },
+            {
+                "type": "HADIS",
+                "reference": "HR. Muslim 1",
+            },
+            {
+                "type": "EKSTERNAL",
+                "reference": "Fatwa MUI",
+            },
+        ]
+
+        policy = self._build_policy(
+            "hadisnya?"
+        )
+
+        displayed = select_display_sources(
+            sources=sources,
+            policy=policy,
+        )
+
+        failures = []
+
+        if len(displayed) != 1:
+            failures.append(
+                f"Expected 1 source, actual={len(displayed)}."
+            )
+
+        elif displayed[0].get("type") != "HADIS":
+            failures.append(
+                "Source yang tampil bukan HADIS."
+            )
+
+        return {
+            "name": "SOURCE_FILTER_BY_ASPECT",
+            "failures": failures,
+            "payload": {
+                "displayed": displayed,
+            },
+        }
+
+    def _test_prompt_instruction(self):
+        policy = self._build_policy(
+            "singkatnya?"
+        )
+
+        prompt = build_followup_prompt_instruction(
+            policy
+        )
+
+        failures = []
+
+        required_fragments = [
+            "ATURAN NATURAL FOLLOW-UP",
+            "Jangan mengulang salam",
+            "SUMMARY",
+            "sangat ringkas",
+        ]
+
+        for fragment in required_fragments:
+            if fragment.lower() not in prompt.lower():
+                failures.append(
+                    f"Missing fragment: {fragment}"
+                )
+
+        return {
+            "name": "FOLLOWUP_PROMPT_INSTRUCTION",
+            "failures": failures,
+            "payload": {
+                "prompt": prompt,
+            },
+        }
+
+
+END FILE: main/management/commands/test_smart_ai_followup_compression.py
+
+
+================================================================================
+RUNTIME IMPORT DIAGNOSTIC
+================================================================================
+
+56 objects imported automatically (use -v 2 for details).
+
+MODULE FILE:
+/Users/user/code/smart_hijrah_be/smart_hijrah_backend/main/utils_rag/followup_compression.py
+
+AVAILABLE PUBLIC NAMES:
+ASPECT_CONTINUATION
+ASPECT_DALIL
+ASPECT_DOA
+ASPECT_EXAMPLE
+ASPECT_GENERAL
+ASPECT_HADITH
+ASPECT_MUI
+ASPECT_PRACTICAL
+ASPECT_QURAN
+ASPECT_REASON
+ASPECT_RULING
+ASPECT_SUMMARY
+AnswerStrategy
+Any
+FOLLOW_UP_RELATIONS
+FollowUpPolicy
+INFORMAL_REPLACEMENTS
+STRATEGY_FATWA
+SequenceMatcher
+annotations
+asdict
+build_followup_policy
+build_followup_prompt_instruction
+compress_followup_draft
+dataclass
+detect_requested_aspect
+normalize_followup_text
+re
+select_display_sources
+
+RUNTIME MODULE SOURCE:
+# main/utils_rag/followup_compression.py
+
+from __future__ import annotations
+
+import re
+from dataclasses import asdict, dataclass
+from difflib import SequenceMatcher
+from typing import Any
+
+from main.utils_rag.answer_strategy import (
+    AnswerStrategy,
+    STRATEGY_FATWA,
+)
+
+
+ASPECT_GENERAL = "GENERAL"
+ASPECT_HADITH = "HADITH"
+ASPECT_QURAN = "QURAN"
+ASPECT_DALIL = "DALIL"
+ASPECT_REASON = "REASON"
+ASPECT_EXAMPLE = "EXAMPLE"
+ASPECT_PRACTICAL = "PRACTICAL"
+ASPECT_DOA = "DOA"
+ASPECT_MUI = "MUI"
+ASPECT_SUMMARY = "SUMMARY"
+ASPECT_RULING = "RULING"
+ASPECT_CONTINUATION = "CONTINUATION"
+
+FOLLOW_UP_RELATIONS = {
+    "FOLLOW_UP",
+    "TOPIC_REFINEMENT",
+    "AMBIGUOUS",
+}
+
+INFORMAL_REPLACEMENTS = {
+    "klo": "kalau",
+    "kalo": "kalau",
+    "klw": "kalau",
+    "mnrt": "menurut",
+    "gmn": "bagaimana",
+    "gimana": "bagaimana",
+    "knp": "kenapa",
+    "hadisny": "hadisnya",
+    "haditsny": "hadisnya",
+    "ayatny": "ayatnya",
+    "dalilny": "dalilnya",
+    "doany": "doanya",
+}
+
+
+@dataclass(frozen=True)
+class FollowUpPolicy:
+    """
+    Aturan presentation untuk jawaban lanjutan.
+
+    Policy ini tidak menentukan hukum atau substansi agama. Ia hanya
+    mengendalikan fokus, panjang, section, dan pengulangan jawaban.
+    """
+
+    enabled: bool
+    relation: str
+    requested_aspect: str
+
+    max_paragraphs: int
+    max_list_items: int
+    max_chars: int
+
+    include_references: bool
+    include_practical_steps: bool
+    include_doa: bool
+    include_caution: bool
+    include_context_reference: bool
+    preserve_headings: bool
+
+    reasoning_codes: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        result = asdict(self)
+        result["reasoning_codes"] = list(
+            self.reasoning_codes
+        )
+        return result
+
+
+def normalize_followup_text(
+    text: str | None,
+) -> str:
+    normalized = (text or "").lower().strip()
+    normalized = normalized.replace("’", "'")
+    normalized = re.sub(
+        r"[^\w\s'-]",
+        " ",
+        normalized,
+    )
+    normalized = re.sub(
+        r"\s+",
+        " ",
+        normalized,
+    ).strip()
+
+    tokens = normalized.split()
+
+    return " ".join(
+        INFORMAL_REPLACEMENTS.get(token, token)
+        for token in tokens
+    )
+
+
+def detect_requested_aspect(
+    user_message: str | None,
+) -> str:
+    text = normalize_followup_text(
+        user_message
+    )
+
+    if not text:
+        return ASPECT_GENERAL
+
+    if re.search(
+        r"\b(mui|dsn mui|dsn-mui|fatwa mui)\b",
+        text,
+    ):
+        return ASPECT_MUI
+
+    if re.search(
+        r"\b(hadis|hadits|riwayat|sabda nabi)\b",
+        text,
+    ):
+        return ASPECT_HADITH
+
+    if re.search(
+        r"\b(ayat|quran|al quran|alquran|surah|surat)\b",
+        text,
+    ):
+        return ASPECT_QURAN
+
+    if re.search(
+        r"\b(dalil|rujukan|sumber)\b",
+        text,
+    ):
+        return ASPECT_DALIL
+
+    if re.search(
+        r"\b(doa|doanya|doakan)\b",
+        text,
+    ):
+        return ASPECT_DOA
+
+    if re.search(
+        r"\b(kenapa|mengapa|alasannya|alasan|sebab|dasarnya)\b",
+        text,
+    ):
+        return ASPECT_REASON
+
+    if re.search(
+        r"\b(contoh|contohnya|misalnya|ilustrasi)\b",
+        text,
+    ):
+        return ASPECT_EXAMPLE
+
+    if re.search(
+        r"\b(caranya|cara|langkah|tips|praktiknya|praktis)\b",
+        text,
+    ):
+        return ASPECT_PRACTICAL
+
+    if re.search(
+        r"\b(ringkas|singkat|kesimpulan|intinya|simpulkan)\b",
+        text,
+    ):
+        return ASPECT_SUMMARY
+
+    if re.search(
+        r"\b(hukum|hukumnya|boleh|haram|halal|wajib|sunnah|makruh)\b",
+        text,
+    ):
+        return ASPECT_RULING
+
+    if text in {
+        "terus",
+        "lanjut",
+        "lalu",
+        "bagaimana",
+        "terus bagaimana",
+        "lanjutkan",
+    }:
+        return ASPECT_CONTINUATION
+
+    return ASPECT_GENERAL
+
+
+def _conversation_relation(
+    conversation_context: dict[str, Any] | None,
+) -> str:
+    if not conversation_context:
+        return "NEW_TOPIC"
+
+    return str(
+        conversation_context.get(
+            "conversation_relation",
+            "NEW_TOPIC",
+        )
+        or "NEW_TOPIC"
+    ).upper()
+
+
+def build_followup_policy(
+    user_message: str,
+    strategy: AnswerStrategy,
+    conversation_context: dict[str, Any] | None,
+) -> FollowUpPolicy:
+    relation = _conversation_relation(
+        conversation_context
+    )
+    requested_aspect = detect_requested_aspect(
+        user_message
+    )
+
+    enabled = bool(
+        strategy.is_follow_up
+        or relation in FOLLOW_UP_RELATIONS
+    )
+
+    if not enabled:
+        return FollowUpPolicy(
+            enabled=False,
+            relation=relation,
+            requested_aspect=requested_aspect,
+            max_paragraphs=max(
+                1,
+                strategy.max_summary_paragraphs,
+            ),
+            max_list_items=max(
+                1,
+                strategy.max_practical_steps,
+            ),
+            max_chars=5000,
+            include_references=True,
+            include_practical_steps=(
+                strategy.show_practical_steps
+            ),
+            include_doa=strategy.show_doa,
+            include_caution=(
+                strategy.show_caution_note
+                or strategy.require_fatwa_disclaimer
+            ),
+            include_context_reference=False,
+            preserve_headings=True,
+            reasoning_codes=(
+                "FOLLOWUP_COMPRESSION_DISABLED",
+            ),
+        )
+
+    reasoning_codes = [
+        "FOLLOWUP_COMPRESSION_ENABLED",
+        f"ASPECT_{requested_aspect}",
+    ]
+
+    is_refinement = (
+        relation == "TOPIC_REFINEMENT"
+    )
+
+    max_paragraphs = 3 if is_refinement else 2
+    max_list_items = 3
+    max_chars = 1800 if is_refinement else 1300
+
+    include_references = False
+    include_practical_steps = False
+    include_doa = False
+    include_caution = False
+    include_context_reference = is_refinement
+    preserve_headings = False
+
+    if requested_aspect in {
+        ASPECT_HADITH,
+        ASPECT_QURAN,
+        ASPECT_DALIL,
+        ASPECT_MUI,
+    }:
+        include_references = True
+        max_paragraphs = 1
+        max_chars = 1100
+        reasoning_codes.append(
+            "SOURCE_FOCUSED_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_REASON:
+        max_paragraphs = 2
+        max_chars = 1200
+        reasoning_codes.append(
+            "REASON_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_EXAMPLE:
+        max_paragraphs = 2
+        max_list_items = 2
+        max_chars = 1100
+        reasoning_codes.append(
+            "EXAMPLE_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_PRACTICAL:
+        include_practical_steps = True
+        max_paragraphs = 1
+        max_list_items = 4
+        max_chars = 1200
+        reasoning_codes.append(
+            "PRACTICAL_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_DOA:
+        include_doa = True
+        max_paragraphs = 1
+        max_chars = 900
+        reasoning_codes.append(
+            "DOA_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_SUMMARY:
+        max_paragraphs = 1
+        max_list_items = 2
+        max_chars = 700
+        reasoning_codes.append(
+            "SUMMARY_ONLY_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_RULING:
+        include_references = is_refinement
+        include_caution = (
+            strategy.name == STRATEGY_FATWA
+            and is_refinement
+        )
+        max_paragraphs = 2
+        max_chars = 1300
+        reasoning_codes.append(
+            "RULING_FOLLOWUP"
+        )
+
+    elif requested_aspect == ASPECT_CONTINUATION:
+        max_paragraphs = 2
+        max_chars = 1100
+        reasoning_codes.append(
+            "CONTINUATION_FOLLOWUP"
+        )
+
+    else:
+        include_references = is_refinement
+        max_paragraphs = 2
+        max_chars = 1300
+        reasoning_codes.append(
+            "GENERAL_FOLLOWUP"
+        )
+
+    return FollowUpPolicy(
+        enabled=True,
+        relation=relation,
+        requested_aspect=requested_aspect,
+        max_paragraphs=max_paragraphs,
+        max_list_items=max_list_items,
+        max_chars=max_chars,
+        include_references=include_references,
+        include_practical_steps=(
+            include_practical_steps
+        ),
+        include_doa=include_doa,
+        include_caution=include_caution,
+        include_context_reference=(
+            include_context_reference
+        ),
+        preserve_headings=preserve_headings,
+        reasoning_codes=tuple(
+            reasoning_codes
+        ),
+    )
+
+
+def build_followup_prompt_instruction(
+    policy: FollowUpPolicy,
+) -> str:
+    if not policy.enabled:
+        return ""
+
+    lines = [
+        "ATURAN NATURAL FOLLOW-UP:",
+        "- Jawab langsung aspek baru yang diminta.",
+        "- Jangan mengulang salam atau perkenalan.",
+        "- Jangan mengulang seluruh jawaban sebelumnya.",
+        (
+            f"- Fokus jawaban: "
+            f"{policy.requested_aspect}."
+        ),
+        (
+            f"- Maksimal sekitar "
+            f"{policy.max_paragraphs} paragraf."
+        ),
+        (
+            f"- Maksimal sekitar "
+            f"{policy.max_list_items} item daftar."
+        ),
+    ]
+
+    if not policy.include_references:
+        lines.append(
+            "- Jangan mengulang daftar rujukan lama kecuali "
+            "diperlukan untuk menjawab aspek baru."
+        )
+
+    if policy.requested_aspect == ASPECT_REASON:
+        lines.append(
+            "- Fokus pada alasan atau prinsip yang mendasari "
+            "jawaban sebelumnya."
+        )
+
+    elif policy.requested_aspect == ASPECT_EXAMPLE:
+        lines.append(
+            "- Berikan contoh yang konkret dan singkat."
+        )
+
+    elif policy.requested_aspect == ASPECT_SUMMARY:
+        lines.append(
+            "- Berikan inti jawaban dalam bentuk sangat ringkas."
+        )
+
+    elif policy.requested_aspect in {
+        ASPECT_HADITH,
+        ASPECT_QURAN,
+        ASPECT_DALIL,
+        ASPECT_MUI,
+    }:
+        lines.append(
+            "- Fokus hanya pada sumber yang diminta pengguna."
+        )
+
+    return "\n".join(
+        lines
+    )
+
+
+def select_display_sources(
+    sources: list[dict[str, Any]] | None,
+    policy: FollowUpPolicy,
+) -> list[dict[str, Any]]:
+    """
+    Pilih source yang dirender di teks jawaban.
+
+    verified_sources utama tetap dapat dipertahankan untuk final
+    checker. Fungsi ini hanya mengontrol source yang ditampilkan.
+    """
+    if not policy.enabled:
+        return list(
+            sources or []
+        )
+
+    if not policy.include_references:
+        return []
+
+    result: list[dict[str, Any]] = []
+
+    for source in sources or []:
+        source_type = str(
+            source.get("type", "")
+        ).upper()
+
+        if source_type == "HADITH":
+            source_type = "HADIS"
+
+        if (
+            policy.requested_aspect == ASPECT_HADITH
+            and source_type != "HADIS"
+        ):
+            continue
+
+        if (
+            policy.requested_aspect == ASPECT_QURAN
+            and source_type != "QURAN"
+        ):
+            continue
+
+        if (
+            policy.requested_aspect == ASPECT_DALIL
+            and source_type
+            not in {"QURAN", "HADIS"}
+        ):
+            continue
+
+        if (
+            policy.requested_aspect == ASPECT_MUI
+            and source_type != "EKSTERNAL"
+        ):
+            continue
+
+        result.append(
+            source
+        )
+
+    return result
+
+
+def _normalize_sentence(
+    sentence: str,
+) -> str:
+    normalized = sentence.lower()
+    normalized = re.sub(
+        r"[*_`>#]",
+        " ",
+        normalized,
+    )
+    normalized = re.sub(
+        r"[^\w\s]",
+        " ",
+        normalized,
+    )
+    normalized = re.sub(
+        r"\s+",
+        " ",
+        normalized,
+    )
+    return normalized.strip()
+
+
+def _sentence_is_duplicate(
+    sentence: str,
+    previous_sentences: list[str],
+) -> bool:
+    normalized = _normalize_sentence(
+        sentence
+    )
+
+    tokens = set(
+        normalized.split()
+    )
+
+    if len(tokens) < 6:
+        return False
+
+    for previous in previous_sentences:
+        previous_normalized = _normalize_sentence(
+            previous
+        )
+
+        if normalized == previous_normalized:
+            return True
+
+        ratio = SequenceMatcher(
+            None,
+            normalized,
+            previous_normalized,
+        ).ratio()
+
+        if ratio >= 0.90:
+            return True
+
+        previous_tokens = set(
+            previous_normalized.split()
+        )
+
+        if not previous_tokens:
+            continue
+
+        union = tokens | previous_tokens
+
+        if not union:
+            continue
+
+        jaccard = len(
+            tokens & previous_tokens
+        ) / len(union)
+
+        if jaccard >= 0.88:
+            return True
+
+    return False
+
+
+def _split_sentences(
+    text: str,
+) -> list[str]:
+    return [
+        sentence.strip()
+        for sentence in re.split(
+            r"(?<=[.!?])\s+",
+            text,
+        )
+        if sentence.strip()
+    ]
+
+
+def _strip_opening_and_identity(
+    text: str,
+) -> str:
+    cleaned = (text or "").strip()
+
+    cleaned = re.sub(
+        (
+            r"^\s*assalamu[’']?alaikum"
+            r"(?:\s+warahmatullahi\s+wabarakatuh)?"
+            r"[\s,.:;!\-–—]*"
+        ),
+        "",
+        cleaned,
+        flags=re.IGNORECASE,
+    ).lstrip()
+
+    lines = cleaned.splitlines()
+
+    while lines and not lines[0].strip():
+        lines.pop(0)
+
+    while lines:
+        first_line = lines[0].strip()
+        normalized = first_line.lower()
+
+        is_separator = normalized in {
+            "---",
+            "***",
+            "___",
+        }
+
+        is_identity = (
+            "smart hijrah assistant" in normalized
+            and (
+                normalized.startswith("saya")
+                or normalized.startswith(
+                    "perkenalkan"
+                )
+            )
+        )
+
+        if is_separator or is_identity:
+            lines.pop(0)
+
+            while lines and not lines[0].strip():
+                lines.pop(0)
+
+            continue
+
+        break
+
+    return "\n".join(
+        lines
+    ).strip()
+
+
+def _strip_leading_heading(
+    text: str,
+) -> str:
+    cleaned = text.strip()
+
+    patterns = [
+        r"^\s*#{1,6}\s+.+?\n+",
+        r"^\s*\*\*(?:jawaban ringkas|jawaban lanjutan|kesimpulan|penjelasan lanjutan|rujukan yang diminta|untukmu saat ini|menurut sumber yang tersedia)\s*:\*\*\s*",
+        r"^\s*(?:jawaban ringkas|jawaban lanjutan|kesimpulan|penjelasan lanjutan)\s*:\s*",
+    ]
+
+    changed = True
+
+    while changed:
+        changed = False
+
+        for pattern in patterns:
+            updated = re.sub(
+                pattern,
+                "",
+                cleaned,
+                count=1,
+                flags=re.IGNORECASE,
+            ).lstrip()
+
+            if updated != cleaned:
+                cleaned = updated
+                changed = True
+
+    return cleaned
+
+
+def _limit_list_items(
+    block: str,
+    max_items: int,
+) -> str:
+    lines = block.splitlines()
+    output: list[str] = []
+    list_count = 0
+
+    for line in lines:
+        stripped = line.strip()
+
+        is_list_item = bool(
+            re.match(
+                r"^(?:[-*+]|\d+[.)])\s+",
+                stripped,
+            )
+        )
+
+        if is_list_item:
+            list_count += 1
+
+            if list_count > max_items:
+                continue
+
+        output.append(
+            line
+        )
+
+    return "\n".join(
+        output
+    ).strip()
+
+
+def _truncate_at_boundary(
+    text: str,
+    max_chars: int,
+) -> str:
+    if len(text) <= max_chars:
+        return text
+
+    candidate = text[:max_chars].rstrip()
+
+    boundary = max(
+        candidate.rfind(". "),
+        candidate.rfind("! "),
+        candidate.rfind("? "),
+        candidate.rfind("\n"),
+    )
+
+    if boundary >= int(
+        max_chars * 0.60
+    ):
+        candidate = candidate[
+            : boundary + 1
+        ].rstrip()
+
+    return candidate.rstrip(
+        " ,;:-"
+    ) + "…"
+
+
+def compress_followup_draft(
+    draft_text: str | None,
+    previous_assistant_text: str | None,
+    policy: FollowUpPolicy,
+) -> str:
+    """
+    Bersihkan dan kompres draft follow-up secara deterministik.
+
+    Tidak menggunakan LLM tambahan sehingga tidak menambah latency
+    atau biaya.
+    """
+    text = _strip_opening_and_identity(
+        draft_text or ""
+    )
+
+    if not text:
+        return ""
+
+    if not policy.enabled:
+        return text
+
+    if not policy.preserve_headings:
+        text = _strip_leading_heading(
+            text
+        )
+
+    previous_sentences = _split_sentences(
+        previous_assistant_text or ""
+    )
+
+    blocks = [
+        block.strip()
+        for block in re.split(
+            r"\n\s*\n",
+            text,
+        )
+        if block.strip()
+    ]
+
+    compressed_blocks: list[str] = []
+
+    for block in blocks:
+        block = _limit_list_items(
+            block=block,
+            max_items=policy.max_list_items,
+        )
+
+        if not block:
+            continue
+
+        is_list_block = any(
+            re.match(
+                r"^(?:[-*+]|\d+[.)])\s+",
+                line.strip(),
+            )
+            for line in block.splitlines()
+        )
+
+        if is_list_block:
+            compressed_blocks.append(
+                block
+            )
+        else:
+            unique_sentences = [
+                sentence
+                for sentence in _split_sentences(
+                    block
+                )
+                if not _sentence_is_duplicate(
+                    sentence,
+                    previous_sentences,
+                )
+            ]
+
+            unique_block = " ".join(
+                unique_sentences
+            ).strip()
+
+            if unique_block:
+                compressed_blocks.append(
+                    unique_block
+                )
+
+        if (
+            len(compressed_blocks)
+            >= policy.max_paragraphs
+        ):
+            break
+
+    if not compressed_blocks:
+        # Hindari jawaban kosong ketika seluruh draft sangat mirip
+        # dengan jawaban sebelumnya. Tetap berikan blok pertama yang
+        # sudah dibersihkan sebagai fallback.
+        first_block = blocks[0] if blocks else text
+
+        compressed_blocks = [
+            _limit_list_items(
+                block=first_block,
+                max_items=policy.max_list_items,
+            )
+        ]
+
+    result = "\n\n".join(
+        compressed_blocks[
+            : policy.max_paragraphs
+        ]
+    ).strip()
+
+    return _truncate_at_boundary(
+        text=result,
+        max_chars=policy.max_chars,
+    )
+
+
+================================================================================
+DUPLICATE FILE SEARCH
+================================================================================
+
+./main/utils_rag/followup_compression.py
+./main/utils_rag/test_smart_ai_followup_compression.py
+./main/management/commands/followup_compression.py
+./main/management/commands/test_smart_ai_followup_compression.py
+
+================================================================================
+REFERENCE SEARCH
+================================================================================
+
+main/utils_rag/followup_compression.py:68:    include_references: bool
+main/utils_rag/followup_compression.py:69:    include_practical_steps: bool
+main/utils_rag/followup_compression.py:207:def build_followup_policy(
+main/utils_rag/followup_compression.py:238:            include_references=True,
+main/utils_rag/followup_compression.py:239:            include_practical_steps=(
+main/utils_rag/followup_compression.py:267:    include_references = False
+main/utils_rag/followup_compression.py:268:    include_practical_steps = False
+main/utils_rag/followup_compression.py:280:        include_references = True
+main/utils_rag/followup_compression.py:303:        include_practical_steps = True
+main/utils_rag/followup_compression.py:328:        include_references = is_refinement
+main/utils_rag/followup_compression.py:347:        include_references = is_refinement
+main/utils_rag/followup_compression.py:361:        include_references=include_references,
+main/utils_rag/followup_compression.py:362:        include_practical_steps=(
+main/utils_rag/followup_compression.py:363:            include_practical_steps
+main/utils_rag/followup_compression.py:377:def build_followup_prompt_instruction(
+main/utils_rag/followup_compression.py:402:    if not policy.include_references:
+main/utils_rag/followup_compression.py:454:    if not policy.include_references:
+main/utils_rag/evidence_composer.py:28:    build_followup_policy,
+main/utils_rag/evidence_composer.py:94:    followup_policy: FollowUpPolicy | None = None,
+main/utils_rag/evidence_composer.py:100:    if followup_policy and followup_policy.enabled:
+main/utils_rag/evidence_composer.py:101:        if not followup_policy.include_context_reference:
+main/utils_rag/evidence_composer.py:456:    followup_policy: FollowUpPolicy,
+main/utils_rag/evidence_composer.py:472:    if followup_policy.enabled:
+main/utils_rag/evidence_composer.py:478:            policy=followup_policy,
+main/utils_rag/evidence_composer.py:481:    if followup_policy.enabled:
+main/utils_rag/evidence_composer.py:482:        aspect = followup_policy.requested_aspect
+main/utils_rag/evidence_composer.py:620:    followup_policy: FollowUpPolicy,
+main/utils_rag/evidence_composer.py:622:    if followup_policy.enabled:
+main/utils_rag/evidence_composer.py:623:        if not followup_policy.include_practical_steps:
+main/utils_rag/evidence_composer.py:652:    followup_policy: FollowUpPolicy,
+main/utils_rag/evidence_composer.py:656:    if followup_policy.enabled:
+main/utils_rag/evidence_composer.py:657:        if not followup_policy.include_doa:
+main/utils_rag/evidence_composer.py:681:    followup_policy: FollowUpPolicy,
+main/utils_rag/evidence_composer.py:684:        followup_policy.enabled
+main/utils_rag/evidence_composer.py:685:        and not followup_policy.include_caution
+main/utils_rag/evidence_composer.py:748:    followup_policy=None,
+main/utils_rag/evidence_composer.py:766:    if followup_policy is None:
+main/utils_rag/evidence_composer.py:767:        followup_policy = build_followup_policy(
+main/utils_rag/evidence_composer.py:780:        policy=followup_policy,
+main/utils_rag/evidence_composer.py:809:        followup_policy=followup_policy,
+main/utils_rag/evidence_composer.py:820:        followup_policy=followup_policy,
+main/utils_rag/evidence_composer.py:829:        not followup_policy.enabled
+main/utils_rag/evidence_composer.py:830:        or followup_policy.include_references
+main/utils_rag/evidence_composer.py:843:        followup_policy=followup_policy,
+main/utils_rag/evidence_composer.py:849:        followup_policy=followup_policy,
+main/utils_rag/evidence_composer.py:859:        followup_policy=followup_policy,
+main/utils_rag/evidence_composer.py:888:        "followup_policy": followup_policy.to_dict(),
+main/utils_rag/evidence_composer.py:903:    followup_policy=None,
+main/utils_rag/evidence_composer.py:920:    if followup_policy is None:
+main/utils_rag/evidence_composer.py:921:        followup_policy = build_followup_policy(
+main/utils_rag/evidence_composer.py:934:        policy=followup_policy,
+main/utils_rag/evidence_composer.py:954:        followup_policy=followup_policy,
+main/utils_rag/evidence_composer.py:967:    if followup_policy.enabled:
+main/utils_rag/evidence_composer.py:968:        if followup_policy.requested_aspect == ASPECT_QURAN:
+main/utils_rag/evidence_composer.py:970:        elif followup_policy.requested_aspect == ASPECT_HADITH:
+main/utils_rag/evidence_composer.py:1008:        if not followup_policy.enabled:
+main/utils_rag/evidence_composer.py:1018:            if followup_policy.enabled
+main/utils_rag/evidence_composer.py:1045:            "followup_policy": followup_policy.to_dict(),
+main/utils_rag/evidence_composer.py:1048:    if followup_policy.enabled:
+main/utils_rag/evidence_composer.py:1049:        if followup_policy.requested_aspect == ASPECT_HADITH:
+main/utils_rag/evidence_composer.py:1051:        elif followup_policy.requested_aspect == ASPECT_QURAN:
+main/utils_rag/evidence_composer.py:1076:            if followup_policy.enabled
+main/utils_rag/evidence_composer.py:1097:        "followup_policy": followup_policy.to_dict(),
+main/utils_rag/integration.py:24:    build_followup_policy,
+main/utils_rag/integration.py:25:    build_followup_prompt_instruction,
+main/utils_rag/integration.py:139:        followup_policy = build_followup_policy(
+main/utils_rag/integration.py:147:        if followup_policy.enabled:
+main/utils_rag/integration.py:162:            build_followup_prompt_instruction(
+main/utils_rag/integration.py:163:                followup_policy
+main/utils_rag/integration.py:175:            f"enabled={followup_policy.enabled} | "
+main/utils_rag/integration.py:176:            f"aspect={followup_policy.requested_aspect} | "
+main/utils_rag/integration.py:177:            f"max_paragraphs={followup_policy.max_paragraphs}"
+main/utils_rag/integration.py:201:                "followup_policy": followup_policy.to_dict(),
+main/utils_rag/integration.py:224:            direct_followup_policy = (
+main/utils_rag/integration.py:225:                build_followup_policy(
+main/utils_rag/integration.py:244:                "followup_policy": (
+main/utils_rag/integration.py:245:                    direct_followup_policy.to_dict()
+main/utils_rag/integration.py:277:            thematic_followup_policy = (
+main/utils_rag/integration.py:278:                build_followup_policy(
+main/utils_rag/integration.py:292:                followup_policy=(
+main/utils_rag/integration.py:293:                    thematic_followup_policy
+main/utils_rag/integration.py:361:                "followup_policy": composed.get(
+main/utils_rag/integration.py:362:                    "followup_policy",
+main/utils_rag/integration.py:363:                    thematic_followup_policy.to_dict(),
+main/utils_rag/integration.py:414:        final_followup_policy = (
+main/utils_rag/integration.py:415:            build_followup_policy(
+main/utils_rag/integration.py:434:            followup_policy=final_followup_policy,
+main/utils_rag/integration.py:508:            "followup_policy": grounded.get(
+main/utils_rag/integration.py:509:                "followup_policy",
+main/utils_rag/integration.py:510:                final_followup_policy.to_dict(),
+main/utils_rag/test_smart_ai_followup_compression.py:23:    build_followup_policy,
+main/utils_rag/test_smart_ai_followup_compression.py:24:    build_followup_prompt_instruction,
+main/utils_rag/test_smart_ai_followup_compression.py:174:            policy = build_followup_policy(
+main/utils_rag/test_smart_ai_followup_compression.py:207:                policy.include_references
+main/utils_rag/test_smart_ai_followup_compression.py:212:                        "include_references: "
+main/utils_rag/test_smart_ai_followup_compression.py:214:                        f"actual={policy.include_references}"
+main/utils_rag/test_smart_ai_followup_compression.py:219:                policy.include_practical_steps
+main/utils_rag/test_smart_ai_followup_compression.py:224:                        "include_practical_steps: "
+main/utils_rag/test_smart_ai_followup_compression.py:226:                        f"actual={policy.include_practical_steps}"
+main/utils_rag/test_smart_ai_followup_compression.py:367:        return build_followup_policy(
+main/utils_rag/test_smart_ai_followup_compression.py:550:        prompt = build_followup_prompt_instruction(
+main/management/commands/followup_compression.py:68:    include_references: bool
+main/management/commands/followup_compression.py:69:    include_practical_steps: bool
+main/management/commands/followup_compression.py:207:def build_followup_policy(
+main/management/commands/followup_compression.py:238:            include_references=True,
+main/management/commands/followup_compression.py:239:            include_practical_steps=(
+main/management/commands/followup_compression.py:267:    include_references = False
+main/management/commands/followup_compression.py:268:    include_practical_steps = False
+main/management/commands/followup_compression.py:280:        include_references = True
+main/management/commands/followup_compression.py:303:        include_practical_steps = True
+main/management/commands/followup_compression.py:328:        include_references = is_refinement
+main/management/commands/followup_compression.py:347:        include_references = is_refinement
+main/management/commands/followup_compression.py:361:        include_references=include_references,
+main/management/commands/followup_compression.py:362:        include_practical_steps=(
+main/management/commands/followup_compression.py:363:            include_practical_steps
+main/management/commands/followup_compression.py:377:def build_followup_prompt_instruction(
+main/management/commands/followup_compression.py:402:    if not policy.include_references:
+main/management/commands/followup_compression.py:454:    if not policy.include_references:
+main/management/commands/test_smart_ai_followup_compression.py:23:    build_followup_policy,
+main/management/commands/test_smart_ai_followup_compression.py:24:    build_followup_prompt_instruction,
+main/management/commands/test_smart_ai_followup_compression.py:174:            policy = build_followup_policy(
+main/management/commands/test_smart_ai_followup_compression.py:207:                policy.include_references
+main/management/commands/test_smart_ai_followup_compression.py:212:                        "include_references: "
+main/management/commands/test_smart_ai_followup_compression.py:214:                        f"actual={policy.include_references}"
+main/management/commands/test_smart_ai_followup_compression.py:219:                policy.include_practical_steps
+main/management/commands/test_smart_ai_followup_compression.py:224:                        "include_practical_steps: "
+main/management/commands/test_smart_ai_followup_compression.py:226:                        f"actual={policy.include_practical_steps}"
+main/management/commands/test_smart_ai_followup_compression.py:367:        return build_followup_policy(
+main/management/commands/test_smart_ai_followup_compression.py:550:        prompt = build_followup_prompt_instruction(

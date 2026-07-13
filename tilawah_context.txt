@@ -1,0 +1,3531 @@
+==================== PROJECT STRUCTURE ====================
+main/.DS_Store
+main/__init__.py
+main/__pycache__/__init__.cpython-312.pyc
+main/__pycache__/admin.cpython-312.pyc
+main/__pycache__/apps.cpython-312.pyc
+main/__pycache__/email_utils.cpython-312.pyc
+main/__pycache__/fallback_ai_client.cpython-312.pyc
+main/__pycache__/firebase.cpython-312.pyc
+main/__pycache__/google_auth_views.cpython-312.pyc
+main/__pycache__/models.cpython-312.pyc
+main/__pycache__/models_ai.cpython-312.pyc
+main/__pycache__/models_artikel_islami.cpython-312.pyc
+main/__pycache__/models_book_author.cpython-312.pyc
+main/__pycache__/models_book_category.cpython-312.pyc
+main/__pycache__/models_doa.cpython-312.pyc
+main/__pycache__/models_feed.cpython-312.pyc
+main/__pycache__/models_fest.cpython-312.pyc
+main/__pycache__/models_gamification.cpython-312.pyc
+main/__pycache__/models_hadis.cpython-312.pyc
+main/__pycache__/models_healthy_tip.cpython-312.pyc
+main/__pycache__/models_islamic_book.cpython-312.pyc
+main/__pycache__/models_kisah_nabi.cpython-312.pyc
+main/__pycache__/models_klinik.cpython-312.pyc
+main/__pycache__/models_masjid.cpython-312.pyc
+main/__pycache__/models_media_category.cpython-312.pyc
+main/__pycache__/models_ngaji.cpython-312.pyc
+main/__pycache__/models_short_islami.cpython-312.pyc
+main/__pycache__/models_tilawah.cpython-312.pyc
+main/__pycache__/models_tuntunan_shalat.cpython-312.pyc
+main/__pycache__/my_utils.cpython-312.pyc
+main/__pycache__/pagination_utils.cpython-312.pyc
+main/__pycache__/urls.cpython-312.pyc
+main/__pycache__/views.cpython-312.pyc
+main/admin.py
+main/apps.py
+main/dummy kisah nabi.sql
+main/email_backend.py
+main/email_utils.py
+main/endpoint/.DS_Store
+main/endpoint/__init__.py
+main/endpoint/__pycache__/__init__.cpython-312.pyc
+main/endpoint/__pycache__/gamification_views.cpython-312.pyc
+main/endpoint/__pycache__/hadis_views.cpython-312.pyc
+main/endpoint/__pycache__/klinik_views.cpython-312.pyc
+main/endpoint/__pycache__/masjid_views.cpython-312.pyc
+main/endpoint/__pycache__/spiritual_views.cpython-312.pyc
+main/endpoint/ai/__pycache__/chat_views.cpython-312.pyc
+main/endpoint/ai/chat_views.py
+main/endpoint/doa/__init__.py
+main/endpoint/doa/__pycache__/__init__.cpython-312.pyc
+main/endpoint/doa/__pycache__/views.cpython-312.pyc
+main/endpoint/doa/views.py
+main/endpoint/e_pustaka/__init__.py
+main/endpoint/e_pustaka/__pycache__/__init__.cpython-312.pyc
+main/endpoint/e_pustaka/__pycache__/services.cpython-312.pyc
+main/endpoint/e_pustaka/__pycache__/views.cpython-312.pyc
+main/endpoint/e_pustaka/services.py
+main/endpoint/e_pustaka/views.py
+main/endpoint/gamification_views.py
+main/endpoint/hadis_views.py
+main/endpoint/healthy_tip/__init__.py
+main/endpoint/healthy_tip/__pycache__/__init__.cpython-312.pyc
+main/endpoint/healthy_tip/__pycache__/views.cpython-312.pyc
+main/endpoint/healthy_tip/views.py
+main/endpoint/kisah_nabi/__init__.py
+main/endpoint/kisah_nabi/__pycache__/__init__.cpython-312.pyc
+main/endpoint/kisah_nabi/__pycache__/views.cpython-312.pyc
+main/endpoint/kisah_nabi/views.py
+main/endpoint/klinik_views.py
+main/endpoint/lifestyle/__init__.py
+main/endpoint/lifestyle/__pycache__/__init__.cpython-312.pyc
+main/endpoint/lifestyle/__pycache__/fest_views.cpython-312.pyc
+main/endpoint/lifestyle/fest_views.py
+main/endpoint/masjid_views.py
+main/endpoint/media_islami/__init__.py
+main/endpoint/media_islami/__pycache__/__init__.cpython-312.pyc
+main/endpoint/media_islami/__pycache__/services.cpython-312.pyc
+main/endpoint/media_islami/__pycache__/views.cpython-312.pyc
+main/endpoint/media_islami/services.py
+main/endpoint/media_islami/views.py
+main/endpoint/ngaji/__init__.py
+main/endpoint/ngaji/__pycache__/__init__.cpython-312.pyc
+main/endpoint/ngaji/__pycache__/kelas_views.cpython-312.pyc
+main/endpoint/ngaji/__pycache__/pelajaran_views.cpython-312.pyc
+main/endpoint/ngaji/kelas_views.py
+main/endpoint/ngaji/pelajaran_views.py
+main/endpoint/social/.DS_Store
+main/endpoint/social/__init__.py
+main/endpoint/social/__pycache__/__init__.cpython-312.pyc
+main/endpoint/social/__pycache__/comment_views.cpython-312.pyc
+main/endpoint/social/__pycache__/feed_views.cpython-312.pyc
+main/endpoint/social/__pycache__/follow_views.cpython-312.pyc
+main/endpoint/social/__pycache__/story_views.cpython-312.pyc
+main/endpoint/social/comment_views.py
+main/endpoint/social/feed_views.py
+main/endpoint/social/follow_views.py
+main/endpoint/social/story_views.py
+main/endpoint/spiritual_views.py
+main/endpoint/tilawah/__init__.py
+main/endpoint/tilawah/__pycache__/__init__.cpython-312.pyc
+main/endpoint/tilawah/__pycache__/tilawah_views.cpython-312.pyc
+main/endpoint/tilawah/tilawah_views.py
+main/endpoint/tuntunan_shalat/__init__.py
+main/endpoint/tuntunan_shalat/__pycache__/__init__.cpython-312.pyc
+main/endpoint/tuntunan_shalat/__pycache__/views.cpython-312.pyc
+main/endpoint/tuntunan_shalat/views.py
+main/fallback_ai_client.py
+main/firebase.py
+main/gemini_client.py
+main/google_auth_views.py
+main/management/.DS_Store
+main/management/__init__.py
+main/management/__pycache__/__init__.cpython-312.pyc
+main/management/commands/.DS_Store
+main/management/commands/__init__.py
+main/management/commands/__pycache__/__init__.cpython-312.pyc
+main/management/commands/__pycache__/test_smart_ai_answer_strategy.cpython-312.pyc
+main/management/commands/__pycache__/test_smart_ai_conversation_context.cpython-312.pyc
+main/management/commands/__pycache__/test_smart_ai_conversation_hardening.cpython-312.pyc
+main/management/commands/__pycache__/test_smart_ai_followup_compression.cpython-312.pyc
+main/management/commands/__pycache__/test_smart_ai_naturalness.cpython-312.pyc
+main/management/commands/__pycache__/test_smart_ai_strategy_prompt.cpython-312.pyc
+main/management/commands/generate_hadis_embeddings.py
+main/management/commands/generate_quran_embeddings.py
+main/management/commands/import_hadis.py
+main/management/commands/import_quran_data.py
+main/management/commands/import_quran_final.py
+main/management/commands/import_quran_full.py
+main/management/commands/populate_ayah_pool.py
+main/management/commands/seed_doa.py
+main/management/commands/seed_healthy.py
+main/management/commands/seed_media_islami.py
+main/management/commands/seed_pustaka.py
+main/management/commands/seed_tuntunan_shalat.py
+main/management/commands/send_prayer_notifications.py
+main/management/commands/test_smart_ai.py
+main/management/commands/test_smart_ai_answer_strategy.py
+main/management/commands/test_smart_ai_benchmark.py
+main/management/commands/test_smart_ai_conversation_context.py
+main/management/commands/test_smart_ai_conversation_hardening.py
+main/management/commands/test_smart_ai_followup_compression.py
+main/management/commands/test_smart_ai_naturalness.py
+main/management/commands/test_smart_ai_strategy_prompt.py
+main/migrations/0001_initial.py
+main/migrations/0002_prayermonthdocument.py
+main/migrations/0003_userprayerpreference.py
+main/migrations/0004_prayernotificationlog_and_more.py
+main/migrations/0005_user_foto_profil.py
+main/migrations/0006_feed_feedcomment_feedpicture_story_feedlike_follow_and_more.py
+main/migrations/0007_fest.py
+main/migrations/0008_remove_fest_lifestyle_f_categor_7c31fc_idx_and_more.py
+main/migrations/0009_masjidreview_masjidreviewphoto_and_more.py
+main/migrations/0010_klinikreview_klinikreviewphoto_and_more.py
+main/migrations/0011_alter_klinikreview_place_id.py
+main/migrations/0012_alter_klinikreview_place_id.py
+main/migrations/0013_detailpelajaran_kelastahfidz_pelajaran_kelasschedule_and_more.py
+main/migrations/0014_remove_feedpicture_feed_and_more.py
+main/migrations/0015_user_email_verification_token_user_email_verified_and_more.py
+main/migrations/0016_kisahnabi_kisahnabiepisode_kisahnabireadlog.py
+main/migrations/0017_chatconversation_chatmessage.py
+main/migrations/0018_tilawahayahpool_tilawahsession.py
+main/migrations/0019_rename_is_active_kelasenrollment_is_dewasa_and_more.py
+main/migrations/0020_tilawahayahpool_ayah_text_modern.py
+main/migrations/0021_rename_ayah_text_modern_tilawahayahpool_ayah_translation_and_more.py
+main/migrations/0022_alter_tilawahayahpool_options_tilawahayahpool_juz_and_more.py
+main/migrations/0023_userlevel_amalancheckin_userstreak.py
+main/migrations/0024_user_jenis_kelamin.py
+main/migrations/0025_feed_tagged_users.py
+main/migrations/0026_user_banner.py
+main/migrations/0027_feedcomment_parent_feedcomment_replied_to.py
+main/migrations/0028_commentlike.py
+main/migrations/0029_feed_visibility.py
+main/migrations/0030_kitabhadis_hadis.py
+main/migrations/0031_auto_20260704_0854.py
+main/migrations/0032_hadis_embedding.py
+main/migrations/0033_alter_hadis_embedding.py
+main/migrations/0034_tilawahayahpool_embedding.py
+main/migrations/0035_tuntunanshalat_tuntunanshalatpage.py
+main/migrations/0036_doacategory_doa_doacontent_doabookmark.py
+main/migrations/0037_tuntunanshalatimage_remove_doa_hero_image_url_and_more.py
+main/migrations/0038_alter_doa_options_alter_doabookmark_options_and_more.py
+main/migrations/0039_tuntunanshalatblock_delete_tuntunanshalatimage_and_more.py
+main/migrations/0040_alter_tuntunanshalatpage_unique_together_and_more.py
+main/migrations/0041_healthytip.py
+main/migrations/0042_mediacategory_artikelislami_shortislami.py
+main/migrations/0043_alter_shortislami_video.py
+main/migrations/0044_bookauthor_bookcategory_islamicbook.py
+main/migrations/0045_alter_islamicbook_pdf.py
+main/migrations/__init__.py
+main/migrations/__pycache__/0001_initial.cpython-312.pyc
+main/migrations/__pycache__/0002_prayermonthdocument.cpython-312.pyc
+main/migrations/__pycache__/0003_userprayerpreference.cpython-312.pyc
+main/migrations/__pycache__/0004_prayernotificationlog_and_more.cpython-312.pyc
+main/migrations/__pycache__/0005_user_foto_profil.cpython-312.pyc
+main/migrations/__pycache__/0006_feed_feedcomment_feedpicture_story_feedlike_follow_and_more.cpython-312.pyc
+main/migrations/__pycache__/0007_fest.cpython-312.pyc
+main/migrations/__pycache__/0008_remove_fest_lifestyle_f_categor_7c31fc_idx_and_more.cpython-312.pyc
+main/migrations/__pycache__/0009_masjidreview_masjidreviewphoto_and_more.cpython-312.pyc
+main/migrations/__pycache__/0010_klinikreview_klinikreviewphoto_and_more.cpython-312.pyc
+main/migrations/__pycache__/0011_alter_klinikreview_place_id.cpython-312.pyc
+main/migrations/__pycache__/0012_alter_klinikreview_place_id.cpython-312.pyc
+main/migrations/__pycache__/0013_detailpelajaran_kelastahfidz_pelajaran_kelasschedule_and_more.cpython-312.pyc
+main/migrations/__pycache__/0014_remove_feedpicture_feed_and_more.cpython-312.pyc
+main/migrations/__pycache__/0015_user_email_verification_token_user_email_verified_and_more.cpython-312.pyc
+main/migrations/__pycache__/0016_kisahnabi_kisahnabiepisode_kisahnabireadlog.cpython-312.pyc
+main/migrations/__pycache__/0017_chatconversation_chatmessage.cpython-312.pyc
+main/migrations/__pycache__/0018_tilawahayahpool_tilawahsession.cpython-312.pyc
+main/migrations/__pycache__/0019_rename_is_active_kelasenrollment_is_dewasa_and_more.cpython-312.pyc
+main/migrations/__pycache__/0020_tilawahayahpool_ayah_text_modern.cpython-312.pyc
+main/migrations/__pycache__/0021_rename_ayah_text_modern_tilawahayahpool_ayah_translation_and_more.cpython-312.pyc
+main/migrations/__pycache__/0022_alter_tilawahayahpool_options_tilawahayahpool_juz_and_more.cpython-312.pyc
+main/migrations/__pycache__/0023_userlevel_amalancheckin_userstreak.cpython-312.pyc
+main/migrations/__pycache__/0024_user_jenis_kelamin.cpython-312.pyc
+main/migrations/__pycache__/0025_feed_tagged_users.cpython-312.pyc
+main/migrations/__pycache__/0026_user_banner.cpython-312.pyc
+main/migrations/__pycache__/0027_feedcomment_parent_feedcomment_replied_to.cpython-312.pyc
+main/migrations/__pycache__/0028_commentlike.cpython-312.pyc
+main/migrations/__pycache__/0029_feed_visibility.cpython-312.pyc
+main/migrations/__pycache__/0030_kitabhadis_hadis.cpython-312.pyc
+main/migrations/__pycache__/0031_auto_20260704_0854.cpython-312.pyc
+main/migrations/__pycache__/0032_hadis_embedding.cpython-312.pyc
+main/migrations/__pycache__/0033_alter_hadis_embedding.cpython-312.pyc
+main/migrations/__pycache__/0034_tilawahayahpool_embedding.cpython-312.pyc
+main/migrations/__pycache__/0035_tuntunanshalat_tuntunanshalatpage.cpython-312.pyc
+main/migrations/__pycache__/0036_doacategory_doa_doacontent_doabookmark.cpython-312.pyc
+main/migrations/__pycache__/0037_tuntunanshalatimage_remove_doa_hero_image_url_and_more.cpython-312.pyc
+main/migrations/__pycache__/0038_alter_doa_options_alter_doabookmark_options_and_more.cpython-312.pyc
+main/migrations/__pycache__/0039_tuntunanshalatblock_delete_tuntunanshalatimage_and_more.cpython-312.pyc
+main/migrations/__pycache__/0040_alter_tuntunanshalatpage_unique_together_and_more.cpython-312.pyc
+main/migrations/__pycache__/0041_healthytip.cpython-312.pyc
+main/migrations/__pycache__/0042_mediacategory_artikelislami_shortislami.cpython-312.pyc
+main/migrations/__pycache__/0043_alter_shortislami_video.cpython-312.pyc
+main/migrations/__pycache__/0044_bookauthor_bookcategory_islamicbook.cpython-312.pyc
+main/migrations/__pycache__/0045_alter_islamicbook_pdf.cpython-312.pyc
+main/migrations/__pycache__/__init__.cpython-312.pyc
+main/models.py
+main/models_ai.py
+main/models_artikel_islami.py
+main/models_book_author.py
+main/models_book_category.py
+main/models_doa.py
+main/models_faraid.py
+main/models_feed.py
+main/models_fest.py
+main/models_gamification.py
+main/models_hadis.py
+main/models_healthy_tip.py
+main/models_islamic_book.py
+main/models_kisah_nabi.py
+main/models_klinik.py
+main/models_masjid.py
+main/models_media_category.py
+main/models_ngaji.py
+main/models_short_islami.py
+main/models_tilawah.py
+main/models_tuntunan_shalat.py
+main/my_utils.py
+main/pagination_utils.py
+main/serializers/__init__.py
+main/serializers/__pycache__/__init__.cpython-312.pyc
+main/serializers/__pycache__/ai_serializers.cpython-312.pyc
+main/serializers/__pycache__/auth_serializers.cpython-312.pyc
+main/serializers/__pycache__/feed_serializers.cpython-312.pyc
+main/serializers/__pycache__/fest_serializers.cpython-312.pyc
+main/serializers/__pycache__/gamification_serializers.cpython-312.pyc
+main/serializers/__pycache__/healthy_tip_serializers.cpython-312.pyc
+main/serializers/__pycache__/islamic_book_serializer.cpython-312.pyc
+main/serializers/__pycache__/kisah_nabi_serializers.cpython-312.pyc
+main/serializers/__pycache__/klinik_serializers.cpython-312.pyc
+main/serializers/__pycache__/masjid_serializers.cpython-312.pyc
+main/serializers/__pycache__/media_islami_serializers.cpython-312.pyc
+main/serializers/__pycache__/ngaji_serializers.cpython-312.pyc
+main/serializers/__pycache__/tilawah_serializers.cpython-312.pyc
+main/serializers/__pycache__/user_serializers.cpython-312.pyc
+main/serializers/ai_serializers.py
+main/serializers/auth_serializers.py
+main/serializers/feed_serializers.py
+main/serializers/fest_serializers.py
+main/serializers/gamification_serializers.py
+main/serializers/healthy_tip_serializers.py
+main/serializers/islamic_book_serializer.py
+main/serializers/kisah_nabi_serializers.py
+main/serializers/klinik_serializers.py
+main/serializers/masjid_serializers.py
+main/serializers/media_islami_serializers.py
+main/serializers/ngaji_serializers.py
+main/serializers/tilawah_serializers.py
+main/serializers/user_serializers.py
+main/tests.py
+main/urls.py
+main/utils.py
+main/utils_embedding/__pycache__/embedder.cpython-312.pyc
+main/utils_embedding/embedder.py
+main/utils_epustaka/__pycache__/file_validator.cpython-312.pyc
+main/utils_epustaka/file_validator.py
+main/utils_gamification/__pycache__/gamification_constants.cpython-312.pyc
+main/utils_gamification/__pycache__/gamification_helpers.cpython-312.pyc
+main/utils_gamification/gamification_constants.py
+main/utils_gamification/gamification_helpers.py
+main/utils_hadis/__pycache__/hybrid_search.cpython-312.pyc
+main/utils_hadis/__pycache__/search.cpython-312.pyc
+main/utils_hadis/__pycache__/semantic_search.cpython-312.pyc
+main/utils_hadis/clean_sanad.py
+main/utils_hadis/hybrid_search.py
+main/utils_hadis/search.py
+main/utils_hadis/semantic_search.py
+main/utils_media_islami/__pycache__/file_validator.cpython-312.pyc
+main/utils_media_islami/file_validator.py
+main/utils_nlp_backup/__init__.py
+main/utils_nlp_backup/processor.py
+main/utils_nlp_backup/weights.py
+main/utils_rag/.DS_Store
+main/utils_rag/__pycache__/answer_strategy.cpython-312.pyc
+main/utils_rag/__pycache__/answer_strategy_prompt.cpython-312.pyc
+main/utils_rag/__pycache__/conversation_context.cpython-312.pyc
+main/utils_rag/__pycache__/direct_lookup.cpython-312.pyc
+main/utils_rag/__pycache__/evidence_composer.cpython-312.pyc
+main/utils_rag/__pycache__/extractor.cpython-312.pyc
+main/utils_rag/__pycache__/final_checker.cpython-312.pyc
+main/utils_rag/__pycache__/followup_compression.cpython-312.pyc
+main/utils_rag/__pycache__/integration.cpython-312.pyc
+main/utils_rag/__pycache__/prompts.cpython-312.pyc
+main/utils_rag/__pycache__/reference_parser.cpython-312.pyc
+main/utils_rag/__pycache__/router.cpython-312.pyc
+main/utils_rag/__pycache__/thematic_retrieval.cpython-312.pyc
+main/utils_rag/__pycache__/topic_classifier.cpython-312.pyc
+main/utils_rag/__pycache__/topic_embedding.cpython-312.pyc
+main/utils_rag/__pycache__/topic_llm_classifier.cpython-312.pyc
+main/utils_rag/__pycache__/verifier_guardrails.cpython-312.pyc
+main/utils_rag/answer_strategy.py
+main/utils_rag/answer_strategy_prompt.py
+main/utils_rag/conversation_context.py
+main/utils_rag/direct_lookup.py
+main/utils_rag/evidence_composer.py
+main/utils_rag/extractor.py
+main/utils_rag/final_checker.py
+main/utils_rag/followup_compression.py
+main/utils_rag/integration.py
+main/utils_rag/prompts.py
+main/utils_rag/reference_parser.py
+main/utils_rag/router.py
+main/utils_rag/thematic_retrieval.py
+main/utils_rag/topic_classifier.py
+main/utils_rag/topic_embedding.py
+main/utils_rag/topic_llm_classifier.py
+main/utils_rag/verifier_guardrails.py
+main/utils_tilawah/__pycache__/feedback_builder.cpython-312.pyc
+main/utils_tilawah/__pycache__/tajwid_engine.cpython-312.pyc
+main/utils_tilawah/__pycache__/whisper_engine.cpython-312.pyc
+main/utils_tilawah/__pycache__/word_matcher.cpython-312.pyc
+main/utils_tilawah/feedback_builder.py
+main/utils_tilawah/quran_data.py
+main/utils_tilawah/tajwid_classifier.py
+main/utils_tilawah/tajwid_engine.py
+main/utils_tilawah/whisper_engine.py
+main/utils_tilawah/word_matcher.py
+main/views.py
+
+
+==================== FILE CONTENT ====================
+
+====================================================================
+FILE: main/endpoint/tilawah/tilawah_views.py
+====================================================================
+import os
+import uuid
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+
+from main.models_tilawah import TilawahAyahPool, TilawahSession
+from main.serializers.tilawah_serializers import TilawahAyahSerializer, TilawahSessionSerializer
+from main.utils_tilawah.whisper_engine import transcribe_audio
+from main.utils_tilawah.feedback_builder import build_feedback
+from main.pagination_utils import paginate_queryset
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_random_ayah(request):
+    """
+    GET /tilawah/ayah/random/?level=basic|intermediate|expert
+    Return ayat random sesuai level
+    """
+    level = request.GET.get('level', 'basic')
+
+    if level not in ['basic', 'intermediate', 'expert']:
+        return Response(
+            {'success': False, 'message': 'Level tidak valid. Gunakan basic, intermediate, atau expert.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Exclude ayat yang sudah pernah dibaca user (opsional, ambil random saja)
+    ayahs = TilawahAyahPool.objects.filter(level=level)
+    if not ayahs.exists():
+        return Response(
+            {'success': False, 'message': 'Tidak ada ayat untuk level ini.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Random satu ayat
+    ayah = ayahs.order_by('?').first()
+    serializer = TilawahAyahSerializer(ayah)
+
+    return Response({
+        'success': True,
+        'message': 'Ayat berhasil diambil.',
+        'data': serializer.data
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
+def submit_tilawah(request):
+    """
+    POST /tilawah/submit/
+    Body (multipart/form-data):
+        - audio: file (mp3/wav)
+        - surah_number: int
+        - ayah_number: int
+        - level: str
+    """
+    # Validasi input
+    audio_file = request.FILES.get('audio')
+    surah_number = request.data.get('surah_number')
+    ayah_number = request.data.get('ayah_number')
+    level = request.data.get('level', 'basic')
+
+    if not audio_file:
+        return Response(
+            {'success': False, 'message': 'File audio wajib diisi.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if not surah_number or not ayah_number:
+        return Response(
+            {'success': False, 'message': 'surah_number dan ayah_number wajib diisi.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if level not in ['basic', 'intermediate', 'expert']:
+        return Response(
+            {'success': False, 'message': 'Level tidak valid.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Ambil ayat referensi dari database
+    try:
+        ayah_obj = TilawahAyahPool.objects.get(
+            surah_number=int(surah_number),
+            ayah_number=int(ayah_number)
+        )
+    except TilawahAyahPool.DoesNotExist:
+        return Response(
+            {'success': False, 'message': 'Ayat tidak ditemukan.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Validasi format audio
+    allowed_formats = ['audio/mpeg', 'audio/wav', 'audio/mp3', 'audio/x-wav',
+                       'audio/m4a', 'audio/x-m4a', 'video/webm', 'audio/webm']
+    if audio_file.content_type not in allowed_formats:
+        # Fallback cek ekstensi
+        ext = os.path.splitext(audio_file.name)[1].lower()
+        if ext not in ['.mp3', '.wav', '.m4a', '.webm']:
+            return Response(
+                {'success': False, 'message': 'Format audio tidak didukung. Gunakan mp3 atau wav.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    # Simpan audio sementara
+    temp_filename = f"tilawah_temp_{uuid.uuid4().hex}{os.path.splitext(audio_file.name)[1]}"
+    temp_path = os.path.join(settings.MEDIA_ROOT, 'tilawah_temp', temp_filename)
+    os.makedirs(os.path.dirname(temp_path), exist_ok=True)
+
+    with open(temp_path, 'wb+') as f:
+        for chunk in audio_file.chunks():
+            f.write(chunk)
+
+    try:
+        # Transkripsi audio dengan Tarteel Whisper
+        transcribe_result = transcribe_audio(temp_path)
+
+        if not transcribe_result['success']:
+            return Response(
+                {'success': False, 'message': f'Gagal memproses audio: {transcribe_result["error"]}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        transcript = transcribe_result['transcript']
+
+        # Build feedback
+        feedback_result = build_feedback(
+            ayah_text=ayah_obj.ayah_text,
+            transcript=transcript,
+            user_level=level
+        )
+
+        # Simpan session ke database
+        session = TilawahSession.objects.create(
+            user=request.user,
+            surah_number=ayah_obj.surah_number,
+            surah_name=ayah_obj.surah_name,
+            ayah_number=ayah_obj.ayah_number,
+            ayah_text=ayah_obj.ayah_text,
+            level=level,
+            tajwid_score=feedback_result['tajwid_score'],
+            word_accuracy=feedback_result['word_accuracy'],
+            transcript=transcript,
+            feedback_data=feedback_result['ai_feedback'],
+        )
+
+        # Format response sesuai yang diharapkan frontend
+        response_data = {
+            'id': session.id,
+            'id_str': f'tilawah_{session.id}',
+            'surah_name': ayah_obj.surah_name,
+            'ayah_number': ayah_obj.ayah_number,
+            'ayah': ayah_obj.ayah_text,
+            'audio_url': ayah_obj.audio_url,
+            'tajwid_score': feedback_result['tajwid_score'],
+            'makhraj_score': None,
+            'makhraj_note': 'Penilaian makhraj belum tersedia pada versi ini.',
+            'word_accuracy': feedback_result['word_accuracy'],
+            'ai_feedback': feedback_result['ai_feedback'],
+        }
+
+        return Response({
+            'success': True,
+            'message': 'Tilawah berhasil diproses.',
+            'data': response_data
+        })
+
+    finally:
+        # Hapus file audio temporary
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_history(request):
+    """
+    GET /tilawah/history/?page=1&page_size=10
+    Riwayat sesi tilawah user
+    """
+    sessions = TilawahSession.objects.filter(
+        user=request.user
+    ).order_by('-created_at')
+
+    paginated = paginate_queryset(request, sessions, page_size=10, items_key='sessions')
+    serializer = TilawahSessionSerializer(paginated['sessions'], many=True)
+    paginated['sessions'] = serializer.data
+
+    return Response({
+        'success': True,
+        'message': 'Riwayat tilawah berhasil diambil.',
+        'data': paginated
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_session_detail(request, session_id):
+    """
+    GET /tilawah/session/<session_id>/
+    Detail sesi tilawah
+    """
+    try:
+        session = TilawahSession.objects.get(
+            id=session_id,
+            user=request.user
+        )
+    except TilawahSession.DoesNotExist:
+        return Response(
+            {'success': False, 'message': 'Sesi tidak ditemukan.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    response_data = {
+        'id': session.id,
+        'id_str': f'tilawah_{session.id}',
+        'surah_name': session.surah_name,
+        'ayah_number': session.ayah_number,
+        'ayah': session.ayah_text,
+        'level': session.level,
+        'tajwid_score': session.tajwid_score,
+        'makhraj_score': None,
+        'makhraj_note': 'Penilaian makhraj belum tersedia pada versi ini.',
+        'word_accuracy': session.word_accuracy,
+        'ai_feedback': session.feedback_data,
+        'created_at': session.created_at,
+    }
+
+    return Response({
+        'success': True,
+        'message': 'Detail sesi berhasil diambil.',
+        'data': response_data
+    })
+
+====================================================================
+FILE: main/management/commands/generate_quran_embeddings.py
+====================================================================
+# main/management/commands/generate_quran_embeddings.py
+import time
+from django.core.management.base import BaseCommand
+from main.models_tilawah import TilawahAyahPool
+from main.utils_embedding.embedder import batch_get_embeddings
+
+class Command(BaseCommand):
+    help = 'Generate embedding vectors for all Quran verses'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--force',
+            action='store_true',
+            help='Force regenerate all embeddings (reset first)',
+        )
+
+    def handle(self, *args, **options):
+        if options['force']:
+            self.stdout.write('Resetting all Quran embeddings...')
+            TilawahAyahPool.objects.all().update(embedding=None)
+            self.stdout.write('Done reset!')
+
+        self.stdout.write('Generating embeddings for Quran verses...')
+        
+        # Ambil semua ayat yang belum punya embedding
+        ayahs = list(TilawahAyahPool.objects.filter(embedding__isnull=True))
+        total = len(ayahs)
+        
+        if total == 0:
+            self.stdout.write(self.style.SUCCESS('✅ Semua ayat sudah memiliki embedding!'))
+            return
+        
+        self.stdout.write(f'Total ayat tanpa embedding: {total}')
+        
+        batch_size = 8
+        updated = 0
+        
+        for i in range(0, total, batch_size):
+            batch = ayahs[i:i+batch_size]
+            
+            # Gabungkan teks untuk embedding
+            texts = []
+            for a in batch:
+                # Kombinasi teks Arab + terjemahan (untuk makna lebih kaya)
+                text = f"{a.ayah_text} {a.ayah_translation or ''} {a.ayah_transliteration or ''}"
+                texts.append(text)
+            
+            # Generate embeddings
+            embeddings = batch_get_embeddings(texts)
+            
+            # Simpan ke database
+            for ayah, emb in zip(batch, embeddings):
+                ayah.embedding = emb
+                ayah.save(update_fields=['embedding'])
+                updated += 1
+            
+            if updated % 100 == 0:
+                self.stdout.write(f'  → {updated}/{total} ayat diproses')
+            
+            # Jeda kecil agar tidak overload
+            time.sleep(0.1)
+        
+        self.stdout.write(self.style.SUCCESS(f'✅ Selesai! {updated} ayat berhasil di-embedding.'))
+
+====================================================================
+FILE: main/management/commands/import_quran_data.py
+====================================================================
+import requests
+from django.core.management.base import BaseCommand
+from main.models_tilawah import TilawahAyahPool
+
+class Command(BaseCommand):
+    help = 'Update transliteration and translation'
+
+    def handle(self, *args, **options):
+        print("Downloading data...")
+        trans_url = "https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_transliteration.json"
+        trans_data = requests.get(trans_url).json()
+        
+        id_url = "https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_id.json"
+        id_data = requests.get(id_url).json()
+        
+        updated = 0
+        
+        for surah_idx in range(114):
+            surah_trans = trans_data[surah_idx]
+            surah_id = id_data[surah_idx]
+            
+            surah_number = surah_idx + 1
+            
+            verses_trans = surah_trans.get('verses', [])
+            verses_id = surah_id.get('verses', [])
+            
+            for i in range(len(verses_trans)):
+                ayah_number = i + 1
+                transliteration = verses_trans[i].get('text', '')
+                translation = verses_id[i].get('text', '') if i < len(verses_id) else ''
+                
+                # Update berdasarkan surah_number dan ayah_number
+                result = TilawahAyahPool.objects.filter(
+                    surah_number=surah_number,
+                    ayah_number=ayah_number
+                ).update(
+                    ayah_transliteration=transliteration,
+                    ayah_translation=translation
+                )
+                
+                if result:
+                    updated += 1
+            
+            print(f"Processed surah {surah_number}")
+        
+        print(f"Done! Updated {updated} verses.")
+
+====================================================================
+FILE: main/management/commands/import_quran_final.py
+====================================================================
+# main/management/commands/import_quran_final.py
+
+import json
+import requests
+from django.core.management.base import BaseCommand
+from main.models_tilawah import TilawahAyahPool
+
+class Command(BaseCommand):
+    help = 'Import Quran data from brianadi/Al-Quran-ID-Json repository'
+
+    def handle(self, *args, **options):
+        url = "https://raw.githubusercontent.com/brianadi/Al-Quran-ID-Json/refs/heads/main/al-quran.json"
+        
+        self.stdout.write("Mengunduh data Quran...")
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"Gagal mengunduh data: {str(e)}"))
+            return
+        
+        self.stdout.write("Data berhasil diunduh. Memulai impor...")
+        
+        total_ayat = 0
+        created_count = 0
+        updated_count = 0
+        
+        for surah in data['features']:
+            surah_number = surah['quranNumber']
+            surah_name = surah['name']
+            surah_name_id = surah.get('translationId', '')
+            
+            self.stdout.write(f"Memproses Surah {surah_number}: {surah_name}")
+            
+            for ayat in surah['text']:
+                ayah_number = ayat['verseId']
+                ayah_text = ayat['ayahText']
+                ayah_transliteration = ayat.get('readText', '')
+                ayah_translation = ayat.get('indoText', '')
+                juz = ayat.get('juz', None)
+                
+                obj, created = TilawahAyahPool.objects.update_or_create(
+                    surah_number=surah_number,
+                    ayah_number=ayah_number,
+                    defaults={
+                        'surah_name': surah_name,
+                        'surah_name_id': surah_name_id,
+                        'ayah_text': ayah_text,
+                        'ayah_transliteration': ayah_transliteration,
+                        'ayah_translation': ayah_translation,
+                        'juz': juz,
+                    }
+                )
+                
+                if created:
+                    created_count += 1
+                else:
+                    updated_count += 1
+                
+                total_ayat += 1
+                
+                if total_ayat % 500 == 0:
+                    self.stdout.write(f"  → {total_ayat} ayat telah diproses...")
+        
+        self.stdout.write(self.style.SUCCESS(
+            f"\n✅ IMPOR SELESAI!\n"
+            f"   Total ayat: {total_ayat}\n"
+            f"   Baru dibuat: {created_count}\n"
+            f"   Diperbarui: {updated_count}"
+        ))
+
+====================================================================
+FILE: main/management/commands/import_quran_full.py
+====================================================================
+import requests
+from django.core.management.base import BaseCommand
+from main.models_tilawah import TilawahAyahPool
+
+class Command(BaseCommand):
+    help = 'Import transliteration and translation from Alquran.cloud API'
+
+    def handle(self, *args, **options):
+        # API yang menyediakan 3 edition sekaligus: teks Utsmani, transliterasi, dan terjemahan Indonesia
+        url = "https://api.alquran.cloud/v1/quran/editions/quran-uthmani,en.transliteration,id.kemenag"
+        
+        self.stdout.write("Downloading data from Alquran.cloud...")
+        response = requests.get(url)
+        
+        if response.status_code != 200:
+            self.stdout.write(self.style.ERROR(f"Failed to download data: {response.status_code}"))
+            return
+        
+        data = response.json()
+        
+        # Data tersedia dalam bentuk list of editions
+        # edition 1: quran-uthmani, edition 2: en.transliteration, edition 3: id.kemenag
+        editions = data['data']
+        
+        uthmani_verses = editions[0]['verses']
+        translit_verses = editions[1]['verses']
+        trans_verses = editions[2]['verses']
+        
+        updated = 0
+        not_found = 0
+        
+        for uthmani, translit, trans in zip(uthmani_verses, translit_verses, trans_verses):
+            surah_number = uthmani['chapterId']
+            ayah_number = uthmani['verseNumber']
+            uthmani_text = uthmani['text']
+            translit_text = translit['text']
+            trans_text = trans['text']
+            
+            # Cari dan update record yang sudah ada
+            result = TilawahAyahPool.objects.filter(
+                surah_number=surah_number,
+                ayah_number=ayah_number
+            ).update(
+                ayah_text=uthmani_text,
+                ayah_transliteration=translit_text,
+                ayah_translation=trans_text
+            )
+            
+            if result:
+                updated += 1
+            else:
+                not_found += 1
+            
+            if updated % 100 == 0:
+                self.stdout.write(f"Processed {updated} verses...")
+        
+        self.stdout.write(self.style.SUCCESS(f"Done! Updated: {updated}, Not found: {not_found}"))
+
+====================================================================
+FILE: main/migrations/0018_tilawahayahpool_tilawahsession.py
+====================================================================
+# Generated by Django 5.2.5 on 2026-05-31 10:02
+
+import django.db.models.deletion
+from django.conf import settings
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('main', '0017_chatconversation_chatmessage'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='TilawahAyahPool',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('surah_number', models.IntegerField()),
+                ('surah_name', models.CharField(max_length=100)),
+                ('ayah_number', models.IntegerField()),
+                ('ayah_text', models.TextField()),
+                ('level', models.CharField(choices=[('basic', 'Basic'), ('intermediate', 'Intermediate'), ('expert', 'Expert')], max_length=20)),
+                ('audio_url', models.URLField(blank=True, max_length=500, null=True)),
+            ],
+            options={
+                'unique_together': {('surah_number', 'ayah_number')},
+            },
+        ),
+        migrations.CreateModel(
+            name='TilawahSession',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('surah_number', models.IntegerField()),
+                ('surah_name', models.CharField(max_length=100)),
+                ('ayah_number', models.IntegerField()),
+                ('ayah_text', models.TextField()),
+                ('level', models.CharField(choices=[('basic', 'Basic'), ('intermediate', 'Intermediate'), ('expert', 'Expert')], max_length=20)),
+                ('tajwid_score', models.FloatField(blank=True, null=True)),
+                ('word_accuracy', models.FloatField(blank=True, null=True)),
+                ('audio_file', models.FileField(blank=True, null=True, upload_to='tilawah_audio/')),
+                ('transcript', models.TextField(blank=True, null=True)),
+                ('feedback_data', models.JSONField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'ordering': ['-created_at'],
+            },
+        ),
+    ]
+
+
+====================================================================
+FILE: main/migrations/0020_tilawahayahpool_ayah_text_modern.py
+====================================================================
+# Generated by Django 5.2.5 on 2026-06-15 05:25
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('main', '0019_rename_is_active_kelasenrollment_is_dewasa_and_more'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='tilawahayahpool',
+            name='ayah_text_modern',
+            field=models.TextField(blank=True, null=True),
+        ),
+    ]
+
+
+====================================================================
+FILE: main/migrations/0021_rename_ayah_text_modern_tilawahayahpool_ayah_translation_and_more.py
+====================================================================
+# Generated by Django 5.2.5 on 2026-06-15 06:26
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('main', '0020_tilawahayahpool_ayah_text_modern'),
+    ]
+
+    operations = [
+        migrations.RenameField(
+            model_name='tilawahayahpool',
+            old_name='ayah_text_modern',
+            new_name='ayah_translation',
+        ),
+        migrations.AddField(
+            model_name='tilawahayahpool',
+            name='ayah_transliteration',
+            field=models.TextField(blank=True, null=True),
+        ),
+    ]
+
+
+====================================================================
+FILE: main/migrations/0022_alter_tilawahayahpool_options_tilawahayahpool_juz_and_more.py
+====================================================================
+# Generated by Django 5.2.5 on 2026-06-15 08:48
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('main', '0021_rename_ayah_text_modern_tilawahayahpool_ayah_translation_and_more'),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name='tilawahayahpool',
+            options={'ordering': ['surah_number', 'ayah_number']},
+        ),
+        migrations.AddField(
+            model_name='tilawahayahpool',
+            name='juz',
+            field=models.IntegerField(blank=True, null=True),
+        ),
+        migrations.AddField(
+            model_name='tilawahayahpool',
+            name='surah_name_id',
+            field=models.CharField(blank=True, max_length=100, null=True),
+        ),
+        migrations.AlterField(
+            model_name='tilawahayahpool',
+            name='audio_url',
+            field=models.URLField(blank=True, null=True),
+        ),
+        migrations.AlterField(
+            model_name='tilawahayahpool',
+            name='level',
+            field=models.CharField(choices=[('basic', 'Basic'), ('intermediate', 'Intermediate'), ('expert', 'Expert')], default='basic', max_length=20),
+        ),
+        migrations.AlterModelTable(
+            name='tilawahayahpool',
+            table='tilawah_ayah_pool',
+        ),
+    ]
+
+
+====================================================================
+FILE: main/migrations/0034_tilawahayahpool_embedding.py
+====================================================================
+# Generated by Django 5.2.5 on 2026-07-05 11:00
+
+import pgvector.django.vector
+from django.db import migrations
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('main', '0033_alter_hadis_embedding'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='tilawahayahpool',
+            name='embedding',
+            field=pgvector.django.vector.VectorField(blank=True, dimensions=1024, null=True),
+        ),
+    ]
+
+
+====================================================================
+FILE: main/models.py
+====================================================================
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from .models_feed import *
+from .models_fest import *
+from .models_klinik import *
+from .models_ngaji import *
+from .models_kisah_nabi import *
+from .models_ai import *
+from .models_tilawah import *
+from .models_gamification import *
+from .models_hadis import *
+from .models_media_category import MediaCategory
+from .models_short_islami import ShortIslami
+from .models_artikel_islami import ArtikelIslami
+from .models_book_category import BookCategory
+from .models_book_author import BookAuthor
+from .models_islamic_book import IslamicBook
+from .models_tuntunan_shalat import TuntunanShalat, validate_tuntunan_blocks
+from .models_doa import (
+    DoaCategory,
+    Doa,
+    DoaContent,
+    DoaBookmark,
+)
+from .models_healthy_tip import HealthyTip
+
+class User(AbstractUser):
+    nama = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    alamat = models.CharField(max_length=200, null=True, blank=True)
+    telepon = models.CharField(max_length=20, null=True, blank=True)
+    fcm_token = models.TextField(null=True, blank=True)
+    foto_profil = models.ImageField(upload_to='foto_profil', null=True, blank=True)
+    email_verified = models.BooleanField(default=False)
+    email_verification_token = models.CharField(max_length=255, blank=True, null=True)
+    token_created_at = models.DateTimeField(blank=True, null=True)
+    jenis_kelamin = models.CharField(
+        max_length=10,
+        choices=[('L', 'Laki-laki'), ('P', 'Perempuan')],
+        null=True,
+        blank=True
+    )
+
+    banner = models.ImageField(
+        upload_to='user_banners/',
+        null=True,
+        blank=True,
+        help_text="User profile banner with 12:5 aspect ratio (landscape)"
+    )
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        db_table = 'user'
+        
+
+class PrayerMonthDocument(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=100)
+    year = models.IntegerField()
+    month = models.IntegerField()
+    timezone = models.CharField(max_length=50, default="Asia/Jakarta")
+    source_hash = models.CharField(max_length=64)
+    last_updated = models.DateTimeField()
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    payload = models.JSONField()
+
+    class Meta:
+        db_table = 'jadwal_shalat_data'
+        unique_together = ("user", "year", "month")
+        indexes = [
+            models.Index(fields=["user"]),
+            models.Index(fields=["year", "month"]),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.year}-{self.month}"
+    
+class UserPrayerPreference(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    subuh = models.BooleanField(default=True)
+    dzuhur = models.BooleanField(default=True)
+    ashar = models.BooleanField(default=True)
+    maghrib = models.BooleanField(default=True)
+    isya = models.BooleanField(default=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'notification_preference'
+    
+class PrayerNotificationLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    prayer_name = models.CharField(max_length=20)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'notification_log'
+        unique_together = ("user", "date", "prayer_name")
+
+
+
+
+====================================================================
+FILE: main/models_ai.py
+====================================================================
+from django.db import models
+from django.conf import settings
+
+class ChatConversation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='ai_conversations')
+    title = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ai_conversation'
+        ordering = ['-updated_at']
+    
+    def __str__(self):
+        return f"Chat {self.id} - {self.user.username}"
+
+class ChatMessage(models.Model):
+    ROLE_CHOICES = [
+        ('user', 'User'),
+        ('assistant', 'Assistant'),
+    ]
+    
+    conversation = models.ForeignKey(ChatConversation, on_delete=models.CASCADE, related_name='messages')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'ai_chat_message'
+        ordering = ['created_at']
+    
+    def __str__(self):
+        return f"{self.role}: {self.text[:50]}"
+
+====================================================================
+FILE: main/models_artikel_islami.py
+====================================================================
+from django.conf import settings
+from django.db import models
+
+from .models_media_category import MediaCategory
+
+
+class ArtikelIslami(models.Model):
+    title = models.CharField(
+        max_length=255,
+        db_index=True,
+    )
+
+    banner = models.ImageField(
+        upload_to="media_islami/articles/banners/",
+        blank=True,
+        null=True,
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
+
+    category = models.ForeignKey(
+        MediaCategory,
+        on_delete=models.PROTECT,
+        related_name="artikel_islami",
+    )
+
+    article = models.TextField(
+        help_text="Isi artikel dalam format Markdown."
+    )
+
+    uploader = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="uploaded_artikel_islami",
+    )
+
+    is_published = models.BooleanField(
+        default=True,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = "artikel_islami"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["is_published", "-created_at"]),
+            models.Index(fields=["category", "-created_at"]),
+        ]
+
+    def __str__(self):
+        return self.title
+
+====================================================================
+FILE: main/models_book_author.py
+====================================================================
+from django.db import models
+
+
+class BookAuthor(models.Model):
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "book_authors"
+        ordering = ["name"]
+        verbose_name = "Book Author"
+        verbose_name_plural = "Book Authors"
+
+    def __str__(self):
+        return self.name
+
+====================================================================
+FILE: main/models_book_category.py
+====================================================================
+from django.db import models
+
+
+class BookCategory(models.Model):
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "book_categories"
+        ordering = ["name"]
+        verbose_name = "Book Category"
+        verbose_name_plural = "Book Categories"
+
+    def __str__(self):
+        return self.name
+
+====================================================================
+FILE: main/models_doa.py
+====================================================================
+from django.conf import settings
+from django.db import models
+
+
+class DoaCategory(models.Model):
+    order = models.PositiveIntegerField(default=0)
+    title = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Doa Category"
+        verbose_name_plural = "Doa Categories"
+
+    def __str__(self):
+        return self.title
+
+
+class Doa(models.Model):
+    category = models.ForeignKey(
+        DoaCategory,
+        related_name="doas",
+        on_delete=models.CASCADE
+    )
+    order = models.PositiveIntegerField(default=0)
+    title = models.CharField(max_length=255)
+    page_title = models.CharField(max_length=255)
+    hero_image = models.ImageField(
+        upload_to="doa/hero_images/",
+        blank=True,
+        null=True
+    )
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Doa"
+        verbose_name_plural = "Doa"
+
+    def __str__(self):
+        return self.title
+
+
+class DoaContent(models.Model):
+    doa = models.ForeignKey(
+        Doa,
+        related_name="contents",
+        on_delete=models.CASCADE
+    )
+    order = models.PositiveIntegerField(default=0)
+    sub_title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    arabic_text = models.TextField()
+    transliteration = models.TextField(blank=True, null=True)
+    translation = models.TextField()
+    reference = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Doa Content"
+        verbose_name_plural = "Doa Contents"
+
+    def __str__(self):
+        return f"{self.doa.title} - {self.sub_title}"
+
+
+class DoaBookmark(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="doa_bookmarks",
+        on_delete=models.CASCADE
+    )
+    doa = models.ForeignKey(
+        Doa,
+        related_name="bookmarks",
+        on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "doa")
+        verbose_name = "Doa Bookmark"
+        verbose_name_plural = "Doa Bookmarks"
+
+    def __str__(self):
+        return f"{self.user} - {self.doa.title}"
+
+====================================================================
+FILE: main/models_faraid.py
+====================================================================
+from django.db import models
+from django.conf import settings
+
+class InheritanceSession(models.Model):
+    """Menyimpan sesi perhitungan waris user"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='inheritance_sessions')
+    total_assets = models.DecimalField(max_digits=15, decimal_places=2, help_text="Total harta warisan (Rp)")
+    funeral_cost = models.DecimalField(max_digits=15, decimal_places=2, default=0, help_text="Biaya perawatan jenazah")
+    debt = models.DecimalField(max_digits=15, decimal_places=2, default=0, help_text="Hutang pewaris")
+    will = models.DecimalField(max_digits=15, decimal_places=2, default=0, help_text="Wasiat (maks 1/3 dari sisa)")
+    result_data = models.JSONField(default=dict, help_text="Hasil perhitungan lengkap")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'faraid_inheritance_session'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Inheritance #{self.id} - {self.user.username}"
+
+
+class Heir(models.Model):
+    """Data master ahli waris"""
+    GENDER_CHOICES = [
+        ('M', 'Laki-laki'),
+        ('F', 'Perempuan'),
+    ]
+    
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=50, choices=[('L', 'Laki-laki'), ('P', 'Perempuan')])
+    priority = models.IntegerField(default=0, help_text="Prioritas hijab, semakin kecil semakin tinggi")
+    default_share = models.CharField(max_length=10, blank=True, null=True, help_text="Bagian default: 1/2, 1/4, 1/8, 2/3, 1/3, 1/6, ashabah")
+    is_ashabah = models.BooleanField(default=False, help_text="Apakah termasuk ashabah (mendapat sisa)")
+    
+    class Meta:
+        db_table = 'faraid_heir_master'
+        ordering = ['priority']
+    
+    def __str__(self):
+        return self.name
+
+
+class HeirBlock(models.Model):
+    """Aturan hijab (siapa menghalangi siapa)"""
+    blocker = models.ForeignKey(Heir, on_delete=models.CASCADE, related_name='blocks')
+    blocked = models.ForeignKey(Heir, on_delete=models.CASCADE, related_name='blocked_by')
+    
+    class Meta:
+        db_table = 'faraid_heir_block'
+        unique_together = ('blocker', 'blocked')
+    
+    def __str__(self):
+        return f"{self.blocker.name} menghalangi {self.blocked.name}"
+
+====================================================================
+FILE: main/models_feed.py
+====================================================================
+from django.db import models
+from django.conf import settings
+
+class Feed(models.Model):
+    """Model for feed posts"""
+
+    VISIBILITY_CHOICES = [
+        ('public', 'Public'),
+        ('private', 'Private'),
+    ]
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='feeds')
+    feed_caption = models.TextField(blank=True, null=True)
+    feed_location = models.CharField(max_length=255, blank=True, null=True)
+    feed_pictures = models.JSONField(default=list)  # List of image URLs
+    user_country = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    like_count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
+    isSponsored = models.BooleanField(default=False)
+    permalink = models.CharField(max_length=500, blank=True, null=True)
+    tagged_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='tagged_in_feeds',
+        blank=True
+    )
+    visibility = models.CharField(
+        max_length=10,
+        choices=VISIBILITY_CHOICES,
+        default='public'
+    )
+    class Meta:
+        db_table = 'social_feed'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['user_country']),
+            models.Index(fields=['isSponsored']),
+        ]
+    
+    def __str__(self):
+        return f"Feed by {self.user.username} at {self.created_at}"
+
+
+class FeedLike(models.Model):
+    """Like pada feed"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'social_feed_like'
+        unique_together = ('user', 'feed')
+    
+    def __str__(self):
+        return f"{self.user.username} likes feed {self.feed.id}"
+
+
+class FeedComment(models.Model):
+    """Comment pada feed"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    parent = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='replies'
+    )
+    replied_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='replied_comments'
+    )
+    
+    class Meta:
+        db_table = 'social_feed_comment'
+        ordering = ['created_at']
+    
+    def __str__(self):
+        return f"Comment by {self.user.username} on feed {self.feed.id}"
+
+
+class Follow(models.Model):
+    """User following relationship"""
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
+    following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='followers')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'social_follow'
+        unique_together = ('follower', 'following')
+    
+    def __str__(self):
+        return f"{self.follower.username} follows {self.following.username}"
+
+
+class Story(models.Model):
+    """Model untuk stories"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='stories')
+    story_link = models.URLField(max_length=500)
+    user_country = models.CharField(max_length=100, blank=True, null=True)
+    isOnline = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    
+    class Meta:
+        db_table = 'social_story'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['user_country']),
+            models.Index(fields=['expires_at']),
+        ]
+    
+    def __str__(self):
+        return f"Story by {self.user.username} at {self.created_at}"
+
+
+class StorySeen(models.Model):
+    """Track siapa saja yang sudah melihat story"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, related_name='seen_by')
+    seen_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'social_story_seen'
+        unique_together = ('user', 'story')
+    
+    def __str__(self):
+        return f"{self.user.username} seen story {self.story.id}"
+
+    
+
+class CommentLike(models.Model):
+    """Like pada komentar"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.ForeignKey(FeedComment, on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'social_comment_like'
+        unique_together = ('user', 'comment')
+    
+    def __str__(self):
+        return f"{self.user.username} likes comment {self.comment.id}"
+
+====================================================================
+FILE: main/models_fest.py
+====================================================================
+from django.db import models
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+import os
+
+class Fest(models.Model):
+    banner = models.ImageField(upload_to='fest_banners/', max_length=500)  # Ganti ke ImageField
+    title = models.CharField(max_length=255)
+    date = models.DateField()
+    address = models.CharField(max_length=500)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    category = models.CharField(max_length=100)
+    description = models.TextField()
+    
+    is_headline = models.BooleanField(default=False)
+    is_recommendation = models.BooleanField(default=False)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'lifestyle_fest'
+        ordering = ['date']
+    
+    def save(self, *args, **kwargs):
+        # Crop image to 120:59 aspect ratio (without resizing)
+        if self.banner:
+            img = Image.open(self.banner)
+            
+            # Target aspect ratio 120:59 ≈ 2.0339
+            target_ratio = 120 / 59
+            current_ratio = img.width / img.height
+            
+            if abs(current_ratio - target_ratio) > 0.01:
+                if current_ratio > target_ratio:
+                    # Image too wide, crop width
+                    new_width = int(img.height * target_ratio)
+                    offset = (img.width - new_width) // 2
+                    img = img.crop((offset, 0, offset + new_width, img.height))
+                elif current_ratio < target_ratio:
+                    # Image too tall, crop height
+                    new_height = int(img.width / target_ratio)
+                    offset = (img.height - new_height) // 2
+                    img = img.crop((0, offset, img.width, offset + new_height))
+            
+            # Save to BytesIO (without resizing to small dimensions)
+            buffer = BytesIO()
+            img_format = 'PNG' if self.banner.name.lower().endswith('.png') else 'JPEG'
+            img.save(buffer, format=img_format)
+            
+            # Replace file
+            self.banner.save(
+                os.path.basename(self.banner.name),
+                ContentFile(buffer.getvalue()),
+                save=False
+            )
+        
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.title
+
+====================================================================
+FILE: main/models_gamification.py
+====================================================================
+# main/models_gamification.py
+from django.db import models
+from django.conf import settings
+
+class UserLevel(models.Model):
+    """Menyimpan level dan total poin user"""
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='level')
+    total_points = models.IntegerField(default=0)
+    level = models.CharField(max_length=20, default='starter')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'gamification_user_level'
+
+    def __str__(self):
+        return f"{self.user.username} - {self.level} ({self.total_points} pts)"
+
+    def get_level_thresholds(self):
+        """Return threshold poin untuk setiap level"""
+        from main.utils.gamification_constants import LEVEL_THRESHOLDS
+        return LEVEL_THRESHOLDS
+
+    def get_current_level(self):
+        """Tentukan level berdasarkan total_points"""
+        from main.utils.gamification_constants import LEVEL_THRESHOLDS
+        current = 'starter'
+        for level, threshold in LEVEL_THRESHOLDS.items():
+            if self.total_points >= threshold:
+                current = level
+        return current
+
+    def get_next_level(self):
+        """Return level selanjutnya dan required points"""
+        from main.utils.gamification_constants import LEVEL_THRESHOLDS
+        levels = list(LEVEL_THRESHOLDS.keys())
+        for i, level in enumerate(levels):
+            if self.total_points < LEVEL_THRESHOLDS[level]:
+                return {
+                    'next_level': level,
+                    'required_points': LEVEL_THRESHOLDS[level] - self.total_points,
+                    'threshold': LEVEL_THRESHOLDS[level]
+                }
+        return {
+            'next_level': None,
+            'required_points': 0,
+            'threshold': LEVEL_THRESHOLDS[levels[-1]]
+        }
+
+
+class AmalanCheckin(models.Model):
+    """Menyimpan check-in amalan harian user"""
+    AMALAN_CHOICES = [
+        ('tilawah', 'Tilawah'),
+        ('dzikir', 'Dzikir'),
+        ('puasa_sunnah', 'Puasa Sunnah'),
+        ('sedekah', 'Sedekah'),
+        ('tahajjud', 'Tahajjud'),
+        ('dhuha', 'Dhuha'),
+        ('kajian', 'Kajian'),
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='amalan_checkins')
+    amalan = models.CharField(max_length=20, choices=AMALAN_CHOICES)
+    date = models.DateField(auto_now_add=True)
+    status = models.BooleanField(default=True)  # True = done, False = cancelled
+    points_earned = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'gamification_amalan_checkin'
+        unique_together = ('user', 'amalan', 'date')
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amalan} - {self.date}"
+
+
+class UserStreak(models.Model):
+    """Menyimpan streak per amalan user"""
+    AMALAN_CHOICES = [
+        ('shalat', 'Shalat'),
+        ('tilawah', 'Tilawah'),
+        ('dzikir', 'Dzikir'),
+        ('puasa_sunnah', 'Puasa Sunnah'),
+        ('sedekah', 'Sedekah'),
+        ('tahajjud', 'Tahajjud'),
+        ('dhuha', 'Dhuha'),
+        ('kajian', 'Kajian'),
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='streaks')
+    amalan = models.CharField(max_length=20, choices=AMALAN_CHOICES)
+    streak_count = models.IntegerField(default=0)
+    last_check_date = models.DateField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'gamification_user_streak'
+        unique_together = ('user', 'amalan')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amalan} - {self.streak_count}"
+
+====================================================================
+FILE: main/models_hadis.py
+====================================================================
+# main/models_hadis.py
+from django.db import models
+from django.contrib.postgres.search import SearchVectorField
+
+from pgvector.django import VectorField
+
+class KitabHadis(models.Model):
+    """Master kitab hadis (Bukhari, Muslim, dll)"""
+    nama_file = models.CharField(max_length=50, unique=True)  # 'abu-daud'
+    nama_indonesia = models.CharField(max_length=100)         # 'Sunan Abu Daud'
+    jumlah_hadis = models.IntegerField(default=0)
+    
+    class Meta:
+        db_table = 'hadis_kitab'
+        ordering = ['nama_indonesia']
+    
+    def __str__(self):
+        return self.nama_indonesia
+
+
+class Hadis(models.Model):
+    """Model untuk menyimpan hadis"""
+    kitab = models.ForeignKey(KitabHadis, on_delete=models.CASCADE, related_name='hadis')
+    nomor = models.IntegerField()
+    embedding = VectorField(dimensions=1024, null=True, blank=True)
+    # Teks asli (dengan sanad) - untuk display
+    teks_arab = models.TextField()
+    terjemahan = models.TextField()
+    
+    # Teks bersih (tanpa sanad) - untuk search
+    teks_hadis = models.TextField()      # Arab tanpa sanad
+    isi_hadis = models.TextField()       # Indonesia tanpa sanad
+    
+    # Untuk full-text search (PostgreSQL)
+    search_vector = SearchVectorField(null=True, blank=True)
+    
+    class Meta:
+        db_table = 'hadis'
+        unique_together = ('kitab', 'nomor')
+        indexes = [
+            models.Index(fields=['kitab', 'nomor']),
+        ]
+        ordering = ['kitab', 'nomor']
+    
+    def __str__(self):
+        return f"{self.kitab.nama_indonesia} No. {self.nomor}"
+
+====================================================================
+FILE: main/models_healthy_tip.py
+====================================================================
+from django.conf import settings
+from django.db import models
+
+
+class HealthyTip(models.Model):
+    class Section(models.TextChoices):
+        TIPS_BARU = "tips_baru", "Tips Baru"
+        SEMINAR_SEHAT = "seminar_sehat", "Seminar Sehat"
+        GENERAL = "general", "General"
+
+    title = models.CharField(max_length=255)
+    banner = models.ImageField(upload_to="healthy_tips/", blank=True, null=True)
+    description_short = models.TextField()
+    category = models.CharField(max_length=100)
+    article = models.TextField(help_text="Isi artikel dalam format Markdown.")
+
+    section = models.CharField(
+        max_length=30,
+        choices=Section.choices,
+        default=Section.GENERAL,
+        db_index=True,
+    )
+
+    uploader = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="healthy_tips",
+    )
+
+    is_published = models.BooleanField(default=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "healthy_tips"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["section", "-created_at"]),
+            models.Index(fields=["is_published", "-created_at"]),
+        ]
+
+    def __str__(self):
+        return self.title
+
+====================================================================
+FILE: main/models_islamic_book.py
+====================================================================
+from django.conf import settings
+from django.core.validators import FileExtensionValidator
+from django.db import models
+
+from .models_book_author import BookAuthor
+from .models_book_category import BookCategory
+
+from main.utils_epustaka.file_validator import validate_pdf_size
+class IslamicBook(models.Model):
+    title = models.CharField(
+        max_length=255,
+        db_index=True,
+    )
+
+    cover = models.ImageField(
+        upload_to="e_pustaka/covers/",
+        blank=True,
+        null=True,
+    )
+
+    category = models.ForeignKey(
+        BookCategory,
+        on_delete=models.PROTECT,
+        related_name="books",
+    )
+
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+    )
+
+    discount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+    )
+
+    publish_year = models.PositiveIntegerField(
+        db_index=True,
+    )
+
+    author = models.ForeignKey(
+        BookAuthor,
+        on_delete=models.PROTECT,
+        related_name="books",
+    )
+
+    uploader = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="uploaded_books",
+    )
+
+    sold_count = models.BigIntegerField(
+        default=0,
+        db_index=True,
+    )
+
+    synopsis = models.TextField()
+
+    pdf = models.FileField(
+        upload_to="e_pustaka/books/",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["pdf"]
+            ),
+            validate_pdf_size,
+        ],
+    )
+
+    is_recommended = models.BooleanField(
+        default=False,
+        db_index=True,
+    )
+
+    is_published = models.BooleanField(
+        default=True,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = "islamic_books"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["is_published", "-created_at"]),
+            models.Index(fields=["category", "-created_at"]),
+            models.Index(fields=["author"]),
+            models.Index(fields=["is_recommended"]),
+            models.Index(fields=["sold_count"]),
+        ]
+
+    def __str__(self):
+        return self.title
+    
+    def clean(self):
+        if self.discount > self.price:
+            raise ValidationError(
+                "Discount tidak boleh lebih besar dari harga."
+            )
+
+====================================================================
+FILE: main/models_kisah_nabi.py
+====================================================================
+from django.db import models
+
+class KisahNabi(models.Model):
+    """Model untuk kisah para nabi"""
+    prophet_name = models.CharField(max_length=100)  # nama nabi (adam, ibrahim, dll)
+    total_read_count = models.IntegerField(default=0)
+    main_cover = models.ImageField(upload_to='kisah_nabi/covers/', null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'kisah_nabi'
+        ordering = ['id']
+    
+    def __str__(self):
+        return f"Kisah Nabi {self.prophet_name}"
+
+class KisahNabiEpisode(models.Model):
+    """Episode untuk setiap kisah nabi"""
+    kisah_nabi = models.ForeignKey(KisahNabi, on_delete=models.CASCADE, related_name='episodes')
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    doc_url = models.URLField(max_length=500, blank=True, null=True)  # URL ke file PDF
+    cover_url = models.URLField(max_length=500, blank=True, null=True)
+    order = models.IntegerField(default=0)  # urutan episode
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'kisah_nabi_episode'
+        ordering = ['order', 'id']
+    
+    def __str__(self):
+        return f"{self.kisah_nabi.prophet_name} - {self.title}"
+
+class KisahNabiReadLog(models.Model):
+    """Log untuk mencatat setiap kali user membaca kisah nabi"""
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='kisah_read_logs')
+    kisah_nabi = models.ForeignKey(KisahNabi, on_delete=models.CASCADE, related_name='read_logs')
+    episode = models.ForeignKey(KisahNabiEpisode, on_delete=models.CASCADE, related_name='read_logs', null=True, blank=True)
+    read_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'kisah_nabi_read_log'
+    
+    def __str__(self):
+        return f"{self.user.username} read {self.kisah_nabi.prophet_name}"
+
+====================================================================
+FILE: main/models_klinik.py
+====================================================================
+from django.db import models
+from django.conf import settings
+
+class KlinikReview(models.Model):
+    """Review dan rating untuk klinik dari user Smart Hijrah"""
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='klinik_reviews')
+    place_id = models.TextField(db_index=True)  # Ubah dari 255 ke 500
+    rating = models.IntegerField()
+    review = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'klinik_review'
+        unique_together = ('user', 'place_id')
+        indexes = [
+            models.Index(fields=['place_id']),
+            models.Index(fields=['-created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.place_id[:50]} - {self.rating}⭐"
+
+class KlinikReviewPhoto(models.Model):
+    """Foto yang diupload user saat review klinik"""
+    review = models.ForeignKey(KlinikReview, on_delete=models.CASCADE, related_name='photos')
+    image = models.ImageField(upload_to='klinik_reviews/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'klinik_review_photo'
+    
+    def __str__(self):
+        return f"Photo for review {self.review.id}"
+
+
+====================================================================
+FILE: main/models_masjid.py
+====================================================================
+from django.db import models
+from django.conf import settings
+
+class MasjidReview(models.Model):
+    """Review dan rating untuk masjid dari user Smart Hijrah"""
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='masjid_reviews')
+    place_id = models.CharField(max_length=255, db_index=True)  # ID dari Geoapify
+    rating = models.IntegerField()  # 1-5
+    review = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'masjid_review'
+        # Satu user hanya bisa satu review per masjid
+        unique_together = ('user', 'place_id')
+        indexes = [
+            models.Index(fields=['place_id']),
+            models.Index(fields=['-created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.place_id} - {self.rating}⭐"
+
+class MasjidReviewPhoto(models.Model):
+    """Foto yang diupload user saat review masjid"""
+    review = models.ForeignKey(MasjidReview, on_delete=models.CASCADE, related_name='photos')
+    image = models.ImageField(upload_to='masjid_reviews/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'masjid_review_photo'
+    
+    def __str__(self):
+        return f"Photo for review {self.review.id}"
+
+====================================================================
+FILE: main/models_media_category.py
+====================================================================
+from django.db import models
+
+
+class MediaCategory(models.Model):
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "media_categories"
+        ordering = ["name"]
+        verbose_name = "Media Category"
+        verbose_name_plural = "Media Categories"
+
+    def __str__(self):
+        return self.name
+
+====================================================================
+FILE: main/models_ngaji.py
+====================================================================
+from django.db import models
+from django.conf import settings
+
+class KelasTahfidz(models.Model):
+    """Kelas untuk belajar mengaji Al-Quran"""
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    duration_in_seconds = models.IntegerField()  # Durasi total kelas dalam detik
+    banner = models.ImageField(upload_to='kelas_banners/', null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    is_dewasa = models.BooleanField(default=True)  # True: dewasa, False: anak-anak
+    lecturer_id = models.IntegerField()  # ID dari user (ustadz)
+    lecturer_name = models.CharField(max_length=255)
+    enroll_count = models.IntegerField(default=0)
+    learning_materials = models.JSONField(default=list)  # List materi seperti ["Tajwid", "Tahsin"]
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ngaji_kelas_tahfidz'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.title
+
+class KelasSchedule(models.Model):
+    """Jadwal untuk kelas tahfidz"""
+    kelas = models.ForeignKey(KelasTahfidz, on_delete=models.CASCADE, related_name='schedules')
+    days = models.JSONField(default=list)  # List hari ["senin", "rabu"]
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    duration_in_seconds = models.IntegerField()
+    enrolled_students = models.IntegerField(default=0)
+    
+    class Meta:
+        db_table = 'ngaji_kelas_schedule'
+    
+    def __str__(self):
+        return f"{self.kelas.title} - {self.days}"
+
+class KelasEnrollment(models.Model):
+    """Pendaftaran user ke kelas tahfidz"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='kelas_enrollments')
+    kelas = models.ForeignKey(KelasTahfidz, on_delete=models.CASCADE, related_name='enrollments')
+    selected_schedule = models.ForeignKey(KelasSchedule, on_delete=models.SET_NULL, null=True, blank=True, related_name='enrollments')
+    
+    # Data pendaftar
+    nama_lengkap = models.CharField(max_length=255)
+    jenis_kelamin = models.CharField(max_length=10, choices=[('laki-laki', 'Laki-laki'), ('perempuan', 'Perempuan')])
+    usia_in_tahun = models.IntegerField()
+    
+    # Data orang tua (jika peserta adalah anak-anak)
+    parent_name = models.CharField(max_length=255, blank=True, null=True)
+    parent_phone = models.CharField(max_length=20, blank=True, null=True)
+    
+    # Alamat
+    address = models.TextField()
+    
+    # Tingkat kemampuan ngaji
+    ngaji_level = models.IntegerField(help_text="1=Beginner, 2=Basic, 3=Intermediate, 4=Advanced")
+    
+    # Status
+    is_dewasa = models.BooleanField(default=True)
+    is_private = models.BooleanField(default=False)
+    
+    enrollment_status = models.CharField(
+        max_length=20, 
+        choices=[
+            ('pending', 'Pending'),
+            ('approved', 'Approved'),
+            ('rejected', 'Rejected'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='pending'
+    )
+    
+    enrolled_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ngaji_kelas_enrollment'
+        unique_together = ('user', 'kelas')
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.kelas.title}"
+
+
+class Pelajaran(models.Model):
+    """Learning path / program pembelajaran"""
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    step = models.IntegerField(default=1)  # Urutan step
+    course_total = models.IntegerField(default=0)  # Total pelajaran dalam program
+    course_finished = models.IntegerField(default=0)  # Pelajaran yang sudah diselesaikan user
+    
+    class Meta:
+        db_table = 'ngaji_pelajaran'
+        ordering = ['step']
+    
+    def __str__(self):
+        return self.name
+
+class DetailPelajaran(models.Model):
+    """Detail pelajaran dalam learning path (step by step)"""
+    pelajaran = models.ForeignKey(Pelajaran, on_delete=models.CASCADE, related_name='details')
+    name = models.CharField(max_length=255)
+    step = models.IntegerField()
+    arabic_text_icon = models.CharField(max_length=255, blank=True, null=True)  # Contoh: "ا ب ت ث"
+    is_finished = models.BooleanField(default=False)
+    
+    class Meta:
+        db_table = 'ngaji_detail_pelajaran'
+        ordering = ['step']
+    
+    def __str__(self):
+        return f"{self.pelajaran.name} - {self.name}"
+
+class MateriPelajaran(models.Model):
+    """Materi spesifik untuk setiap detail pelajaran (contoh: Huruf Alif)"""
+    detail_pelajaran = models.ForeignKey(DetailPelajaran, on_delete=models.CASCADE, related_name='materi')
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    arabic = models.CharField(max_length=50)  # Huruf arab
+    latin = models.CharField(max_length=50)  # Tulisan latin
+    audio_url = models.URLField(max_length=500, blank=True, null=True)  # URL audio makhraj
+    
+    order = models.IntegerField(default=0)
+    
+    class Meta:
+        db_table = 'ngaji_materi_pelajaran'
+        ordering = ['order']
+    
+    def __str__(self):
+        return f"{self.title} - {self.arabic}"
+
+====================================================================
+FILE: main/models_short_islami.py
+====================================================================
+from django.conf import settings
+from django.core.validators import FileExtensionValidator
+from django.db import models
+from main.utils_media_islami.file_validator import validate_video_size
+from .models_media_category import MediaCategory
+
+
+class ShortIslami(models.Model):
+    title = models.CharField(
+        max_length=255,
+        db_index=True,
+    )
+
+    thumbnail = models.ImageField(
+        upload_to="media_islami/shorts/thumbnails/",
+        blank=True,
+        null=True,
+    )
+
+    video = models.FileField(
+        upload_to="media_islami/shorts/videos/",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "mp4",
+                    "mov",
+                    "webm",
+                ]
+            ),
+            validate_video_size,
+        ],
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
+
+    category = models.ForeignKey(
+        MediaCategory,
+        on_delete=models.PROTECT,
+        related_name="shorts",
+    )
+
+    view_count = models.BigIntegerField(
+        default=0,
+        db_index=True,
+    )
+
+    uploader = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="uploaded_shorts_islami",
+    )
+
+    is_published = models.BooleanField(
+        default=True,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        db_table = "short_islami"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["is_published", "-created_at"]),
+            models.Index(fields=["category", "-created_at"]),
+            models.Index(fields=["view_count"]),
+        ]
+
+    def __str__(self):
+        return self.title
+
+====================================================================
+FILE: main/models_tilawah.py
+====================================================================
+# models_tilawah.py
+
+from django.db import models
+from django.conf import settings  # ganti import User
+from pgvector.django import VectorField
+
+LEVEL_CHOICES = [
+    ('basic', 'Basic'),
+    ('intermediate', 'Intermediate'),
+    ('expert', 'Expert'),
+]
+
+class TilawahSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # pakai string
+    surah_number = models.IntegerField()
+    surah_name = models.CharField(max_length=100)
+    ayah_number = models.IntegerField()
+    ayah_text = models.TextField()
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    tajwid_score = models.FloatField(null=True, blank=True)
+    word_accuracy = models.FloatField(null=True, blank=True)
+    audio_file = models.FileField(upload_to='tilawah_audio/', null=True, blank=True)
+    transcript = models.TextField(null=True, blank=True)
+    feedback_data = models.JSONField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user} - {self.surah_name}:{self.ayah_number}"
+
+
+
+class TilawahAyahPool(models.Model):
+    surah_number = models.IntegerField()
+    surah_name = models.CharField(max_length=100)
+    surah_name_id = models.CharField(max_length=100, blank=True, null=True)  # Nama surah dalam Bahasa Indonesia
+    ayah_number = models.IntegerField()
+    ayah_text = models.TextField()
+    ayah_transliteration = models.TextField(blank=True, null=True)
+    ayah_translation = models.TextField(blank=True, null=True)
+    juz = models.IntegerField(blank=True, null=True)  # Nomor juz (1-30)
+
+    embedding = VectorField(dimensions=1024, null=True, blank=True)
+    level = models.CharField(max_length=20, choices=[
+        ('basic', 'Basic'),
+        ('intermediate', 'Intermediate'),
+        ('expert', 'Expert')
+    ], default='basic')
+    audio_url = models.URLField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'tilawah_ayah_pool'
+        ordering = ['surah_number', 'ayah_number']
+        unique_together = ('surah_number', 'ayah_number')
+
+    def __str__(self):
+        return f"{self.surah_name}:{self.ayah_number} ({self.level})"
+
+====================================================================
+FILE: main/models_tuntunan_shalat.py
+====================================================================
+from django.db import models
+from django.core.exceptions import ValidationError
+ALLOWED_TUNTUNAN_BLOCK_TYPES = {
+    "heading",
+    "paragraph",
+    "arabic",
+    "transliteration",
+    "translation",
+    "step",
+    "surah",
+    "image",
+}
+
+
+def validate_tuntunan_blocks(blocks):
+    """
+    Legacy validator kept for old migrations.
+    Do not remove unless old migrations are squashed.
+    """
+    if not isinstance(blocks, list):
+        raise ValidationError("Blocks must be a list.")
+
+    for index, block in enumerate(blocks):
+        if not isinstance(block, dict):
+            raise ValidationError(f"Block at index {index} must be an object.")
+
+        block_type = block.get("type")
+        if block_type not in ALLOWED_TUNTUNAN_BLOCK_TYPES:
+            raise ValidationError(
+                f"Invalid block type at index {index}: {block_type}"
+            )
+
+from django.db import models
+
+
+class TuntunanShalat(models.Model):
+    order = models.PositiveIntegerField(default=0)
+    title = models.CharField(max_length=255)
+    excerpt = models.TextField(blank=True, null=True)
+    hero_image = models.ImageField(
+        upload_to="tuntunan_shalat/hero_images/",
+        blank=True,
+        null=True
+    )
+    content = models.TextField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Tuntunan Shalat"
+        verbose_name_plural = "Tuntunan Shalat"
+
+    def __str__(self):
+        return self.title
+
+====================================================================
+FILE: main/serializers/ai_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_ai import ChatConversation, ChatMessage
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatMessage
+        fields = ['id', 'role', 'text', 'created_at']
+
+class ChatConversationSerializer(serializers.ModelSerializer):
+    messages = ChatMessageSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = ChatConversation
+        fields = ['id', 'title', 'created_at', 'updated_at', 'messages']
+
+====================================================================
+FILE: main/serializers/auth_serializers.py
+====================================================================
+# main/serializers/auth_serializers.py
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import serializers
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+User = get_user_model()
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        credential = attrs.get('username')
+        password = attrs.get('password')
+        
+        if not credential or not password:
+            raise serializers.ValidationError(
+                "Username/email dan password wajib diisi.",
+                code='authorization'
+            )
+        
+        # Cari user berdasarkan username atau email
+        try:
+            user = User.objects.get(
+                Q(username=credential) | Q(email=credential)
+            )
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                "Username/email atau password salah.",
+                code='authorization'
+            )
+        
+        # Cek password secara manual (karena authenticate sering bermasalah)
+        if not user.check_password(password):
+            raise serializers.ValidationError(
+                "Username/email atau password salah.",
+                code='authorization'
+            )
+        
+        # Cek apakah user aktif
+        if not user.is_active:
+            raise serializers.ValidationError(
+                "Akun tidak aktif.",
+                code='inactive_account'
+            )
+        
+        # Cek apakah email sudah terverifikasi
+        if not user.email_verified:
+            raise serializers.ValidationError(
+                "Akun belum diverifikasi. Silakan cek email Anda untuk verifikasi.",
+                code='email_not_verified'
+            )
+        
+        # Set user ke attrs untuk diproses oleh parent
+        attrs['username'] = user.username
+        
+        # Panggil parent validate dengan username yang sudah benar
+        return super().validate(attrs)
+
+====================================================================
+FILE: main/serializers/feed_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_feed import Feed, FeedComment, FeedLike, Follow, Story, StorySeen
+from main.models import User
+from main.my_utils import generate_url
+
+
+class UserBasicSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'nama', 'profile_picture']
+    
+    def get_profile_picture(self, obj):
+        return generate_url(obj.foto_profil, self.context.get('request'))
+
+
+class FeedSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(source='user.id', read_only=True)
+    user_name = serializers.CharField(source='user.nama', read_only=True)
+    user_country = serializers.CharField(source='user.country', read_only=True)
+    user_picture = serializers.SerializerMethodField()
+    isLiked = serializers.SerializerMethodField()
+    isFollowed = serializers.SerializerMethodField()
+    visibility = serializers.CharField()
+    class Meta:
+        model = Feed
+        fields = [
+            'id', 'user_id', 'user_name', 'user_country', 'user_picture',
+            'feed_location', 'feed_caption', 'feed_pictures', 'created_at',
+            'isLiked', 'isFollowed', 'like_count', 'comment_count',
+            'isSponsored', 'permalink','visibility'
+        ]
+    
+    def get_user_picture(self, obj):
+        return generate_url(obj.user.foto_profil, self.context.get('request'))
+    
+    def get_isLiked(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return FeedLike.objects.filter(feed=obj, user=request.user).exists()
+        return False
+    
+    def get_isFollowed(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return Follow.objects.filter(follower=request.user, following=obj.user).exists()
+        return False
+
+
+class FeedCommentSerializer(serializers.ModelSerializer):
+    user = UserBasicSerializer(read_only=True)
+    replied_to = UserBasicSerializer(read_only=True)
+    replies = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = FeedComment
+        fields = ['id', 'user', 'text', 'parent', 'replied_to', 'replies', 'created_at']
+    
+    def get_replies(self, obj):
+        # Hanya ambil reply level 2 (parent = obj)
+        replies = obj.replies.all().order_by('created_at')
+        return FeedCommentSerializer(replies, many=True, context=self.context).data
+
+
+class StorySerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(source='user.id', read_only=True)
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_picture = serializers.SerializerMethodField()
+    isSeen = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Story
+        fields = [
+            'id', 'user_id', 'user_name', 'user_country', 'story_link',
+            'user_picture', 'isOnline', 'created_at', 'isSeen'
+        ]
+    
+    def get_user_picture(self, obj):
+        return generate_url(obj.user.foto_profil, self.context.get('request'))
+    
+    def get_isSeen(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return StorySeen.objects.filter(story=obj, user=request.user).exists()
+        return False
+
+
+class FeedCommentSerializer(serializers.ModelSerializer):
+    user = UserBasicSerializer(read_only=True)
+    replied_to = UserBasicSerializer(read_only=True)
+    replies = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField()
+    like_count = serializers.IntegerField(source='likes.count', read_only=True)
+    
+    class Meta:
+        model = FeedComment
+        fields = [
+            'id', 'user', 'text', 'parent', 'replied_to', 'replies',
+            'is_liked', 'like_count', 'created_at'
+        ]
+    
+    def get_replies(self, obj):
+        replies = obj.replies.all().order_by('created_at')
+        return FeedCommentSerializer(replies, many=True, context=self.context).data
+    
+    def get_is_liked(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            from main.models_feed import CommentLike
+            return CommentLike.objects.filter(comment=obj, user=request.user).exists()
+        return False
+
+====================================================================
+FILE: main/serializers/fest_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_fest import Fest
+
+class FestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fest
+        fields = [
+            'id', 'banner', 'title', 'date', 'address',
+            'start_time', 'end_time', 'category', 'description'
+        ]
+
+====================================================================
+FILE: main/serializers/gamification_serializers.py
+====================================================================
+# main/serializers/gamification_serializers.py
+from rest_framework import serializers
+from main.models_gamification import AmalanCheckin, UserStreak
+
+class AmalanCheckinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AmalanCheckin
+        fields = ['amalan', 'status', 'points_earned', 'date']
+
+class StreakSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserStreak
+        fields = ['amalan', 'streak_count']
+
+class LevelInfoSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    user_name = serializers.CharField()
+    user_profile = serializers.CharField(allow_null=True)
+    rank = serializers.IntegerField()
+    acquired_points = serializers.IntegerField()
+    required_points_to_next_level = serializers.IntegerField()
+    level = serializers.CharField()
+
+====================================================================
+FILE: main/serializers/healthy_tip_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_healthy_tip import HealthyTip
+
+
+class HealthyTipSerializer(serializers.ModelSerializer):
+    banner_url = serializers.SerializerMethodField()
+    uploader_name = serializers.SerializerMethodField()
+    created_at = serializers.SerializerMethodField()
+
+    class Meta:
+        model = HealthyTip
+        fields = [
+            "id",
+            "title",
+            "banner_url",
+            "created_at",
+            "description_short",
+            "category",
+            "article",
+            "uploader_name",
+        ]
+
+    def get_banner_url(self, obj):
+        request = self.context.get("request")
+
+        if not obj.banner:
+            return ""
+
+        if request:
+            return request.build_absolute_uri(obj.banner.url)
+
+        return obj.banner.url
+
+    def get_uploader_name(self, obj):
+        if not obj.uploader:
+            return "Admin"
+
+        full_name = obj.uploader.get_full_name()
+        return full_name if full_name else obj.uploader.username
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%Y-%m-%d")
+
+====================================================================
+FILE: main/serializers/islamic_book_serializer.py
+====================================================================
+from rest_framework import serializers
+
+from main.models_book_category import BookCategory
+from main.models_book_author import BookAuthor
+from main.models_islamic_book import IslamicBook
+
+
+class BookCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookCategory
+        fields = [
+            "id",
+            "name",
+        ]
+
+
+class BookAuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookAuthor
+        fields = [
+            "id",
+            "name",
+        ]
+
+
+class IslamicBookSerializer(serializers.ModelSerializer):
+    cover_image_url = serializers.SerializerMethodField()
+    book_url = serializers.SerializerMethodField()
+    category = serializers.CharField(source="category.name")
+    author_name = serializers.CharField(source="author.name")
+    uploader_name = serializers.SerializerMethodField()
+    uploader_id = serializers.SerializerMethodField()
+    created_at = serializers.SerializerMethodField()
+    is_owned = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    discount = serializers.SerializerMethodField()
+
+    class Meta:
+        model = IslamicBook
+        fields = [
+            "id",
+            "title",
+            "cover_image_url",
+            "category",
+            "price",
+            "discount",
+            "publish_year",
+            "author_name",
+            "uploader_id",
+            "uploader_name",
+            "sold_count",
+            "synopsis",
+            "is_owned",
+            "book_url",
+            "created_at",
+        ]
+
+    def get_price(self, obj):
+        return float(obj.price)
+
+
+    def get_discount(self, obj):
+        return float(obj.discount)
+
+    def get_cover_image_url(self, obj):
+        request = self.context.get("request")
+
+        if not obj.cover:
+            return ""
+
+        if request:
+            return request.build_absolute_uri(obj.cover.url)
+
+        return obj.cover.url
+
+    def get_book_url(self, obj):
+        request = self.context.get("request")
+
+        if not obj.pdf:
+            return ""
+
+        if request:
+            return request.build_absolute_uri(obj.pdf.url)
+
+        return obj.pdf.url
+
+    def get_uploader_name(self, obj):
+        if not obj.uploader:
+            return "Admin"
+
+        full_name = obj.uploader.get_full_name()
+
+        return full_name if full_name else obj.uploader.username
+
+    def get_uploader_id(self, obj):
+        if obj.uploader:
+            return obj.uploader.id
+
+        return None
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%Y-%m-%d")
+
+    def get_is_owned(self, obj):
+        """
+        V1:
+        Belum ada sistem pembelian.
+        """
+        return False
+
+====================================================================
+FILE: main/serializers/kisah_nabi_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_kisah_nabi import KisahNabi, KisahNabiEpisode
+from main.my_utils import generate_url
+
+class KisahNabiEpisodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KisahNabiEpisode
+        fields = ['id', 'title', 'description', 'doc_url', 'cover_url']
+
+class KisahNabiSerializer(serializers.ModelSerializer):
+    main_cover = serializers.SerializerMethodField()
+    episodes = KisahNabiEpisodeSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = KisahNabi
+        fields = ['id', 'prophet_name', 'total_read_count', 'main_cover', 'description', 'episodes']
+    
+    def get_main_cover(self, obj):
+        return generate_url(obj.main_cover, self.context.get('request'))
+
+class KisahNabiListSerializer(serializers.ModelSerializer):
+    main_cover = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = KisahNabi
+        fields = ['id', 'prophet_name', 'total_read_count', 'main_cover', 'description']
+    
+    def get_main_cover(self, obj):
+        return generate_url(obj.main_cover, self.context.get('request'))
+
+====================================================================
+FILE: main/serializers/klinik_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_klinik import KlinikReview, KlinikReviewPhoto
+from main.my_utils import generate_url
+
+class KlinikReviewPhotoSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = KlinikReviewPhoto
+        fields = ['id', 'image_url', 'created_at']
+    
+    def get_image_url(self, obj):
+        return generate_url(obj.image, self.context.get('request'))
+
+class KlinikReviewSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_picture = serializers.SerializerMethodField()
+    photos = KlinikReviewPhotoSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = KlinikReview
+        fields = ['id', 'user', 'user_name', 'user_picture', 'rating', 'review', 
+                  'photos', 'created_at', 'updated_at']
+        read_only_fields = ['user', 'created_at', 'updated_at']
+    
+    def get_user_picture(self, obj):
+        return generate_url(obj.user.foto_profil, self.context.get('request'))
+
+class KlinikReviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KlinikReview
+        fields = ['place_id', 'rating', 'review']
+
+====================================================================
+FILE: main/serializers/masjid_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_masjid import MasjidReview, MasjidReviewPhoto
+from main.my_utils import generate_url
+
+class MasjidReviewPhotoSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = MasjidReviewPhoto
+        fields = ['id', 'image_url', 'created_at']
+    
+    def get_image_url(self, obj):
+        return generate_url(obj.image, self.context.get('request'))
+
+class MasjidReviewSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_picture = serializers.SerializerMethodField()
+    photos = MasjidReviewPhotoSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = MasjidReview
+        fields = ['id', 'user', 'user_name', 'user_picture', 'rating', 'review', 
+                  'photos', 'created_at', 'updated_at']
+        read_only_fields = ['user', 'created_at', 'updated_at']
+    
+    def get_user_picture(self, obj):
+        return generate_url(obj.user.foto_profil, self.context.get('request'))
+
+class MasjidReviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MasjidReview
+        fields = ['place_id', 'rating', 'review']
+
+====================================================================
+FILE: main/serializers/media_islami_serializers.py
+====================================================================
+from rest_framework import serializers
+
+from main.models_media_category import MediaCategory
+from main.models_short_islami import ShortIslami
+from main.models_artikel_islami import ArtikelIslami
+
+
+class MediaCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MediaCategory
+        fields = [
+            "id",
+            "name",
+        ]
+
+
+class ShortIslamiSerializer(serializers.ModelSerializer):
+    thumbnail_url = serializers.SerializerMethodField()
+    short_url = serializers.SerializerMethodField()
+    uploader_name = serializers.SerializerMethodField()
+    uploader_id = serializers.SerializerMethodField()
+    category = serializers.CharField(source="category.name")
+    created_at = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ShortIslami
+        fields = [
+            "id",
+            "title",
+            "thumbnail_url",
+            "short_url",
+            "description",
+            "created_at",
+            "category",
+            "view_count",
+            "uploader_id",
+            "uploader_name",
+        ]
+
+    def get_thumbnail_url(self, obj):
+        request = self.context.get("request")
+
+        if not obj.thumbnail:
+            return ""
+
+        if request:
+            return request.build_absolute_uri(obj.thumbnail.url)
+
+        return obj.thumbnail.url
+
+    def get_short_url(self, obj):
+        request = self.context.get("request")
+
+        if not obj.video:
+            return ""
+
+        if request:
+            return request.build_absolute_uri(obj.video.url)
+
+        return obj.video.url
+
+    def get_uploader_name(self, obj):
+        if not obj.uploader:
+            return "Admin"
+
+        full_name = obj.uploader.get_full_name()
+
+        return full_name if full_name else obj.uploader.username
+
+    def get_uploader_id(self, obj):
+        if obj.uploader:
+            return obj.uploader.id
+        return None
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%Y-%m-%d")
+
+
+class ArtikelIslamiSerializer(serializers.ModelSerializer):
+    banner_url = serializers.SerializerMethodField()
+    uploader_name = serializers.SerializerMethodField()
+    uploader_id = serializers.SerializerMethodField()
+    category = serializers.CharField(source="category.name")
+    created_at = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ArtikelIslami
+        fields = [
+            "id",
+            "title",
+            "banner_url",
+            "description",
+            "created_at",
+            "category",
+            "article",
+            "uploader_name",
+            "uploader_id",
+        ]
+
+    def get_banner_url(self, obj):
+        request = self.context.get("request")
+
+        if not obj.banner:
+            return ""
+
+        if request:
+            return request.build_absolute_uri(obj.banner.url)
+
+        return obj.banner.url
+
+    def get_uploader_name(self, obj):
+        if not obj.uploader:
+            return "Admin"
+
+        full_name = obj.uploader.get_full_name()
+
+        return full_name if full_name else obj.uploader.username
+
+    def get_uploader_id(self, obj):
+        if obj.uploader:
+            return obj.uploader.id
+        return None
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%Y-%m-%d")
+
+====================================================================
+FILE: main/serializers/ngaji_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_ngaji import *
+from main.my_utils import generate_url
+
+class KelasScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KelasSchedule
+        fields = ['id', 'days', 'start_time', 'end_time', 'duration_in_seconds', 'enrolled_students']
+
+class KelasTahfidzSerializer(serializers.ModelSerializer):
+    banner = serializers.SerializerMethodField()
+    schedules = KelasScheduleSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = KelasTahfidz
+        fields = [
+            'id', 'title', 'description', 'duration_in_seconds', 'banner',
+            'price', 'is_dewasa', 'lecturer_id', 'lecturer_name', 
+            'enroll_count', 'learning_materials', 'schedules'
+        ]
+    
+    def get_banner(self, obj):
+        return generate_url(obj.banner, self.context.get('request'))
+
+class PelajaranSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pelajaran
+        fields = ['id', 'name', 'description', 'step', 'course_total', 'course_finished']
+
+class DetailPelajaranSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetailPelajaran
+        fields = ['id', 'name', 'step', 'arabic_text_icon', 'is_finished']
+
+class MateriPelajaranSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MateriPelajaran
+        fields = ['id', 'title', 'description', 'arabic', 'latin', 'audio_url', 'order']
+
+class KelasEnrollmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KelasEnrollment
+        fields = [
+            'id', 'kelas', 'selected_schedule', 'nama_lengkap', 'jenis_kelamin',
+            'usia_in_tahun', 'parent_name', 'parent_phone', 'address', 
+            'ngaji_level', 'is_dewasa', 'is_private', 'enrollment_status',
+            'enrolled_at'
+        ]
+        read_only_fields = ['user', 'enrollment_status', 'enrolled_at']
+
+
+class KelasEnrollmentRequestSerializer(serializers.Serializer):
+    """Serializer untuk request daftar kelas"""
+    kelas_id = serializers.IntegerField()
+    is_dewasa = serializers.BooleanField()
+    is_private = serializers.BooleanField(default=False)
+    selected_schedule_id = serializers.IntegerField(allow_null=True, required=False)
+    
+    nama_lengkap = serializers.CharField(max_length=255)
+    jenis_kelamin = serializers.ChoiceField(choices=['laki-laki', 'perempuan'])
+    usia_in_tahun = serializers.IntegerField(min_value=0, max_value=120)
+    
+    parent_name = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
+    parent_phone = serializers.CharField(max_length=20, required=False, allow_blank=True, allow_null=True)
+    
+    address = serializers.CharField()
+    
+    ngaji_level = serializers.IntegerField(min_value=1, max_value=4)
+    
+    def validate(self, data):
+        # Validasi: jika is_dewasa = false, parent_name dan parent_phone wajib
+        if not data.get('is_dewasa', True):
+            if not data.get('parent_name'):
+                raise serializers.ValidationError({
+                    'parent_name': 'Parent name is required when is_dewasa is false'
+                })
+            if not data.get('parent_phone'):
+                raise serializers.ValidationError({
+                    'parent_phone': 'Parent phone is required when is_dewasa is false'
+                })
+        
+        # Validasi: jika is_private = true, selected_schedule_id wajib
+        if data.get('is_private', False) and not data.get('selected_schedule_id'):
+            raise serializers.ValidationError({
+                'selected_schedule_id': 'Schedule ID is required for private class'
+            })
+        
+        return data
+
+====================================================================
+FILE: main/serializers/tilawah_serializers.py
+====================================================================
+from rest_framework import serializers
+from main.models_tilawah import TilawahSession, TilawahAyahPool
+
+
+class TilawahAyahSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TilawahAyahPool
+        fields = ['surah_number', 'surah_name', 'ayah_number', 'ayah_text', 'audio_url', 'level']
+
+
+class TilawahSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TilawahSession
+        fields = [
+            'id', 'surah_number', 'surah_name', 'ayah_number',
+            'ayah_text', 'level', 'tajwid_score', 'word_accuracy',
+            'feedback_data', 'created_at'
+        ]
+
+====================================================================
+FILE: main/serializers/user_serializers.py
+====================================================================
+# main/serializers/user_serializers.py
+from rest_framework import serializers
+from main.models import User
+from main.my_utils import generate_url
+
+
+class UserBasicSerializer(serializers.ModelSerializer):
+    profile_picture = serializers.SerializerMethodField()
+    banner = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'nama', 'profile_picture', 'banner']
+    
+    def get_profile_picture(self, obj):
+        return generate_url(obj.foto_profil, self.context.get('request'))
+    
+    def get_banner(self, obj):
+        return generate_url(obj.banner, self.context.get('request'))
+
+====================================================================
+FILE: main/urls.py
+====================================================================
+# main/urls.py
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from . import views
+from .endpoint.social import feed_views, story_views, comment_views, follow_views
+from django.conf import settings
+from django.conf.urls.static import static
+from .endpoint.lifestyle import fest_views
+from .endpoint import masjid_views
+from .endpoint import klinik_views
+from .endpoint import hadis_views
+from .endpoint.ngaji import kelas_views, pelajaran_views
+from .endpoint.kisah_nabi import views as kisah_nabi_views
+from .endpoint import spiritual_views
+from .endpoint.ai import chat_views
+
+from .endpoint.tilawah import tilawah_views
+from .google_auth_views import GoogleLoginView
+from main.endpoint.tuntunan_shalat.views import (
+    TuntunanShalatListView,
+    TuntunanShalatReaderPageView,
+)
+
+from main.endpoint.doa.views import (
+    DoaListView,
+    DoaDetailView,
+    DoaBookmarkToggleView,
+)
+from .endpoint.media_islami import views as media_islami_views
+from .endpoint.healthy_tip import views as healthy_tip_views
+from .endpoint import gamification_views
+
+from .endpoint.e_pustaka import views as epustaka_views
+
+
+# from .views.auth_views import CustomTokenObtainPairView 
+
+urlpatterns = [
+
+    # NOTIFICATION
+    path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
+    
+    # AUTH --------------------------------------------------------------------------------------------------------------------------
+    path('auth/login/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/verify/<str:token>/', views.verify_email, name='verify_email'),
+    path('auth/resend-verification/', views.resend_verification_email, name='resend_verification'),
+    # JADWAL SHALAT
+    path('jadwal_shalat/sync/', views.sync_prayer_month, name='sinkronisasi_jadwal_shalkat'),
+    path('jadwal_shalat/notification_preference/', views.sync_prayer_preferences, name='sinkronisasi_preferensi_notifikasi'),
+    
+    # USER--------------------------------------------------------------------------------------------------------------------
+    path('user/me/', views.users_me, name='users_me'),
+    path('user/create/', views.create_user, name='create_user'),
+    path('user/change_password/', views.change_password, name='change_password'),
+    path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
+    
+    path('user/change_banner/', views.change_user_banner, name='change_user_banner'),
+
+    # SOCIAL FEEDS (TODAY) 
+    path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
+    path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
+    path('feed/following/', feed_views.get_following_feed, name='get_following_feed'),
+    path('feed/user_like/<int:user_id>/', feed_views.get_user_liked_feeds, name='get_user_liked_feeds'),
+    path('feed/user/<int:user_id>/', feed_views.get_user_feeds, name='get_user_feeds'),
+    path('feed/create/', feed_views.create_feed, name='create_feed'),
+    path('feed/like/<int:feed_id>/', feed_views.like_feed, name='like_feed'),
+    path('feed/search/', feed_views.search_feed, name='search_feed'),
+    path('feed/user_tagged/<int:user_id>/', feed_views.get_user_tagged_feeds, name='get_user_tagged_feeds'),
+    path('feed/search_user/', feed_views.search_users, name='search_users'),
+    
+
+    # COMMENT ENDPOINTS
+    path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
+    path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
+    path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
+    path('feed/comment/reply/<int:comment_id>/', comment_views.reply_comment, name='reply_comment'), 
+    path('feed/comment/like/<int:comment_id>/', comment_views.like_comment, name='like_comment'),   
+    # STORIES 
+    path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
+    path('stories/local/', story_views.get_local_stories, name='get_local_stories'),
+    path('stories/following/', story_views.get_following_stories, name='get_following_stories'),
+    path('stories/create/', story_views.create_story, name='create_story'),  # Tambah ini
+
+    path('stories/seen/<int:story_id>/', story_views.mark_story_seen, name='mark_story_seen'),
+
+
+    # FOLLOW ENDPOINTS
+    path('follow/<int:user_id>/', follow_views.follow_user, name='follow_user'),
+    path('unfollow/<int:user_id>/', follow_views.unfollow_user, name='unfollow_user'),
+    path('followers/<int:user_id>/', follow_views.get_followers, name='get_followers'),
+    path('following/<int:user_id>/', follow_views.get_following, name='get_following'),
+    path('follow/check/<int:user_id>/', follow_views.check_follow_status, name='check_follow_status'), 
+
+
+    # LIFESTYLE - FEST
+    path('fest/', fest_views.get_fests, name='get_fests'),
+    path('fest/<int:fest_id>/', fest_views.get_fest_detail, name='get_fest_detail'),
+    path('fest/category/<str:category>/', fest_views.get_fests_by_category, name='get_fests_by_category'),
+
+    # NEARBY MASJIDS & REVIEWS
+    path('masjids/nearby/', masjid_views.nearby_masjids, name='nearby_masjids'),
+    path('masjids/<str:place_id>/', masjid_views.masjid_detail, name='masjid_detail'),
+    path('masjids/<str:place_id>/review/', masjid_views.create_masjid_review, name='create_masjid_review'),
+    path('masjids/<str:place_id>/reviews/', masjid_views.get_masjid_reviews, name='get_masjid_reviews'),
+    path('masjids/review/check/<str:place_id>/', masjid_views.check_user_review, name='check_user_review'),
+    path('masjids/review/delete/<int:review_id>/', masjid_views.delete_masjid_review, name='delete_masjid_review'),
+
+    path('kliniks/nearby/', klinik_views.nearby_kliniks, name='nearby_kliniks'),
+    path('kliniks/<str:place_id>/', klinik_views.klinik_detail, name='klinik_detail'),
+    path('kliniks/<str:place_id>/review/', klinik_views.create_klinik_review, name='create_klinik_review'),
+    path('kliniks/<str:place_id>/reviews/', klinik_views.get_klinik_reviews, name='get_klinik_reviews'),
+    path('kliniks/review/check/<str:place_id>/', klinik_views.check_user_klinik_review, name='check_user_klinik_review'),
+    path('kliniks/review/delete/<int:review_id>/', klinik_views.delete_klinik_review, name='delete_klinik_review'),
+
+    # BELAJAR NGAJI - KELAS TAHFIDZ
+    path('ngaji/kelas/', kelas_views.get_all_kelas, name='get_all_kelas'),
+    path('ngaji/kelas/cari/', kelas_views.cari_kelas, name='cari_kelas'),
+    path('ngaji/kelas/<int:kelas_id>/', kelas_views.get_kelas_detail, name='get_kelas_detail'),
+    path('ngaji/kelas/<int:kelas_id>/daftar/', kelas_views.daftar_kelas, name='daftar_kelas'),
+    
+    # BELAJAR NGAJI - PELAJARAN
+    path('ngaji/pelajaran/', pelajaran_views.get_all_pelajaran, name='get_all_pelajaran'),
+    path('ngaji/pelajaran/<int:pelajaran_id>/', pelajaran_views.get_detail_pelajaran, name='get_detail_pelajaran'),
+    path('ngaji/pelajaran/materi/<int:detail_pelajaran_id>/', pelajaran_views.get_materi_pelajaran, name='get_materi_pelajaran'),
+    path('ngaji/pelajaran/progress/<int:detail_pelajaran_id>/', pelajaran_views.update_progress, name='update_progress'),
+
+    path('kisah-nabi/', kisah_nabi_views.get_all_kisah_nabi, name='get_all_kisah_nabi'),
+    path('kisah-nabi/popular/', kisah_nabi_views.get_popular_kisah_nabi, name='get_popular_kisah_nabi'),
+    path('kisah-nabi/<int:kisah_id>/', kisah_nabi_views.get_kisah_nabi_detail, name='get_kisah_nabi_detail'),
+    path('kisah-nabi/<int:kisah_id>/read/', kisah_nabi_views.increment_read_count, name='increment_read_count'),
+    path('kisah-nabi/episode/<int:episode_id>/read/', kisah_nabi_views.increment_episode_read_count, name='increment_episode_read_count'),
+
+    path('prayer/monitor/', spiritual_views.get_prayer_monitor, name='get_prayer_monitor'),
+    path('prayer/complete/', spiritual_views.mark_prayer_completed, name='mark_prayer_completed'),
+    path('prayer/history/', spiritual_views.get_prayer_history, name='get_prayer_history'),
+    path('prayer/statistics/', spiritual_views.get_prayer_statistics, name='get_prayer_statistics'),
+    path('prayer/preferences/', spiritual_views.update_notification_preferences, name='update_notification_preferences'),
+
+     # SMART AI
+    path('ai/chat/send/', chat_views.send_message, name='ai_send_message'),
+    path('ai/chat/conversations/', chat_views.get_conversations, name='ai_get_conversations'),
+    path('ai/chat/conversation/<int:conversation_id>/', chat_views.get_conversation_detail, name='ai_conversation_detail'),
+    path('ai/chat/conversation/<int:conversation_id>/delete/', chat_views.delete_conversation, name='ai_delete_conversation'),
+    path('hadis/hybrid-search/', hadis_views.test_hybrid_search, name='hybrid_search'),
+
+    # tilawah
+    path('tilawah/ayah/random/', tilawah_views.get_random_ayah, name='tilawah_random_ayah'),
+    path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
+    path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
+    path('tilawah/session/<int:session_id>/', tilawah_views.get_session_detail, name='tilawah_session_detail'),
+
+
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
+    path('auth/social/', include('social_django.urls', namespace='social')),
+
+
+    path('leaderboard/info/', gamification_views.leaderboard_info, name='leaderboard_info'),
+    path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
+    path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
+
+    #tuntunan sholat
+    path("tuntunan_shalat/", TuntunanShalatListView.as_view()),
+    path("tuntunan_shalat/<int:id>/pages/<int:page_number>/", TuntunanShalatReaderPageView.as_view()),
+    
+    #doa
+    path("doa/", DoaListView.as_view()),
+    path("doa/<int:id>/", DoaDetailView.as_view()),
+    path("doa/<int:id>/bookmark/", DoaBookmarkToggleView.as_view()),
+
+    #healthy_tip
+    path(
+        "tips_hidup_sehat/",
+        healthy_tip_views.get_tips_hidup_sehat,
+        name="get_tips_hidup_sehat",
+    ),
+    path(
+        "tips_hidup_sehat/search/<str:query>/",
+        healthy_tip_views.search_tips_hidup_sehat,
+        name="search_tips_hidup_sehat",
+    ),
+    # MEDIA ISLAMI
+    path(
+        "media_islami/",
+        media_islami_views.get_media_islami,
+        name="get_media_islami",
+    ),
+
+    path(
+        "media_islami/search/",
+        media_islami_views.search_media_islami,
+        name="search_media_islami",
+    ),
+
+    path(
+        "media_islami/short/<int:short_id>/view/",
+        media_islami_views.increase_short_view,
+        name="increase_short_view",
+    ),
+
+    # E-PUSTAKA
+    path(
+        "e_pustaka/",
+        epustaka_views.get_epustaka,
+        name="get_epustaka",
+    ),
+
+    path(
+        "e_pustaka/all/",
+        epustaka_views.get_all_epustaka,
+        name="get_all_epustaka",
+    ),
+    
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+====================================================================
+FILE: main/utils_tilawah/quran_data.py
+====================================================================
+import json
+import os
+from django.conf import settings
+
+# Cache supaya tidak baca file berulang kali
+_quran_data = None
+
+def get_quran_data():
+    global _quran_data
+    if _quran_data is None:
+        json_path = os.path.join(settings.BASE_DIR, 'data', 'quran_uthmani.json')
+        with open(json_path, 'r', encoding='utf-8') as f:
+            _quran_data = json.load(f)
+    return _quran_data
+
+
+def get_ayah_text(surah_number, ayah_number):
+    """Ambil teks ayat berdasarkan nomor surah dan ayat"""
+    quran = get_quran_data()
+    surah = next((s for s in quran if s['id'] == surah_number), None)
+    if not surah:
+        return None
+    verse = next((v for v in surah['verses'] if v['id'] == ayah_number), None)
+    return verse['text'] if verse else None
+
+
+def get_surah_name(surah_number):
+    """Ambil nama surah (transliteration)"""
+    quran = get_quran_data()
+    surah = next((s for s in quran if s['id'] == surah_number), None)
+    return surah['transliteration'] if surah else None
+
+
+def get_all_ayahs():
+    """Return semua ayat dalam format flat list"""
+    quran = get_quran_data()
+    result = []
+    for surah in quran:
+        for verse in surah['verses']:
+            result.append({
+                'surah_number': surah['id'],
+                'surah_name': surah['transliteration'],
+                'ayah_number': verse['id'],
+                'ayah_text': verse['text'],
+                'total_words': len(verse['text'].split()),
+            })
+    return result

@@ -1,0 +1,35 @@
+main/utils_rag/evidence_composer.py:381:def compose_evidence_grounded_answer(
+main/utils_rag/evidence_composer.py:697:def compose_thematic_retrieval_answer(
+Binary file main/utils_rag/__pycache__/integration.cpython-312.pyc matches
+Binary file main/utils_rag/__pycache__/evidence_composer.cpython-312.pyc matches
+main/utils_rag/integration.py:5:from main.fallback_ai_client import get_islamic_response
+main/utils_rag/integration.py:9:from main.utils_rag.answer_strategy_prompt import (
+main/utils_rag/integration.py:10:    build_answer_strategy_prompt,
+main/utils_rag/integration.py:17:    compose_evidence_grounded_answer,
+main/utils_rag/integration.py:18:    compose_thematic_retrieval_answer,
+main/utils_rag/integration.py:104:            build_answer_strategy_prompt(
+main/utils_rag/integration.py:194:            composed = compose_thematic_retrieval_answer(
+main/utils_rag/integration.py:265:        raw_llm_output = get_islamic_response(
+main/utils_rag/integration.py:276:            include_conversation_history=(
+main/utils_rag/integration.py:281:            answer_strategy_prompt=(
+main/utils_rag/integration.py:315:        grounded = compose_evidence_grounded_answer(
+main/utils_rag/answer_strategy_prompt.py:1:# main/utils_rag/answer_strategy_prompt.py
+main/utils_rag/answer_strategy_prompt.py:241:def build_answer_strategy_prompt(
+Binary file main/__pycache__/fallback_ai_client.cpython-312.pyc matches
+Binary file main/__pycache__/gemini_client.cpython-312.pyc matches
+Binary file main/endpoint/ai/__pycache__/chat_views.cpython-312.pyc matches
+main/endpoint/ai/chat_views.py:7:# from main_client import get_islamic_response
+main/endpoint/ai/chat_views.py:9:from main.fallback_ai_client import get_islamic_response
+main/gemini_client.py:117:def get_islamic_response(user_message, conversation_id=None, is_first_message=True):
+main/fallback_ai_client.py:204:    include_conversation_history=True.
+main/fallback_ai_client.py:400:def get_islamic_response(
+main/fallback_ai_client.py:406:    include_conversation_history: bool = True,
+main/fallback_ai_client.py:407:    answer_strategy_prompt: str | None = None,
+main/fallback_ai_client.py:430:        include_conversation_history:
+main/fallback_ai_client.py:434:        answer_strategy_prompt:
+main/fallback_ai_client.py:450:        include_conversation_history,
+main/fallback_ai_client.py:462:            and include_conversation_history
+main/fallback_ai_client.py:492:            answer_strategy_prompt
+main/fallback_ai_client.py:493:            and answer_strategy_prompt.strip()
+main/fallback_ai_client.py:497:                answer_strategy_prompt.strip(),
+main/fallback_ai_client.py:607:            "[FALLBACK] get_islamic_response failed"

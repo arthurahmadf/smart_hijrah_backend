@@ -191,6 +191,33 @@ def _extract_claimed_hadith_refs(text):
 
     return claims
 
+def _contains_explicit_hadith_grading_claim(text):
+    """
+    Deteksi klaim grading hadis secara eksplisit.
+
+    Tidak boleh memicu warning hanya karena ada nama kitab:
+    - Shahih Bukhari
+    - Shahih Muslim
+
+    Warning hanya muncul untuk kalimat seperti:
+    - hadis ini sahih
+    - riwayat tersebut hasan
+    - hadis itu dhaif
+    - derajat hadisnya maudhu
+    """
+    text = _norm(text)
+
+    grading_patterns = [
+        r"\bhadis\s+(?:ini|itu|tersebut)\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bhadits\s+(?:ini|itu|tersebut)\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\briwayat\s+(?:ini|itu|tersebut)\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bderajat(?:nya|\s+hadis|\s+hadits)?\s+(?:adalah\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bberstatus\s+(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\bdinilai\s+(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+        r"\btergolong\s+(?:hadis\s+|hadits\s+)?(?:sahih|shahih|hasan|daif|dhaif|maudhu)\b",
+    ]
+
+    return any(re.search(pattern, text) for pattern in grading_patterns)
 
 def apply_final_checks(reply, verified_sources, status_global):
     """
@@ -251,14 +278,22 @@ def apply_final_checks(reply, verified_sources, status_global):
         })
 
     # Jika narasi menyebut sahih/hasan/daif tapi verified source belum punya grading.
-    grading_words = ["sahih", "shahih", "hasan", "daif", "dhaif", "maudhu"]
-    if any(word in _norm(reply) for word in grading_words):
-        has_hadith = any(s.get("type") == "HADIS" for s in verified_sources or [])
-        if has_hadith:
-            warnings.append({
-                "code": "HADITH_GRADING_CLAIM_NEEDS_REVIEW",
-                "message": "Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.",
-            })
+    # grading_words = ["sahih", "shahih", "hasan", "daif", "dhaif", "maudhu"]
+    # if any(word in _norm(reply) for word in grading_words):
+    #     has_hadith = any(s.get("type") == "HADIS" for s in verified_sources or [])
+    #     if has_hadith:
+    #         warnings.append({
+    #             "code": "HADITH_GRADING_CLAIM_NEEDS_REVIEW",
+    #             "message": "Narasi menyebut derajat hadis. Pastikan data grading/takhrij tersedia.",
+    #         })
+    if _contains_explicit_hadith_grading_claim(reply):
+        warnings.append({
+            "code": "HADITH_GRADING_CLAIM_NEEDS_REVIEW",
+            "message": (
+                "Narasi menyebut derajat hadis secara eksplisit. "
+                "Pastikan data grading atau takhrij tersedia."
+            ),
+        })
 
     final_status = status_global
 

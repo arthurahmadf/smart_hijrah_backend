@@ -114,7 +114,7 @@ def _format_hadith_not_found(parsed, is_first_message: bool):
 
     return {
         "reply": reply,
-        "verification_status": "NEEDS_REVIEW",
+        "verification_status": "NOT_FOUND",
         "verified_sources": verified_sources,
         "raw_output_debug": None,
         "answer_mode": "DIRECT_HADITH_LOOKUP",
@@ -180,21 +180,44 @@ def _format_quran_found(ayah_obj, parsed, is_first_message: bool):
 def _format_quran_not_found(parsed, is_first_message: bool):
     surah_number = parsed["surah_number"]
     ayah_number = parsed["ayah_number"]
+    is_valid_surah = parsed.get("is_valid_surah", True)
+
+    if not is_valid_surah:
+        reason = (
+            f"Nomor surah {surah_number} tidak valid. "
+            f"Al-Qur’an terdiri dari 114 surah."
+        )
+        reference = (
+            f"QS. Surah {surah_number} : {ayah_number} "
+            f"(Nomor surah tidak valid)"
+        )
+    else:
+        reason = (
+            f"Ayat tersebut tidak ditemukan pada surah nomor {surah_number} "
+            f"dalam database Al-Qur’an Smart Hijrah."
+        )
+        reference = (
+            f"QS. Surah {surah_number} : {ayah_number} "
+            f"(Tidak ditemukan di database)"
+        )
 
     reply = (
         f"{_opening(is_first_message)}\n\n"
         f"**QS. Surah {surah_number} Ayat {ayah_number}**\n\n"
         f"**Status:**\n"
-        f"⚠️ Ayat tersebut belum ditemukan dalam database Al-Qur’an Smart Hijrah.\n\n"
-        f"Silakan cek kembali nomor surah atau nomor ayatnya. "
-        f"Saya tidak akan menampilkan isi ayat jika rujukannya tidak ditemukan di database."
+        f"⚠️ {reason}\n\n"
+        f"Saya tidak akan menampilkan isi ayat jika rujukannya tidak valid "
+        f"atau tidak ditemukan di database."
     )
 
     verified_sources = [
         {
             "type": "QURAN",
-            "label": "Belum Terverifikasi ⚠️ (Ayat tidak ditemukan di DB)",
-            "reference": f"QS. Surah {surah_number} : {ayah_number} (Tidak ditemukan di database)",
+            "label": (
+                "Tidak Ditemukan ⚠️ "
+                "(Nomor surah/ayat tidak valid atau tidak ada di DB)"
+            ),
+            "reference": reference,
             "is_verified": False,
             "surah_number": surah_number,
             "ayah_number": ayah_number,
@@ -204,7 +227,7 @@ def _format_quran_not_found(parsed, is_first_message: bool):
 
     return {
         "reply": reply,
-        "verification_status": "NEEDS_REVIEW",
+        "verification_status": "NOT_FOUND",
         "verified_sources": verified_sources,
         "raw_output_debug": None,
         "answer_mode": "DIRECT_QURAN_LOOKUP",
@@ -216,7 +239,7 @@ def try_direct_quran_lookup(user_message: str, is_first_message: bool = True):
 
     if not parsed:
         return None
-
+    
     ayah_obj = TilawahAyahPool.objects.filter(
         surah_number=parsed["surah_number"],
         ayah_number=parsed["ayah_number"],
