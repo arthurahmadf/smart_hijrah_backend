@@ -198,7 +198,7 @@ def get_random_ayah(request):
 
     # Random satu ayat
     ayah = ayahs.order_by('?').first()
-    serializer = TilawahAyahSerializer(ayah)
+    serializer = TilawahSelectAyahSerializer(ayah)
 
     return Response({
         'success': True,

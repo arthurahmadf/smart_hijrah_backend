@@ -77,10 +77,10 @@ class TilawahSurahSerializer(serializers.Serializer):
 class TilawahSelectAyahSerializer(serializers.ModelSerializer):
     id_str = serializers.SerializerMethodField()
     surah_revelation = serializers.SerializerMethodField()
+    surah_name = serializers.SerializerMethodField()
     surah_indo = serializers.SerializerMethodField()
     translation = serializers.SerializerMethodField()
     audio_url = serializers.SerializerMethodField()
-    level = serializers.SerializerMethodField()
 
     class Meta:
         model = TilawahAyahPool
@@ -99,13 +99,15 @@ class TilawahSelectAyahSerializer(serializers.ModelSerializer):
         ]
 
     def get_id_str(self, obj):
-        return str(obj.id)
+        return f"{obj.surah_number}-{obj.ayah_number}"
 
     def get_surah_revelation(self, obj):
         if obj.surah_number in MADANIYAH_SURAH_NUMBERS:
             return "Madaniyah"
-
         return "Makkiyah"
+
+    def get_surah_name(self, obj):
+        return obj.surah_name or ""
 
     def get_surah_indo(self, obj):
         return obj.surah_name_id or ""
@@ -115,9 +117,3 @@ class TilawahSelectAyahSerializer(serializers.ModelSerializer):
 
     def get_audio_url(self, obj):
         return obj.audio_url or ""
-
-    def get_level(self, obj):
-        return LEVEL_RESPONSE_MAP.get(
-            obj.level,
-            obj.level,
-        )
