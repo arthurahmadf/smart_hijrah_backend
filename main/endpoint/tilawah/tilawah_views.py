@@ -135,7 +135,7 @@ def get_ayahs_by_surah(request, surah_id):
         paginated = paginate_queryset(
             request=request,
             queryset=ayahs,
-            page_size=10,
+            page_size=25,
             items_key="ayahs",
         )
 

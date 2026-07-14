@@ -41,10 +41,10 @@ def _format_hadith_found(hadis_obj, parsed, is_first_message: bool):
         f"{arabic}\n\n"
         f"**Terjemahan:**\n"
         f"{translation}\n\n"
-        f"**Status:**\n"
-        f"✅ Ditemukan dalam database hadis Smart Hijrah.\n"
-        f"ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. "
-        f"Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus."
+        # f"**Status:**\n"
+        # f"✅ Ditemukan dalam database hadis Smart Hijrah.\n"
+        # f"ℹ️ Catatan: Status ini berarti rujukan ditemukan di database. "
+        # f"Derajat hadis seperti sahih/hasan/daif belum ditampilkan kecuali tersedia data takhrij khusus."
     )
 
     verified_sources = [
