@@ -1,0 +1,5 @@
+ayah_id,surah_number,ayah_number,issue_type,severity,detail,evidence
+1735,13,31,silah_hamzat_wasl_deferred,warning,Target sesudah ha dhamir adalah hamzat wasl; pronunciation resolver diperlukan.,"{""target"": ""ٱ"", ""word"": ""بِهِ""}"
+1735,13,31,silah_hamzat_wasl_deferred,warning,Target sesudah ha dhamir adalah hamzat wasl; pronunciation resolver diperlukan.,"{""target"": ""ٱ"", ""word"": ""بِهِ""}"
+1735,13,31,silah_hamzat_wasl_deferred,warning,Target sesudah ha dhamir adalah hamzat wasl; pronunciation resolver diperlukan.,"{""target"": ""ٱ"", ""word"": ""بِهِ""}"
+1746,13,42,silah_hamzat_wasl_deferred,warning,Target sesudah ha dhamir adalah hamzat wasl; pronunciation resolver diperlukan.,"{""target"": ""ٱ"", ""word"": ""فَلِلَّهِ""}"

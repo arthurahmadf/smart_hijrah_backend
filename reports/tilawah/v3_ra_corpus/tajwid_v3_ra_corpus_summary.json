@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-07-17T09:55:20.376424+00:00",
+  "engine_version": "3.0.0-alpha.7",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "ra_both_permitted",
+    "ra_tafkhim",
+    "ra_tarqiq"
+  ],
+  "counters": {
+    "ayah_with_annotations": 4898,
+    "ayah_without_annotations": 1338,
+    "total_annotations": 11997,
+    "total_ayah": 6236,
+    "warnings": 406
+  },
+  "issue_type_counts": {
+    "ra_sakin_context_unresolved": 18,
+    "ra_waqf_context_unresolved": 1,
+    "ra_without_resolvable_vowel_or_sukun": 387
+  }
+}

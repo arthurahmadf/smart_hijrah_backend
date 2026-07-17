@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from main.models_tilawah import TilawahAyahPool, TilawahSession
+from main.utils_tilawah.tajwid_v3.db_renderer import frontend_rules_from_ayah
 
 
 # Mengikuti klasifikasi surah Makkiyah/Madaniyah yang umum digunakan.
@@ -81,6 +82,8 @@ class TilawahSelectAyahSerializer(serializers.ModelSerializer):
     surah_indo = serializers.SerializerMethodField()
     translation = serializers.SerializerMethodField()
     audio_url = serializers.SerializerMethodField()
+    transliteration = serializers.SerializerMethodField()
+    rules = serializers.SerializerMethodField()
 
     class Meta:
         model = TilawahAyahPool
@@ -94,8 +97,10 @@ class TilawahSelectAyahSerializer(serializers.ModelSerializer):
             "ayah_number",
             "ayah_text",
             "translation",
+            "transliteration",
             "audio_url",
             "level",
+            "rules",
         ]
 
     def get_id_str(self, obj):
@@ -117,3 +122,9 @@ class TilawahSelectAyahSerializer(serializers.ModelSerializer):
 
     def get_audio_url(self, obj):
         return obj.audio_url or ""
+
+    def get_transliteration(self, obj):
+        return obj.ayah_transliteration or ""
+
+    def get_rules(self, obj):
+        return frontend_rules_from_ayah(obj)

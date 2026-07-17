@@ -1,0 +1,13 @@
+{
+  "total_cases": 20,
+  "passed_cases": 20,
+  "failed_cases": 0,
+  "success": true,
+  "emitted_rule_counts": {
+    "qalqalah_sughra": 7,
+    "qalqalah_kubra": 5,
+    "qalqalah_akbar": 3,
+    "izhar_shafawi": 1
+  },
+  "mismatches": []
+}

@@ -1,0 +1,428 @@
+.
+├── .DS_Store
+├── .env
+├── .gitattributes
+├── .gitignore
+├── Alur Engine untuk Validasi Ustadz.md
+├── CARA KERJA SMART AI.MD
+├── Progress Smart Hijrah mid June 2026.md
+├── REPORT TEST CASE 24 HUKUM TAJWID.MD
+├── data
+│   ├── .DS_Store
+│   ├── hadis
+│   │   ├── abu-daud.json
+│   │   ├── ahmad.json
+│   │   ├── bukhari.json
+│   │   ├── darimi.json
+│   │   ├── ibnu-majah.json
+│   │   ├── malik.json
+│   │   ├── muslim.json
+│   │   ├── nasai.json
+│   │   └── tirmidzi.json
+│   ├── quran_modern.json
+│   └── quran_uthmani.json
+├── debug_test.py
+├── export_files.txt
+├── hasil_test_metode7.txt
+├── hasil_test_metode7_multilevel.txt
+├── hasil_test_metode7_multilevel_1.txt
+├── hasil_test_smart_ai_benchmark.txt
+├── hasil_test_smart_ai_conversation_context.txt
+├── hasil_test_smart_ai_conversation_hardening.txt
+├── log test_tajwid_more_comprehensive.txt
+├── main
+│   ├── .DS_Store
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── dummy kisah nabi.sql
+│   ├── email_backend.py
+│   ├── email_utils.py
+│   ├── endpoint
+│   │   ├── .DS_Store
+│   │   ├── __init__.py
+│   │   ├── ai
+│   │   │   └── chat_views.py
+│   │   ├── doa
+│   │   │   ├── __init__.py
+│   │   │   └── views.py
+│   │   ├── e_pustaka
+│   │   │   ├── __init__.py
+│   │   │   ├── services.py
+│   │   │   └── views.py
+│   │   ├── gamification_views.py
+│   │   ├── hadis_views.py
+│   │   ├── healthy_tip
+│   │   │   ├── __init__.py
+│   │   │   └── views.py
+│   │   ├── kisah_nabi
+│   │   │   ├── __init__.py
+│   │   │   └── views.py
+│   │   ├── klinik_views.py
+│   │   ├── lifestyle
+│   │   │   ├── __init__.py
+│   │   │   └── fest_views.py
+│   │   ├── masjid_views.py
+│   │   ├── media_islami
+│   │   │   ├── __init__.py
+│   │   │   ├── services.py
+│   │   │   └── views.py
+│   │   ├── ngaji
+│   │   │   ├── __init__.py
+│   │   │   ├── kelas_views.py
+│   │   │   └── pelajaran_views.py
+│   │   ├── social
+│   │   │   ├── .DS_Store
+│   │   │   ├── __init__.py
+│   │   │   ├── comment_views.py
+│   │   │   ├── feed_views.py
+│   │   │   ├── follow_views.py
+│   │   │   └── story_views.py
+│   │   ├── spiritual_views.py
+│   │   ├── tilawah
+│   │   │   ├── __init__.py
+│   │   │   └── tilawah_views.py
+│   │   └── tuntunan_shalat
+│   │       ├── __init__.py
+│   │       └── views.py
+│   ├── fallback_ai_client.py
+│   ├── firebase.py
+│   ├── gemini_client.py
+│   ├── google_auth_views.py
+│   ├── management
+│   │   ├── .DS_Store
+│   │   ├── __init__.py
+│   │   └── commands
+│   │       ├── .DS_Store
+│   │       ├── __init__.py
+│   │       ├── generate_hadis_embeddings.py
+│   │       ├── generate_quran_embeddings.py
+│   │       ├── import_hadis.py
+│   │       ├── import_quran_data.py
+│   │       ├── import_quran_final.py
+│   │       ├── import_quran_full.py
+│   │       ├── populate_ayah_pool.py
+│   │       ├── seed_doa.py
+│   │       ├── seed_healthy.py
+│   │       ├── seed_media_islami.py
+│   │       ├── seed_pustaka.py
+│   │       ├── seed_tuntunan_shalat.py
+│   │       ├── send_prayer_notifications.py
+│   │       ├── test_smart_ai.py
+│   │       ├── test_smart_ai_answer_strategy.py
+│   │       ├── test_smart_ai_benchmark.py
+│   │       ├── test_smart_ai_conversation_context.py
+│   │       ├── test_smart_ai_conversation_hardening.py
+│   │       ├── test_smart_ai_followup_compression.py
+│   │       ├── test_smart_ai_naturalness.py
+│   │       └── test_smart_ai_strategy_prompt.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_prayermonthdocument.py
+│   │   ├── 0003_userprayerpreference.py
+│   │   ├── 0004_prayernotificationlog_and_more.py
+│   │   ├── 0005_user_foto_profil.py
+│   │   ├── 0006_feed_feedcomment_feedpicture_story_feedlike_follow_and_more.py
+│   │   ├── 0007_fest.py
+│   │   ├── 0008_remove_fest_lifestyle_f_categor_7c31fc_idx_and_more.py
+│   │   ├── 0009_masjidreview_masjidreviewphoto_and_more.py
+│   │   ├── 0010_klinikreview_klinikreviewphoto_and_more.py
+│   │   ├── 0011_alter_klinikreview_place_id.py
+│   │   ├── 0012_alter_klinikreview_place_id.py
+│   │   ├── 0013_detailpelajaran_kelastahfidz_pelajaran_kelasschedule_and_more.py
+│   │   ├── 0014_remove_feedpicture_feed_and_more.py
+│   │   ├── 0015_user_email_verification_token_user_email_verified_and_more.py
+│   │   ├── 0016_kisahnabi_kisahnabiepisode_kisahnabireadlog.py
+│   │   ├── 0017_chatconversation_chatmessage.py
+│   │   ├── 0018_tilawahayahpool_tilawahsession.py
+│   │   ├── 0019_rename_is_active_kelasenrollment_is_dewasa_and_more.py
+│   │   ├── 0020_tilawahayahpool_ayah_text_modern.py
+│   │   ├── 0021_rename_ayah_text_modern_tilawahayahpool_ayah_translation_and_more.py
+│   │   ├── 0022_alter_tilawahayahpool_options_tilawahayahpool_juz_and_more.py
+│   │   ├── 0023_userlevel_amalancheckin_userstreak.py
+│   │   ├── 0024_user_jenis_kelamin.py
+│   │   ├── 0025_feed_tagged_users.py
+│   │   ├── 0026_user_banner.py
+│   │   ├── 0027_feedcomment_parent_feedcomment_replied_to.py
+│   │   ├── 0028_commentlike.py
+│   │   ├── 0029_feed_visibility.py
+│   │   ├── 0030_kitabhadis_hadis.py
+│   │   ├── 0031_auto_20260704_0854.py
+│   │   ├── 0032_hadis_embedding.py
+│   │   ├── 0033_alter_hadis_embedding.py
+│   │   ├── 0034_tilawahayahpool_embedding.py
+│   │   ├── 0035_tuntunanshalat_tuntunanshalatpage.py
+│   │   ├── 0036_doacategory_doa_doacontent_doabookmark.py
+│   │   ├── 0037_tuntunanshalatimage_remove_doa_hero_image_url_and_more.py
+│   │   ├── 0038_alter_doa_options_alter_doabookmark_options_and_more.py
+│   │   ├── 0039_tuntunanshalatblock_delete_tuntunanshalatimage_and_more.py
+│   │   ├── 0040_alter_tuntunanshalatpage_unique_together_and_more.py
+│   │   ├── 0041_healthytip.py
+│   │   ├── 0042_mediacategory_artikelislami_shortislami.py
+│   │   ├── 0043_alter_shortislami_video.py
+│   │   ├── 0044_bookauthor_bookcategory_islamicbook.py
+│   │   ├── 0045_alter_islamicbook_pdf.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── models_ai.py
+│   ├── models_artikel_islami.py
+│   ├── models_book_author.py
+│   ├── models_book_category.py
+│   ├── models_doa.py
+│   ├── models_faraid.py
+│   ├── models_feed.py
+│   ├── models_fest.py
+│   ├── models_gamification.py
+│   ├── models_hadis.py
+│   ├── models_healthy_tip.py
+│   ├── models_islamic_book.py
+│   ├── models_kisah_nabi.py
+│   ├── models_klinik.py
+│   ├── models_masjid.py
+│   ├── models_media_category.py
+│   ├── models_ngaji.py
+│   ├── models_short_islami.py
+│   ├── models_tilawah.py
+│   ├── models_tuntunan_shalat.py
+│   ├── my_utils.py
+│   ├── pagination_utils.py
+│   ├── serializers
+│   │   ├── __init__.py
+│   │   ├── ai_serializers.py
+│   │   ├── auth_serializers.py
+│   │   ├── feed_serializers.py
+│   │   ├── fest_serializers.py
+│   │   ├── gamification_serializers.py
+│   │   ├── healthy_tip_serializers.py
+│   │   ├── islamic_book_serializer.py
+│   │   ├── kisah_nabi_serializers.py
+│   │   ├── klinik_serializers.py
+│   │   ├── masjid_serializers.py
+│   │   ├── media_islami_serializers.py
+│   │   ├── ngaji_serializers.py
+│   │   ├── tilawah_serializers.py
+│   │   └── user_serializers.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── utils.py
+│   ├── utils_embedding
+│   │   └── embedder.py
+│   ├── utils_epustaka
+│   │   └── file_validator.py
+│   ├── utils_gamification
+│   │   ├── gamification_constants.py
+│   │   └── gamification_helpers.py
+│   ├── utils_hadis
+│   │   ├── clean_sanad.py
+│   │   ├── hybrid_search.py
+│   │   ├── search.py
+│   │   └── semantic_search.py
+│   ├── utils_media_islami
+│   │   └── file_validator.py
+│   ├── utils_nlp_backup
+│   │   ├── __init__.py
+│   │   ├── processor.py
+│   │   └── weights.py
+│   ├── utils_rag
+│   │   ├── .DS_Store
+│   │   ├── answer_strategy.py
+│   │   ├── answer_strategy_prompt.py
+│   │   ├── conversation_context.py
+│   │   ├── direct_lookup.py
+│   │   ├── evidence_composer.py
+│   │   ├── extractor.py
+│   │   ├── final_checker.py
+│   │   ├── followup_compression.py
+│   │   ├── integration.py
+│   │   ├── prompts.py
+│   │   ├── reference_parser.py
+│   │   ├── router.py
+│   │   ├── thematic_retrieval.py
+│   │   ├── topic_classifier.py
+│   │   ├── topic_embedding.py
+│   │   ├── topic_llm_classifier.py
+│   │   └── verifier_guardrails.py
+│   ├── utils_tilawah
+│   │   ├── feedback_builder.py
+│   │   ├── quran_data.py
+│   │   ├── tajwid_classifier.py
+│   │   ├── tajwid_engine.py
+│   │   ├── whisper_engine.py
+│   │   └── word_matcher.py
+│   └── views.py
+├── manage.py
+├── models
+│   └── tarteel-whisper
+│       ├── .cache
+│       │   └── huggingface
+│       │       ├── .gitignore
+│       │       └── download
+│       │           ├── .gitattributes.metadata
+│       │           ├── .gitignore.metadata
+│       │           ├── README.md.metadata
+│       │           ├── added_tokens.json.metadata
+│       │           ├── all_results.json.metadata
+│       │           ├── config.json.metadata
+│       │           ├── eval_results.json.metadata
+│       │           ├── merges.txt.metadata
+│       │           ├── normalizer.json.metadata
+│       │           ├── preprocessor_config.json.metadata
+│       │           ├── pytorch_model.bin.metadata
+│       │           ├── runs
+│       │           │   ├── Dec08_21-03-47_ip-26-0-169-222
+│       │           │   │   ├── 1670533447.9618533
+│       │           │   │   │   └── events.out.tfevents.1670533447.ip-26-0-169-222.916845.1.metadata
+│       │           │   │   └── events.out.tfevents.1670533447.ip-26-0-169-222.916845.0.metadata
+│       │           │   ├── Dec09_23-54-58_ip-26-0-168-139
+│       │           │   │   ├── 1670630109.0616114
+│       │           │   │   │   └── events.out.tfevents.1670630109.ip-26-0-168-139.1537794.1.metadata
+│       │           │   │   └── events.out.tfevents.1670630109.ip-26-0-168-139.1537794.0.metadata
+│       │           │   ├── Dec10_00-01-02_ip-26-0-168-139
+│       │           │   │   ├── 1670630472.0450218
+│       │           │   │   │   └── events.out.tfevents.1670630472.ip-26-0-168-139.1546777.1.metadata
+│       │           │   │   └── events.out.tfevents.1670630472.ip-26-0-168-139.1546777.0.metadata
+│       │           │   ├── Dec10_00-05-20_ip-26-0-168-139
+│       │           │   │   ├── 1670630729.1031175
+│       │           │   │   │   └── events.out.tfevents.1670630729.ip-26-0-168-139.1550390.1.metadata
+│       │           │   │   └── events.out.tfevents.1670630729.ip-26-0-168-139.1550390.0.metadata
+│       │           │   ├── Dec10_00-36-47_ip-26-0-129-52
+│       │           │   │   ├── 1670632617.9499032
+│       │           │   │   │   └── events.out.tfevents.1670632617.ip-26-0-129-52.1669386.1.metadata
+│       │           │   │   └── events.out.tfevents.1670632617.ip-26-0-129-52.1669386.0.metadata
+│       │           │   ├── Dec10_00-50-00_ip-26-0-129-52
+│       │           │   │   ├── 1670633410.9369895
+│       │           │   │   │   └── events.out.tfevents.1670633410.ip-26-0-129-52.1693596.1.metadata
+│       │           │   │   └── events.out.tfevents.1670633410.ip-26-0-129-52.1693596.0.metadata
+│       │           │   ├── Dec10_10-44-25_ip-26-0-129-52
+│       │           │   │   ├── 1670669078.0822697
+│       │           │   │   │   └── events.out.tfevents.1670669078.ip-26-0-129-52.1907186.1.metadata
+│       │           │   │   └── events.out.tfevents.1670669078.ip-26-0-129-52.1907186.0.metadata
+│       │           │   ├── Dec10_13-15-09_ip-26-0-129-52
+│       │           │   │   ├── 1670678120.2629774
+│       │           │   │   │   └── events.out.tfevents.1670678120.ip-26-0-129-52.2033601.1.metadata
+│       │           │   │   └── events.out.tfevents.1670678120.ip-26-0-129-52.2033601.0.metadata
+│       │           │   ├── Dec10_20-55-34_ip-26-0-129-52
+│       │           │   │   ├── 1670705746.458125
+│       │           │   │   │   └── events.out.tfevents.1670705746.ip-26-0-129-52.2377118.1.metadata
+│       │           │   │   └── events.out.tfevents.1670705746.ip-26-0-129-52.2377118.0.metadata
+│       │           │   ├── Dec10_21-26-37_ip-26-0-129-52
+│       │           │   │   ├── 1670707607.913721
+│       │           │   │   │   └── events.out.tfevents.1670707607.ip-26-0-129-52.2460006.1.metadata
+│       │           │   │   └── events.out.tfevents.1670707607.ip-26-0-129-52.2460006.0.metadata
+│       │           │   ├── Dec10_22-00-04_ip-26-0-129-52
+│       │           │   │   ├── 1670709617.6007733
+│       │           │   │   │   └── events.out.tfevents.1670709617.ip-26-0-129-52.2546168.1.metadata
+│       │           │   │   └── events.out.tfevents.1670709617.ip-26-0-129-52.2546168.0.metadata
+│       │           │   └── Dec12_11-34-40_ip-26-0-168-139
+│       │           │       ├── 1670844895.4120195
+│       │           │       │   └── events.out.tfevents.1670844895.ip-26-0-168-139.3098999.1.metadata
+│       │           │       ├── events.out.tfevents.1670844895.ip-26-0-168-139.3098999.0.metadata
+│       │           │       └── events.out.tfevents.1670950102.ip-26-0-168-139.3098999.2.metadata
+│       │           ├── special_tokens_map.json.metadata
+│       │           ├── tokenizer_config.json.metadata
+│       │           ├── train_results.json.metadata
+│       │           ├── trainer_state.json.metadata
+│       │           ├── training_args.bin.metadata
+│       │           └── vocab.json.metadata
+│       ├── .gitattributes
+│       ├── .gitignore
+│       ├── README.md
+│       ├── added_tokens.json
+│       ├── all_results.json
+│       ├── config.json
+│       ├── eval_results.json
+│       ├── merges.txt
+│       ├── normalizer.json
+│       ├── preprocessor_config.json
+│       ├── pytorch_model.bin
+│       ├── runs
+│       │   ├── Dec08_21-03-47_ip-26-0-169-222
+│       │   │   ├── 1670533447.9618533
+│       │   │   │   └── events.out.tfevents.1670533447.ip-26-0-169-222.916845.1
+│       │   │   └── events.out.tfevents.1670533447.ip-26-0-169-222.916845.0
+│       │   ├── Dec09_23-54-58_ip-26-0-168-139
+│       │   │   ├── 1670630109.0616114
+│       │   │   │   └── events.out.tfevents.1670630109.ip-26-0-168-139.1537794.1
+│       │   │   └── events.out.tfevents.1670630109.ip-26-0-168-139.1537794.0
+│       │   ├── Dec10_00-01-02_ip-26-0-168-139
+│       │   │   ├── 1670630472.0450218
+│       │   │   │   └── events.out.tfevents.1670630472.ip-26-0-168-139.1546777.1
+│       │   │   └── events.out.tfevents.1670630472.ip-26-0-168-139.1546777.0
+│       │   ├── Dec10_00-05-20_ip-26-0-168-139
+│       │   │   ├── 1670630729.1031175
+│       │   │   │   └── events.out.tfevents.1670630729.ip-26-0-168-139.1550390.1
+│       │   │   └── events.out.tfevents.1670630729.ip-26-0-168-139.1550390.0
+│       │   ├── Dec10_00-36-47_ip-26-0-129-52
+│       │   │   ├── 1670632617.9499032
+│       │   │   │   └── events.out.tfevents.1670632617.ip-26-0-129-52.1669386.1
+│       │   │   └── events.out.tfevents.1670632617.ip-26-0-129-52.1669386.0
+│       │   ├── Dec10_00-50-00_ip-26-0-129-52
+│       │   │   ├── 1670633410.9369895
+│       │   │   │   └── events.out.tfevents.1670633410.ip-26-0-129-52.1693596.1
+│       │   │   └── events.out.tfevents.1670633410.ip-26-0-129-52.1693596.0
+│       │   ├── Dec10_10-44-25_ip-26-0-129-52
+│       │   │   ├── 1670669078.0822697
+│       │   │   │   └── events.out.tfevents.1670669078.ip-26-0-129-52.1907186.1
+│       │   │   └── events.out.tfevents.1670669078.ip-26-0-129-52.1907186.0
+│       │   ├── Dec10_13-15-09_ip-26-0-129-52
+│       │   │   ├── 1670678120.2629774
+│       │   │   │   └── events.out.tfevents.1670678120.ip-26-0-129-52.2033601.1
+│       │   │   └── events.out.tfevents.1670678120.ip-26-0-129-52.2033601.0
+│       │   ├── Dec10_20-55-34_ip-26-0-129-52
+│       │   │   ├── 1670705746.458125
+│       │   │   │   └── events.out.tfevents.1670705746.ip-26-0-129-52.2377118.1
+│       │   │   └── events.out.tfevents.1670705746.ip-26-0-129-52.2377118.0
+│       │   ├── Dec10_21-26-37_ip-26-0-129-52
+│       │   │   ├── 1670707607.913721
+│       │   │   │   └── events.out.tfevents.1670707607.ip-26-0-129-52.2460006.1
+│       │   │   └── events.out.tfevents.1670707607.ip-26-0-129-52.2460006.0
+│       │   ├── Dec10_22-00-04_ip-26-0-129-52
+│       │   │   ├── 1670709617.6007733
+│       │   │   │   └── events.out.tfevents.1670709617.ip-26-0-129-52.2546168.1
+│       │   │   └── events.out.tfevents.1670709617.ip-26-0-129-52.2546168.0
+│       │   └── Dec12_11-34-40_ip-26-0-168-139
+│       │       ├── 1670844895.4120195
+│       │       │   └── events.out.tfevents.1670844895.ip-26-0-168-139.3098999.1
+│       │       ├── events.out.tfevents.1670844895.ip-26-0-168-139.3098999.0
+│       │       └── events.out.tfevents.1670950102.ip-26-0-168-139.3098999.2
+│       ├── special_tokens_map.json
+│       ├── tokenizer_config.json
+│       ├── train_results.json
+│       ├── trainer_state.json
+│       ├── training_args.bin
+│       └── vocab.json
+├── perhitungan nilai tajwid score dan word accuracy.md
+├── project_structure.txt
+├── requirements.txt
+├── save_model.py
+├── setup_model.sh
+├── smart-hijrah-firebase-adminsdk-fbsvc-e3882f65a5.json
+├── smart_ai_phase5_references.txt
+├── smart_ai_phase5_review.txt
+├── smart_ai_phase5a4_debug.txt
+├── smart_ai_test_log_20260701_143438.txt
+├── smart_ai_test_log_20260701_144211.txt
+├── smart_hijrah
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── test_24_hukum_tajwid.py
+├── test_audio.mp3
+├── test_from_claude.py
+├── test_groq_simple.py
+├── test_mad.py
+├── test_models.py
+├── test_quran_data.py
+├── test_smart_ai.py
+├── test_tajwid.py
+├── test_tajwid_100.py
+├── test_tajwid_130.py
+├── test_tajwid_comprehensive.py
+├── test_tajwid_more_comprehensive.py
+├── test_tilawah_scoring.py
+├── test_today.sh
+└── tilawah_context.txt
+
+84 directories, 342 files

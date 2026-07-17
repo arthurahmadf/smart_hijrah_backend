@@ -1,0 +1,21 @@
+{
+  "total_cases": 26,
+  "passed_cases": 26,
+  "failed_cases": 0,
+  "success": true,
+  "emitted_rule_counts": {
+    "mad_harfi_tabii": 9,
+    "mad_lazim_harfi_mukhaffaf": 10,
+    "ghunnah_mushaddadah": 5,
+    "mad_tamkin": 2,
+    "mad_silah_qasirah": 3,
+    "mad_tabii": 7,
+    "mad_silah_tawilah": 1,
+    "mad_lazim_harfi_muthaqqal": 3,
+    "mad_ayn_muqattaah": 2,
+    "mad_farq": 3,
+    "qalqalah_sughra": 1,
+    "mad_badl": 1
+  },
+  "mismatches": []
+}

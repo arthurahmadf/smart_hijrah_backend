@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-07-17T12:32:34.922906+00:00",
+  "difficulty_version": "3.0.0-alpha.1",
+  "engine_version": "3.0.0-alpha.10",
+  "commit": true,
+  "thresholds": {
+    "intermediate_from": 55.0,
+    "expert_from": 88.0
+  },
+  "distribution": {
+    "basic": 3430,
+    "intermediate": 2057,
+    "expert": 749
+  },
+  "evaluated_ayah": 6236,
+  "missing_active_set": 0
+}

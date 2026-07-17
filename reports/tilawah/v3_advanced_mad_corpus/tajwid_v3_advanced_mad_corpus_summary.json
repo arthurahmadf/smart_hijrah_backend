@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-07-17T09:06:38.856510+00:00",
+  "engine_version": "3.0.0-alpha.5",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "mad_ayn_muqattaah",
+    "mad_farq",
+    "mad_harfi_tabii",
+    "mad_lazim_harfi_mukhaffaf",
+    "mad_lazim_harfi_muthaqqal",
+    "mad_silah_qasirah",
+    "mad_silah_tawilah",
+    "mad_tamkin"
+  ],
+  "counters": {
+    "ayah_with_annotations": 28,
+    "ayah_without_annotations": 6208,
+    "provisional_annotations": 10,
+    "total_annotations": 55,
+    "total_ayah": 6236,
+    "warnings": 4
+  },
+  "issue_type_counts": {
+    "silah_hamzat_wasl_deferred": 4
+  }
+}

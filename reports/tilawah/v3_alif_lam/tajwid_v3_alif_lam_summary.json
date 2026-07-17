@@ -1,0 +1,21 @@
+{
+  "total_cases": 33,
+  "passed_cases": 33,
+  "failed_cases": 0,
+  "success": true,
+  "emitted_rule_counts": {
+    "alif_lam_qamariyyah": 7,
+    "alif_lam_shamsiyyah": 9,
+    "izhar_shafawi": 4,
+    "mad_tabii": 18,
+    "lam_jalalah_tafkhim": 8,
+    "lam_jalalah_tarqiq": 9,
+    "mad_arid_lissukun": 1,
+    "mad_lazim_kalimi_mukhaffaf": 1,
+    "mad_badl": 1,
+    "ghunnah_mushaddadah": 3,
+    "mad_lazim_kalimi_muthaqqal": 1,
+    "qalqalah_sughra": 1
+  },
+  "mismatches": []
+}

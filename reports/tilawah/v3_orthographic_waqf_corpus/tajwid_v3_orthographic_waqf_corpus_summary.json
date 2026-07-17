@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-07-17T10:56:52.774449+00:00",
+  "engine_version": "3.0.0-alpha.9",
+  "reading_mode": "wasl",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "hamzat_wasl",
+    "saktah_jaizah",
+    "saktah_wajibah",
+    "silent_letter"
+  ],
+  "counters": {
+    "ayah_with_annotations": 139,
+    "ayah_without_annotations": 6097,
+    "total_annotations": 278,
+    "total_ayah": 6236,
+    "total_waqf_hints": 7215,
+    "warnings": 4
+  },
+  "issue_type_counts": {
+    "unregistered_saktah_mark": 4
+  },
+  "waqf_hint_counts": {
+    "continue_preferred": 524,
+    "do_not_stop": 1412,
+    "mandatory_stop": 86,
+    "paired_stop": 36,
+    "permissible_stop": 1559,
+    "saktah": 4,
+    "stop_preferred": 3594
+  }
+}

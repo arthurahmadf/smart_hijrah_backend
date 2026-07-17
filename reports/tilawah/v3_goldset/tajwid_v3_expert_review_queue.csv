@@ -1,0 +1,88 @@
+case_id,rule_under_test,kind,text,reading_mode,verse_key,boundary_to_verse_key,review_status,expected_rules,forbidden_rules,source_ids,notes
+core_izhar_halqi_positive_001,izhar_halqi,positive,مِنْ هَادٍ,wasl,,,spec_derived,izhar_halqi,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_izhar_halqi_negative_001,izhar_halqi,negative,مِنْ بَعْدِ,wasl,,,spec_derived,,izhar_halqi,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_idgham_bilaghunnah_positive_001,idgham_bilaghunnah,positive,مِنْ رَبِّهِمْ,wasl,,,spec_derived,idgham_bilaghunnah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_idgham_bilaghunnah_negative_001,idgham_bilaghunnah,negative,مِنْ مَالٍ,wasl,,,spec_derived,,idgham_bilaghunnah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_iqlab_positive_001,iqlab,positive,مِنْ بَعْدِ,wasl,,,spec_derived,iqlab,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_iqlab_negative_001,iqlab,negative,مِنْ هَادٍ,wasl,,,spec_derived,,iqlab,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_ikhfa_haqiqi_positive_001,ikhfa_haqiqi,positive,مِنْ شَرِّ,wasl,,,spec_derived,ikhfa_haqiqi,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_ikhfa_haqiqi_negative_001,ikhfa_haqiqi,negative,مِنْ رَبِّهِمْ,wasl,,,spec_derived,,ikhfa_haqiqi,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_izhar_shafawi_positive_001,izhar_shafawi,positive,هُمْ فِيهَا,wasl,,,spec_derived,izhar_shafawi,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_izhar_shafawi_negative_001,izhar_shafawi,negative,هُمْ بِهَا,wasl,,,spec_derived,,izhar_shafawi,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_ikhfa_shafawi_positive_001,ikhfa_shafawi,positive,هُمْ بِهَا,wasl,,,spec_derived,ikhfa_shafawi,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_ikhfa_shafawi_negative_001,ikhfa_shafawi,negative,لَهُمْ مَّا,wasl,,,spec_derived,,ikhfa_shafawi,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_idgham_mimi_positive_001,idgham_mimi,positive,لَهُمْ مَّا,wasl,,,spec_derived,idgham_mimi,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_idgham_mimi_negative_001,idgham_mimi,negative,هُمْ فِيهَا,wasl,,,spec_derived,,idgham_mimi,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_ghunnah_mushaddadah_positive_001,ghunnah_mushaddadah,positive,إِنَّا,wasl,,,spec_derived,ghunnah_mushaddadah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_ghunnah_mushaddadah_negative_001,ghunnah_mushaddadah,negative,إِنَا,wasl,,,spec_derived,,ghunnah_mushaddadah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_qalqalah_sughra_positive_001,qalqalah_sughra,positive,يَقْطَعُونَ,wasl,,,spec_derived,qalqalah_sughra,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_qalqalah_sughra_negative_001,qalqalah_sughra,negative,يَقُولُونَ,wasl,,,spec_derived,,qalqalah_sughra,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_tabii_positive_001,mad_tabii,positive,قَالَ,wasl,,,spec_derived,mad_tabii,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_tabii_negative_001,mad_tabii,negative,قُلْ,wasl,,,spec_derived,,mad_tabii,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_wajib_muttasil_positive_001,mad_wajib_muttasil,positive,جَاءَ,wasl,,,spec_derived,mad_wajib_muttasil,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_wajib_muttasil_negative_001,mad_wajib_muttasil,negative,قَالَ,wasl,,,spec_derived,,mad_wajib_muttasil,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_jaiz_munfasil_positive_001,mad_jaiz_munfasil,positive,فِي أَنْفُسِكُمْ,wasl,,,spec_derived,mad_jaiz_munfasil,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_jaiz_munfasil_negative_001,mad_jaiz_munfasil,negative,فِي بُيُوتِكُمْ,wasl,,,spec_derived,,mad_jaiz_munfasil,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_lazim_kalimi_muthaqqal_positive_001,mad_lazim_kalimi_muthaqqal,positive,الضَّالِّينَ,wasl,,,spec_derived,mad_lazim_kalimi_muthaqqal,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_lazim_kalimi_muthaqqal_negative_001,mad_lazim_kalimi_muthaqqal,negative,الضَّالِينَ,wasl,,,spec_derived,,mad_lazim_kalimi_muthaqqal,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_arid_lissukun_positive_001,mad_arid_lissukun,positive,الْعَالَمِينَ,waqf,,,spec_derived,mad_arid_lissukun,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_arid_lissukun_negative_001,mad_arid_lissukun,negative,الْعَالَمِينَ,wasl,,,spec_derived,,mad_arid_lissukun,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_lin_positive_001,mad_lin,positive,مِنْ خَوْفٍ,waqf,,,spec_derived,mad_lin,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_mad_lin_negative_001,mad_lin,negative,مِنْ خَوْفٍ,wasl,,,spec_derived,,mad_lin,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_hamzat_wasl_positive_001,hamzat_wasl,positive,ٱلْحَمْدُ,wasl,,,spec_derived,hamzat_wasl,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+core_hamzat_wasl_negative_001,hamzat_wasl,negative,أَحْمَدُ,wasl,,,spec_derived,,hamzat_wasl,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_izhar_mutlaq_positive_001,izhar_mutlaq,positive,الدُّنْيَا,wasl,,,spec_derived,izhar_mutlaq,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_izhar_mutlaq_negative_001,izhar_mutlaq,negative,مِنْ يَوْمٍ,wasl,,,spec_derived,,izhar_mutlaq,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_izhar_mutlaq_exception_001,izhar_mutlaq,exception,بُنْيَانٌ,wasl,,,spec_derived,izhar_mutlaq,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_idgham_bighunnah_positive_001,idgham_bighunnah,positive,مِنْ مَالٍ,wasl,,,spec_derived,idgham_bighunnah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_idgham_bighunnah_negative_001,idgham_bighunnah,negative,مِنْ هَادٍ,wasl,,,spec_derived,,idgham_bighunnah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_idgham_bighunnah_exception_001,idgham_bighunnah,exception,الدُّنْيَا,wasl,,,spec_derived,izhar_mutlaq,idgham_bighunnah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_qalqalah_kubra_positive_001,qalqalah_kubra,positive,الْفَلَقِ,waqf,,,spec_derived,qalqalah_kubra,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_qalqalah_kubra_negative_001,qalqalah_kubra,negative,الْفَلَقِ,wasl,,,spec_derived,,qalqalah_kubra,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_qalqalah_kubra_exception_001,qalqalah_kubra,exception,الْحَقُّ,waqf,,,expert_required,qalqalah_akbar,qalqalah_kubra,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_alif_lam_qamariyyah_positive_001,alif_lam_qamariyyah,positive,ٱلْقَمَرُ,wasl,,,spec_derived,alif_lam_qamariyyah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_alif_lam_qamariyyah_negative_001,alif_lam_qamariyyah,negative,ٱلشَّمْسُ,wasl,,,spec_derived,,alif_lam_qamariyyah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_alif_lam_qamariyyah_exception_001,alif_lam_qamariyyah,exception,قَالَ ٱللَّهُ,wasl,,,spec_derived,lam_jalalah_tafkhim,alif_lam_qamariyyah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_alif_lam_shamsiyyah_positive_001,alif_lam_shamsiyyah,positive,ٱلشَّمْسُ,wasl,,,spec_derived,alif_lam_shamsiyyah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_alif_lam_shamsiyyah_negative_001,alif_lam_shamsiyyah,negative,ٱلْقَمَرُ,wasl,,,spec_derived,,alif_lam_shamsiyyah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_alif_lam_shamsiyyah_exception_001,alif_lam_shamsiyyah,exception,بِسْمِ ٱللَّهِ,wasl,,,spec_derived,lam_jalalah_tarqiq,alif_lam_shamsiyyah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_lam_jalalah_tafkhim_positive_001,lam_jalalah_tafkhim,positive,قَالَ ٱللَّهُ,wasl,,,spec_derived,lam_jalalah_tafkhim,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_lam_jalalah_tafkhim_negative_001,lam_jalalah_tafkhim,negative,بِسْمِ ٱللَّهِ,wasl,,,spec_derived,,lam_jalalah_tafkhim,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_lam_jalalah_tafkhim_exception_001,lam_jalalah_tafkhim,exception,ٱللَّهُ,wasl,,,spec_derived,lam_jalalah_tafkhim,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_lam_jalalah_tarqiq_positive_001,lam_jalalah_tarqiq,positive,بِسْمِ ٱللَّهِ,wasl,,,spec_derived,lam_jalalah_tarqiq,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_lam_jalalah_tarqiq_negative_001,lam_jalalah_tarqiq,negative,قَالَ ٱللَّهُ,wasl,,,spec_derived,,lam_jalalah_tarqiq,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_lam_jalalah_tarqiq_exception_001,lam_jalalah_tarqiq,exception,فِي ٱللَّهِ,wasl,,,spec_derived,lam_jalalah_tarqiq,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_badl_positive_001,mad_badl,positive,ءَامَنُوا,wasl,,,spec_derived,mad_badl,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_badl_negative_001,mad_badl,negative,قَالُوا,wasl,,,spec_derived,,mad_badl,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_badl_exception_001,mad_badl,exception,إِيمَانًا,wasl,,,spec_derived,mad_badl,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_iwad_positive_001,mad_iwad,positive,عَلِيمًا,waqf,,,spec_derived,mad_iwad,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_iwad_negative_001,mad_iwad,negative,عَلِيمًا,wasl,,,spec_derived,,mad_iwad,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_iwad_exception_001,mad_iwad,exception,رَحْمَةً,waqf,,,spec_derived,,mad_iwad,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_lazim_kalimi_mukhaffaf_positive_001,mad_lazim_kalimi_mukhaffaf,positive,ءَآلْـَٰٔنَ,wasl,,,expert_required,mad_lazim_kalimi_mukhaffaf,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_lazim_kalimi_mukhaffaf_negative_001,mad_lazim_kalimi_mukhaffaf,negative,ءَامَنُوا,wasl,,,spec_derived,,mad_lazim_kalimi_mukhaffaf,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_lazim_kalimi_mukhaffaf_exception_001,mad_lazim_kalimi_mukhaffaf,exception,ءَآلْـَٰٔنَ وَقَدْ,wasl,,,expert_required,mad_lazim_kalimi_mukhaffaf,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_harfi_tabii_positive_001,mad_harfi_tabii,positive,طه,wasl,20:1,,expert_required,mad_harfi_tabii,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_harfi_tabii_negative_001,mad_harfi_tabii,negative,طَهُرَ,wasl,,,spec_derived,,mad_harfi_tabii,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_mad_harfi_tabii_exception_001,mad_harfi_tabii,exception,حم,wasl,,,expert_required,mad_harfi_tabii,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_idgham_mutamathilain_positive_001,idgham_mutamathilain,positive,قُلْ لَّهُمْ,wasl,,,spec_derived,idgham_mutamathilain,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_idgham_mutamathilain_negative_001,idgham_mutamathilain,negative,قُلْ رَبِّ,wasl,,,spec_derived,,idgham_mutamathilain,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_idgham_mutamathilain_exception_001,idgham_mutamathilain,exception,اضْرِبْ بِّعَصَاكَ,wasl,,,spec_derived,idgham_mutamathilain,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_saktah_wajibah_positive_001,saktah_wajibah,positive,عِوَجَاۜ قَيِّمًا,wasl,18:1,18:2,spec_derived,saktah_wajibah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_saktah_wajibah_negative_001,saktah_wajibah,negative,كِتَابًا قَيِّمًا,wasl,,,spec_derived,,saktah_wajibah,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+exc_saktah_wajibah_exception_001,saktah_wajibah,exception,مَرْقَدِنَاۜ هَذَا,wasl,36:52,,spec_derived,saktah_wajibah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",
+candidate_qalqalah_akbar_001,qalqalah_akbar,candidate,الْحَقُّ,waqf,,,expert_required,qalqalah_akbar,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_ra_tafkhim_002,ra_tafkhim,candidate,رَبِّ,wasl,,,expert_required,ra_tafkhim,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_ra_tarqiq_003,ra_tarqiq,candidate,رِزْقًا,wasl,,,expert_required,ra_tarqiq,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_ra_both_permitted_004,ra_both_permitted,candidate,فِرْقٍ,wasl,26:63,,expert_required,ra_both_permitted,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_tamkin_005,mad_tamkin,candidate,النَّبِيِّينَ,wasl,,,expert_required,mad_tamkin,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_silah_qasirah_006,mad_silah_qasirah,candidate,إِنَّهُ كَانَ,wasl,,,expert_required,mad_silah_qasirah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_silah_tawilah_007,mad_silah_tawilah,candidate,مَالَهُ أَخْلَدَهُ,wasl,104:3,,expert_required,mad_silah_tawilah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_lazim_harfi_muthaqqal_008,mad_lazim_harfi_muthaqqal,candidate,الٓمٓ,wasl,2:1,,expert_required,mad_lazim_harfi_muthaqqal,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_lazim_harfi_mukhaffaf_009,mad_lazim_harfi_mukhaffaf,candidate,صٓ,wasl,38:1,,expert_required,mad_lazim_harfi_mukhaffaf,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_ayn_muqattaah_010,mad_ayn_muqattaah,candidate,كٓهيعٓصٓ,wasl,19:1,,expert_required,mad_ayn_muqattaah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_mad_farq_011,mad_farq,candidate,ءَآللَّهُ,wasl,,,expert_required,mad_farq,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_idgham_mutajanisain_012,idgham_mutajanisain,candidate,قَدْ تَّبَيَّنَ,wasl,2:256,,expert_required,idgham_mutajanisain,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_idgham_mutaqaribain_013,idgham_mutaqaribain,candidate,قُلْ رَّبِّ,wasl,,,expert_required,idgham_mutaqaribain,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_saktah_jaizah_014,saktah_jaizah,candidate,مَالِيَهْۜ هَلَكَ,wasl,69:28,69:29,expert_required,saktah_jaizah,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+candidate_silent_letter_015,silent_letter,candidate,أَنَا۠,wasl,,,expert_required,silent_letter,,"HAFS_SHATIBIYYAH_PROFILE,EXPERT_TALAQQI_REVIEW",Candidate bootstrap. Belum boleh menjadi oracle production sebelum validasi ahli.
+reference_quran_foundation_1_1_001,hamzat_wasl,reference,بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ,ayah_stop,1:1,,reference_checked,"hamzat_wasl,hamzat_wasl,hamzat_wasl,alif_lam_shamsiyyah,alif_lam_shamsiyyah,mad_tabii",,QURAN_FOUNDATION_TAJWEED_V4,Cross-reference only; final semantic mapping still requires expert review.

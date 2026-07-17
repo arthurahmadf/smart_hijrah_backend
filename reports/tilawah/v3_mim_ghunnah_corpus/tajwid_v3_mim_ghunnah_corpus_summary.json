@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-07-17T07:44:56.463625+00:00",
+  "engine_version": "3.0.0-alpha.2",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "ghunnah_mushaddadah",
+    "idgham_mimi",
+    "ikhfa_shafawi",
+    "izhar_shafawi"
+  ],
+  "counters": {
+    "ayah_with_annotations": 4807,
+    "ayah_without_annotations": 1429,
+    "total_annotations": 14743,
+    "total_ayah": 6236,
+    "warnings": 15
+  },
+  "issue_type_counts": {
+    "nun_tanwin_classification_deferred": 6,
+    "tanwin_not_at_word_boundary": 9
+  }
+}

@@ -1,0 +1,2529 @@
+{
+  "dataset_version": "1.0.0-alpha.1",
+  "cases": [
+    {
+      "case_id": "core_izhar_halqi_positive_001",
+      "rule_under_test": "izhar_halqi",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "مِنْ هَادٍ",
+      "expected": [
+        {
+          "rule_code": "izhar_halqi",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "نْ هَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "نْ هَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_izhar_halqi_negative_001",
+      "rule_under_test": "izhar_halqi",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ بَعْدِ",
+      "expected": [],
+      "forbidden_rules": [
+        "izhar_halqi"
+      ]
+    },
+    {
+      "case_id": "core_idgham_bilaghunnah_positive_001",
+      "rule_under_test": "idgham_bilaghunnah",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "مِنْ رَبِّهِمْ",
+      "expected": [
+        {
+          "rule_code": "idgham_bilaghunnah",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "نْ رَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "نْ رَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_idgham_bilaghunnah_negative_001",
+      "rule_under_test": "idgham_bilaghunnah",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ مَالٍ",
+      "expected": [],
+      "forbidden_rules": [
+        "idgham_bilaghunnah"
+      ]
+    },
+    {
+      "case_id": "core_iqlab_positive_001",
+      "rule_under_test": "iqlab",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "مِنْ بَعْدِ",
+      "expected": [
+        {
+          "rule_code": "iqlab",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "نْ بَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "نْ بَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_iqlab_negative_001",
+      "rule_under_test": "iqlab",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ هَادٍ",
+      "expected": [],
+      "forbidden_rules": [
+        "iqlab"
+      ]
+    },
+    {
+      "case_id": "core_ikhfa_haqiqi_positive_001",
+      "rule_under_test": "ikhfa_haqiqi",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "مِنْ شَرِّ",
+      "expected": [
+        {
+          "rule_code": "ikhfa_haqiqi",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "نْ شَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "نْ شَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_ikhfa_haqiqi_negative_001",
+      "rule_under_test": "ikhfa_haqiqi",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ رَبِّهِمْ",
+      "expected": [],
+      "forbidden_rules": [
+        "ikhfa_haqiqi"
+      ]
+    },
+    {
+      "case_id": "core_izhar_shafawi_positive_001",
+      "rule_under_test": "izhar_shafawi",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "هُمْ فِيهَا",
+      "expected": [
+        {
+          "rule_code": "izhar_shafawi",
+          "trigger": {
+            "text": "مْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "مْ فِ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "مْ فِ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_izhar_shafawi_negative_001",
+      "rule_under_test": "izhar_shafawi",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "هُمْ بِهَا",
+      "expected": [],
+      "forbidden_rules": [
+        "izhar_shafawi"
+      ]
+    },
+    {
+      "case_id": "core_ikhfa_shafawi_positive_001",
+      "rule_under_test": "ikhfa_shafawi",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "هُمْ بِهَا",
+      "expected": [
+        {
+          "rule_code": "ikhfa_shafawi",
+          "trigger": {
+            "text": "مْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "مْ بِ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "مْ بِ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_ikhfa_shafawi_negative_001",
+      "rule_under_test": "ikhfa_shafawi",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "لَهُمْ مَّا",
+      "expected": [],
+      "forbidden_rules": [
+        "ikhfa_shafawi"
+      ]
+    },
+    {
+      "case_id": "core_idgham_mimi_positive_001",
+      "rule_under_test": "idgham_mimi",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "لَهُمْ مَّا",
+      "expected": [
+        {
+          "rule_code": "idgham_mimi",
+          "trigger": {
+            "text": "مْ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 6,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "context": {
+            "text": "مْ مَّ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 10,
+            "grapheme_start": 2,
+            "grapheme_end": 5
+          },
+          "display": {
+            "text": "مْ مَّ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 10,
+            "grapheme_start": 2,
+            "grapheme_end": 5
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_idgham_mimi_negative_001",
+      "rule_under_test": "idgham_mimi",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "هُمْ فِيهَا",
+      "expected": [],
+      "forbidden_rules": [
+        "idgham_mimi"
+      ]
+    },
+    {
+      "case_id": "core_ghunnah_mushaddadah_positive_001",
+      "rule_under_test": "ghunnah_mushaddadah",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "إِنَّا",
+      "expected": [
+        {
+          "rule_code": "ghunnah_mushaddadah",
+          "trigger": {
+            "text": "نَّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 5,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "نَّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 5,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_ghunnah_mushaddadah_negative_001",
+      "rule_under_test": "ghunnah_mushaddadah",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "إِنَا",
+      "expected": [],
+      "forbidden_rules": [
+        "ghunnah_mushaddadah"
+      ]
+    },
+    {
+      "case_id": "core_qalqalah_sughra_positive_001",
+      "rule_under_test": "qalqalah_sughra",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "يَقْطَعُونَ",
+      "expected": [
+        {
+          "rule_code": "qalqalah_sughra",
+          "trigger": {
+            "text": "قْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "قْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_qalqalah_sughra_negative_001",
+      "rule_under_test": "qalqalah_sughra",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "يَقُولُونَ",
+      "expected": [],
+      "forbidden_rules": [
+        "qalqalah_sughra"
+      ]
+    },
+    {
+      "case_id": "core_mad_tabii_positive_001",
+      "rule_under_test": "mad_tabii",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "قَالَ",
+      "expected": [
+        {
+          "rule_code": "mad_tabii",
+          "trigger": {
+            "text": "قَا",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "قَا",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_mad_tabii_negative_001",
+      "rule_under_test": "mad_tabii",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "قُلْ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_tabii"
+      ]
+    },
+    {
+      "case_id": "core_mad_wajib_muttasil_positive_001",
+      "rule_under_test": "mad_wajib_muttasil",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "جَاءَ",
+      "expected": [
+        {
+          "rule_code": "mad_wajib_muttasil",
+          "trigger": {
+            "text": "جَا",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "جَاءَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "display": {
+            "text": "جَاءَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "allowed_harakat": [
+              4,
+              5
+            ]
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_mad_wajib_muttasil_negative_001",
+      "rule_under_test": "mad_wajib_muttasil",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "قَالَ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_wajib_muttasil"
+      ]
+    },
+    {
+      "case_id": "core_mad_jaiz_munfasil_positive_001",
+      "rule_under_test": "mad_jaiz_munfasil",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "فِي أَنْفُسِكُمْ",
+      "expected": [
+        {
+          "rule_code": "mad_jaiz_munfasil",
+          "trigger": {
+            "text": "فِي",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "فِي أَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 6,
+            "grapheme_start": 0,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "فِي أَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 6,
+            "grapheme_start": 0,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {
+            "allowed_harakat": [
+              4,
+              5
+            ]
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_mad_jaiz_munfasil_negative_001",
+      "rule_under_test": "mad_jaiz_munfasil",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "فِي بُيُوتِكُمْ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_jaiz_munfasil"
+      ]
+    },
+    {
+      "case_id": "core_mad_lazim_kalimi_muthaqqal_positive_001",
+      "rule_under_test": "mad_lazim_kalimi_muthaqqal",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "الضَّالِّينَ",
+      "expected": [
+        {
+          "rule_code": "mad_lazim_kalimi_muthaqqal",
+          "trigger": {
+            "text": "الِّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "context": {
+            "text": "ضَّالِّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 9,
+            "grapheme_start": 2,
+            "grapheme_end": 5
+          },
+          "display": {
+            "text": "الِّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 6
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_mad_lazim_kalimi_muthaqqal_negative_001",
+      "rule_under_test": "mad_lazim_kalimi_muthaqqal",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "الضَّالِينَ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_lazim_kalimi_muthaqqal"
+      ]
+    },
+    {
+      "case_id": "core_mad_arid_lissukun_positive_001",
+      "rule_under_test": "mad_arid_lissukun",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "الْعَالَمِينَ",
+      "expected": [
+        {
+          "rule_code": "mad_arid_lissukun",
+          "trigger": {
+            "text": "مِينَ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 13,
+            "grapheme_start": 5,
+            "grapheme_end": 8
+          },
+          "context": null,
+          "display": {
+            "text": "مِينَ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 13,
+            "grapheme_start": 5,
+            "grapheme_end": 8
+          },
+          "applies_when": "waqf",
+          "expected_features": {
+            "allowed_harakat": [
+              2,
+              4,
+              6
+            ]
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_mad_arid_lissukun_negative_001",
+      "rule_under_test": "mad_arid_lissukun",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "الْعَالَمِينَ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_arid_lissukun"
+      ]
+    },
+    {
+      "case_id": "core_mad_lin_positive_001",
+      "rule_under_test": "mad_lin",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "مِنْ خَوْفٍ",
+      "expected": [
+        {
+          "rule_code": "mad_lin",
+          "trigger": {
+            "text": "وْفٍ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 11,
+            "grapheme_start": 4,
+            "grapheme_end": 6
+          },
+          "context": {
+            "text": "خَوْفٍ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 11,
+            "grapheme_start": 3,
+            "grapheme_end": 6
+          },
+          "display": {
+            "text": "خَوْفٍ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 11,
+            "grapheme_start": 3,
+            "grapheme_end": 6
+          },
+          "applies_when": "waqf",
+          "expected_features": {
+            "allowed_harakat": [
+              2,
+              4,
+              6
+            ]
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_mad_lin_negative_001",
+      "rule_under_test": "mad_lin",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ خَوْفٍ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_lin"
+      ]
+    },
+    {
+      "case_id": "core_hamzat_wasl_positive_001",
+      "rule_under_test": "hamzat_wasl",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "ٱلْحَمْدُ",
+      "expected": [
+        {
+          "rule_code": "hamzat_wasl",
+          "trigger": {
+            "text": "ٱ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 1,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "context": null,
+          "display": {
+            "text": "ٱ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 1,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "applies_when": "contextual",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "core_hamzat_wasl_negative_001",
+      "rule_under_test": "hamzat_wasl",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "أَحْمَدُ",
+      "expected": [],
+      "forbidden_rules": [
+        "hamzat_wasl"
+      ]
+    },
+    {
+      "case_id": "exc_izhar_mutlaq_positive_001",
+      "rule_under_test": "izhar_mutlaq",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "الدُّنْيَا",
+      "expected": [
+        {
+          "rule_code": "izhar_mutlaq",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": {
+            "text": "نْيَ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "display": {
+            "text": "نْيَ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_izhar_mutlaq_negative_001",
+      "rule_under_test": "izhar_mutlaq",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ يَوْمٍ",
+      "expected": [],
+      "forbidden_rules": [
+        "izhar_mutlaq"
+      ]
+    },
+    {
+      "case_id": "exc_izhar_mutlaq_exception_001",
+      "rule_under_test": "izhar_mutlaq",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "بُنْيَانٌ",
+      "expected": [
+        {
+          "rule_code": "izhar_mutlaq",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "نْيَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 6,
+            "grapheme_start": 1,
+            "grapheme_end": 3
+          },
+          "display": {
+            "text": "نْيَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 6,
+            "grapheme_start": 1,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_idgham_bighunnah_positive_001",
+      "rule_under_test": "idgham_bighunnah",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "مِنْ مَالٍ",
+      "expected": [
+        {
+          "rule_code": "idgham_bighunnah",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "نْ مَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "نْ مَ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 7,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_idgham_bighunnah_negative_001",
+      "rule_under_test": "idgham_bighunnah",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "مِنْ هَادٍ",
+      "expected": [],
+      "forbidden_rules": [
+        "idgham_bighunnah"
+      ]
+    },
+    {
+      "case_id": "exc_idgham_bighunnah_exception_001",
+      "rule_under_test": "idgham_bighunnah",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "الدُّنْيَا",
+      "expected": [
+        {
+          "rule_code": "izhar_mutlaq",
+          "trigger": {
+            "text": "نْ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": {
+            "text": "نْيَ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "display": {
+            "text": "نْيَ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": [
+        "idgham_bighunnah"
+      ]
+    },
+    {
+      "case_id": "exc_qalqalah_kubra_positive_001",
+      "rule_under_test": "qalqalah_kubra",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "الْفَلَقِ",
+      "expected": [
+        {
+          "rule_code": "qalqalah_kubra",
+          "trigger": {
+            "text": "قِ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 9,
+            "grapheme_start": 4,
+            "grapheme_end": 5
+          },
+          "context": null,
+          "display": {
+            "text": "قِ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 9,
+            "grapheme_start": 4,
+            "grapheme_end": 5
+          },
+          "applies_when": "waqf",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_qalqalah_kubra_negative_001",
+      "rule_under_test": "qalqalah_kubra",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "الْفَلَقِ",
+      "expected": [],
+      "forbidden_rules": [
+        "qalqalah_kubra"
+      ]
+    },
+    {
+      "case_id": "exc_qalqalah_kubra_exception_001",
+      "rule_under_test": "qalqalah_kubra",
+      "kind": "exception",
+      "review_status": "expert_required",
+      "text": "الْحَقُّ",
+      "expected": [
+        {
+          "rule_code": "qalqalah_akbar",
+          "trigger": {
+            "text": "قُّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": null,
+          "display": {
+            "text": "قُّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "applies_when": "waqf",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": [
+        "qalqalah_kubra"
+      ]
+    },
+    {
+      "case_id": "exc_alif_lam_qamariyyah_positive_001",
+      "rule_under_test": "alif_lam_qamariyyah",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "ٱلْقَمَرُ",
+      "expected": [
+        {
+          "rule_code": "alif_lam_qamariyyah",
+          "trigger": {
+            "text": "ٱلْقَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "context": {
+            "text": "ٱلْقَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "display": {
+            "text": "ٱلْقَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_alif_lam_qamariyyah_negative_001",
+      "rule_under_test": "alif_lam_qamariyyah",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "ٱلشَّمْسُ",
+      "expected": [],
+      "forbidden_rules": [
+        "alif_lam_qamariyyah"
+      ]
+    },
+    {
+      "case_id": "exc_alif_lam_qamariyyah_exception_001",
+      "rule_under_test": "alif_lam_qamariyyah",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "قَالَ ٱللَّهُ",
+      "expected": [
+        {
+          "rule_code": "lam_jalalah_tafkhim",
+          "trigger": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 11,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "context": {
+            "text": "ٱللَّ",
+            "occurrence": 1,
+            "codepoint_start": 6,
+            "codepoint_end": 11,
+            "grapheme_start": 4,
+            "grapheme_end": 7
+          },
+          "display": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 11,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": [
+        "alif_lam_qamariyyah"
+      ]
+    },
+    {
+      "case_id": "exc_alif_lam_shamsiyyah_positive_001",
+      "rule_under_test": "alif_lam_shamsiyyah",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "ٱلشَّمْسُ",
+      "expected": [
+        {
+          "rule_code": "alif_lam_shamsiyyah",
+          "trigger": {
+            "text": "ٱلشَّ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "context": {
+            "text": "ٱلشَّ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "display": {
+            "text": "ٱلشَّ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_alif_lam_shamsiyyah_negative_001",
+      "rule_under_test": "alif_lam_shamsiyyah",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "ٱلْقَمَرُ",
+      "expected": [],
+      "forbidden_rules": [
+        "alif_lam_shamsiyyah"
+      ]
+    },
+    {
+      "case_id": "exc_alif_lam_shamsiyyah_exception_001",
+      "rule_under_test": "alif_lam_shamsiyyah",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "بِسْمِ ٱللَّهِ",
+      "expected": [
+        {
+          "rule_code": "lam_jalalah_tarqiq",
+          "trigger": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 9,
+            "codepoint_end": 12,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "context": {
+            "text": "ٱللَّ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 12,
+            "grapheme_start": 4,
+            "grapheme_end": 7
+          },
+          "display": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 9,
+            "codepoint_end": 12,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": [
+        "alif_lam_shamsiyyah"
+      ]
+    },
+    {
+      "case_id": "exc_lam_jalalah_tafkhim_positive_001",
+      "rule_under_test": "lam_jalalah_tafkhim",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "قَالَ ٱللَّهُ",
+      "expected": [
+        {
+          "rule_code": "lam_jalalah_tafkhim",
+          "trigger": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 11,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "context": {
+            "text": "ٱللَّ",
+            "occurrence": 1,
+            "codepoint_start": 6,
+            "codepoint_end": 11,
+            "grapheme_start": 4,
+            "grapheme_end": 7
+          },
+          "display": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 11,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_lam_jalalah_tafkhim_negative_001",
+      "rule_under_test": "lam_jalalah_tafkhim",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "بِسْمِ ٱللَّهِ",
+      "expected": [],
+      "forbidden_rules": [
+        "lam_jalalah_tafkhim"
+      ]
+    },
+    {
+      "case_id": "exc_lam_jalalah_tafkhim_exception_001",
+      "rule_under_test": "lam_jalalah_tafkhim",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "ٱللَّهُ",
+      "expected": [
+        {
+          "rule_code": "lam_jalalah_tafkhim",
+          "trigger": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 5,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "context": {
+            "text": "ٱللَّ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 5,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "display": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 5,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_lam_jalalah_tarqiq_positive_001",
+      "rule_under_test": "lam_jalalah_tarqiq",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "بِسْمِ ٱللَّهِ",
+      "expected": [
+        {
+          "rule_code": "lam_jalalah_tarqiq",
+          "trigger": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 9,
+            "codepoint_end": 12,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "context": {
+            "text": "ٱللَّ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 12,
+            "grapheme_start": 4,
+            "grapheme_end": 7
+          },
+          "display": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 9,
+            "codepoint_end": 12,
+            "grapheme_start": 6,
+            "grapheme_end": 7
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_lam_jalalah_tarqiq_negative_001",
+      "rule_under_test": "lam_jalalah_tarqiq",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "قَالَ ٱللَّهُ",
+      "expected": [],
+      "forbidden_rules": [
+        "lam_jalalah_tarqiq"
+      ]
+    },
+    {
+      "case_id": "exc_lam_jalalah_tarqiq_exception_001",
+      "rule_under_test": "lam_jalalah_tarqiq",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "فِي ٱللَّهِ",
+      "expected": [
+        {
+          "rule_code": "lam_jalalah_tarqiq",
+          "trigger": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 6,
+            "codepoint_end": 9,
+            "grapheme_start": 5,
+            "grapheme_end": 6
+          },
+          "context": {
+            "text": "ٱللَّ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 9,
+            "grapheme_start": 3,
+            "grapheme_end": 6
+          },
+          "display": {
+            "text": "لَّ",
+            "occurrence": 1,
+            "codepoint_start": 6,
+            "codepoint_end": 9,
+            "grapheme_start": 5,
+            "grapheme_end": 6
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_badl_positive_001",
+      "rule_under_test": "mad_badl",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "ءَامَنُوا",
+      "expected": [
+        {
+          "rule_code": "mad_badl",
+          "trigger": {
+            "text": "ءَا",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "ءَا",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_badl_negative_001",
+      "rule_under_test": "mad_badl",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "قَالُوا",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_badl"
+      ]
+    },
+    {
+      "case_id": "exc_mad_badl_exception_001",
+      "rule_under_test": "mad_badl",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "إِيمَانًا",
+      "expected": [
+        {
+          "rule_code": "mad_badl",
+          "trigger": {
+            "text": "إِي",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "إِي",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 3,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_iwad_positive_001",
+      "rule_under_test": "mad_iwad",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "عَلِيمًا",
+      "expected": [
+        {
+          "rule_code": "mad_iwad",
+          "trigger": {
+            "text": "مًا",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "context": null,
+          "display": {
+            "text": "مًا",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 5
+          },
+          "applies_when": "waqf",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_iwad_negative_001",
+      "rule_under_test": "mad_iwad",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "عَلِيمًا",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_iwad"
+      ]
+    },
+    {
+      "case_id": "exc_mad_iwad_exception_001",
+      "rule_under_test": "mad_iwad",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "رَحْمَةً",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_iwad"
+      ]
+    },
+    {
+      "case_id": "exc_mad_lazim_kalimi_mukhaffaf_positive_001",
+      "rule_under_test": "mad_lazim_kalimi_mukhaffaf",
+      "kind": "positive",
+      "review_status": "expert_required",
+      "text": "ءَآلْـَٰٔنَ",
+      "expected": [
+        {
+          "rule_code": "mad_lazim_kalimi_mukhaffaf",
+          "trigger": {
+            "text": "ءَآلْ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 6,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "context": null,
+          "display": {
+            "text": "ءَآلْ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 6,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 6
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_lazim_kalimi_mukhaffaf_negative_001",
+      "rule_under_test": "mad_lazim_kalimi_mukhaffaf",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "ءَامَنُوا",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_lazim_kalimi_mukhaffaf"
+      ]
+    },
+    {
+      "case_id": "exc_mad_lazim_kalimi_mukhaffaf_exception_001",
+      "rule_under_test": "mad_lazim_kalimi_mukhaffaf",
+      "kind": "exception",
+      "review_status": "expert_required",
+      "text": "ءَآلْـَٰٔنَ وَقَدْ",
+      "expected": [
+        {
+          "rule_code": "mad_lazim_kalimi_mukhaffaf",
+          "trigger": {
+            "text": "ءَآلْ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 6,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "context": null,
+          "display": {
+            "text": "ءَآلْ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 6,
+            "grapheme_start": 0,
+            "grapheme_end": 3
+          },
+          "applies_when": "both",
+          "expected_features": {
+            "nominal_harakat": 6
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_harfi_tabii_positive_001",
+      "rule_under_test": "mad_harfi_tabii",
+      "kind": "positive",
+      "review_status": "expert_required",
+      "text": "طه",
+      "expected": [
+        {
+          "rule_code": "mad_harfi_tabii",
+          "trigger": {
+            "text": "ط",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 1,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "context": null,
+          "display": {
+            "text": "ط",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 1,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_mad_harfi_tabii_negative_001",
+      "rule_under_test": "mad_harfi_tabii",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "طَهُرَ",
+      "expected": [],
+      "forbidden_rules": [
+        "mad_harfi_tabii"
+      ]
+    },
+    {
+      "case_id": "exc_mad_harfi_tabii_exception_001",
+      "rule_under_test": "mad_harfi_tabii",
+      "kind": "exception",
+      "review_status": "expert_required",
+      "text": "حم",
+      "expected": [
+        {
+          "rule_code": "mad_harfi_tabii",
+          "trigger": {
+            "text": "ح",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 1,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "context": null,
+          "display": {
+            "text": "ح",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 1,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {
+            "nominal_harakat": 2
+          }
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_idgham_mutamathilain_positive_001",
+      "rule_under_test": "idgham_mutamathilain",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "قُلْ لَّهُمْ",
+      "expected": [
+        {
+          "rule_code": "idgham_mutamathilain",
+          "trigger": {
+            "text": "لْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": {
+            "text": "لْ لَّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 8,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "display": {
+            "text": "لْ لَّ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 8,
+            "grapheme_start": 1,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_idgham_mutamathilain_negative_001",
+      "rule_under_test": "idgham_mutamathilain",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "قُلْ رَبِّ",
+      "expected": [],
+      "forbidden_rules": [
+        "idgham_mutamathilain"
+      ]
+    },
+    {
+      "case_id": "exc_idgham_mutamathilain_exception_001",
+      "rule_under_test": "idgham_mutamathilain",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "اضْرِبْ بِّعَصَاكَ",
+      "expected": [
+        {
+          "rule_code": "idgham_mutamathilain",
+          "trigger": {
+            "text": "بْ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": {
+            "text": "بْ بِّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 11,
+            "grapheme_start": 3,
+            "grapheme_end": 6
+          },
+          "display": {
+            "text": "بْ بِّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 11,
+            "grapheme_start": 3,
+            "grapheme_end": 6
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_saktah_wajibah_positive_001",
+      "rule_under_test": "saktah_wajibah",
+      "kind": "positive",
+      "review_status": "spec_derived",
+      "text": "عِوَجَاۜ قَيِّمًا",
+      "expected": [
+        {
+          "rule_code": "saktah_wajibah",
+          "trigger": {
+            "text": "اۜ",
+            "occurrence": 1,
+            "codepoint_start": 6,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": {
+            "text": "جَاۜ قَ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 11,
+            "grapheme_start": 2,
+            "grapheme_end": 6
+          },
+          "display": {
+            "text": "اۜ",
+            "occurrence": 1,
+            "codepoint_start": 6,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "exc_saktah_wajibah_negative_001",
+      "rule_under_test": "saktah_wajibah",
+      "kind": "negative",
+      "review_status": "spec_derived",
+      "text": "كِتَابًا قَيِّمًا",
+      "expected": [],
+      "forbidden_rules": [
+        "saktah_wajibah"
+      ]
+    },
+    {
+      "case_id": "exc_saktah_wajibah_exception_001",
+      "rule_under_test": "saktah_wajibah",
+      "kind": "exception",
+      "review_status": "spec_derived",
+      "text": "مَرْقَدِنَاۜ هَذَا",
+      "expected": [
+        {
+          "rule_code": "saktah_wajibah",
+          "trigger": {
+            "text": "اۜ",
+            "occurrence": 1,
+            "codepoint_start": 10,
+            "codepoint_end": 12,
+            "grapheme_start": 5,
+            "grapheme_end": 6
+          },
+          "context": {
+            "text": "نَاۜ هَ",
+            "occurrence": 1,
+            "codepoint_start": 8,
+            "codepoint_end": 15,
+            "grapheme_start": 4,
+            "grapheme_end": 8
+          },
+          "display": {
+            "text": "اۜ",
+            "occurrence": 1,
+            "codepoint_start": 10,
+            "codepoint_end": 12,
+            "grapheme_start": 5,
+            "grapheme_end": 6
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_qalqalah_akbar_001",
+      "rule_under_test": "qalqalah_akbar",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "الْحَقُّ",
+      "expected": [
+        {
+          "rule_code": "qalqalah_akbar",
+          "trigger": {
+            "text": "قُّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": null,
+          "display": {
+            "text": "قُّ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 8,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "applies_when": "waqf",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_ra_tafkhim_002",
+      "rule_under_test": "ra_tafkhim",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "رَبِّ",
+      "expected": [
+        {
+          "rule_code": "ra_tafkhim",
+          "trigger": {
+            "text": "رَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 2,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "context": null,
+          "display": {
+            "text": "رَ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 2,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_ra_tarqiq_003",
+      "rule_under_test": "ra_tarqiq",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "رِزْقًا",
+      "expected": [
+        {
+          "rule_code": "ra_tarqiq",
+          "trigger": {
+            "text": "رِ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 2,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "context": null,
+          "display": {
+            "text": "رِ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 2,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_ra_both_permitted_004",
+      "rule_under_test": "ra_both_permitted",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "فِرْقٍ",
+      "expected": [
+        {
+          "rule_code": "ra_both_permitted",
+          "trigger": {
+            "text": "رْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "رْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_tamkin_005",
+      "rule_under_test": "mad_tamkin",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "النَّبِيِّينَ",
+      "expected": [
+        {
+          "rule_code": "mad_tamkin",
+          "trigger": {
+            "text": "يِّي",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 11,
+            "grapheme_start": 4,
+            "grapheme_end": 6
+          },
+          "context": null,
+          "display": {
+            "text": "يِّي",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 11,
+            "grapheme_start": 4,
+            "grapheme_end": 6
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_silah_qasirah_006",
+      "rule_under_test": "mad_silah_qasirah",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "إِنَّهُ كَانَ",
+      "expected": [
+        {
+          "rule_code": "mad_silah_qasirah",
+          "trigger": {
+            "text": "هُ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "context": null,
+          "display": {
+            "text": "هُ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_silah_tawilah_007",
+      "rule_under_test": "mad_silah_tawilah",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "مَالَهُ أَخْلَدَهُ",
+      "expected": [
+        {
+          "rule_code": "mad_silah_tawilah",
+          "trigger": {
+            "text": "هُ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": null,
+          "display": {
+            "text": "هُ",
+            "occurrence": 1,
+            "codepoint_start": 5,
+            "codepoint_end": 7,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_lazim_harfi_muthaqqal_008",
+      "rule_under_test": "mad_lazim_harfi_muthaqqal",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "الٓمٓ",
+      "expected": [
+        {
+          "rule_code": "mad_lazim_harfi_muthaqqal",
+          "trigger": {
+            "text": "لٓ",
+            "occurrence": 1,
+            "codepoint_start": 1,
+            "codepoint_end": 3,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "لٓ",
+            "occurrence": 1,
+            "codepoint_start": 1,
+            "codepoint_end": 3,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_lazim_harfi_mukhaffaf_009",
+      "rule_under_test": "mad_lazim_harfi_mukhaffaf",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "صٓ",
+      "expected": [
+        {
+          "rule_code": "mad_lazim_harfi_mukhaffaf",
+          "trigger": {
+            "text": "صٓ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 2,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "context": null,
+          "display": {
+            "text": "صٓ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 2,
+            "grapheme_start": 0,
+            "grapheme_end": 1
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_ayn_muqattaah_010",
+      "rule_under_test": "mad_ayn_muqattaah",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "كٓهيعٓصٓ",
+      "expected": [
+        {
+          "rule_code": "mad_ayn_muqattaah",
+          "trigger": {
+            "text": "عٓ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 6,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "context": null,
+          "display": {
+            "text": "عٓ",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 6,
+            "grapheme_start": 3,
+            "grapheme_end": 4
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_mad_farq_011",
+      "rule_under_test": "mad_farq",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "ءَآللَّهُ",
+      "expected": [
+        {
+          "rule_code": "mad_farq",
+          "trigger": {
+            "text": "ءَآ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 4,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "ءَآ",
+            "occurrence": 1,
+            "codepoint_start": 0,
+            "codepoint_end": 4,
+            "grapheme_start": 0,
+            "grapheme_end": 2
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_idgham_mutajanisain_012",
+      "rule_under_test": "idgham_mutajanisain",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "قَدْ تَّبَيَّنَ",
+      "expected": [
+        {
+          "rule_code": "idgham_mutajanisain",
+          "trigger": {
+            "text": "دْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "دْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_idgham_mutaqaribain_013",
+      "rule_under_test": "idgham_mutaqaribain",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "قُلْ رَّبِّ",
+      "expected": [
+        {
+          "rule_code": "idgham_mutaqaribain",
+          "trigger": {
+            "text": "لْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "context": null,
+          "display": {
+            "text": "لْ",
+            "occurrence": 1,
+            "codepoint_start": 2,
+            "codepoint_end": 4,
+            "grapheme_start": 1,
+            "grapheme_end": 2
+          },
+          "applies_when": "wasl",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_saktah_jaizah_014",
+      "rule_under_test": "saktah_jaizah",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "مَالِيَهْۜ هَلَكَ",
+      "expected": [
+        {
+          "rule_code": "saktah_jaizah",
+          "trigger": {
+            "text": "هْۜ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 10,
+            "grapheme_start": 4,
+            "grapheme_end": 5
+          },
+          "context": {
+            "text": "هْۜ هَ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 13,
+            "grapheme_start": 4,
+            "grapheme_end": 7
+          },
+          "display": {
+            "text": "هْۜ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 10,
+            "grapheme_start": 4,
+            "grapheme_end": 5
+          },
+          "applies_when": "profile_dependent",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "candidate_silent_letter_015",
+      "rule_under_test": "silent_letter",
+      "kind": "candidate",
+      "review_status": "expert_required",
+      "text": "أَنَا۠",
+      "expected": [
+        {
+          "rule_code": "silent_letter",
+          "trigger": {
+            "text": "ا۠",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 6,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "context": null,
+          "display": {
+            "text": "ا۠",
+            "occurrence": 1,
+            "codepoint_start": 4,
+            "codepoint_end": 6,
+            "grapheme_start": 2,
+            "grapheme_end": 3
+          },
+          "applies_when": "contextual",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    },
+    {
+      "case_id": "reference_quran_foundation_1_1_001",
+      "rule_under_test": "hamzat_wasl",
+      "kind": "reference",
+      "review_status": "reference_checked",
+      "text": "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+      "expected": [
+        {
+          "rule_code": "hamzat_wasl",
+          "trigger": {
+            "text": "ٱ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 8,
+            "grapheme_start": 4,
+            "grapheme_end": 5
+          },
+          "context": null,
+          "display": {
+            "text": "ٱ",
+            "occurrence": 1,
+            "codepoint_start": 7,
+            "codepoint_end": 8,
+            "grapheme_start": 4,
+            "grapheme_end": 5
+          },
+          "applies_when": "contextual",
+          "expected_features": {}
+        },
+        {
+          "rule_code": "hamzat_wasl",
+          "trigger": {
+            "text": "ٱ",
+            "occurrence": 2,
+            "codepoint_start": 15,
+            "codepoint_end": 16,
+            "grapheme_start": 9,
+            "grapheme_end": 10
+          },
+          "context": null,
+          "display": {
+            "text": "ٱ",
+            "occurrence": 2,
+            "codepoint_start": 15,
+            "codepoint_end": 16,
+            "grapheme_start": 9,
+            "grapheme_end": 10
+          },
+          "applies_when": "contextual",
+          "expected_features": {}
+        },
+        {
+          "rule_code": "hamzat_wasl",
+          "trigger": {
+            "text": "ٱ",
+            "occurrence": 3,
+            "codepoint_start": 29,
+            "codepoint_end": 30,
+            "grapheme_start": 17,
+            "grapheme_end": 18
+          },
+          "context": null,
+          "display": {
+            "text": "ٱ",
+            "occurrence": 3,
+            "codepoint_start": 29,
+            "codepoint_end": 30,
+            "grapheme_start": 17,
+            "grapheme_end": 18
+          },
+          "applies_when": "contextual",
+          "expected_features": {}
+        },
+        {
+          "rule_code": "alif_lam_shamsiyyah",
+          "trigger": {
+            "text": "ل",
+            "occurrence": 3,
+            "codepoint_start": 16,
+            "codepoint_end": 17,
+            "grapheme_start": 10,
+            "grapheme_end": 11
+          },
+          "context": {
+            "text": "ٱلرَّ",
+            "occurrence": 1,
+            "codepoint_start": 15,
+            "codepoint_end": 20,
+            "grapheme_start": 9,
+            "grapheme_end": 12
+          },
+          "display": {
+            "text": "ل",
+            "occurrence": 3,
+            "codepoint_start": 16,
+            "codepoint_end": 17,
+            "grapheme_start": 10,
+            "grapheme_end": 11
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        },
+        {
+          "rule_code": "alif_lam_shamsiyyah",
+          "trigger": {
+            "text": "ل",
+            "occurrence": 4,
+            "codepoint_start": 30,
+            "codepoint_end": 31,
+            "grapheme_start": 18,
+            "grapheme_end": 19
+          },
+          "context": {
+            "text": "ٱلرَّ",
+            "occurrence": 2,
+            "codepoint_start": 29,
+            "codepoint_end": 34,
+            "grapheme_start": 17,
+            "grapheme_end": 20
+          },
+          "display": {
+            "text": "ل",
+            "occurrence": 4,
+            "codepoint_start": 30,
+            "codepoint_end": 31,
+            "grapheme_start": 18,
+            "grapheme_end": 19
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        },
+        {
+          "rule_code": "mad_tabii",
+          "trigger": {
+            "text": "ـٰ",
+            "occurrence": 1,
+            "codepoint_start": 24,
+            "codepoint_end": 26,
+            "grapheme_start": 14,
+            "grapheme_end": 15
+          },
+          "context": null,
+          "display": {
+            "text": "ـٰ",
+            "occurrence": 1,
+            "codepoint_start": 24,
+            "codepoint_end": 26,
+            "grapheme_start": 14,
+            "grapheme_end": 15
+          },
+          "applies_when": "both",
+          "expected_features": {}
+        }
+      ],
+      "forbidden_rules": []
+    }
+  ]
+}

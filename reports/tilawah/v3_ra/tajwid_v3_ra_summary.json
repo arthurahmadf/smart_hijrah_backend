@@ -1,0 +1,21 @@
+{
+  "total_cases": 25,
+  "passed_cases": 25,
+  "failed_cases": 0,
+  "success": true,
+  "emitted_rule_counts": {
+    "ra_tafkhim": 12,
+    "ra_tarqiq": 8,
+    "ra_both_permitted": 4,
+    "mad_tabii": 7,
+    "izhar_halqi": 1,
+    "mad_badl": 1,
+    "mad_arid_lissukun": 2,
+    "mad_lin": 1,
+    "alif_lam_qamariyyah": 2,
+    "qalqalah_sughra": 1,
+    "ikhfa_haqiqi": 1,
+    "qalqalah_kubra": 1
+  },
+  "mismatches": []
+}

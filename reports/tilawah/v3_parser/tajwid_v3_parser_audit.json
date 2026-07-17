@@ -1,0 +1,16 @@
+{
+  "total_texts": 6236,
+  "passed_texts": 6236,
+  "failed_texts": 0,
+  "total_graphemes": 402455,
+  "total_words": 77507,
+  "kind_counts": {
+    "letter": 326347,
+    "ornament": 195,
+    "punctuation": 31,
+    "quranic_mark": 2857,
+    "whitespace": 73025
+  },
+  "issues": [],
+  "success": true
+}

@@ -1,0 +1,5 @@
+rule_code,rule_name,annotation_count,ayah_count
+hamzat_wasl,Hamzat Wasl,180,43
+saktah_jaizah,Saktah Jaizah,2,2
+saktah_wajibah,Saktah Wajibah,4,4
+silent_letter,Huruf Tidak Dibaca,92,90

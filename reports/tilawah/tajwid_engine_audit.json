@@ -1,0 +1,51 @@
+{
+  "catalog_rule_count": 31,
+  "counters": {
+    "abnormal_annotation_count": 3,
+    "ayah_with_low_confidence": 12,
+    "exceptions": 12,
+    "low_confidence_annotations": 16,
+    "render_reconstruction_ok": 88,
+    "safe_ayah": 41,
+    "structural_errors": 348,
+    "total_annotations": 1668,
+    "total_ayah": 100,
+    "total_issues": 536,
+    "unsafe_ayah": 59,
+    "warnings": 188
+  },
+  "database_write_performed": false,
+  "emitted_rule_count": 25,
+  "engine_version": "2.0.0",
+  "generated_at": "2026-07-17T00:23:13.813794+00:00",
+  "issue_severity_counts": {
+    "error": 348,
+    "warning": 188
+  },
+  "issue_type_counts": {
+    "abnormal_annotation_count": 3,
+    "audit_exception": 12,
+    "invalid_word_index": 58,
+    "suppressed_legacy_false_positive": 185,
+    "unlocatable_rule": 278
+  },
+  "missing_catalog_rules_in_scope": [
+    "mad_iwad",
+    "mad_jaiz_munfasil",
+    "mad_lin",
+    "mad_silah_thawilah",
+    "mad_wajib_muttasil",
+    "qalqalah_kubra"
+  ],
+  "reading_mode": "ayah",
+  "scope": {
+    "all": true,
+    "ayah": null,
+    "limit": 100,
+    "surah": null
+  },
+  "thresholds": {
+    "low_confidence": 0.75,
+    "max_annotations": 40
+  }
+}

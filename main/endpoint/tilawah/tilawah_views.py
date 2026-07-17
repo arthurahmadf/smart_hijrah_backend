@@ -17,6 +17,7 @@ from main.serializers.tilawah_serializers import (
 from main.utils_tilawah.whisper_engine import transcribe_audio
 from main.utils_tilawah.feedback_builder import build_feedback
 from main.pagination_utils import paginate_queryset
+from main.utils_tilawah.tajwid_v3.db_renderer import active_tajwid_prefetch
 from django.db.models import Count, Max, Q
 
 
@@ -109,6 +110,7 @@ def get_ayahs_by_surah(request, surah_id):
         ayahs = (
             TilawahAyahPool.objects
             .filter(surah_number=surah_id)
+            .prefetch_related(active_tajwid_prefetch())
             .only(
                 "id",
                 "surah_number",
@@ -117,6 +119,7 @@ def get_ayahs_by_surah(request, surah_id):
                 "ayah_number",
                 "ayah_text",
                 "ayah_translation",
+                "ayah_transliteration",
                 "audio_url",
                 "level",
             )
@@ -189,7 +192,11 @@ def get_random_ayah(request):
         )
 
     # Exclude ayat yang sudah pernah dibaca user (opsional, ambil random saja)
-    ayahs = TilawahAyahPool.objects.filter(level=level)
+    ayahs = (
+        TilawahAyahPool.objects
+        .filter(level=level)
+        .prefetch_related(active_tajwid_prefetch())
+    )
     if not ayahs.exists():
         return Response(
             {'success': False, 'message': 'Tidak ada ayat untuk level ini.'},

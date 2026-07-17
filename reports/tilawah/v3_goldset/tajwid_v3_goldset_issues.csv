@@ -1,0 +1,2 @@
+severity,issue_type,message,case_id,rule_code
+warning,expert_verification_incomplete,"Goldset siap untuk development detector, tetapi belum boleh menjadi oracle production sebelum review ahli selesai.",,

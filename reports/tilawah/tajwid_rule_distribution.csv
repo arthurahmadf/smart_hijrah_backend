@@ -1,0 +1,32 @@
+﻿rule_code,rule_name,display_group,annotation_count,ayah_count,low_confidence_count,locator_methods
+alif_lam_qamariah,Alif Lam Qamariah,alif_lam,60,46,0,"{""exact"": 60}"
+alif_lam_syamsiah,Alif Lam Syamsiah,alif_lam,78,49,0,"{""exact"": 78}"
+ghunnah,Ghunnah Musyaddadah,ghunnah,95,57,0,"{""exact"": 95}"
+idgham_bighunnah,Idgham Bighunnah,idgham,55,30,4,"{""exact"": 51, ""implicit_final_nun"": 4}"
+idgham_bilaghunnah,Idgham Bilaghunnah,idgham,20,18,0,"{""exact"": 20}"
+idgham_mimi,Idgham Mimi,mim_sakinah,16,15,0,"{""exact"": 16}"
+idgham_mutajanisain,Idgham Mutajanisain,idgham,20,16,0,"{""final_consonant"": 20}"
+idgham_mutamatsilain,Idgham Mutamatsilain,idgham,46,36,0,"{""final_consonant"": 46}"
+idgham_mutaqaribain,Idgham Mutaqaribain,idgham,1,1,0,"{""final_consonant"": 1}"
+ikhfa_haqiqi,Ikhfa Haqiqi,nun_tanwin,97,51,9,"{""exact"": 88, ""implicit_final_nun"": 9}"
+ikhfa_syafawi,Ikhfa Syafawi,mim_sakinah,10,7,0,"{""exact"": 10}"
+iqlab,Iqlab,nun_tanwin,4,4,1,"{""exact"": 3, ""implicit_final_nun"": 1}"
+izhar_halqi,Izhar Halqi,nun_tanwin,38,27,2,"{""exact"": 36, ""implicit_final_nun"": 2}"
+izhar_syafawi,Izhar Syafawi,mim_sakinah,108,58,0,"{""exact"": 108}"
+mad_aridh_lissukun,Mad Aridh Lissukun,mad,43,43,0,"{""dammah_waw"": 27, ""kasrah_ya"": 16}"
+mad_asli,Mad Asli (Thabi'i),mad,330,89,0,"{""dagger_alef"": 27, ""dammah_waw"": 34, ""fathah_alef"": 254, ""kasrah_ya"": 15}"
+mad_iwad,Mad Iwad,mad,0,0,0,{}
+mad_jaiz_munfasil,Mad Jaiz Munfasil,mad,0,0,0,{}
+mad_lazim_mukhaffaf,Mad Lazim Mukhaffaf,mad,330,95,0,"{""dagger_alef"": 40, ""dammah_waw"": 120, ""fathah_alef"": 86, ""kasrah_ya"": 84}"
+mad_lazim_mutsaqqal,Mad Lazim Mutsaqqal,mad,35,27,0,"{""dammah_waw"": 4, ""fathah_alef"": 25, ""kasrah_ya"": 6}"
+mad_lin,Mad Lin,mad,0,0,0,{}
+mad_silah_qasirah,Mad Silah Qasirah,mad,68,38,0,"{""ha_dhamir"": 68}"
+mad_silah_thawilah,Mad Silah Thawilah,mad,0,0,0,{}
+mad_wajib_muttasil,Mad Wajib Muttasil,mad,0,0,0,{}
+qalqalah_kubra,Qalqalah Kubra,qalqalah,0,0,0,{}
+qalqalah_sugra,Qalqalah Sugra,qalqalah,40,31,0,"{""exact"": 40}"
+saktah,Saktah,waqf,1,1,0,"{""exact"": 1}"
+tafkhim_lam_jalalah,Tafkhim Lam Jalalah,tafkhim_tarqiq,18,16,0,"{""lafzul_jalalah_lam"": 18}"
+tafkhim_ra,Tafkhim Ra,tafkhim_tarqiq,113,64,0,"{""exact"": 113}"
+tarqiq_lam_jalalah,Tarqiq Lam Jalalah,tafkhim_tarqiq,7,7,0,"{""lafzul_jalalah_lam"": 7}"
+tarqiq_ra,Tarqiq Ra,tafkhim_tarqiq,35,29,0,"{""exact"": 35}"

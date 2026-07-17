@@ -1,0 +1,15 @@
+{
+  "total_cases": 24,
+  "passed_cases": 24,
+  "failed_cases": 0,
+  "success": true,
+  "emitted_rule_counts": {
+    "izhar_halqi": 5,
+    "iqlab": 4,
+    "idgham_bilaghunnah": 3,
+    "idgham_bighunnah": 4,
+    "ikhfa_haqiqi": 3,
+    "izhar_mutlaq": 4
+  },
+  "mismatches": []
+}

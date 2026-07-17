@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-07-17T09:28:41.549212+00:00",
+  "engine_version": "3.0.0-alpha.6",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "alif_lam_qamariyyah",
+    "alif_lam_shamsiyyah",
+    "lam_jalalah_tafkhim",
+    "lam_jalalah_tarqiq"
+  ],
+  "counters": {
+    "ayah_with_annotations": 4988,
+    "ayah_without_annotations": 1248,
+    "provisional_annotations": 3428,
+    "total_annotations": 14199,
+    "total_ayah": 6236,
+    "warnings": 3729
+  },
+  "issue_type_counts": {
+    "lam_jalalah_preceding_vowel_unresolved": 301,
+    "qamariyyah_lam_without_explicit_sukun": 1922,
+    "shamsiyyah_target_without_shadda": 1506
+  }
+}

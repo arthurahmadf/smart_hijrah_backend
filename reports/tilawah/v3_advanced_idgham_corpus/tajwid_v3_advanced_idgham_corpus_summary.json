@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-07-17T10:29:04.796603+00:00",
+  "engine_version": "3.0.0-alpha.8",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "idgham_mutajanisain",
+    "idgham_mutamathilain",
+    "idgham_mutaqaribain"
+  ],
+  "counters": {
+    "ayah_with_annotations": 189,
+    "ayah_without_annotations": 6047,
+    "total_annotations": 199,
+    "total_ayah": 6236,
+    "warnings": 4
+  },
+  "issue_type_counts": {
+    "advanced_idgham_target_unvocalised": 4
+  }
+}

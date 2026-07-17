@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-07-17T08:41:48.398711+00:00",
+  "engine_version": "3.0.0-alpha.4",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "mad_arid_lissukun",
+    "mad_badl",
+    "mad_iwad",
+    "mad_jaiz_munfasil",
+    "mad_lazim_kalimi_mukhaffaf",
+    "mad_lazim_kalimi_muthaqqal",
+    "mad_lin",
+    "mad_tabii",
+    "mad_wajib_muttasil"
+  ],
+  "counters": {
+    "ayah_with_annotations": 6199,
+    "ayah_without_annotations": 37,
+    "provisional_annotations": 2618,
+    "total_annotations": 56469,
+    "total_ayah": 6236,
+    "warnings": 347
+  },
+  "issue_type_counts": {
+    "unresolved_maddah_sign": 347
+  }
+}

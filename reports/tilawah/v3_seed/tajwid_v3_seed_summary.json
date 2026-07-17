@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-07-17T12:15:27.992736+00:00",
+  "engine_version": "3.0.0-alpha.10",
+  "commit": true,
+  "publish_beta": true,
+  "modes": [
+    "ayah",
+    "wasl"
+  ],
+  "counters": {
+    "annotations_generated": 227644,
+    "ayah_processed": 6236,
+    "engine_errors": 0,
+    "mode_processed": 12472,
+    "published_beta_candidate": 12472,
+    "published_sets": 12472,
+    "warnings": 9017
+  }
+}

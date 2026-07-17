@@ -1,0 +1,3650 @@
+
+
+================================================================================
+FILE: main/endpoint/tilawah/tilawah_views.py
+================================================================================
+
+import os
+import uuid
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+
+from main.models_tilawah import TilawahAyahPool, TilawahSession
+from main.serializers.tilawah_serializers import (
+    TilawahAyahSerializer,
+    TilawahSessionSerializer,
+    TilawahSurahSerializer,
+    TilawahSelectAyahSerializer,
+)
+from main.utils_tilawah.whisper_engine import transcribe_audio
+from main.utils_tilawah.feedback_builder import build_feedback
+from main.pagination_utils import paginate_queryset
+from django.db.models import Count, Max, Q
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_all_surah(request):
+    """
+    GET /tilawah/surah/all/
+    GET /tilawah/surah/all/?query=al-fatihah
+
+    Ketentuan:
+    - Tanpa query: mengembalikan seluruh surah.
+    - Dengan query: minimal 3 karakter.
+    - Pencarian dilakukan terhadap nama Indonesia/Latin dan nama Arab.
+    - Response langsung berupa array sesuai kontrak frontend.
+    """
+
+    query = request.GET.get("query", "")
+
+    # Mengantisipasi frontend mengirim:
+    # ?query=al-fatihah/
+    query = query.strip().strip("/")
+
+    if query and len(query) < 3:
+        return Response(
+            {
+                "success": False,
+                "message": (
+                    "Query pencarian minimal harus terdiri "
+                    "dari 3 karakter."
+                ),
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    queryset = TilawahAyahPool.objects.all()
+
+    if query:
+        queryset = queryset.filter(
+            Q(surah_name_id__icontains=query)
+            | Q(surah_name__icontains=query)
+        )
+
+    # Group berdasarkan nomor surah agar tetap menghasilkan satu record
+    # per surah meskipun ada ribuan record ayat.
+    surahs = (
+        queryset
+        .values("surah_number")
+        .annotate(
+            surah_name=Max("surah_name"),
+            surah_name_id=Max("surah_name_id"),
+            total_ayah=Count("id"),
+        )
+        .order_by("surah_number")
+    )
+
+    serializer = TilawahSurahSerializer(
+        surahs,
+        many=True,
+    )
+
+    return Response({
+            'success': True,
+            'message': 'Surah berhasil diambil.',
+            'data': serializer.data
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_ayahs_by_surah(request, surah_id):
+    """
+    GET /tilawah/ayah/<surah_id>/?page=1&page_size=10
+
+    Mengembalikan ayat berdasarkan surah dengan pagination.
+    """
+
+    try:
+        if surah_id < 1 or surah_id > 114:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Surah tidak ditemukan.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        ayahs = (
+            TilawahAyahPool.objects
+            .filter(surah_number=surah_id)
+            .only(
+                "id",
+                "surah_number",
+                "surah_name",
+                "surah_name_id",
+                "ayah_number",
+                "ayah_text",
+                "ayah_translation",
+                "audio_url",
+                "level",
+            )
+            .order_by("ayah_number")
+        )
+
+        if not ayahs.exists():
+            return Response(
+                {
+                    "success": False,
+                    "message": "Ayat untuk surah tersebut tidak ditemukan.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        paginated = paginate_queryset(
+            request=request,
+            queryset=ayahs,
+            page_size=25,
+            items_key="ayahs",
+        )
+
+        serializer = TilawahSelectAyahSerializer(
+            paginated["ayahs"],
+            many=True,
+        )
+
+        paginated["ayahs"] = serializer.data
+
+        return Response(
+            {
+                "success": True,
+                "message": "Ayat berhasil diambil.",
+                "data": paginated,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    except (TypeError, ValueError):
+        return Response(
+            {
+                "success": False,
+                "message": "Parameter page dan page_size harus berupa angka.",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    except Exception as e:
+        return Response(
+            {
+                "success": False,
+                "message": str(e),
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_random_ayah(request):
+    """
+    GET /tilawah/ayah/random/?level=basic|intermediate|expert
+    Return ayat random sesuai level
+    """
+    level = request.GET.get('level', 'basic')
+
+    if level not in ['basic', 'intermediate', 'expert']:
+        return Response(
+            {'success': False, 'message': 'Level tidak valid. Gunakan basic, intermediate, atau expert.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Exclude ayat yang sudah pernah dibaca user (opsional, ambil random saja)
+    ayahs = TilawahAyahPool.objects.filter(level=level)
+    if not ayahs.exists():
+        return Response(
+            {'success': False, 'message': 'Tidak ada ayat untuk level ini.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Random satu ayat
+    ayah = ayahs.order_by('?').first()
+    serializer = TilawahSelectAyahSerializer(ayah)
+
+    return Response({
+        'success': True,
+        'message': 'Ayat berhasil diambil.',
+        'data': serializer.data
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
+def submit_tilawah(request):
+    """
+    POST /tilawah/submit/
+    Body (multipart/form-data):
+        - audio: file (mp3/wav)
+        - surah_number: int
+        - ayah_number: int
+        - level: str
+    """
+    # Validasi input
+    audio_file = request.FILES.get('audio')
+    surah_number = request.data.get('surah_number')
+    ayah_number = request.data.get('ayah_number')
+    level = request.data.get('level', 'basic')
+
+    if not audio_file:
+        return Response(
+            {'success': False, 'message': 'File audio wajib diisi.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if not surah_number or not ayah_number:
+        return Response(
+            {'success': False, 'message': 'surah_number dan ayah_number wajib diisi.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if level not in ['basic', 'intermediate', 'expert']:
+        return Response(
+            {'success': False, 'message': 'Level tidak valid.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Ambil ayat referensi dari database
+    try:
+        ayah_obj = TilawahAyahPool.objects.get(
+            surah_number=int(surah_number),
+            ayah_number=int(ayah_number)
+        )
+    except TilawahAyahPool.DoesNotExist:
+        return Response(
+            {'success': False, 'message': 'Ayat tidak ditemukan.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Validasi format audio
+    allowed_formats = ['audio/mpeg', 'audio/wav', 'audio/mp3', 'audio/x-wav',
+                       'audio/m4a', 'audio/x-m4a', 'video/webm', 'audio/webm']
+    if audio_file.content_type not in allowed_formats:
+        # Fallback cek ekstensi
+        ext = os.path.splitext(audio_file.name)[1].lower()
+        if ext not in ['.mp3', '.wav', '.m4a', '.webm']:
+            return Response(
+                {'success': False, 'message': 'Format audio tidak didukung. Gunakan mp3 atau wav.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    # Simpan audio sementara
+    temp_filename = f"tilawah_temp_{uuid.uuid4().hex}{os.path.splitext(audio_file.name)[1]}"
+    temp_path = os.path.join(settings.MEDIA_ROOT, 'tilawah_temp', temp_filename)
+    os.makedirs(os.path.dirname(temp_path), exist_ok=True)
+
+    with open(temp_path, 'wb+') as f:
+        for chunk in audio_file.chunks():
+            f.write(chunk)
+
+    try:
+        # Transkripsi audio dengan Tarteel Whisper
+        transcribe_result = transcribe_audio(temp_path)
+
+        if not transcribe_result['success']:
+            return Response(
+                {'success': False, 'message': f'Gagal memproses audio: {transcribe_result["error"]}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        transcript = transcribe_result['transcript']
+
+        # Build feedback
+        feedback_result = build_feedback(
+            ayah_text=ayah_obj.ayah_text,
+            transcript=transcript,
+            user_level=level
+        )
+
+        # Simpan session ke database
+        session = TilawahSession.objects.create(
+            user=request.user,
+            surah_number=ayah_obj.surah_number,
+            surah_name=ayah_obj.surah_name,
+            ayah_number=ayah_obj.ayah_number,
+            ayah_text=ayah_obj.ayah_text,
+            level=level,
+            tajwid_score=feedback_result['tajwid_score'],
+            word_accuracy=feedback_result['word_accuracy'],
+            transcript=transcript,
+            feedback_data=feedback_result['ai_feedback'],
+        )
+
+        # Format response sesuai yang diharapkan frontend
+        response_data = {
+            'id': session.id,
+            'id_str': f'tilawah_{session.id}',
+            'surah_name': ayah_obj.surah_name,
+            'ayah_number': ayah_obj.ayah_number,
+            'ayah': ayah_obj.ayah_text,
+            'audio_url': ayah_obj.audio_url,
+            'tajwid_score': feedback_result['tajwid_score'],
+            'makhraj_score': None,
+            'makhraj_note': 'Penilaian makhraj belum tersedia pada versi ini.',
+            'word_accuracy': feedback_result['word_accuracy'],
+            'ai_feedback': feedback_result['ai_feedback'],
+        }
+
+        return Response({
+            'success': True,
+            'message': 'Tilawah berhasil diproses.',
+            'data': response_data
+        })
+
+    finally:
+        # Hapus file audio temporary
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_history(request):
+    """
+    GET /tilawah/history/?page=1&page_size=10
+    Riwayat sesi tilawah user
+    """
+    sessions = TilawahSession.objects.filter(
+        user=request.user
+    ).order_by('-created_at')
+
+    paginated = paginate_queryset(request, sessions, page_size=10, items_key='sessions')
+    serializer = TilawahSessionSerializer(paginated['sessions'], many=True)
+    paginated['sessions'] = serializer.data
+
+    return Response({
+        'success': True,
+        'message': 'Riwayat tilawah berhasil diambil.',
+        'data': paginated
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_session_detail(request, session_id):
+    """
+    GET /tilawah/session/<session_id>/
+    Detail sesi tilawah
+    """
+    try:
+        session = TilawahSession.objects.get(
+            id=session_id,
+            user=request.user
+        )
+    except TilawahSession.DoesNotExist:
+        return Response(
+            {'success': False, 'message': 'Sesi tidak ditemukan.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    response_data = {
+        'id': session.id,
+        'id_str': f'tilawah_{session.id}',
+        'surah_name': session.surah_name,
+        'ayah_number': session.ayah_number,
+        'ayah': session.ayah_text,
+        'level': session.level,
+        'tajwid_score': session.tajwid_score,
+        'makhraj_score': None,
+        'makhraj_note': 'Penilaian makhraj belum tersedia pada versi ini.',
+        'word_accuracy': session.word_accuracy,
+        'ai_feedback': session.feedback_data,
+        'created_at': session.created_at,
+    }
+
+    return Response({
+        'success': True,
+        'message': 'Detail sesi berhasil diambil.',
+        'data': response_data
+    })
+
+================================================================================
+FILE: main/models_tilawah.py
+================================================================================
+
+# models_tilawah.py
+
+from django.db import models
+from django.conf import settings  # ganti import User
+from pgvector.django import VectorField
+
+LEVEL_CHOICES = [
+    ('basic', 'Basic'),
+    ('intermediate', 'Intermediate'),
+    ('expert', 'Expert'),
+]
+
+class TilawahSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # pakai string
+    surah_number = models.IntegerField()
+    surah_name = models.CharField(max_length=100)
+    ayah_number = models.IntegerField()
+    ayah_text = models.TextField()
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    tajwid_score = models.FloatField(null=True, blank=True)
+    word_accuracy = models.FloatField(null=True, blank=True)
+    audio_file = models.FileField(upload_to='tilawah_audio/', null=True, blank=True)
+    transcript = models.TextField(null=True, blank=True)
+    feedback_data = models.JSONField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user} - {self.surah_name}:{self.ayah_number}"
+
+
+
+class TilawahAyahPool(models.Model):
+    surah_number = models.IntegerField()
+    surah_name = models.CharField(max_length=100)
+    surah_name_id = models.CharField(max_length=100, blank=True, null=True)  # Nama surah dalam Bahasa Indonesia
+    ayah_number = models.IntegerField()
+    ayah_text = models.TextField()
+    ayah_transliteration = models.TextField(blank=True, null=True)
+    ayah_translation = models.TextField(blank=True, null=True)
+    juz = models.IntegerField(blank=True, null=True)  # Nomor juz (1-30)
+
+    embedding = VectorField(dimensions=1024, null=True, blank=True)
+    level = models.CharField(max_length=20, choices=[
+        ('basic', 'Basic'),
+        ('intermediate', 'Intermediate'),
+        ('expert', 'Expert')
+    ], default='basic')
+    audio_url = models.URLField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'tilawah_ayah_pool'
+        ordering = ['surah_number', 'ayah_number']
+        unique_together = ('surah_number', 'ayah_number')
+
+    def __str__(self):
+        return f"{self.surah_name}:{self.ayah_number} ({self.level})"
+
+================================================================================
+FILE: main/models.py
+================================================================================
+
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from .models_feed import *
+from .models_fest import *
+from .models_klinik import *
+from .models_ngaji import *
+from .models_kisah_nabi import *
+from .models_ai import *
+from .models_tilawah import *
+from .models_gamification import *
+from .models_hadis import *
+from .models_media_category import MediaCategory
+from .models_short_islami import ShortIslami
+from .models_artikel_islami import ArtikelIslami
+from .models_book_category import BookCategory
+from .models_book_author import BookAuthor
+from .models_islamic_book import IslamicBook
+from .models_tuntunan_shalat import TuntunanShalat, validate_tuntunan_blocks
+from .models_doa import (
+    DoaCategory,
+    Doa,
+    DoaContent,
+    DoaBookmark,
+)
+from .models_healthy_tip import HealthyTip
+
+class User(AbstractUser):
+    nama = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    alamat = models.CharField(max_length=200, null=True, blank=True)
+    telepon = models.CharField(max_length=20, null=True, blank=True)
+    fcm_token = models.TextField(null=True, blank=True)
+    foto_profil = models.ImageField(upload_to='foto_profil', null=True, blank=True)
+    email_verified = models.BooleanField(default=False)
+    email_verification_token = models.CharField(max_length=255, blank=True, null=True)
+    token_created_at = models.DateTimeField(blank=True, null=True)
+    jenis_kelamin = models.CharField(
+        max_length=10,
+        choices=[('L', 'Laki-laki'), ('P', 'Perempuan')],
+        null=True,
+        blank=True
+    )
+
+    banner = models.ImageField(
+        upload_to='user_banners/',
+        null=True,
+        blank=True,
+        help_text="User profile banner with 12:5 aspect ratio (landscape)"
+    )
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        db_table = 'user'
+        
+
+class PrayerMonthDocument(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=100)
+    year = models.IntegerField()
+    month = models.IntegerField()
+    timezone = models.CharField(max_length=50, default="Asia/Jakarta")
+    source_hash = models.CharField(max_length=64)
+    last_updated = models.DateTimeField()
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    payload = models.JSONField()
+
+    class Meta:
+        db_table = 'jadwal_shalat_data'
+        unique_together = ("user", "year", "month")
+        indexes = [
+            models.Index(fields=["user"]),
+            models.Index(fields=["year", "month"]),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.year}-{self.month}"
+    
+class UserPrayerPreference(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    subuh = models.BooleanField(default=True)
+    dzuhur = models.BooleanField(default=True)
+    ashar = models.BooleanField(default=True)
+    maghrib = models.BooleanField(default=True)
+    isya = models.BooleanField(default=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'notification_preference'
+    
+class PrayerNotificationLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    prayer_name = models.CharField(max_length=20)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'notification_log'
+        unique_together = ("user", "date", "prayer_name")
+
+
+
+
+================================================================================
+FILE: main/serializers/tilawah_serializers.py
+================================================================================
+
+from rest_framework import serializers
+
+from main.models_tilawah import TilawahAyahPool, TilawahSession
+
+
+# Mengikuti klasifikasi surah Makkiyah/Madaniyah yang umum digunakan.
+# Semua surah selain nomor di bawah akan dianggap Makkiyah.
+MADANIYAH_SURAH_NUMBERS = frozenset({
+    2, 3, 4, 5, 8, 9, 13, 22, 24, 33,
+    47, 48, 49, 55, 57, 58, 59, 60, 61,
+    62, 63, 64, 65, 66, 76, 98, 99, 110,
+})
+
+
+LEVEL_RESPONSE_MAP = {
+    "basic": "beginner",
+    "intermediate": "intermediate",
+    "expert": "expert",
+}
+
+
+class TilawahAyahSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TilawahAyahPool
+        fields = [
+            "surah_number",
+            "surah_name",
+            "ayah_number",
+            "ayah_text",
+            "audio_url",
+            "level",
+        ]
+
+
+class TilawahSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TilawahSession
+        fields = [
+            "id",
+            "surah_number",
+            "surah_name",
+            "ayah_number",
+            "ayah_text",
+            "level",
+            "tajwid_score",
+            "word_accuracy",
+            "feedback_data",
+            "created_at",
+        ]
+
+
+class TilawahSurahSerializer(serializers.Serializer):
+    """
+    Serializer untuk hasil agregasi daftar surah.
+
+    Input serializer berbentuk dictionary dari queryset values/annotate,
+    bukan instance model secara langsung.
+    """
+
+    surah_id = serializers.SerializerMethodField()
+    surah_name = serializers.SerializerMethodField()
+    total_ayah = serializers.IntegerField()
+
+    def get_surah_id(self, obj):
+        return str(obj["surah_number"])
+
+    def get_surah_name(self, obj):
+        # Untuk halaman pemilihan surah, tampilkan nama Indonesia/Latin.
+        # Fallback ke surah_name jika data surah_name_id kosong.
+        return (
+            obj.get("surah_name")
+            or obj.get("surah_name_id")
+            or ""
+        )
+
+
+class TilawahSelectAyahSerializer(serializers.ModelSerializer):
+    id_str = serializers.SerializerMethodField()
+    surah_revelation = serializers.SerializerMethodField()
+    surah_name = serializers.SerializerMethodField()
+    surah_indo = serializers.SerializerMethodField()
+    translation = serializers.SerializerMethodField()
+    audio_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TilawahAyahPool
+        fields = [
+            "id",
+            "id_str",
+            "surah_revelation",
+            "surah_name",
+            "surah_indo",
+            "surah_number",
+            "ayah_number",
+            "ayah_text",
+            "translation",
+            "audio_url",
+            "level",
+        ]
+
+    def get_id_str(self, obj):
+        return f"{obj.surah_number}-{obj.ayah_number}"
+
+    def get_surah_revelation(self, obj):
+        if obj.surah_number in MADANIYAH_SURAH_NUMBERS:
+            return "Madaniyah"
+        return "Makkiyah"
+
+    def get_surah_name(self, obj):
+        return obj.surah_name or ""
+
+    def get_surah_indo(self, obj):
+        return obj.surah_name_id or ""
+
+    def get_translation(self, obj):
+        return obj.ayah_translation or ""
+
+    def get_audio_url(self, obj):
+        return obj.audio_url or ""
+
+================================================================================
+FILE: main/serializers/__init__.py
+================================================================================
+
+
+
+================================================================================
+FILE: main/utils_tilawah/quran_data.py
+================================================================================
+
+import json
+import os
+from django.conf import settings
+
+# Cache supaya tidak baca file berulang kali
+_quran_data = None
+
+def get_quran_data():
+    global _quran_data
+    if _quran_data is None:
+        json_path = os.path.join(settings.BASE_DIR, 'data', 'quran_uthmani.json')
+        with open(json_path, 'r', encoding='utf-8') as f:
+            _quran_data = json.load(f)
+    return _quran_data
+
+
+def get_ayah_text(surah_number, ayah_number):
+    """Ambil teks ayat berdasarkan nomor surah dan ayat"""
+    quran = get_quran_data()
+    surah = next((s for s in quran if s['id'] == surah_number), None)
+    if not surah:
+        return None
+    verse = next((v for v in surah['verses'] if v['id'] == ayah_number), None)
+    return verse['text'] if verse else None
+
+
+def get_surah_name(surah_number):
+    """Ambil nama surah (transliteration)"""
+    quran = get_quran_data()
+    surah = next((s for s in quran if s['id'] == surah_number), None)
+    return surah['transliteration'] if surah else None
+
+
+def get_all_ayahs():
+    """Return semua ayat dalam format flat list"""
+    quran = get_quran_data()
+    result = []
+    for surah in quran:
+        for verse in surah['verses']:
+            result.append({
+                'surah_number': surah['id'],
+                'surah_name': surah['transliteration'],
+                'ayah_number': verse['id'],
+                'ayah_text': verse['text'],
+                'total_words': len(verse['text'].split()),
+            })
+    return result
+
+================================================================================
+FILE: main/utils_tilawah/tajwid_classifier.py
+================================================================================
+
+import re
+
+# ===== UNICODE ARABIC =====
+# Huruf-huruf halqi (untuk Izhar Halqi)
+HALQI = ['ء', 'ه', 'ع', 'ح', 'غ', 'خ']
+
+# Huruf Idgham (dengan ghunnah: ي ن م و | tanpa ghunnah: ل ر)
+IDGHAM_GHUNNAH = ['ي', 'ن', 'م', 'و']
+IDGHAM_BILA_GHUNNAH = ['ل', 'ر']
+
+# Huruf Ikhfa (15 huruf)
+IKHFA_LETTERS = ['ت', 'ث', 'ج', 'د', 'ذ', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ف', 'ق', 'ك']
+
+# Huruf Iqlab
+IQLAB_LETTER = ['ب']
+
+# Qalqalah
+QALQALAH_LETTERS = ['ق', 'ط', 'ب', 'ج', 'د']
+
+# Unicode tanda baca
+SUKUN = '\u0652'
+TANWIN_FATH = '\u064b'
+TANWIN_KASR = '\u064d'
+TANWIN_DAMM = '\u064c'
+SHADDA = '\u0651'
+FATHAH = '\u064e'
+KASRAH = '\u0650'
+DAMMAH = '\u064f'
+ALEF = '\u0627'
+WAW = '\u0648'
+YA = '\u064a'
+
+
+def has_nun_mati_or_tanwin(text):
+    """Deteksi kehadiran nun mati atau tanwin"""
+    # Tanwin
+    if any(c in text for c in [TANWIN_FATH, TANWIN_KASR, TANWIN_DAMM]):
+        return True
+    # Nun mati (nun + sukun)
+    if 'ن' + SUKUN in text:
+        return True
+    return False
+
+
+def detect_ikhfa(text):
+    """Deteksi ikhfa haqiqi: nun mati/tanwin diikuti huruf ikhfa"""
+    words = text.split()
+    for i, word in enumerate(words):
+        # Dalam satu kata
+        for j in range(len(word) - 1):
+            char = word[j]
+            next_char = word[j + 1] if j + 1 < len(word) else ''
+            # Nun mati
+            if char == 'ن' and next_char == SUKUN:
+                following = word[j + 2] if j + 2 < len(word) else ''
+                if following in IKHFA_LETTERS:
+                    return True
+            # Tanwin
+            if char in [TANWIN_FATH, TANWIN_KASR, TANWIN_DAMM]:
+                if i + 1 < len(words):
+                    next_word_first = words[i + 1][0] if words[i + 1] else ''
+                    if next_word_first in IKHFA_LETTERS:
+                        return True
+    return False
+
+
+def detect_idgham(text):
+    """Deteksi idgham: nun mati/tanwin diikuti huruf idgham"""
+    words = text.split()
+    for i, word in enumerate(words):
+        for j in range(len(word)):
+            char = word[j]
+            if char in [TANWIN_FATH, TANWIN_KASR, TANWIN_DAMM]:
+                if i + 1 < len(words):
+                    next_first = words[i + 1][0] if words[i + 1] else ''
+                    if next_first in IDGHAM_GHUNNAH + IDGHAM_BILA_GHUNNAH:
+                        return True
+    return False
+
+
+def detect_iqlab(text):
+    """Deteksi iqlab: nun mati/tanwin diikuti huruf ba"""
+    words = text.split()
+    for i, word in enumerate(words):
+        # Dalam kata
+        for j in range(len(word) - 1):
+            if word[j] == 'ن' and SUKUN in word[j:j+2]:
+                following = word[j + 2] if j + 2 < len(word) else ''
+                if following == 'ب':
+                    return True
+        # Antar kata
+        for char in [TANWIN_FATH, TANWIN_KASR, TANWIN_DAMM]:
+            if char in word:
+                if i + 1 < len(words) and words[i + 1]:
+                    if words[i + 1][0] == 'ب':
+                        return True
+    return False
+
+
+def detect_qalqalah(text):
+    """Deteksi qalqalah: huruf qalqalah berharakat sukun"""
+    for i in range(len(text) - 1):
+        if text[i] in QALQALAH_LETTERS and text[i + 1] == SUKUN:
+            return True
+    return False
+
+
+def detect_mad(text):
+    """Deteksi mad: alef, waw, ya sebagai mad"""
+    # Mad asli sederhana (alef setelah fathah, waw setelah dammah, ya setelah kasrah)
+    for i in range(len(text) - 1):
+        if text[i] == FATHAH and text[i + 1] == ALEF:
+            return True
+        if text[i] == DAMMAH and text[i + 1] == WAW:
+            return True
+        if text[i] == KASRAH and text[i + 1] == YA:
+            return True
+    return False
+
+
+def detect_ghunnah(text):
+    """Deteksi ghunnah: mim atau nun bertasydid"""
+    for i in range(len(text) - 1):
+        if text[i] in ['م', 'ن'] and text[i + 1] == SHADDA:
+            return True
+    return False
+
+
+def classify_level(ayah_text, word_count):
+    """
+    Klasifikasi level ayat berdasarkan kompleksitas tajwid dan panjang ayat.
+    Return: 'basic' | 'intermediate' | 'expert'
+    """
+    has_ikhfa = detect_ikhfa(ayah_text)
+    has_idgham = detect_idgham(ayah_text)
+    has_iqlab = detect_iqlab(ayah_text)
+    has_qalqalah = detect_qalqalah(ayah_text)
+    has_mad = detect_mad(ayah_text)
+    has_ghunnah = detect_ghunnah(ayah_text)
+
+    intermediate_count = sum([
+        has_ikhfa, has_idgham, has_iqlab,
+        has_qalqalah, has_ghunnah
+    ])
+
+    # Expert: ayat panjang (>10 kata) ATAU banyak hukum tajwid kompleks
+    if word_count > 10 or intermediate_count >= 3:
+        return 'expert'
+
+    # Intermediate: ada hukum tajwid menengah
+    if intermediate_count >= 1 or has_mad:
+        return 'intermediate'
+
+    # Basic: ayat pendek tanpa hukum tajwid kompleks
+    return 'basic'
+
+================================================================================
+FILE: main/utils_tilawah/tajwid_engine.py
+================================================================================
+
+
+# ===== UNICODE CONSTANTS =====
+SUKUN = '\u0652'
+SUKUN_UTHMANI = '\u06e1'
+ALL_SUKUN = [SUKUN, SUKUN_UTHMANI]
+
+TANWIN_FATH = '\u064b'
+TANWIN_KASR = '\u064d'
+TANWIN_DAMM = '\u064c'
+SHADDA = '\u0651'
+FATHAH = '\u064e'
+KASRAH = '\u0650'
+DAMMAH = '\u064f'
+TATWEEL = '\u0640'
+TANWIN_DAMM_UTHMANI = '\u065e'
+TANWIN_KASR_UTHMANI = '\u0656'
+TANWIN_FATH_UTHMANI = '\u0657'
+TANWIN = [TANWIN_FATH, TANWIN_KASR, TANWIN_DAMM, TANWIN_DAMM_UTHMANI, TANWIN_KASR_UTHMANI, TANWIN_FATH_UTHMANI]
+
+MADDA_ABOVE = '\u0653'
+
+# ===== HURUF KATEGORISASI =====
+HALQI = ['ء', 'ه', 'ع', 'ح', 'غ', 'خ', 'أ', 'إ', 'آ', 'ٱ']
+IDGHAM_GHUNNAH = ['ي', 'ن', 'م', 'و']
+IDGHAM_BILA_GHUNNAH = ['ل', 'ر']
+IDGHAM_ALL = IDGHAM_GHUNNAH + IDGHAM_BILA_GHUNNAH
+IKHFA_LETTERS = ['ت', 'ث', 'ج', 'د', 'ذ', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ف', 'ق', 'ك']
+IQLAB_LETTER = 'ب'
+IQLAB_SIGN = '\u06e2'
+QALQALAH_LETTERS = ['ق', 'ط', 'ب', 'ج', 'د']
+SYAMSIAH = ['ت', 'ث', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ل', 'ن']
+QAMARIAH = ['ء', 'ب', 'غ', 'ح', 'ج', 'ك', 'و', 'خ', 'ف', 'ع', 'ق', 'ي', 'م', 'ه']
+
+# Idgham Mutajanisain — huruf yang makhrajnya sama tapi sifat berbeda
+MUTAJANISAIN_PAIRS = [
+    ('ت', 'د'), ('ت', 'ط'),
+    ('د', 'ت'), ('د', 'ط'),
+    ('ط', 'ت'), ('ط', 'د'),
+    ('ث', 'ذ'), ('ث', 'ظ'),
+    ('ذ', 'ث'), ('ذ', 'ظ'),
+    ('ظ', 'ث'), ('ظ', 'ذ'),
+    ('ب', 'م'), ('م', 'ب'),
+    ('ل', 'ر'), ('ر', 'ل'),
+]
+
+# Idgham Mutaqaribain — huruf yang makhrajnya berdekatan
+MUTAQARIBAIN_PAIRS = [
+    ('ق', 'ك'), ('ك', 'ق'),
+    ('ن', 'ل'), ('ن', 'ر'),
+    ('ل', 'ر'), ('ر', 'ل'),
+]
+
+ALEF = '\u0627'
+ALEF_UTHMANI = '\u0671'
+ALEF_MADDA = '\u0622'
+ALEF_WITH_HAMZA_ABOVE = '\u0623'
+ALEF_WITH_HAMZA_BELOW = '\u0625'
+ALEF_KHANJARIYAH = '\u0670'
+ALL_ALEF = [ALEF, ALEF_UTHMANI, ALEF_MADDA, ALEF_WITH_HAMZA_ABOVE, ALEF_WITH_HAMZA_BELOW, ALEF_KHANJARIYAH]
+
+WAW = '\u0648'
+YA = '\u064a'
+LAM = '\u0644'
+NUN = '\u0646'
+MIM = '\u0645'
+HA = '\u0647'
+
+# ===== KONSTANTA UNTUK ATURAN BARU =====
+WAW_SUKUN = WAW
+YA_SUKUN = YA
+RA = '\u0631'
+LAM_JALALAH = LAM
+ALEF_JALALAH = ALEF
+
+# Tanda waqaf
+SAKTAH = '\u06db'
+
+HAMZAH_LETTERS = ['ء', 'أ', 'إ', 'آ', 'ئ', 'ؤ']
+
+
+# ===== HELPER =====
+
+def strip_harakat(text):
+    harakat = [
+        SUKUN, SUKUN_UTHMANI, TANWIN_FATH, TANWIN_KASR, TANWIN_DAMM,
+        SHADDA, FATHAH, KASRAH, DAMMAH, TATWEEL,
+        '\u0610', '\u0611', '\u0612', '\u0613', '\u0614',
+        '\u0615', '\u0616', '\u0617', '\u0618', '\u0619',
+        '\u061a', '\u06d6', '\u06d7', '\u06d8', '\u06d9',
+        '\u06da', '\u06db', '\u06dc',
+        '\u06df', '\u06e0', '\u06e2', '\u06e3', '\u06e4',
+        '\u06e7', '\u06e8', '\u06ea', '\u06eb', '\u06ec', '\u06ed',
+        '\u065e', '\u0656', '\u0657', '\u0658', '\u065f',
+        '\u0653', '\u0654', '\u0655', '\u0670',
+    ]
+    for h in harakat:
+        text = text.replace(h, '')
+    text = text.replace('\u0671', '\u0627')
+    return text
+
+
+def get_base_letter(char):
+    return strip_harakat(char)
+
+
+def make_rule(rule, name, description, severity, priority, for_levels):
+    return {
+        'rule': rule,
+        'name': name,
+        'description': description,
+        'severity': severity,
+        'priority': priority,
+        'for_levels': for_levels
+    }
+
+
+# ===== RULE CHECKERS =====
+
+def _classify_nun_mati(following_letter, is_tanwin=False):
+    prefix = "Tanwin" if is_tanwin else "Nun mati"
+
+    if following_letter in HALQI:
+        return make_rule(
+            'izhar_halqi', 'Izhar Halqi',
+            f'{prefix} bertemu huruf {following_letter} (huruf halqi) dibaca jelas tanpa dengung.',
+            'info', 1, ['basic', 'intermediate', 'expert']
+        )
+    elif following_letter in IDGHAM_GHUNNAH:
+        return make_rule(
+            'idgham_bighunnah', 'Idgham Bighunnah',
+            f'{prefix} bertemu huruf {following_letter} dibaca lebur dengan dengung.',
+            'info', 1, ['basic', 'intermediate', 'expert']
+        )
+    elif following_letter in IDGHAM_BILA_GHUNNAH:
+        return make_rule(
+            'idgham_bilaghunnah', 'Idgham Bilaghunnah',
+            f'{prefix} bertemu huruf {following_letter} dibaca lebur tanpa dengung.',
+            'info', 1, ['basic', 'intermediate', 'expert']
+        )
+    elif following_letter == IQLAB_LETTER:
+        return make_rule(
+            'iqlab', 'Iqlab',
+            f'{prefix} bertemu huruf ب dibaca berubah menjadi mim dengan dengung.',
+            'warning', 1, ['basic', 'intermediate', 'expert']
+        )
+    elif following_letter in IKHFA_LETTERS:
+        return make_rule(
+            'ikhfa_haqiqi', 'Ikhfa Haqiqi',
+            f'{prefix} bertemu huruf {following_letter} dibaca samar dengan dengung.',
+            'warning', 1, ['basic', 'intermediate', 'expert']
+        )
+    return None
+
+
+def check_nun_mati_tanwin(words, word_index):
+    rules = []
+    word = words[word_index]
+    next_word = words[word_index + 1] if word_index + 1 < len(words) else None
+    chars = list(word)
+
+    for i, char in enumerate(chars):
+        next_char = chars[i + 1] if i + 1 < len(chars) else None
+
+        if char == NUN and next_char == IQLAB_SIGN:
+            rules.append(make_rule(
+                'iqlab', 'Iqlab',
+                'Nun mati bertemu huruf ب dibaca berubah menjadi mim dengan dengung.',
+                'warning', 1, ['basic', 'intermediate', 'expert']
+            ))
+            continue
+
+        if char == NUN and next_char in ALL_SUKUN:
+            following = None
+            if i + 2 < len(chars):
+                following = get_base_letter(chars[i + 2])
+            elif next_word:
+                following = get_base_letter(next_word[0])
+            if following:
+                rule = _classify_nun_mati(following)
+                if rule:
+                    rules.append(rule)
+            continue
+
+        if char == NUN and next_char is None:
+            if next_word:
+                following = get_base_letter(next_word[0])
+                if following:
+                    rule = _classify_nun_mati(following)
+                    if rule:
+                        rules.append(rule)
+            continue
+
+        if char == NUN and next_char and next_char not in [FATHAH, KASRAH, DAMMAH, SHADDA] + ALL_SUKUN + TANWIN:
+            following = get_base_letter(next_char)
+            if following and following.strip():
+                rule = _classify_nun_mati(following)
+                if rule:
+                    rules.append(rule)
+            continue
+
+        if char in TANWIN:
+            if next_word:
+                next_word_base = get_base_letter(next_word[0])
+                if next_word_base:
+                    rule = _classify_nun_mati(next_word_base, is_tanwin=True)
+                    if rule:
+                        rules.append(rule)
+
+    return rules
+
+
+def check_mim_mati(words, word_index):
+    rules = []
+    word = words[word_index]
+    next_word = words[word_index + 1] if word_index + 1 < len(words) else None
+    chars = list(word)
+
+    def _classify_mim(following):
+        if following == MIM:
+            return make_rule(
+                'idgham_mimi', 'Idgham Mimi',
+                'Mim mati bertemu huruf م dibaca lebur dengan dengung.',
+                'warning', 1, ['basic', 'intermediate', 'expert']
+            )
+        elif following == IQLAB_LETTER:
+            return make_rule(
+                'ikhfa_syafawi', 'Ikhfa Syafawi',
+                'Mim mati bertemu huruf ب dibaca samar dengan dengung.',
+                'warning', 1, ['basic', 'intermediate', 'expert']
+            )
+        elif following:
+            return make_rule(
+                'izhar_syafawi', 'Izhar Syafawi',
+                f'Mim mati bertemu huruf {following} dibaca jelas.',
+                'info', 1, ['basic', 'intermediate', 'expert']
+            )
+        return None
+
+    for i, char in enumerate(chars):
+        next_char = chars[i + 1] if i + 1 < len(chars) else None
+
+        if char == MIM and next_char in ALL_SUKUN:
+            following = None
+            if i + 2 < len(chars):
+                following = get_base_letter(chars[i + 2])
+            elif next_word:
+                following = get_base_letter(next_word[0])
+            rule = _classify_mim(following)
+            if rule:
+                rules.append(rule)
+            continue
+
+        if char == MIM and next_char is None:
+            if next_word:
+                following = get_base_letter(next_word[0])
+                rule = _classify_mim(following)
+                if rule:
+                    rules.append(rule)
+
+    return rules
+
+def check_qalqalah(word, is_last_word=False):
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+    
+    if is_last_word:
+        # Cari huruf terakhir yang bermakna
+        last_meaningful_idx = -1
+        for i in range(word_length - 1, -1, -1):
+            if get_base_letter(chars[i]).strip():
+                last_meaningful_idx = i
+                break
+        
+        if last_meaningful_idx != -1:
+            last_base = get_base_letter(chars[last_meaningful_idx])
+            if last_base in QALQALAH_LETTERS:
+                rules.append(make_rule(
+                    'qalqalah_kubra', 'Qalqalah Kubra',
+                    f'Huruf {last_base} di akhir ayat dibaca memantul kuat (Qalqalah Kubra).',
+                    'info', 1, ['basic', 'intermediate', 'expert']
+                ))
+                return rules
+
+
+    for i, char in enumerate(chars):
+        base_char = get_base_letter(char)
+        if base_char not in QALQALAH_LETTERS:
+            continue
+
+        is_sukun = False
+        is_kubra = False
+
+        # Kasus 1: Sukun eksplisit
+        if i + 1 < word_length and chars[i + 1] in ALL_SUKUN:
+            is_sukun = True
+            remaining = chars[i+2:]
+            remaining_meaningful = [c for c in remaining if get_base_letter(c).strip()]
+            if not remaining_meaningful:
+                is_kubra = True
+
+        # Kasus 2: Huruf di akhir kata (tanpa sukun eksplisit)
+        # Jika is_last_word=True → waqaf → qalqalah kubra
+        if i == word_length - 1:
+            is_sukun = True
+            if is_last_word:
+                is_kubra = True
+
+        # Kasus 3: Huruf yang diikuti huruf konsonan (bukan harakat)
+        elif i + 1 < word_length and chars[i+1] not in [FATHAH, KASRAH, DAMMAH, SHADDA] + ALL_SUKUN:
+            is_sukun = True
+            remaining = chars[i+1:]
+            remaining_meaningful = [c for c in remaining if get_base_letter(c).strip()]
+            if not remaining_meaningful:
+                is_kubra = True
+
+        if is_sukun:
+            rule_name = 'qalqalah_kubra' if is_kubra else 'qalqalah_sugra'
+            desc = 'kuat, di akhir ayat' if is_kubra else 'ringan, di tengah kata'
+            rules.append(make_rule(
+                rule_name,
+                'Qalqalah Kubra' if is_kubra else 'Qalqalah Sugra',
+                f'Huruf {base_char} berharakat sukun dibaca memantul ({desc}).',
+                'info', 1, ['basic', 'intermediate', 'expert']
+            ))
+
+    return rules
+
+
+def check_ghunnah(word):
+    rules = []
+    chars = list(word)
+
+    for i, char in enumerate(chars):
+        if char not in [MIM, NUN]:
+            continue
+        next_char = chars[i + 1] if i + 1 < len(chars) else None
+
+        if next_char == SHADDA:
+            rules.append(make_rule(
+                'ghunnah', 'Ghunnah Musyaddadah',
+                f'Huruf {char} bertasydid dibaca dengung selama 2 harakat.',
+                'info', 1, ['basic', 'intermediate', 'expert']
+            ))
+            continue
+
+        if next_char in [FATHAH, KASRAH, DAMMAH]:
+            next_next_char = chars[i + 2] if i + 2 < len(chars) else None
+            if next_next_char == SHADDA:
+                rules.append(make_rule(
+                    'ghunnah', 'Ghunnah Musyaddadah',
+                    f'Huruf {char} bertasydid dibaca dengung selama 2 harakat.',
+                    'info', 1, ['basic', 'intermediate', 'expert']
+                ))
+
+    return rules
+
+
+def check_alif_lam(word):
+    rules = []
+    stripped = strip_harakat(word)
+
+    LAFZUL_JALALAH = [
+        'الله', 'ٱلله', 'لله',
+        'والله', 'وٱلله', 'بالله', 'بٱلله',
+        'فالله', 'فٱلله', 'كالله', 'كٱلله',
+        'تالله', 'تٱلله',
+    ]
+    if stripped in LAFZUL_JALALAH:
+        return []
+
+    PREFIX = ['و', 'ب', 'ف', 'ك', 'ل']
+    start = None
+    if len(stripped) >= 2 and stripped[0] in ALL_ALEF:
+        start = 0
+    elif len(stripped) >= 3 and stripped[0] in PREFIX and stripped[1] in ALL_ALEF:
+        start = 1
+
+    if start is not None and start + 1 < len(stripped) and stripped[start + 1] == LAM:
+        following = stripped[start + 2] if start + 2 < len(stripped) else None
+        if following in SYAMSIAH:
+            rules.append(make_rule(
+                'alif_lam_syamsiah', 'Alif Lam Syamsiah',
+                f'Alif lam bertemu huruf {following} (syamsiah), lam dibaca lebur.',
+                'info', 1, ['basic', 'intermediate', 'expert']
+            ))
+        elif following in QAMARIAH:
+            rules.append(make_rule(
+                'alif_lam_qamariah', 'Alif Lam Qamariah',
+                f'Alif lam bertemu huruf {following} (qamariah), lam dibaca jelas.',
+                'info', 1, ['basic', 'intermediate', 'expert']
+            ))
+
+    return rules
+
+
+def check_mad(word, next_word=None):
+    rules = []
+    chars = list(word)
+    stripped_word = strip_harakat(word)
+    word_length = len(chars)
+
+    # Huruf Muqatha'ah
+    has_madda = MADDA_ABOVE in word
+    if has_madda and len(stripped_word) <= 3:
+        rules.append(make_rule(
+            'mad_lazim_mukhaffaf', 'Mad Lazim Mukhaffaf Harfi',
+            'Huruf muqatha\'ah dibaca panjang 6 harakat.',
+            'warning', 1, ['intermediate', 'expert']
+        ))
+        return rules
+
+    # Mad Lazim Mukhaffaf Kalimi
+    if 'ءَآلۡـَٰٔنَ' in word or 'ءَآلْـَٰٔنَ' in word:
+        rules.append(make_rule(
+            'mad_lazim_mukhaffaf', 'Mad Lazim Mukhaffaf Kalimi',
+            'Mad lazim mukhaffaf kalimi, dibaca panjang 6 harakat.',
+            'warning', 1, ['intermediate', 'expert']
+        ))
+        return rules
+
+    processed_indices = set()
+
+    for i, char in enumerate(chars):
+        if i in processed_indices:
+            continue
+
+        next_char = chars[i + 1] if i + 1 < word_length else None
+        is_mad = False
+        mad_char_idx = None
+        mad_letter = None
+
+        # Pola 1: fathah + alif
+        if char == FATHAH and next_char in ALL_ALEF:
+            is_mad = True
+            mad_char_idx = i + 1
+            mad_letter = 'alif'
+            processed_indices.update([i, i + 1])
+
+        # Pola 2: Alef Madda
+        elif char in [ALEF_MADDA]:
+            is_mad = True
+            mad_char_idx = i
+            mad_letter = 'alif_madda'
+            processed_indices.add(i)
+
+        # Pola 3: dammah + waw
+        elif char == DAMMAH and next_char == WAW:
+            is_mad = True
+            mad_char_idx = i + 1
+            mad_letter = 'waw'
+            processed_indices.update([i, i + 1])
+
+        # Pola 4: kasrah + ya
+        elif char == KASRAH and next_char == YA:
+            is_mad = True
+            mad_char_idx = i + 1
+            mad_letter = 'ya'
+            processed_indices.update([i, i + 1])
+
+        # Pola 5: Ya di akhir kata (MAD ASLI)
+        elif char == YA and i == word_length - 1:
+            is_mad = True
+            mad_char_idx = i
+            mad_letter = 'ya_sukun'
+            processed_indices.add(i)
+
+        # Pola 6: Waw di akhir kata (MAD ASLI)
+        elif char == WAW and i == word_length - 1:
+            is_mad = True
+            mad_char_idx = i
+            mad_letter = 'waw_sukun'
+            processed_indices.add(i)
+
+        if not is_mad:
+            continue
+
+        # Ambil karakter setelah huruf mad
+        after_idx = mad_char_idx + 1
+        skip = [FATHAH, KASRAH, DAMMAH, TATWEEL, '\u0670', '\u0654', '\u0655']
+        while after_idx < word_length and chars[after_idx] in skip:
+            after_idx += 1
+
+        after_char = chars[after_idx] if after_idx < word_length else None
+        after_base = get_base_letter(after_char) if after_char else None
+
+        # Mad Lazim Mutsaqqal
+        has_tasydid = False
+        temp_idx = after_idx
+        while temp_idx < word_length and temp_idx < after_idx + 3:
+            if temp_idx < word_length and chars[temp_idx] == SHADDA:
+                has_tasydid = True
+                break
+            temp_idx += 1
+
+        if has_tasydid:
+            rules.append(make_rule(
+                'mad_lazim_mutsaqqal', 'Mad Lazim Mutsaqqal',
+                'Huruf mad diikuti tasydid, dibaca panjang 6 harakat.',
+                'warning', 1, ['intermediate', 'expert']
+            ))
+            continue
+
+        # Mad Lazim Mukhaffaf
+        if after_char and after_char in ALL_SUKUN:
+            rules.append(make_rule(
+                'mad_lazim_mukhaffaf', 'Mad Lazim Mukhaffaf',
+                'Huruf mad diikuti sukun, dibaca panjang 6 harakat.',
+                'warning', 1, ['intermediate', 'expert']
+            ))
+            continue
+
+        # Mad Wajib Muttasil
+        if after_base and after_base in HAMZAH_LETTERS:
+            rules.append(make_rule(
+                'mad_wajib_muttasil', 'Mad Wajib Muttasil',
+                'Huruf mad bertemu hamzah dalam satu kata, dibaca panjang 4-5 harakat.',
+                'warning', 1, ['intermediate', 'expert']
+            ))
+            continue
+
+        # Mad Jaiz Munfasil
+        is_end_of_word = False
+        if mad_char_idx == word_length - 1:
+            is_end_of_word = True
+        else:
+            remaining = chars[mad_char_idx + 1:]
+            remaining_meaningful = [c for c in remaining if get_base_letter(c).strip()]
+            if not remaining_meaningful:
+                is_end_of_word = True
+
+        if mad_letter in ['waw_sukun', 'ya_sukun']:
+            is_end_of_word = True
+
+        if is_end_of_word and next_word:
+            next_first = None
+            for c in list(next_word):
+                base = get_base_letter(c)
+                if base.strip():
+                    next_first = base
+                    break
+
+            if next_first and next_first in HAMZAH_LETTERS:
+                rules = [r for r in rules if r.get('rule') != 'mad_asli']
+                rules.append(make_rule(
+                    'mad_jaiz_munfasil', 'Mad Jaiz Munfasil',
+                    'Huruf mad bertemu hamzah di kata berikutnya, dibaca panjang 2-5 harakat.',
+                    'info', 1, ['intermediate', 'expert']
+                ))
+                continue
+
+        # Mad Jaiz Munfasil khusus untuk قُوا dan يَا
+        if 'قُوا' in word or 'قُوَا' in word or 'يَا' in word:
+            if next_word and next_word.startswith('أ'):
+                rules = [r for r in rules if r.get('rule') != 'mad_asli']
+                rules.append(make_rule(
+                    'mad_jaiz_munfasil', 'Mad Jaiz Munfasil',
+                    'Huruf mad bertemu hamzah di kata berikutnya, dibaca panjang 2-5 harakat.',
+                    'info', 1, ['intermediate', 'expert']
+                ))
+                continue
+
+        # Mad Asli
+        existing_mad = any(r.get('rule') in ['mad_wajib_muttasil', 'mad_jaiz_munfasil', 
+                                              'mad_lazim_mutsaqqal', 'mad_lazim_mukhaffaf'] 
+                          for r in rules)
+        if not existing_mad:
+            rules.append(make_rule(
+                'mad_asli', 'Mad Asli (Thabi\'i)',
+                'Huruf mad dibaca panjang 2 harakat.',
+                'info', 2, ['basic', 'intermediate', 'expert']
+            ))
+
+    return rules
+
+
+def check_idgham_mutamatsilain(words, word_index):
+    rules = []
+    word = words[word_index]
+    next_word = words[word_index + 1] if word_index + 1 < len(words) else None
+    chars = list(word)
+
+    for i, char in enumerate(chars):
+        base_char = get_base_letter(char)
+        if not base_char.strip():
+            continue
+
+        next_char = chars[i + 1] if i + 1 < len(chars) else None
+
+        if next_char in ALL_SUKUN:
+            following_idx = i + 2
+            while following_idx < len(chars) and not get_base_letter(chars[following_idx]).strip():
+                following_idx += 1
+            following = get_base_letter(chars[following_idx]) if following_idx < len(chars) else None
+
+            if following and following == base_char:
+                rules.append(make_rule(
+                    'idgham_mutamatsilain', 'Idgham Mutamatsilain',
+                    f'Huruf {base_char} mati bertemu huruf {following} yang sama, dibaca lebur.',
+                    'info', 2, ['intermediate', 'expert']
+                ))
+            elif following is None and next_word:
+                next_first_base = None
+                for c in list(next_word):
+                    base = get_base_letter(c)
+                    if base.strip():
+                        next_first_base = base
+                        break
+                if next_first_base and next_first_base == base_char:
+                    rules.append(make_rule(
+                        'idgham_mutamatsilain', 'Idgham Mutamatsilain',
+                        f'Huruf {base_char} mati bertemu huruf {next_first_base} yang sama, dibaca lebur.',
+                        'info', 2, ['intermediate', 'expert']
+                    ))
+        else:
+            remaining = chars[i + 1:]
+            remaining_letters = [c for c in remaining if get_base_letter(c).strip()]
+            if not remaining_letters and next_word:
+                next_first_base = None
+                for c in list(next_word):
+                    base = get_base_letter(c)
+                    if base.strip():
+                        next_first_base = base
+                        break
+                if next_first_base and next_first_base == base_char:
+                    rules.append(make_rule(
+                        'idgham_mutamatsilain', 'Idgham Mutamatsilain',
+                        f'Huruf {base_char} mati bertemu huruf {next_first_base} yang sama, dibaca lebur.',
+                        'info', 2, ['intermediate', 'expert']
+                    ))
+
+    return rules
+
+
+def check_idgham_mutajanisain(words, word_index):
+    rules = []
+    word = words[word_index]
+    next_word = words[word_index + 1] if word_index + 1 < len(words) else None
+    chars = list(word)
+
+    for i, char in enumerate(chars):
+        base_char = get_base_letter(char)
+        if not base_char.strip():
+            continue
+
+        next_char = chars[i + 1] if i + 1 < len(chars) else None
+
+        def check_pair(base, following):
+            if (base, following) in MUTAJANISAIN_PAIRS:
+                return make_rule(
+                    'idgham_mutajanisain', 'Idgham Mutajanisain',
+                    f'Huruf {base} mati bertemu huruf {following} (makhraj sama), dibaca lebur.',
+                    'info', 2, ['intermediate', 'expert']
+                )
+            return None
+
+        if next_char in ALL_SUKUN:
+            following_idx = i + 2
+            while following_idx < len(chars) and not get_base_letter(chars[following_idx]).strip():
+                following_idx += 1
+            following = get_base_letter(chars[following_idx]) if following_idx < len(chars) else None
+
+            if following:
+                rule = check_pair(base_char, following)
+                if rule:
+                    rules.append(rule)
+            elif next_word:
+                next_first_base = None
+                for c in list(next_word):
+                    base = get_base_letter(c)
+                    if base.strip():
+                        next_first_base = base
+                        break
+                if next_first_base:
+                    rule = check_pair(base_char, next_first_base)
+                    if rule:
+                        rules.append(rule)
+        else:
+            remaining = chars[i + 1:]
+            remaining_letters = [c for c in remaining if get_base_letter(c).strip()]
+            if not remaining_letters and next_word:
+                next_first_base = None
+                for c in list(next_word):
+                    base = get_base_letter(c)
+                    if base.strip():
+                        next_first_base = base
+                        break
+                if next_first_base:
+                    rule = check_pair(base_char, next_first_base)
+                    if rule:
+                        rules.append(rule)
+
+    return rules
+
+
+def check_idgham_mutaqaribain(words, word_index):
+    rules = []
+    word = words[word_index]
+    next_word = words[word_index + 1] if word_index + 1 < len(words) else None
+    chars = list(word)
+    word_length = len(chars)
+
+    # Cari huruf di akhir kata yang bermakna
+    last_letter_idx = -1
+    for i in range(word_length - 1, -1, -1):
+        base = get_base_letter(chars[i])
+        if base.strip():
+            last_letter_idx = i
+            break
+
+    if last_letter_idx == -1:
+        return []
+
+    base_char = get_base_letter(chars[last_letter_idx])
+
+    # Cek apakah huruf ini mati (sukun)
+    is_sukun = False
+
+    # Kasus 1: Ada sukun eksplisit
+    if last_letter_idx + 1 < word_length and chars[last_letter_idx + 1] in ALL_SUKUN:
+        is_sukun = True
+
+    # Kasus 2: Huruf di akhir kata → sukun implisit (tidak ada harakat vokal)
+    elif last_letter_idx == word_length - 1:
+        # Cek apakah huruf ini memiliki harakat sendiri
+        # Harakat bisa berupa harakat vokal di posisi setelah atau sebelum
+        # Contoh: قُل → lam di akhir tidak memiliki harakat sendiri (harakat sebelumnya milik qaf)
+        has_own_harakat = False
+        
+        # Cek harakat setelah huruf (biasanya)
+        if last_letter_idx + 1 < word_length and chars[last_letter_idx + 1] in [FATHAH, KASRAH, DAMMAH]:
+            has_own_harakat = True
+        
+        # Cek harakat sebelum huruf (jika tidak ada setelahnya)
+        if not has_own_harakat and last_letter_idx > 0:
+            prev_char = chars[last_letter_idx - 1]
+            # Jika harakat sebelumnya adalah milik huruf ini (bukan huruf sebelumnya)
+            # Dalam kasus قُل: posisi sebelumnya adalah ُ (dammah) milik ق, bukan ل
+            # Kita perlu cek apakah ada huruf di antara
+            if prev_char in [FATHAH, KASRAH, DAMMAH]:
+                # Cek apakah huruf sebelum harakat adalah huruf yang sama
+                if last_letter_idx > 1:
+                    prev_prev = chars[last_letter_idx - 2]
+                    if get_base_letter(prev_prev).strip():
+                        # Harakat milik huruf sebelumnya
+                        has_own_harakat = False
+                    else:
+                        has_own_harakat = True
+                else:
+                    # Harakat di posisi pertama, milik huruf ini
+                    has_own_harakat = True
+        
+        # Jika tidak ada harakat sendiri, maka sukun
+        if not has_own_harakat:
+            is_sukun = True
+
+    if not is_sukun:
+        return []
+
+    if not next_word:
+        return []
+
+    # Cari huruf pertama dari next_word (lewati harakat di awal)
+    next_first = None
+    for c in list(next_word):
+        base = get_base_letter(c)
+        if base.strip():
+            next_first = base
+            break
+
+    if not next_first:
+        return []
+
+    # Cek pasangan mutaqaribain
+    if (base_char, next_first) in MUTAQARIBAIN_PAIRS:
+        rules.append(make_rule(
+            'idgham_mutaqaribain', 'Idgham Mutaqaribain',
+            f'Huruf {base_char} mati bertemu huruf {next_first} (makhraj berdekatan), dibaca lebur.',
+            'info', 2, ['intermediate', 'expert']
+        ))
+
+    return rules
+
+
+def check_mad_aridh_lissukun(word, is_last_word):
+    if not is_last_word:
+        return []
+
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+
+    # Ambil semua huruf bermakna dari belakang
+    meaningful_chars = []
+    for i in range(word_length - 1, -1, -1):
+        base = get_base_letter(chars[i])
+        if base.strip():
+            meaningful_chars.append((i, chars[i]))
+
+    if not meaningful_chars:
+        return []
+
+    # Cek huruf terakhir yang bermakna
+    last_idx, last_char = meaningful_chars[0]
+    second_last = meaningful_chars[1] if len(meaningful_chars) > 1 else (None, None)
+    second_last_idx, second_last_char = second_last
+
+    # Pola 1: huruf terakhir adalah alef/waw/ya (mad langsung di akhir)
+    is_mad = False
+    if last_char in ALL_ALEF:
+        is_mad = True
+    elif last_char == WAW:
+        prev = chars[last_idx - 1] if last_idx > 0 else None
+        if prev == DAMMAH or prev not in [FATHAH, KASRAH, DAMMAH]:
+            is_mad = True
+    elif last_char == YA:
+        prev = chars[last_idx - 1] if last_idx > 0 else None
+        if prev == KASRAH or prev not in [FATHAH, KASRAH, DAMMAH]:
+            is_mad = True
+
+    # Pola 2: huruf terakhir adalah konsonan biasa,
+    # tapi huruf sebelumnya adalah huruf mad
+    # Contoh: يَعۡلَمُونَ → waw sebelum nun, يَوۡمِئِذٍ → tidak
+    if not is_mad and second_last_char is not None:
+        if second_last_char == WAW:
+            prev_of_waw = chars[second_last_idx - 1] if second_last_idx > 0 else None
+            if prev_of_waw == DAMMAH:
+                is_mad = True
+        elif second_last_char == YA:
+            prev_of_ya = chars[second_last_idx - 1] if second_last_idx > 0 else None
+            if prev_of_ya == KASRAH:
+                is_mad = True
+        elif second_last_char in ALL_ALEF:
+            is_mad = True
+
+    if is_mad:
+        rules.append(make_rule(
+            'mad_aridh_lissukun', 'Mad Aridh Lissukun',
+            'Huruf mad di akhir ayat saat waqaf, dibaca panjang 2-6 harakat.',
+            'info', 1, ['intermediate', 'expert']
+        ))
+
+    return rules
+
+
+def check_mad_lin(word, is_last_word=False):
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+
+    for i, char in enumerate(chars):
+        if char not in [WAW_SUKUN, YA_SUKUN]:
+            continue
+
+        has_fathah_before = False
+        if i > 0:
+            prev_char = chars[i-1]
+            if prev_char == FATHAH:
+                has_fathah_before = True
+            elif i > 1 and chars[i-2] == FATHAH and get_base_letter(chars[i-1]).strip():
+                has_fathah_before = True
+
+        if not has_fathah_before:
+            continue
+
+        after_idx = i + 1
+        while after_idx < word_length and chars[after_idx] in [FATHAH, KASRAH, DAMMAH, SHADDA]:
+            after_idx += 1
+
+        if after_idx >= word_length:
+            if is_last_word:
+                rules.append(make_rule(
+                    'mad_lin', 'Mad Lin',
+                    'Huruf waw/ya sukun didahului fathah, dibaca panjang 2-6 harakat saat waqaf.',
+                    'info', 1, ['intermediate', 'expert']
+                ))
+            continue
+
+        after_char = chars[after_idx]
+        after_base = get_base_letter(after_char)
+
+        if after_base and after_base.strip():
+            if not is_last_word:
+                continue
+
+        rules.append(make_rule(
+            'mad_lin', 'Mad Lin',
+            'Huruf waw/ya sukun didahului fathah, dibaca panjang 2-6 harakat.',
+            'info', 1, ['intermediate', 'expert']
+        ))
+
+    return rules
+
+
+def check_mad_iwad(word, is_last_word=False):
+    if not is_last_word:
+        return []
+
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+
+    for i, char in enumerate(chars):
+        # Cek tanwin fath (semua variannya)
+        if char in [TANWIN_FATH, TANWIN_FATH_UTHMANI]:
+            # Cek apakah setelah tanwin ada alef (atau akhir kata)
+            remaining_idx = i + 1
+            while remaining_idx < word_length and chars[remaining_idx] in ALL_ALEF:
+                remaining_idx += 1
+            # Setelah tanwin+alef tidak ada huruf bermakna = akhir kata
+            remaining = chars[remaining_idx:]
+            remaining_meaningful = [c for c in remaining if get_base_letter(c).strip()]
+            if not remaining_meaningful:
+                rules.append(make_rule(
+                    'mad_iwad', 'Mad Iwad',
+                    'Tanwin fathah di akhir ayat/waqaf dibaca panjang 2 harakat.',
+                    'info', 1, ['intermediate', 'expert']
+                ))
+                break
+
+    return rules
+
+
+
+
+
+def check_mad_silah(word, next_word=None):
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+
+    for i, char in enumerate(chars):
+        if char != HA:
+            continue
+
+        has_harakat_before = False
+        if i > 0:
+            if chars[i-1] in [FATHAH, KASRAH, DAMMAH]:
+                has_harakat_before = True
+            elif i > 1 and chars[i-2] in [FATHAH, KASRAH, DAMMAH]:
+                if get_base_letter(chars[i-1]).strip():
+                    has_harakat_before = True
+
+        if not has_harakat_before:
+            continue
+
+        after_idx = i + 1
+        while after_idx < word_length and chars[after_idx] in [FATHAH, KASRAH, DAMMAH, SHADDA]:
+            after_idx += 1
+
+        if after_idx >= word_length and next_word:
+            for c in list(next_word):
+                base = get_base_letter(c)
+                if base.strip():
+                    if base in HAMZAH_LETTERS:
+                        rules.append(make_rule(
+                            'mad_silah_thawilah', 'Mad Silah Thawilah',
+                            'Ha dhomir bertemu hamzah, dibaca panjang 4-5 harakat.',
+                            'info', 1, ['intermediate', 'expert']
+                        ))
+                    else:
+                        rules.append(make_rule(
+                            'mad_silah_qasirah', 'Mad Silah Qasirah',
+                            'Ha dhomir bertemu huruf hidup, dibaca panjang 2 harakat.',
+                            'info', 1, ['intermediate', 'expert']
+                        ))
+                    break
+        elif after_idx < word_length:
+            after_char = chars[after_idx]
+            after_base = get_base_letter(after_char)
+            if after_base and after_base.strip():
+                if after_base in HAMZAH_LETTERS:
+                    rules.append(make_rule(
+                        'mad_silah_thawilah', 'Mad Silah Thawilah',
+                        'Ha dhomir bertemu hamzah, dibaca panjang 4-5 harakat.',
+                        'info', 1, ['intermediate', 'expert']
+                    ))
+                else:
+                    rules.append(make_rule(
+                        'mad_silah_qasirah', 'Mad Silah Qasirah',
+                        'Ha dhomir bertemu huruf hidup, dibaca panjang 2 harakat.',
+                        'info', 1, ['intermediate', 'expert']
+                    ))
+
+    return rules
+
+
+def check_ra_tafkhim_tarqiq(word):
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+
+    for i, char in enumerate(chars):
+        if get_base_letter(char) != RA:
+            continue
+
+        ra_harakat = None
+        is_sukun = False
+
+        if i + 1 < word_length and chars[i+1] in [FATHAH, KASRAH, DAMMAH]:
+            ra_harakat = chars[i+1]
+        elif i + 1 < word_length and chars[i+1] in ALL_SUKUN:
+            is_sukun = True
+            if i > 0 and chars[i-1] in [FATHAH, KASRAH, DAMMAH]:
+                ra_harakat = chars[i-1]
+        elif not ra_harakat and i > 0 and chars[i-1] in [FATHAH, KASRAH, DAMMAH]:
+            ra_harakat = chars[i-1]
+        elif i == word_length - 1:
+            if i > 0 and chars[i-1] in [FATHAH, KASRAH, DAMMAH]:
+                ra_harakat = chars[i-1]
+                is_sukun = True
+
+        if is_sukun and i > 0 and chars[i-1] == YA_SUKUN:
+            rules.append(make_rule(
+                'tarqiq_ra', 'Tarqiq Ra',
+                'Huruf Ra sukun setelah ya sukun dibaca tipis.',
+                'info', 2, ['intermediate', 'expert']
+            ))
+            continue
+
+        if is_sukun and i > 0 and chars[i-1] == WAW_SUKUN:
+            if i > 1 and chars[i-2] in [FATHAH, DAMMAH]:
+                rules.append(make_rule(
+                    'tafkhim_ra', 'Tafkhim Ra',
+                    'Huruf Ra sukun setelah waw sukun didahului fathah/dammah dibaca tebal.',
+                    'info', 2, ['intermediate', 'expert']
+                ))
+                continue
+
+        if ra_harakat in [FATHAH, DAMMAH]:
+            rules.append(make_rule(
+                'tafkhim_ra', 'Tafkhim Ra',
+                'Huruf Ra dibaca tebal karena fathah/dammah.',
+                'info', 2, ['intermediate', 'expert']
+            ))
+        elif ra_harakat == KASRAH:
+            rules.append(make_rule(
+                'tarqiq_ra', 'Tarqiq Ra',
+                'Huruf Ra dibaca tipis karena kasrah.',
+                'info', 2, ['intermediate', 'expert']
+            ))
+
+    return rules
+
+
+def check_lam_jalalah(word):
+    rules = []
+    chars = list(word)
+    word_length = len(chars)
+
+    for i, char in enumerate(chars):
+        if char not in ALL_ALEF:
+            continue
+        if i + 1 >= word_length or chars[i+1] != LAM:
+            continue
+        if i + 2 >= word_length:
+            continue
+
+        next_char = chars[i+2]
+        is_allah = False
+
+        if next_char == LAM or next_char == SHADDA:
+            for j in range(i+3, min(i+6, word_length)):
+                if get_base_letter(chars[j]) == HA:
+                    is_allah = True
+                    break
+
+        if not is_allah:
+            continue
+
+        prev_harakat = None
+        if i > 0 and chars[i-1] in [FATHAH, KASRAH, DAMMAH]:
+            prev_harakat = chars[i-1]
+        elif i > 1 and chars[i-2] in [FATHAH, KASRAH, DAMMAH]:
+            if get_base_letter(chars[i-1]).strip():
+                prev_harakat = chars[i-2]
+
+        if prev_harakat in [FATHAH, DAMMAH]:
+            rules.append(make_rule(
+                'tafkhim_lam_jalalah', 'Tafkhim Lam Jalalah',
+                'Lam pada lafadz Allah dibaca tebal karena didahului fathah/dammah.',
+                'info', 2, ['intermediate', 'expert']
+            ))
+        elif prev_harakat == KASRAH:
+            rules.append(make_rule(
+                'tarqiq_lam_jalalah', 'Tarqiq Lam Jalalah',
+                'Lam pada lafadz Allah dibaca tipis karena didahului kasrah.',
+                'info', 2, ['intermediate', 'expert']
+            ))
+        else:
+            rules.append(make_rule(
+                'tafkhim_lam_jalalah', 'Tafkhim Lam Jalalah',
+                'Lam pada lafadz Allah dibaca tebal.',
+                'info', 2, ['intermediate', 'expert']
+            ))
+        break
+
+    return rules
+
+
+def check_waqaf_saktah(word):
+    rules = []
+    if SAKTAH in word:
+        rules.append(make_rule(
+            'saktah', 'Saktah',
+            'Berhenti sejenak tanpa mengambil napas.',
+            'info', 2, ['expert']
+        ))
+    return rules
+
+def resolve_priority(rules):
+    if not rules:
+        return rules
+
+    rule_names = [r['rule'] for r in rules]
+
+    if 'mad_iwad' in rule_names:
+        rules = [r for r in rules if r['rule'] not in ['mad_aridh_lissukun', 'mad_asli']]
+        return rules
+
+    # Mad aridh hanya override mad asli kalau for_levels-nya sama
+    # Jangan hapus mad_asli kalau mad_aridh hanya untuk intermediate/expert
+    if 'mad_aridh_lissukun' in rule_names:
+        aridh_rule = next(r for r in rules if r['rule'] == 'mad_aridh_lissukun')
+        # Hanya hapus mad_asli jika mad_aridh mencakup semua level
+        # Karena mad_aridh hanya intermediate+, biarkan mad_asli tetap ada
+        # untuk level basic
+        pass  # tidak hapus mad_asli di sini
+
+    mad_higher = ['mad_wajib_muttasil', 'mad_jaiz_munfasil',
+                  'mad_lazim_mutsaqqal', 'mad_lazim_mukhaffaf']
+    if any(m in rule_names for m in mad_higher):
+        rules = [r for r in rules if r['rule'] != 'mad_asli']
+        rule_names = [r['rule'] for r in rules]
+
+    if 'mad_silah_qasirah' in rule_names or 'mad_silah_thawilah' in rule_names:
+        rules = [r for r in rules if r['rule'] != 'mad_asli']
+        rule_names = [r['rule'] for r in rules]
+
+    if 'idgham_bighunnah' in rule_names:
+        rules = [r for r in rules if r['rule'] not in ['idgham_mutamatsilain', 'idgham_mutaqaribain']]
+        rule_names = [r['rule'] for r in rules]
+
+    if 'idgham_bilaghunnah' in rule_names:
+        rules = [r for r in rules if r['rule'] not in ['idgham_mutamatsilain', 'idgham_mutaqaribain']]
+        rule_names = [r['rule'] for r in rules]
+
+    if 'qalqalah_kubra' in rule_names and 'qalqalah_sugra' in rule_names:
+        rules = [r for r in rules if r['rule'] != 'qalqalah_sugra']
+
+    return rules
+
+
+def filter_by_level(rules, user_level):
+    if user_level not in ['basic', 'intermediate', 'expert']:
+        return rules
+    return [r for r in rules if user_level in r.get('for_levels', [])]
+
+
+# ===== MAIN ANALYZER =====
+
+def analyze_tajwid(ayah_text, user_level=None):
+    words = ayah_text.split()
+    results = []
+
+    for i, word in enumerate(words):
+        word_rules = []
+        is_last_word = (i == len(words) - 1)
+        next_word = words[i + 1] if i + 1 < len(words) else None
+
+        word_rules.extend(check_nun_mati_tanwin(words, i))
+        word_rules.extend(check_mim_mati(words, i))
+        word_rules.extend(check_qalqalah(word, is_last_word))
+        word_rules.extend(check_ghunnah(word))
+        word_rules.extend(check_alif_lam(word))
+        word_rules.extend(check_mad(word, next_word))
+        word_rules.extend(check_mad_iwad(word, is_last_word))
+        word_rules.extend(check_mad_aridh_lissukun(word, is_last_word))
+        word_rules.extend(check_mad_lin(word, is_last_word))
+        word_rules.extend(check_mad_silah(word, next_word))
+        word_rules.extend(check_ra_tafkhim_tarqiq(word))
+        word_rules.extend(check_lam_jalalah(word))
+        word_rules.extend(check_idgham_mutamatsilain(words, i))
+        word_rules.extend(check_idgham_mutajanisain(words, i))
+        word_rules.extend(check_idgham_mutaqaribain(words, i))
+        word_rules.extend(check_waqaf_saktah(word))
+
+        word_rules = resolve_priority(word_rules)
+
+        if user_level:
+            word_rules = filter_by_level(word_rules, user_level)
+
+        # Setelah filter level: kalau mad_aridh masih ada, hapus mad_asli
+        rule_names = [r['rule'] for r in word_rules]
+        if 'mad_aridh_lissukun' in rule_names:
+            word_rules = [r for r in word_rules if r['rule'] != 'mad_asli']
+
+        if word_rules:
+            results.append({
+                'word': word,
+                'word_index': i,
+                'rules': word_rules
+            })
+
+    return results
+
+    
+
+================================================================================
+FILE: main/utils_tilawah/whisper_engine.py
+================================================================================
+
+import torch
+import librosa
+import numpy as np
+from transformers import WhisperProcessor, WhisperForConditionalGeneration
+
+# Load model sekali saat server start (cache di memory)
+_processor = None
+_model = None
+
+import os
+from django.conf import settings
+
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'models', 'tarteel-whisper')
+
+def get_model():
+    global _processor, _model
+    if _processor is None or _model is None:
+        source = MODEL_PATH if os.path.exists(MODEL_PATH) else "tarteel-ai/whisper-base-ar-quran"
+        print(f"[Tarteel] Loading model dari: {source}")
+        _processor = WhisperProcessor.from_pretrained(source)
+        _model = WhisperForConditionalGeneration.from_pretrained(source)
+        _model.eval()
+        print("[Tarteel] Model ready!")
+    return _processor, _model
+
+
+def transcribe_audio(audio_path):
+    """
+    Transkripsi audio tilawah ke teks Arab.
+    
+    Args:
+        audio_path: path ke file audio (mp3/wav/m4a)
+    
+    Returns:
+        dict: {
+            'transcript': str,  # teks Arab hasil transkripsi
+            'success': bool,
+            'error': str | None
+        }
+    """
+    try:
+        processor, model = get_model()
+
+        # Load & resample audio ke 16kHz (requirement Whisper)
+        audio, sr = librosa.load(audio_path, sr=16000, mono=True)
+
+        # Proses audio jadi input tensor
+        inputs = processor(
+            audio,
+            sampling_rate=16000,
+            return_tensors="pt"
+        )
+
+        # Generate transkripsi
+        with torch.no_grad():
+            forced_decoder_ids = processor.get_decoder_prompt_ids(
+                language="ar",
+                task="transcribe"
+            )
+            predicted_ids = model.generate(
+                inputs["input_features"],
+                forced_decoder_ids=forced_decoder_ids,
+            )
+
+        # Decode ke teks
+        transcript = processor.batch_decode(
+            predicted_ids,
+            skip_special_tokens=True
+        )[0].strip()
+
+        return {
+            'transcript': transcript,
+            'success': True,
+            'error': None
+        }
+
+    except Exception as e:
+        return {
+            'transcript': '',
+            'success': False,
+            'error': str(e)
+        }
+
+================================================================================
+FILE: main/utils_tilawah/word_matcher.py
+================================================================================
+
+import re
+import unicodedata
+
+# ===== NORMALISASI =====
+
+
+def normalize_arabic(text):
+    if not text:
+        return ""
+
+    # Hapus harakat (termasuk Uthmani variants)
+    harakat = re.compile(
+        r'[\u0610-\u061A\u064B-\u065F'
+        r'\u0670\u06D6-\u06DC\u06DF-\u06E4'
+        r'\u06E7\u06E8\u06EA-\u06ED'
+        r'\u06e1\u0657\u0656\u065e\u065f'
+        r'\u0653\u0654\u0655]'
+    )
+    text = harakat.sub('', text)
+
+    # Normalize semua alef variants → ا
+    text = re.sub(r'[أإآٱٲٳ\u0622\u0623\u0625\u0671]', 'ا', text)
+
+    # Normalize alef maqsura → ya
+    text = re.sub(r'ى', 'ي', text)
+
+    # Normalize ta marbuta → ha
+    text = re.sub(r'ة', 'ه', text)
+
+    # Hapus tatweel
+    text = re.sub(r'\u0640', '', text)
+
+    # Hapus alef yang berfungsi sebagai mad
+    text = re.sub(r'(?<=[^\s])ا', '', text)
+
+    # Hapus spasi berlebih
+    text = ' '.join(text.split())
+
+    return text.strip()
+
+
+def split_to_words(text):
+    """Split teks Arab menjadi list kata, hapus kata kosong"""
+    return [w for w in text.split() if w.strip()]
+
+
+# ===== PHONETIC FALLBACK =====
+
+def has_dammah_around(text, position):
+    """
+    Cek apakah ada harakat dammah (ُ) di sekitar posisi tertentu dalam teks.
+    """
+    if not text or position < 0 or position >= len(text):
+        return False
+    
+    # Cek karakter di posisi tersebut dan sekitarnya
+    # Harakat dammah biasanya berada setelah huruf (posisi + 1)
+    check_positions = [
+        position - 1,  # sebelum huruf
+        position + 1,  # setelah huruf
+    ]
+    
+    for pos in check_positions:
+        if 0 <= pos < len(text):
+            if text[pos] == '\u064f':  # dammah
+                return True
+    
+    return False
+
+
+def is_phonetic_match(char1, char2, ref_text=None, ref_pos=None, trans_text=None, trans_pos=None):
+    """
+    Cek apakah dua huruf dianggap sama secara fonetik.
+    Fallback khusus: Qaf (ق) dan Kaf (ك) dengan harakat dammah (u).
+    """
+    if char1 == char2:
+        return True
+    
+    # Fallback: Qaf (ق) dan Kaf (ك) dengan vokal u (dammah)
+    if (char1 == 'ق' and char2 == 'ك') or (char1 == 'ك' and char2 == 'ق'):
+        # Cek apakah ada dammah di sekitar huruf referensi
+        if ref_text and ref_pos is not None:
+            if has_dammah_around(ref_text, ref_pos):
+                return True
+        # Atau cek di sekitar huruf transkripsi
+        if trans_text and trans_pos is not None:
+            if has_dammah_around(trans_text, trans_pos):
+                return True
+        return False
+    
+    return False
+
+
+def char_is_harakat(char):
+    """Cek apakah karakter adalah harakat"""
+    harakat_set = set([
+        '\u064b', '\u064c', '\u064d', '\u064e', '\u064f', '\u0650', 
+        '\u0651', '\u0652', '\u0653', '\u0654', '\u0655', '\u0656',
+        '\u0657', '\u0658', '\u0659', '\u065a', '\u065b', '\u065c',
+        '\u065d', '\u065e', '\u065f'
+    ])
+    return char in harakat_set
+
+
+# ===== WORD MATCHING =====
+
+def match_words(reference_text, transcript_text):
+    """
+    Bandingkan teks referensi Quran dengan hasil transkripsi Whisper.
+    
+    Args:
+        reference_text: teks ayat dari database (dengan harakat)
+        transcript_text: hasil transkripsi Whisper (mungkin tanpa harakat)
+    
+    Returns:
+        dict: {
+            'word_results': list of word comparison results,
+            'correct_count': int,
+            'wrong_count': int,
+            'missing_count': int,
+            'extra_count': int,
+            'word_accuracy': float (0-100)
+        }
+    """
+    ref_words = split_to_words(reference_text)
+    trans_words = split_to_words(transcript_text)
+
+    ref_normalized = [normalize_arabic(w) for w in ref_words]
+    trans_normalized = [normalize_arabic(w) for w in trans_words]
+
+    # Gunakan algoritma LCS (Longest Common Subsequence) untuk matching
+    word_results = _align_words(
+        ref_words, trans_words, 
+        ref_normalized, trans_normalized,
+        reference_text, transcript_text
+    )
+
+    correct = sum(1 for r in word_results if r['status'] == 'correct')
+    wrong = sum(1 for r in word_results if r['status'] == 'wrong')
+    missing = sum(1 for r in word_results if r['status'] == 'missing')
+    extra = sum(1 for r in word_results if r['status'] == 'extra')
+
+    total_ref = len(ref_words)
+    word_accuracy = round((correct / total_ref * 100), 2) if total_ref > 0 else 0
+
+    return {
+        'word_results': word_results,
+        'correct_count': correct,
+        'wrong_count': wrong,
+        'missing_count': missing,
+        'extra_count': extra,
+        'word_accuracy': word_accuracy
+    }
+
+
+def _align_words(ref_words, trans_words, ref_norm, trans_norm, ref_text, trans_text):
+    """
+    Align kata referensi dengan kata transkripsi menggunakan DP alignment.
+    Mirip dengan diff algorithm — deteksi correct, wrong, missing, extra.
+    """
+    n = len(ref_norm)
+    m = len(trans_norm)
+
+    # Build DP table untuk LCS
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if _words_match(ref_norm[i-1], trans_norm[j-1]):
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    # Traceback untuk dapatkan alignment
+    aligned = []
+    i, j = n, m
+
+    while i > 0 or j > 0:
+        if i > 0 and j > 0 and _words_match(ref_norm[i-1], trans_norm[j-1]):
+            aligned.append(('correct', ref_words[i-1], trans_words[j-1]))
+            i -= 1
+            j -= 1
+        elif j > 0 and (i == 0 or dp[i][j-1] >= dp[i-1][j]):
+            aligned.append(('extra', None, trans_words[j-1]))
+            j -= 1
+        else:
+            aligned.append(('missing', ref_words[i-1], None))
+            i -= 1
+
+    aligned.reverse()
+
+    # Convert ke format hasil — gabungkan missing+extra yang berdekatan jadi 'wrong'
+    results = _merge_wrong(aligned)
+
+    return results
+
+
+def _words_match(ref_word_norm, trans_word_norm):
+    """
+    Cek apakah dua kata match dengan fallback phonetic.
+    """
+    if ref_word_norm == trans_word_norm:
+        return True
+    
+    # Jika panjang berbeda, tidak match
+    if len(ref_word_norm) != len(trans_word_norm):
+        return False
+    
+    # Cek huruf per huruf dengan fallback phonetic
+    for idx, (ref_char, trans_char) in enumerate(zip(ref_word_norm, trans_word_norm)):
+        if not is_phonetic_match(ref_char, trans_char):
+            return False
+    
+    return True
+
+
+def _merge_wrong(aligned):
+    """
+    Gabungkan pasangan missing+extra yang berdekatan menjadi 'wrong'.
+    Contoh: user baca 'الرحيم' tapi harusnya 'الرحمن' → status 'wrong'
+    """
+    results = []
+    i = 0
+    while i < len(aligned):
+        status, ref_word, trans_word = aligned[i]
+
+        if status == 'missing' and i + 1 < len(aligned) and aligned[i+1][0] == 'extra':
+            # Gabungkan jadi wrong
+            results.append({
+                'status': 'wrong',
+                'reference': ref_word,
+                'transcript': aligned[i+1][2],
+            })
+            i += 2
+        elif status == 'extra' and i + 1 < len(aligned) and aligned[i+1][0] == 'missing':
+            results.append({
+                'status': 'wrong',
+                'reference': aligned[i+1][1],
+                'transcript': trans_word,
+            })
+            i += 2
+        else:
+            results.append({
+                'status': status,
+                'reference': ref_word,
+                'transcript': trans_word,
+            })
+            i += 1
+
+    return results
+
+================================================================================
+FILE: main/utils_tilawah/feedback_builder.py
+================================================================================
+
+import uuid
+from .word_matcher import match_words
+from .tajwid_engine import analyze_tajwid
+
+
+def build_feedback(ayah_text, transcript, user_level=None):
+    # Step 1 — Word matching
+    match_result = match_words(ayah_text, transcript)
+
+    # Step 2 — Tajwid analysis dengan user_level
+    tajwid_result = analyze_tajwid(ayah_text, user_level=user_level)
+
+    # Step 3 — Build feedback items
+    feedback_items = []
+    feedback_id = 1
+
+    segments = _build_segments(match_result['word_results'], tajwid_result)
+
+    for segment in segments:
+        item = {
+            'id': feedback_id,
+            'id_str': f'feedback_{feedback_id}',
+            'type': segment['type'],
+            'arabic': segment['arabic'],
+            'caption': segment.get('caption'),
+            'audio_url': None
+        }
+        feedback_items.append(item)
+        feedback_id += 1
+
+    # Step 4 — Hitung skor
+    scores = _calculate_scores(match_result, tajwid_result)
+
+    return {
+        'tajwid_score': scores['tajwid_score'],
+        'word_accuracy': scores['word_accuracy'],
+        'ai_feedback': feedback_items
+    }
+
+
+def _build_caption(word_result, tajwid_rules, status):
+    """Build caption untuk correction item"""
+    captions = []
+
+    # Caption karena salah baca
+    if status == 'wrong':
+        ref = word_result.get('reference', '')
+        trans = word_result.get('transcript', '')
+        if ref and trans:
+            captions.append(f'Kata "{trans}" seharusnya dibaca "{ref}".')
+        elif ref:
+            captions.append(f'Kata "{ref}" tidak terbaca.')
+
+    elif status == 'missing':
+        ref = word_result.get('reference', '')
+        if ref:
+            captions.append(f'Kata "{ref}" terlewat.')
+
+    # Tambahkan tajwid rules jika ada
+    for rule in tajwid_rules:
+        captions.append(rule['description'])
+
+    return ' '.join(captions) if captions else None
+
+
+def _calculate_scores(match_result, tajwid_result):
+    """
+    Hitung 2 skor terpisah:
+    1. word_accuracy = (kata benar / total kata referensi) × 100
+    2. tajwid_score = 
+       - Jika ada expected rules: (detected / expected) × 100 × (word_accuracy / 100)
+       - Jika tidak ada expected rules: word_accuracy
+    """
+    
+    # 1. Word Accuracy
+    total_ref_words = (
+        match_result['correct_count'] +
+        match_result['wrong_count'] +
+        match_result['missing_count']
+    )
+    
+    if total_ref_words == 0:
+        word_accuracy = 0.0
+    else:
+        word_accuracy = (match_result['correct_count'] / total_ref_words) * 100
+    
+    # 2. Tajwid Quality (hanya rules yang signifikan, exclude mad_asli)
+    total_expected = _count_expected_tajwid_rules(tajwid_result)
+    detected = _count_detected_tajwid_rules(tajwid_result)
+    
+    # Jika tidak ada expected rules, nilai tajwid sempurna (tidak ada yang perlu dinilai)
+    if total_expected == 0:
+        tajwid_score = word_accuracy
+    else:
+        tajwid_quality = (detected / total_expected) * 100
+        tajwid_score = (word_accuracy / 100) * tajwid_quality
+    
+    return {
+        'word_accuracy': round(word_accuracy, 2),
+        'tajwid_score': round(tajwid_score, 2)
+    }
+
+
+def _count_expected_tajwid_rules(tajwid_result):
+    """
+    Total hukum tajwid yang seharusnya ada dalam ayat
+    Exclude mad_asli (karena default, bukan penilaian tajwid)
+    """
+    total = 0
+    for word in tajwid_result:
+        for rule in word.get('rules', []):
+            if rule.get('rule') != 'mad_asli':
+                total += 1
+    return total
+
+
+def _count_detected_tajwid_rules(tajwid_result):
+    """
+    Total hukum tajwid yang terdeteksi (exclude mad_asli)
+    """
+    total = 0
+    for word in tajwid_result:
+        for rule in word.get('rules', []):
+            if rule.get('rule') != 'mad_asli':
+                total += 1
+    return total
+
+
+def _build_segments(word_results, tajwid_result):
+    """
+    Bangun segmen feedback dari word results.
+    - Kata correct yang berurutan digabung jadi satu blok 'correct'
+    - Kata wrong/missing jadi blok 'correction' dengan caption tajwid
+    """
+    # Buat map: word_index → tajwid rules
+    tajwid_map = {}
+    for t in tajwid_result:
+        tajwid_map[t['word_index']] = t['rules']
+
+    segments = []
+    current_correct = []
+    word_index = 0
+
+    for word_result in word_results:
+        status = word_result['status']
+
+        if status == 'correct':
+            current_correct.append(word_result['reference'])
+            word_index += 1
+
+        elif status in ['wrong', 'missing']:
+            # Flush correct segment dulu
+            if current_correct:
+                segments.append({
+                    'type': 'correct',
+                    'arabic': ' '.join(current_correct),
+                    'caption': None
+                })
+                current_correct = []
+
+            tajwid_rules = tajwid_map.get(word_index, [])
+            caption = _build_caption(word_result, tajwid_rules, status)
+
+            segments.append({
+                'type': 'correction',
+                'arabic': word_result['reference'] or '',
+                'caption': caption
+            })
+            word_index += 1
+
+        elif status == 'extra':
+            pass
+
+    # Flush sisa correct segment
+    if current_correct:
+        segments.append({
+            'type': 'correct',
+            'arabic': ' '.join(current_correct),
+            'caption': None
+        })
+
+    return segments
+
+================================================================================
+FILE: main/pagination_utils.py
+================================================================================
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+def paginate_queryset(request, queryset, page_size=10, items_key='items'):
+    """
+    Utility function untuk standard pagination
+    
+    Args:
+        request: Django request object
+        queryset: QuerySet yang akan dipaginasi
+        page_size: Jumlah item per halaman (default 10)
+        items_key: Nama key untuk items dalam response (default 'items')
+    
+    Returns:
+        dict: Response data untuk pagination
+    """
+    page = request.GET.get('page', 1)
+    page_size = request.GET.get('page_size', page_size)
+    
+    # Convert to int
+    try:
+        page = int(page)
+        page_size = int(page_size)
+    except ValueError:
+        page = 1
+        page_size = 10
+    
+    # Batasi page_size maksimal 100
+    if page_size > 100:
+        page_size = 100
+    
+    paginator = Paginator(queryset, page_size)
+    
+    try:
+        items_page = paginator.page(page)
+    except PageNotAnInteger:
+        items_page = paginator.page(1)
+    except EmptyPage:
+        items_page = paginator.page(paginator.num_pages)
+    
+    return {
+        'current_page': items_page.number,
+        'total_page': paginator.num_pages,
+        'total_items': paginator.count,
+        items_key: list(items_page)
+    }
+
+================================================================================
+FILE: main/urls.py
+================================================================================
+
+# main/urls.py
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from . import views
+from .endpoint.social import feed_views, story_views, comment_views, follow_views
+from django.conf import settings
+from django.conf.urls.static import static
+from .endpoint.lifestyle import fest_views
+from .endpoint import masjid_views
+from .endpoint import klinik_views
+from .endpoint import hadis_views
+from .endpoint.ngaji import kelas_views, pelajaran_views
+from .endpoint.kisah_nabi import views as kisah_nabi_views
+from .endpoint import spiritual_views
+from .endpoint.ai import chat_views
+
+from .endpoint.tilawah import tilawah_views
+from .google_auth_views import GoogleLoginView
+from main.endpoint.tuntunan_shalat.views import (
+    TuntunanShalatListView,
+    TuntunanShalatReaderPageView,
+)
+
+from main.endpoint.doa.views import (
+    DoaListView,
+    DoaDetailView,
+    DoaBookmarkToggleView,
+)
+from .endpoint.media_islami import views as media_islami_views
+from .endpoint.healthy_tip import views as healthy_tip_views
+from .endpoint import gamification_views
+
+from .endpoint.e_pustaka import views as epustaka_views
+
+
+# from .views.auth_views import CustomTokenObtainPairView 
+
+urlpatterns = [
+
+    # NOTIFICATION
+    path('notification/subscribe/', views.subscribe_notification, name='subscribe_token'),
+    
+    # AUTH --------------------------------------------------------------------------------------------------------------------------
+    path('auth/login/', views.CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/verify/<str:token>/', views.verify_email, name='verify_email'),
+    path('auth/resend-verification/', views.resend_verification_email, name='resend_verification'),
+    # JADWAL SHALAT
+    path('jadwal_shalat/sync/', views.sync_prayer_month, name='sinkronisasi_jadwal_shalkat'),
+    path('jadwal_shalat/notification_preference/', views.sync_prayer_preferences, name='sinkronisasi_preferensi_notifikasi'),
+    
+    # USER--------------------------------------------------------------------------------------------------------------------
+    path('user/me/', views.users_me, name='users_me'),
+    path('user/create/', views.create_user, name='create_user'),
+    path('user/change_password/', views.change_password, name='change_password'),
+    path('user/change_profile_picture/', views.change_profile_picture, name='change_profile_picture'),
+    
+    path('user/change_banner/', views.change_user_banner, name='change_user_banner'),
+
+    # SOCIAL FEEDS (TODAY) 
+    path('feed/global/', feed_views.get_global_feed, name='get_global_feed'),
+    path('feed/local/', feed_views.get_local_feed, name='get_local_feed'),
+    path('feed/following/', feed_views.get_following_feed, name='get_following_feed'),
+    path('feed/user_like/<int:user_id>/', feed_views.get_user_liked_feeds, name='get_user_liked_feeds'),
+    path('feed/user/<int:user_id>/', feed_views.get_user_feeds, name='get_user_feeds'),
+    path('feed/create/', feed_views.create_feed, name='create_feed'),
+    path('feed/like/<int:feed_id>/', feed_views.like_feed, name='like_feed'),
+    path('feed/search/', feed_views.search_feed, name='search_feed'),
+    path('feed/user_tagged/<int:user_id>/', feed_views.get_user_tagged_feeds, name='get_user_tagged_feeds'),
+    path('feed/search_user/', feed_views.search_users, name='search_users'),
+    
+
+    # COMMENT ENDPOINTS
+    path('feed/comment/<int:feed_id>/', comment_views.add_comment, name='add_comment'),
+    path('feed/comment/delete/<int:comment_id>/', comment_views.delete_comment, name='delete_comment'),
+    path('feed/comments/<int:feed_id>/', comment_views.get_comments, name='get_comments'),
+    path('feed/comment/reply/<int:comment_id>/', comment_views.reply_comment, name='reply_comment'), 
+    path('feed/comment/like/<int:comment_id>/', comment_views.like_comment, name='like_comment'),   
+    # STORIES 
+    path('stories/global/', story_views.get_global_stories, name='get_global_stories'),
+    path('stories/local/', story_views.get_local_stories, name='get_local_stories'),
+    path('stories/following/', story_views.get_following_stories, name='get_following_stories'),
+    path('stories/create/', story_views.create_story, name='create_story'),  # Tambah ini
+
+    path('stories/seen/<int:story_id>/', story_views.mark_story_seen, name='mark_story_seen'),
+
+
+    # FOLLOW ENDPOINTS
+    path('follow/<int:user_id>/', follow_views.follow_user, name='follow_user'),
+    path('unfollow/<int:user_id>/', follow_views.unfollow_user, name='unfollow_user'),
+    path('followers/<int:user_id>/', follow_views.get_followers, name='get_followers'),
+    path('following/<int:user_id>/', follow_views.get_following, name='get_following'),
+    path('follow/check/<int:user_id>/', follow_views.check_follow_status, name='check_follow_status'), 
+
+
+    # LIFESTYLE - FEST
+    path('fest/', fest_views.get_fests, name='get_fests'),
+    path('fest/<int:fest_id>/', fest_views.get_fest_detail, name='get_fest_detail'),
+    path('fest/category/<str:category>/', fest_views.get_fests_by_category, name='get_fests_by_category'),
+
+    # NEARBY MASJIDS & REVIEWS
+    path('masjids/nearby/', masjid_views.nearby_masjids, name='nearby_masjids'),
+    path('masjids/<str:place_id>/', masjid_views.masjid_detail, name='masjid_detail'),
+    path('masjids/<str:place_id>/review/', masjid_views.create_masjid_review, name='create_masjid_review'),
+    path('masjids/<str:place_id>/reviews/', masjid_views.get_masjid_reviews, name='get_masjid_reviews'),
+    path('masjids/review/check/<str:place_id>/', masjid_views.check_user_review, name='check_user_review'),
+    path('masjids/review/delete/<int:review_id>/', masjid_views.delete_masjid_review, name='delete_masjid_review'),
+
+    path('kliniks/nearby/', klinik_views.nearby_kliniks, name='nearby_kliniks'),
+    path('kliniks/<str:place_id>/', klinik_views.klinik_detail, name='klinik_detail'),
+    path('kliniks/<str:place_id>/review/', klinik_views.create_klinik_review, name='create_klinik_review'),
+    path('kliniks/<str:place_id>/reviews/', klinik_views.get_klinik_reviews, name='get_klinik_reviews'),
+    path('kliniks/review/check/<str:place_id>/', klinik_views.check_user_klinik_review, name='check_user_klinik_review'),
+    path('kliniks/review/delete/<int:review_id>/', klinik_views.delete_klinik_review, name='delete_klinik_review'),
+
+    # BELAJAR NGAJI - KELAS TAHFIDZ
+    path('ngaji/kelas/', kelas_views.get_all_kelas, name='get_all_kelas'),
+    path('ngaji/kelas/cari/', kelas_views.cari_kelas, name='cari_kelas'),
+    path('ngaji/kelas/<int:kelas_id>/', kelas_views.get_kelas_detail, name='get_kelas_detail'),
+    path('ngaji/kelas/<int:kelas_id>/daftar/', kelas_views.daftar_kelas, name='daftar_kelas'),
+    
+    # BELAJAR NGAJI - PELAJARAN
+    path('ngaji/pelajaran/', pelajaran_views.get_all_pelajaran, name='get_all_pelajaran'),
+    path('ngaji/pelajaran/<int:pelajaran_id>/', pelajaran_views.get_detail_pelajaran, name='get_detail_pelajaran'),
+    path('ngaji/pelajaran/materi/<int:detail_pelajaran_id>/', pelajaran_views.get_materi_pelajaran, name='get_materi_pelajaran'),
+    path('ngaji/pelajaran/progress/<int:detail_pelajaran_id>/', pelajaran_views.update_progress, name='update_progress'),
+
+    path('kisah-nabi/', kisah_nabi_views.get_all_kisah_nabi, name='get_all_kisah_nabi'),
+    path('kisah-nabi/popular/', kisah_nabi_views.get_popular_kisah_nabi, name='get_popular_kisah_nabi'),
+    path('kisah-nabi/<int:kisah_id>/', kisah_nabi_views.get_kisah_nabi_detail, name='get_kisah_nabi_detail'),
+    path('kisah-nabi/<int:kisah_id>/read/', kisah_nabi_views.increment_read_count, name='increment_read_count'),
+    path('kisah-nabi/episode/<int:episode_id>/read/', kisah_nabi_views.increment_episode_read_count, name='increment_episode_read_count'),
+
+    path('prayer/monitor/', spiritual_views.get_prayer_monitor, name='get_prayer_monitor'),
+    path('prayer/complete/', spiritual_views.mark_prayer_completed, name='mark_prayer_completed'),
+    path('prayer/history/', spiritual_views.get_prayer_history, name='get_prayer_history'),
+    path('prayer/statistics/', spiritual_views.get_prayer_statistics, name='get_prayer_statistics'),
+    path('prayer/preferences/', spiritual_views.update_notification_preferences, name='update_notification_preferences'),
+
+     # SMART AI
+    path('ai/chat/send/', chat_views.send_message, name='ai_send_message'),
+    path('ai/chat/conversations/', chat_views.get_conversations, name='ai_get_conversations'),
+    path('ai/chat/conversation/<int:conversation_id>/', chat_views.get_conversation_detail, name='ai_conversation_detail'),
+    path('ai/chat/conversation/<int:conversation_id>/delete/', chat_views.delete_conversation, name='ai_delete_conversation'),
+    path('hadis/hybrid-search/', hadis_views.test_hybrid_search, name='hybrid_search'),
+
+    # tilawah
+    path('tilawah/ayah/random/', tilawah_views.get_random_ayah, name='tilawah_random_ayah'),
+    path('tilawah/submit/', tilawah_views.submit_tilawah, name='tilawah_submit'),
+    path('tilawah/history/', tilawah_views.get_history, name='tilawah_history'),
+    path('tilawah/session/<int:session_id>/', tilawah_views.get_session_detail, name='tilawah_session_detail'),
+    path(
+        "tilawah/surah/all/",
+        tilawah_views.get_all_surah,
+        name="tilawah_all_surah",
+    ),
+    path(
+        "tilawah/ayah/<int:surah_id>/",
+        tilawah_views.get_ayahs_by_surah,
+        name="tilawah_ayah_by_surah",
+    ),
+
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
+    path('auth/social/', include('social_django.urls', namespace='social')),
+
+
+    path('leaderboard/info/', gamification_views.leaderboard_info, name='leaderboard_info'),
+    path('amalan/checkin/', gamification_views.amalan_checkin, name='amalan_checkin'),
+    path('jejak_hijrah/', gamification_views.jejak_hijrah, name='jejak_hijrah'),
+
+    #tuntunan sholat
+    path("tuntunan_shalat/", TuntunanShalatListView.as_view()),
+    path("tuntunan_shalat/<int:id>/pages/<int:page_number>/", TuntunanShalatReaderPageView.as_view()),
+    
+    #doa
+    path("doa/", DoaListView.as_view()),
+    path("doa/<int:id>/", DoaDetailView.as_view()),
+    path("doa/<int:id>/bookmark/", DoaBookmarkToggleView.as_view()),
+
+    #healthy_tip
+    path(
+        "tips_hidup_sehat/",
+        healthy_tip_views.get_tips_hidup_sehat,
+        name="get_tips_hidup_sehat",
+    ),
+    path(
+        "tips_hidup_sehat/search/<str:query>/",
+        healthy_tip_views.search_tips_hidup_sehat,
+        name="search_tips_hidup_sehat",
+    ),
+    # MEDIA ISLAMI
+    path(
+        "media_islami/",
+        media_islami_views.get_media_islami,
+        name="get_media_islami",
+    ),
+
+    path(
+        "media_islami/search/",
+        media_islami_views.search_media_islami,
+        name="search_media_islami",
+    ),
+
+    path(
+        "media_islami/short/<int:short_id>/view/",
+        media_islami_views.increase_short_view,
+        name="increase_short_view",
+    ),
+
+    # E-PUSTAKA
+    path(
+        "e_pustaka/",
+        epustaka_views.get_epustaka,
+        name="get_epustaka",
+    ),
+
+    path(
+        "e_pustaka/all/",
+        epustaka_views.get_all_epustaka,
+        name="get_all_epustaka",
+    ),
+
+    
+    
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+================================================================================
+FILE: main/admin.py
+================================================================================
+
+# main/admin.py
+from django.contrib import admin
+from .models import User, PrayerMonthDocument, UserPrayerPreference, PrayerNotificationLog
+from .models_fest import Fest
+from .models_masjid import MasjidReview, MasjidReviewPhoto
+from .models_klinik import KlinikReview, KlinikReviewPhoto
+from .models_ngaji import (
+    KelasTahfidz, KelasSchedule, KelasEnrollment,
+    Pelajaran, DetailPelajaran, MateriPelajaran
+)
+from .models_kisah_nabi import KisahNabi, KisahNabiEpisode, KisahNabiReadLog
+
+
+from .models_tuntunan_shalat import TuntunanShalat
+
+from .models_doa import (
+    DoaCategory,
+    Doa,
+    DoaContent,
+    DoaBookmark,
+)
+from main.models_book_category import BookCategory
+from main.models_book_author import BookAuthor
+from main.models_islamic_book import IslamicBook
+from main.models_healthy_tip import HealthyTip
+
+from main.models_media_category import MediaCategory
+from main.models_short_islami import ShortIslami
+from main.models_artikel_islami import ArtikelIslami
+
+# User
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'username', 'nama', 'email', 'telepon']
+    search_fields = ['username', 'nama', 'email']
+
+# Masjid Review
+@admin.register(MasjidReview)
+class MasjidReviewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'place_id', 'rating', 'created_at']
+    list_filter = ['rating']
+
+@admin.register(MasjidReviewPhoto)
+class MasjidReviewPhotoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'review', 'created_at']
+
+# Klinik Review
+@admin.register(KlinikReview)
+class KlinikReviewAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'place_id', 'rating', 'created_at']
+    list_filter = ['rating']
+
+@admin.register(KlinikReviewPhoto)
+class KlinikReviewPhotoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'review', 'created_at']
+
+# Ngaji - Kelas Tahfidz
+@admin.register(KelasTahfidz)
+class KelasTahfidzAdmin(admin.ModelAdmin):
+    list_display = ['title', 'lecturer_name', 'price', 'is_dewasa', 'enroll_count']
+    list_filter = ['is_dewasa']
+    search_fields = ['title', 'lecturer_name']
+
+@admin.register(KelasSchedule)
+class KelasScheduleAdmin(admin.ModelAdmin):
+    list_display = ['id', 'kelas', 'start_time', 'end_time', 'enrolled_students']
+
+
+@admin.register(KelasEnrollment)
+class KelasEnrollmentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'kelas', 'nama_lengkap', 'enrollment_status', 'is_dewasa', 'enrolled_at']
+    list_filter = ['enrollment_status', 'is_dewasa', 'is_private', 'ngaji_level']
+    search_fields = ['user__username', 'user__email', 'nama_lengkap', 'parent_name', 'parent_phone']
+    readonly_fields = ['user', 'kelas', 'enrolled_at', 'updated_at']
+    
+    fieldsets = (
+        ('Informasi Pendaftaran', {
+            'fields': ('user', 'kelas', 'selected_schedule', 'enrollment_status')
+        }),
+        ('Data Peserta', {
+            'fields': ('nama_lengkap', 'jenis_kelamin', 'usia_in_tahun', 'address', 'ngaji_level')
+        }),
+        ('Status', {
+            'fields': ('is_dewasa', 'is_private')
+        }),
+        ('Data Orang Tua (jika peserta anak-anak)', {
+            'fields': ('parent_name', 'parent_phone'),
+            'classes': ('collapse',)
+        }),
+        ('Waktu', {
+            'fields': ('enrolled_at', 'updated_at'),
+            'classes': ('collapse',)
+        })
+    )
+# Ngaji - Pelajaran
+@admin.register(Pelajaran)
+class PelajaranAdmin(admin.ModelAdmin):
+    list_display = ['name', 'step', 'course_total', 'course_finished']
+
+@admin.register(DetailPelajaran)
+class DetailPelajaranAdmin(admin.ModelAdmin):
+    list_display = ['pelajaran', 'name', 'step', 'is_finished']
+    list_filter = ['is_finished']
+
+@admin.register(MateriPelajaran)
+class MateriPelajaranAdmin(admin.ModelAdmin):
+    list_display = ['detail_pelajaran', 'title', 'arabic', 'latin', 'order']
+
+# Kisah Nabi
+@admin.register(KisahNabi)
+class KisahNabiAdmin(admin.ModelAdmin):
+    list_display = ['id', 'prophet_name', 'total_read_count', 'created_at']
+    list_filter = ['prophet_name']
+    search_fields = ['prophet_name', 'description']
+    readonly_fields = ['total_read_count']
+
+@admin.register(KisahNabiEpisode)
+class KisahNabiEpisodeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'kisah_nabi', 'title', 'order', 'created_at']
+    list_filter = ['kisah_nabi']
+    search_fields = ['title', 'description']
+
+@admin.register(KisahNabiReadLog)
+class KisahNabiReadLogAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'kisah_nabi', 'episode', 'read_at']
+    list_filter = ['kisah_nabi', 'read_at']
+    search_fields = ['user__username', 'kisah_nabi__prophet_name']
+    readonly_fields = ['user', 'kisah_nabi', 'episode', 'read_at']
+@admin.register(Fest)
+class FestAdmin(admin.ModelAdmin):
+    list_display = ['title', 'category', 'date', 'is_headline', 'is_recommendation']
+    list_filter = ['category', 'is_headline', 'is_recommendation']
+    search_fields = ['title', 'description']
+    readonly_fields = ['banner_preview']
+    
+    def banner_preview(self, obj):
+        if obj.banner:
+            from django.utils.html import mark_safe
+            return mark_safe(f'<img src="{obj.banner.url}" width="300" height="130" style="object-fit:cover;" />')
+        return "No image"
+    banner_preview.short_description = 'Banner Preview'
+
+
+@admin.register(TuntunanShalat)
+class TuntunanShalatAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "title", "is_active", "updated_at")
+    list_display_links = ("id", "title")
+    list_editable = ("order", "is_active")
+    list_filter = ("is_active",)
+    search_fields = ("title", "excerpt", "content")
+    readonly_fields = ("created_at", "updated_at")
+    fieldsets = (
+        ("Informasi Artikel", {
+            "fields": ("order", "title", "excerpt", "hero_image", "is_active")
+        }),
+        ("Konten", {
+            "fields": ("content",)
+        }),
+        ("Metadata", {
+            "fields": ("created_at", "updated_at")
+        }),
+    )
+
+class DoaContentInline(admin.TabularInline):
+    model = DoaContent
+    extra = 1
+
+
+@admin.register(DoaCategory)
+class DoaCategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "order", "title", "is_active")
+    list_editable = ("order", "is_active")
+    search_fields = ("title",)
+
+
+@admin.register(Doa)
+class DoaAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "order", "category", "is_active", "hero_image")
+    list_display_links = ("id", "title")
+    list_editable = ("order", "is_active")
+    list_filter = ("category", "is_active")
+    search_fields = ("title", "page_title")
+    inlines = [DoaContentInline]
+
+
+@admin.register(DoaContent)
+class DoaContentAdmin(admin.ModelAdmin):
+    list_display = ("id", "doa", "order", "sub_title")
+    list_filter = ("doa",)
+    search_fields = ("sub_title", "arabic_text", "translation")
+
+
+@admin.register(DoaBookmark)
+class DoaBookmarkAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "doa", "created_at")
+    list_filter = ("created_at",)
+    search_fields = ("user__username", "user__email", "doa__title")
+
+
+@admin.register(HealthyTip)
+class HealthyTipAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "category",
+        "section",
+        "uploader",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "section",
+        "category",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "description_short",
+        "category",
+        "article",
+    )
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+    fieldsets = (
+        ("Konten", {
+            "fields": (
+                "title",
+                "banner",
+                "description_short",
+                "category",
+                "article",
+            )
+        }),
+        ("Pengelompokan", {
+            "fields": (
+                "section",
+                "is_published",
+            )
+        }),
+        ("Uploader", {
+            "fields": (
+                "uploader",
+            )
+        }),
+        ("Tanggal", {
+            "fields": (
+                "created_at",
+                "updated_at",
+            )
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(MediaCategory)
+class MediaCategoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+    )
+
+    search_fields = (
+        "name",
+    )
+
+    ordering = (
+        "name",
+    )
+
+@admin.register(ShortIslami)
+class ShortIslamiAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "category",
+        "view_count",
+        "uploader",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "category",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "description",
+    )
+
+    readonly_fields = (
+        "view_count",
+        "created_at",
+        "updated_at",
+    )
+
+    autocomplete_fields = (
+        "category",
+        "uploader",
+    )
+
+    fieldsets = (
+        (
+            "Informasi",
+            {
+                "fields": (
+                    "title",
+                    "thumbnail",
+                    "video",
+                    "description",
+                    "category",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_published",
+                    "view_count",
+                )
+            },
+        ),
+        (
+            "Uploader",
+            {
+                "fields": (
+                    "uploader",
+                )
+            },
+        ),
+        (
+            "Tanggal",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+
+        super().save_model(request, obj, form, change)
+
+@admin.register(ArtikelIslami)
+class ArtikelIslamiAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "category",
+        "uploader",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "category",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "description",
+        "article",
+    )
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+    autocomplete_fields = (
+        "category",
+        "uploader",
+    )
+
+    fieldsets = (
+        (
+            "Informasi",
+            {
+                "fields": (
+                    "title",
+                    "banner",
+                    "description",
+                    "category",
+                    "article",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_published",
+                )
+            },
+        ),
+        (
+            "Uploader",
+            {
+                "fields": (
+                    "uploader",
+                )
+            },
+        ),
+        (
+            "Tanggal",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.uploader:
+            obj.uploader = request.user
+
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(BookCategory)
+class BookCategoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+    )
+
+    search_fields = (
+        "name",
+    )
+
+    ordering = (
+        "name",
+    )
+
+@admin.register(BookAuthor)
+class BookAuthorAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "created_at",
+    )
+
+    search_fields = (
+        "name",
+    )
+
+    ordering = (
+        "name",
+    )
+
+@admin.register(IslamicBook)
+class IslamicBookAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "title",
+        "author",
+        "category",
+        "price",
+        "discount",
+        "sold_count",
+        "is_recommended",
+        "is_published",
+        "created_at",
+    )
+
+    list_filter = (
+        "category",
+        "author",
+        "is_recommended",
+        "is_published",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "synopsis",
+        "author__name",
+    )
+
+    autocomplete_fields = (
+        "category",
+        "author",
+        "uploader",
+    )
+
+    readonly_fields = (
+        "sold_count",
+        "created_at",
+        "updated_at",
+    )
+
+    fieldsets = (
+        (
+            "Informasi Buku",
+            {
+                "fields": (
+                    "title",
+                    "cover",
+                    "pdf",
+                    "synopsis",
+                )
+            },
+        ),
+        (
+            "Kategori",
+            {
+                "fields": (
+                    "category",
+                    "author",
+                    "publish_year",
+                )
+            },
+        ),
+        (
+            "Harga",
+            {
+                "fields": (
+                    "price",
+                    "discount",
+                    "sold_count",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_recommended",
+                    "is_published",
+                )
+            },
+        ),
+        (
+            "Uploader",
+            {
+                "fields": (
+                    "uploader",
+                )
+            },
+        ),
+        (
+            "Tanggal",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+
+        if not obj.uploader:
+            obj.uploader = request.user
+
+        super().save_model(request, obj, form, change)
+
+================================================================================
+FILE: requirements.txt
+================================================================================
+
+annotated-types==0.7.0
+anyio==4.11.0
+APScheduler==3.11.1
+asgiref==3.9.1
+audioread==3.1.0
+av==12.3.0
+CacheControl==0.14.4
+cachetools==6.2.2
+certifi==2025.11.12
+cffi==2.0.0
+charset-normalizer==3.4.4
+click==8.4.2
+cryptography==49.0.0
+ctranslate2==4.7.2
+decorator==5.3.1
+defusedxml==0.7.1
+distro==1.9.0
+Django==5.2.5
+djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
+exceptiongroup==1.3.1
+faster-whisper==1.0.3
+filelock==3.29.0
+firebase_admin==7.1.0
+flatbuffers==25.12.19
+fsspec==2026.4.0
+google-ai-generativelanguage==0.6.15
+google-api-core==2.28.1
+google-api-python-client==2.197.0
+google-auth==2.53.0
+google-auth-httplib2==0.4.0
+google-cloud-core==2.5.0
+google-cloud-firestore==2.21.0
+google-cloud-storage==3.6.0
+google-crc32c==1.7.1
+google-genai==2.7.0
+google-resumable-media==2.8.0
+googleapis-common-protos==1.72.0
+groq==1.5.0
+grpcio==1.76.0
+grpcio-status==1.71.2
+h11==0.16.0
+h2==4.3.0
+hf-xet==1.5.0
+hpack==4.1.0
+httpcore==1.0.9
+httplib2==0.31.2
+httpx==0.28.1
+huggingface_hub==0.36.2
+hyperframe==6.1.0
+idna==3.11
+Jinja2==3.1.6
+joblib==1.5.3
+lazy-loader==0.5
+librosa==0.10.2
+llvmlite==0.47.0
+MarkupSafe==3.0.3
+mpmath==1.3.0
+msgpack==1.1.2
+networkx==3.6.1
+nltk==3.9.4
+numba==0.65.1
+numpy==2.4.6
+oauthlib==3.3.1
+onnxruntime==1.26.0
+packaging==26.2
+pgvector==0.4.2
+pillow==12.1.1
+platformdirs==4.10.0
+pooch==1.9.0
+proto-plus==1.26.1
+protobuf==5.29.6
+psycopg2==2.9.10
+psycopg2-binary==2.9.12
+pyasn1==0.6.1
+pyasn1_modules==0.4.2
+pycparser==2.23
+pydantic==2.13.4
+pydantic_core==2.46.4
+PyJWT==2.13.0
+pyparsing==3.3.2
+python-dotenv==1.1.1
+python3-openid==3.2.0
+PyYAML==6.0.3
+regex==2026.5.9
+requests==2.34.2
+requests-oauthlib==2.0.0
+rsa==4.9.1
+safetensors==0.7.0
+Sastrawi==1.0.1
+scikit-learn==1.8.0
+scipy==1.17.1
+sentence-transformers==5.6.0
+setuptools==82.0.1
+sniffio==1.3.1
+social-auth-app-django==5.9.0
+social-auth-core==4.9.1
+soundfile==0.12.1
+soxr==1.1.0
+sqlparse==0.5.3
+sympy==1.14.0
+tenacity==9.1.4
+threadpoolctl==3.6.0
+tokenizers==0.19.1
+torch==2.3.0
+torchaudio==2.3.0
+tqdm==4.67.3
+transformers==4.41.0
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+tzdata==2025.2
+tzlocal==5.3.1
+uritemplate==4.2.0
+urllib3==2.5.0
+websockets==16.0

@@ -580,3 +580,6 @@ class IslamicBookAdmin(admin.ModelAdmin):
             obj.uploader = request.user
 
         super().save_model(request, obj, form, change)
+
+# Registrasi workflow review Tajwid v3 dipisahkan agar admin utama tetap terbaca.
+from . import admin_tilawah  # noqa: E402,F401

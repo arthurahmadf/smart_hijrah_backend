@@ -1,0 +1,5 @@
+ayah_id,surah_number,ayah_number,issue_type,severity,detail,evidence
+1127,7,176,advanced_idgham_target_unvocalised,warning,Target pasangan idgham tidak memiliki vokal/shadda eksplisit.,"{""pair"": [""ث"", ""ذ""], ""target"": ""ذٰ"", ""trigger"": ""ثْۗ"", ""verse_key"": ""7:176""}"
+2292,19,46,advanced_idgham_target_unvocalised,warning,Target pasangan idgham tidak memiliki vokal/shadda eksplisit.,"{""pair"": [""ي"", ""ي""], ""target"": ""يٰٓ"", ""trigger"": ""يْ"", ""verse_key"": ""19:46""}"
+3283,28,38,advanced_idgham_target_unvocalised,warning,Target pasangan idgham tidak memiliki vokal/shadda eksplisit.,"{""pair"": [""ي"", ""ي""], ""target"": ""يٰ"", ""trigger"": ""يْ"", ""verse_key"": ""28:38""}"
+4702,51,47,advanced_idgham_target_unvocalised,warning,Target pasangan idgham tidak memiliki vokal/shadda eksplisit.,"{""pair"": [""ي"", ""ي""], ""target"": ""ى"", ""trigger"": ""يْ"", ""verse_key"": ""51:47""}"

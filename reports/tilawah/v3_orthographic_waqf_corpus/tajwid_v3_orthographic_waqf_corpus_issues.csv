@@ -1,0 +1,5 @@
+ayah_id,surah_number,ayah_number,issue_type,severity,detail,evidence
+2138,18,1,unregistered_saktah_mark,warning,Tanda saktah ditemukan di luar boundary registry profil.,"{""boundary_to_verse_key"": ""18:2"", ""text"": ""ۜ"", ""verse_key"": ""18:1""}"
+3745,36,52,unregistered_saktah_mark,warning,Tanda saktah ditemukan di luar boundary registry profil.,"{""boundary_to_verse_key"": null, ""text"": ""ۜ"", ""verse_key"": ""36:52""}"
+5554,75,27,unregistered_saktah_mark,warning,Tanda saktah ditemukan di luar boundary registry profil.,"{""boundary_to_verse_key"": null, ""text"": ""ۜ"", ""verse_key"": ""75:27""}"
+5838,83,14,unregistered_saktah_mark,warning,Tanda saktah ditemukan di luar boundary registry profil.,"{""boundary_to_verse_key"": null, ""text"": ""ۜ"", ""verse_key"": ""83:14""}"

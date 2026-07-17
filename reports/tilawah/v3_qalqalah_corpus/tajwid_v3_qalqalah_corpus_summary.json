@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-17T08:13:44.858315+00:00",
+  "engine_version": "3.0.0-alpha.3",
+  "reading_mode": "ayah_stop",
+  "database_write_performed": false,
+  "scope": {
+    "all": true,
+    "surah": null,
+    "ayah": null,
+    "limit": null
+  },
+  "audited_rule_codes": [
+    "qalqalah_akbar",
+    "qalqalah_kubra",
+    "qalqalah_sughra"
+  ],
+  "counters": {
+    "ayah_with_annotations": 2670,
+    "ayah_without_annotations": 3566,
+    "total_annotations": 3894,
+    "total_ayah": 6236
+  },
+  "issue_type_counts": {}
+}
